@@ -9,10 +9,11 @@ Services that can be used on gateway to enable data and control plane for edge:
 * [Export](/edge/#export)
 * [Mainflux](/architecture/)
 
-|   |   |   |
-| - | - | - |
-|| ![Edge1](img/edge/edge.png) ||
-||<center>*Figure 1* - edge services deployment</center>||
+
+
+| ![Edge1](img/edge/edge.png) |
+|:-:|
+|<b>Figure 1 - Edge services deployment</b>|
 
 
 Figure shows edge gateway that is running Agent, Export and minimal deployment of Mainflux services.
