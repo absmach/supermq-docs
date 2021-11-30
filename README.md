@@ -5,7 +5,7 @@
 [![chat][gitter-badge]][gitter]
 
 This repo collects the collaborative work on Mainflux documentation.
-Official documentation is hosted at [Mainflux Read The Docs page][docs].
+Official documentation is hosted at [Mainflux Docs page][docs].
 Documentation is auto-generated from Markdown files in this repo.
 
 [MkDocs](https://www.mkdocs.org/) is used to serve the docs locally with different theming.
@@ -59,4 +59,4 @@ Thank you for your interest in Mainflux and the desire to contribute!
 [license]: https://img.shields.io/badge/license-Apache%20v2.0-blue.svg
 [blog]: https://medium.com/mainflux-iot-platform
 [twitter]: https://twitter.com/mainflux
-[docs]: http://mainflux.readthedocs.io
+[docs]: https://docs.mainflux.io
