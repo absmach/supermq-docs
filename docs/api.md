@@ -3,7 +3,7 @@
 ## Reference
 API reference in the Swagger UI can be found at:
 
-https://api.mainflux.io
+[https://api.mainflux.io](https://api.mainflux.io)
 
 ## Users
 
@@ -824,4 +824,20 @@ Connection: keep-alive
 Access-Control-Expose-Headers: Location
 
 {"value":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2Mzg0MDgyMzAsImlhdCI6MTYzODM3MjIzMCwiaXNzIjoibWFpbmZsdXguYXV0aCIsInR5cGUiOjB9.niDXlGC8G_NhyaT9WxlW_7srfsexOQd0bWTViJAObJU","issued_at":"2021-12-01T15:23:50.964773058Z","expires_at":"2021-12-02T01:23:50.964773058Z"}
+```
+
+### Gets API key details for the given key
+
+> Must-have: 'user_token' and 'key_id"
+
+```bash
+TODO
+```
+
+### Revoke API key identified by the given ID
+
+> Must-have: 'user_token' and 'key_id"
+
+```bash
+TODO
 ```
