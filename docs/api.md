@@ -1,5 +1,10 @@
 # API
 
+## Reference
+API reference in the Swagger UI can be found at:
+
+https://api.mainflux.io
+
 ## Users
 
 ### Create User
@@ -795,4 +800,28 @@ HTTP/1.1 204 No Content
 Content-Type: application/json
 Date: Wed, 03 Nov 2021 13:00:05 GMT
 
+```
+
+## API Key
+
+### Create API Key
+Generates a new API key. Thew new API key will be uniquely identified by its ID.
+
+> Must-have: `user_token`
+
+```bash
+curl -isSX POST  http://localhost/keys -H 'Content-Type: application/json' -d '{"type":0, "token":"<user_token>", "duration":100000}'
+```
+
+Response:
+```bash
+HTTP/1.1 201 Created
+Server: nginx/1.20.0
+Date: Wed, 01 Dec 2021 15:23:50 GMT
+Content-Type: application/json
+Content-Length: 273
+Connection: keep-alive
+Access-Control-Expose-Headers: Location
+
+{"value":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2Mzg0MDgyMzAsImlhdCI6MTYzODM3MjIzMCwiaXNzIjoibWFpbmZsdXguYXV0aCIsInR5cGUiOjB9.niDXlGC8G_NhyaT9WxlW_7srfsexOQd0bWTViJAObJU","issued_at":"2021-12-01T15:23:50.964773058Z","expires_at":"2021-12-02T01:23:50.964773058Z"}
 ```
