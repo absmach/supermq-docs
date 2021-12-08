@@ -190,6 +190,27 @@ Access-Control-Expose-Headers: Location
 {"things":[{"id":"64140f0b-6448-41cf-967e-1bbcc703c332","name":"thing_name","key":"659aa6ca-1781-4a69-9a20-689ddb235506"}]}
 ```
 
+### Create Thing with External ID
+To create a thing with an external ID, which could be from external Application or Service which is managing the Mainflux, you need the thing with a valid UUID and a `user_token`
+
+> Must-have: `user_token`
+
+```bash
+curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: <user_token>" http://localhost/things/bulk -d '[{"id": "<xxxxxxxx-xxxx-xxxx-xxxxxxxxxxxxxxxx>","name": "<thing_name>"}]'
+```
+
+Response:
+```bash
+HTTP/1.1 201 Created
+Server: nginx/1.16.0
+Date: Wed, 10 Mar 2021 15:18:37 GMT
+Content-Type: application/json
+Content-Length: 119
+Connection: keep-alive
+Access-Control-Expose-Headers: Location
+
+{"things":[{"id":"<xxxxxxxx-xxxx-xxxx-xxxxxxxxxxxxxxxx>","name":"thing_name","key":"659aa6ca-1781-4a69-9a20-689ddb235506"}]}
+```
 ### Create Things
 You can create multiple things at once by entering a series of things structures and a `user_token`
 
@@ -212,6 +233,27 @@ Access-Control-Expose-Headers: Location
 {"things":[{"id":"4328f3e4-4c67-40b3-9491-0ab782c48d50","name":"thing_name_1","key":"828c6985-c2d6-419e-a124-ba99147b9920"},{"id":"38aa33fe-39e5-4ee3-97ba-4227cfac63f6","name":"thing_name_2","key":"f73e7342-06c1-499a-9584-35de495aa338"}]}
 ```
 
+### Create Things with external ID
+You can create multiple things at once by entering a series of things structures with external UUID and a `user_token`
+
+> Must-have: `user_token` and at least two things
+
+```bash
+curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: <user_token>" http://localhost/things/bulk -d '[{"id": "<xxxxxxxx-xxxx-xxxx-xxxxxxxxxxxxxxx1>","name": "<thing_name_1>"},{"id": "<xxxxxxxx-xxxx-xxxx-xxxxxxxxxxxxxxx2>","name": "<thing_name_2>"}]'
+```
+
+Response:
+```bash
+HTTP/1.1 201 Created
+Server: nginx/1.16.0
+Date: Wed, 10 Mar 2021 15:19:48 GMT
+Content-Type: application/json
+Content-Length: 227
+Connection: keep-alive
+Access-Control-Expose-Headers: Location
+
+{"things":[{"id":"<xxxxxxxx-xxxx-xxxx-xxxxxxxxxxxxxxx1>","name":"thing_name_1","key":"828c6985-c2d6-419e-a124-ba99147b9920"},{"id":"<xxxxxxxx-xxxx-xxxx-xxxxxxxxxxxxxxx2>","name":"thing_name_2","key":"f73e7342-06c1-499a-9584-35de495aa338"}]}
+```
 ### Get Thing
 You can get thing entity by entering the thing ID and `user_token`
 
@@ -319,6 +361,27 @@ Warning-Deprecated: This endpoint will be depreciated in v1.0.0. It will be repl
 Access-Control-Expose-Headers: Location
 ```
 
+### Create Channel with external ID
+To create a channel with external ID, you need a valid UUID, and a `user_token`
+
+> Must-have: `user_token`
+
+```bash
+curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: <user_token>" http://localhost/channels -d '{"id": "<xxxxxxxx-xxxx-xxxx-xxxxxxxxxxxxxxxx>","name": "<channel_name>"}'
+```
+
+Response:
+```bash
+HTTP/1.1 201 Created
+Server: nginx/1.16.0
+Date: Wed, 10 Mar 2021 15:26:51 GMT
+Content-Type: application/json
+Content-Length: 0
+Connection: keep-alive
+Location: /channels/db4b7428-e278-4fe3-b85a-d65554d6abe9
+Warning-Deprecated: This endpoint will be depreciated in v1.0.0. It will be replaced with the bulk endpoint currently found at /channels/bulk.
+Access-Control-Expose-Headers: Location
+```
 ### Create Channels
 As with things, you can create multiple channels at once
 
@@ -341,6 +404,27 @@ Access-Control-Expose-Headers: Location
 {"channels":[{"id":"b8073d41-01dc-46ad-bb26-cfecc596c6c1","name":"channel_name_1"},{"id":"2200527a-f590-4fe5-b9d6-892fc6f825c3","name":"channel_name_2"}]}
 ```
 
+### Create Channels with external ID
+As with things, you can create multiple channels with external ID at once
+
+> Must-have: `user_token` and at least 2 channels
+
+```bash
+curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: <user_token>" http://localhost/channels/bulk -d '[{"id": "<xxxxxxxx-xxxx-xxxx-xxxxxxxxxxxxxxx1>","name": "<channel_name_1>"}, {"id": "<xxxxxxxx-xxxx-xxxx-xxxxxxxxxxxxxxx2>","name": "<channel_name_2>"}]'
+```
+
+Response:
+```bash
+HTTP/1.1 201 Created
+Server: nginx/1.16.0
+Date: Wed, 10 Mar 2021 15:28:10 GMT
+Content-Type: application/json
+Content-Length: 143
+Connection: keep-alive
+Access-Control-Expose-Headers: Location
+
+{"channels":[{"id":"<xxxxxxxx-xxxx-xxxx-xxxxxxxxxxxxxxx1>","name":"channel_name_1"},{"id":"<xxxxxxxx-xxxx-xxxx-xxxxxxxxxxxxxxx2>","name":"channel_name_2"}]}
+```
 ### Get Channel
 Get a channel entity for a logged in user
 
