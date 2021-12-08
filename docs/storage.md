@@ -19,7 +19,7 @@ Writers provide an implementation of various `message writers`. Message writers 
 
 ### Subscriber config
 
-Each writer can filter messages based on subjects list that is set in `config.toml` configuration file. If you want to listen on all subjects, just set the field `subjects` in the `subscriber` section as `["channels.>"]`, otherwise pass the list of subjects. Here is an example:
+Each writer can filter messages based on subjects list that is set in `config.toml` configuration file. If you want to listen on all subjects, just set the field `subjects` in the `[subscriber]` section as `["channels.>"]`, otherwise pass the list of subjects. Here is an example:
 
 ```toml
 [subscriber]
