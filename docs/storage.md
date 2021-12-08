@@ -15,7 +15,39 @@ In order to run these services, core services, as well as the network from the c
 
 ## Writers
 
-Writers provide an implementation of various `message writers`. Message writers are services that consume Mainflux messages, transform them to desired format and store them in specific data store. There are two types of transformers: JSON and SenML. Transformer type is set using the following environment variables: `MF_CASSANDRA_WRITER_TRANSFORMER`, `MF_POSTGRES_WRITER_TRANSFORMER`, `MF_INFLUX_WRITER_TRANSFORMER` and `MF_MONGO_WRITER_TRANSFORMER`. Valid options for this environment variable are `JSON` and `SenML` and those values are not case sensitive. The default Transformer is `SenML`.
+Writers provide an implementation of various `message writers`. Message writers are services that consume Mainflux messages, transform them to desired format and store them in specific data store. The path of the configuration file can be set using the following environment variables: `MF_CASSANDRA_WRITER_CONFIG_PATH`, `MF_POSTGRES_WRITER_CONFIG_PATH`, `MF_INFLUX_WRITER_CONFIG_PATH` and `MF_MONGO_WRITER_CONFIG_PATH`.
+
+### Subscriber config
+
+Each writer can filter messages based on subjects list that is set in `config.toml` configuration file. If you want to listen on all subjects, just set the field `subjects` in the `subscriber` section as `["channels.>"]`, otherwise pass the list of subjects. Here is an example:
+
+```toml
+[subscriber]
+subjects = ["channels.*.messages.bedroom.temperature","channels.*.messages.bedroom.humidity"]
+```
+
+Regarding the [Subtopics Section](messaging.md#subtopics) in the messaging page, the example `channels/<channel_id>/messages/bedroom/temperature` can be filtered as `"channels.*.bedroom.temperature"`. The formatting of this filtering list is determined by the NATS format ([Subject-Based Messaging](https://docs.nats.io/nats-concepts/subjects) & [Wildcards](https://docs.nats.io/nats-concepts/subjects#wildcards)).
+
+### Transformer config
+
+There are two types of transformers: SenML and JSON. The transformer type is set in configuration file. For SenML transformer, supported message payload formats are SenML+CBOR and SenML+JSON. They are configurable over `content_type` field in the `[transformer]` section and expect `application/senml+json` or `application/senml+cbor` formats. Here is an example:
+
+```toml
+[transformer]
+format = "senml"
+content_type = "application/senml+json"
+```
+
+For the JSON transformer you can configure `time_fields` in the `[transformer]` section to use arbitrary fields from the JSON message payload as timestamp. `time_fields` is represented by an array of objects with fields `field_name`, `field_format` and `location` that represent respectively the name of the JSON key to use as timestamp, the time format to use for the field value and a the time location. Here is an example:
+
+```toml
+[transformer]
+format = "json"
+time_fields = [{ field_name = "seconds_key", field_format = "unix",    location = "UTC"},
+               { field_name = "millis_key",  field_format = "unix_ms", location = "UTC"},
+               { field_name = "micros_key",  field_format = "unix_us", location = "UTC"},
+               { field_name = "nanos_key",   field_format = "unix_ns", location = "UTC"}]
+
 
 JSON transformer can be used for any JSON payload. For the messages that contain _JSON array as the root element_, JSON Transformer does normalization of the data: it creates a separate JSON message for each JSON object in the root. In order to be processed and stored properly, JSON messages need to contain message format information. For the sake of simplicity, nested JSON objects are flatten to a single JSON object in InfluxDB, using composite keys separated by the `/` separator. This implies that the separator character (`/`) _is not allowed in the JSON object key_ while using InfluxDB. Apart from InfluxDB, separator character (`/`) usage in the JSON object key is permitted, since other [Writer](storage.md#writers) types do not flat the nested JSON objects. For example, the following JSON object:
 ```json
@@ -60,18 +92,6 @@ http://localhost:8185/channels/<channelID>/messages/home/temperature/myFormat
 ```
 
 the message format is `myFormat`. It can be any valid subtopic name, JSON transformer is format-agnostic. The format is used by the JSON message consumers so that they can process the message properly. If the format is not present (i.e. message subtopic is empty), JSON Transformer will report an error.  Message writers will store the message(s) in the table/collection/measurement (depending on the underlying database) with the name of the format (which in the example is `myFormat`). Mainflux writers will try to save any format received (whether it will be successful depends on the writer implementation and the underlying database), but it's recommended that publishers don't send different formats to the same subtopic.
-
-
-For SenML transformer, supported message payload formats are SenML+CBOR and SenML+JSON. They are configurable over environment variables in each writer (`MF_CASSANDRA_WRITER_CONTENT_TYPE`, `MF_POSTGRES_WRITER_CONTENT_TYPE`, `MF_INFLUX_WRITER_CONTENT_TYPE` and `MF_MONGO_WRITER_CONTENT_TYPE`) and expect `application/senml+json` or `application/senml+cbor` formats.
-
-Each writer can filter messages based on subjects list that is set in `subjects.toml` configuration file. If you want to listen on all subjects, just pass one element ["channels.>"], otherwise pass the list of subjects. Here is an example:
-
-```toml
-[subjects]
-filter = ["channels.>"]
-```
-
-Regarding the [Subtopics Section](messaging.md#subtopics) in the messaging page, the example `channels/<channel_id>/messages/bedroom/temperature` can be filtered as `"channels.*.bedroom.temperature"`. The formatting of this filtering list is determined by the NATS format ([Subject-Based Messaging](https://docs.nats.io/nats-concepts/subjects) & [Wildcards](https://docs.nats.io/nats-concepts/subjects#wildcards)).
 
 ### InfluxDB, InfluxDB Writer and Grafana
 
