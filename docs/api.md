@@ -191,7 +191,10 @@ Access-Control-Expose-Headers: Location
 ```
 
 ### Create Thing with External ID
-To create a thing with an external ID, which could be from external Application or Service which is managing the Mainflux, you need the thing with a valid UUID and a `user_token`
+It is often the case that the user will want to integrate the existing solutions, e.g. an asset management system, with the Mainflux platform. To simplify the integration between the systems and avoid artificial cross-platform reference, such as special fields in Mainflux Things metadata, it is possible to set Mainflux Thing ID with an existing unique ID while create the Thing. This way, the user can set the the existing ID as the Thing ID of a newly created Thing to keep reference between Thing and the asset that Thing represents. 
+There are two limitations - the existing ID have to be in UUID V4 format and it needs to be unique in the Mainflux domain.
+
+To create a thing with an external ID, you need provide the UUID v4 format ID together with thing name, and other field as well as a `user_token`
 
 > Must-have: `user_token`
 
@@ -234,7 +237,7 @@ Access-Control-Expose-Headers: Location
 ```
 
 ### Create Things with external ID
-You can create multiple things at once by entering a series of things structures with external UUID and a `user_token`
+The same as creating a Thing with external ID the user can create multiple things at once by providing UUID v4 format unique ID in a series of things together with a `user_token`
 
 > Must-have: `user_token` and at least two things
 
@@ -362,7 +365,9 @@ Access-Control-Expose-Headers: Location
 ```
 
 ### Create Channel with external ID
-To create a channel with external ID, you need a valid UUID, and a `user_token`
+Channel is a group of things which could represent a special category in existing systems, e.g. a building level channel could represent the level of a smarting building system. For helping to keep the reference, it is possible to set a existing ID while create the Mainflux channel. There are two limitations - the existing ID have to be in UUID V4 format and it needs to be unique in the Mainflux domain.
+
+To create a channel with external ID, the user needs provide a UUID v4 format unique ID, and a `user_token`
 
 > Must-have: `user_token`
 
@@ -383,7 +388,7 @@ Warning-Deprecated: This endpoint will be depreciated in v1.0.0. It will be repl
 Access-Control-Expose-Headers: Location
 ```
 ### Create Channels
-As with things, you can create multiple channels at once
+The same as creating a channel with external ID the user can create multiple channels at once by providing UUID v4 format unique ID in a series of channels together with a `user_token`
 
 > Must-have: `user_token` and at least 2 channels
 
