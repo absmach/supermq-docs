@@ -191,10 +191,10 @@ Access-Control-Expose-Headers: Location
 ```
 
 ### Create Thing with External ID
-It is often the case that the user will want to integrate the existing solutions, e.g. an asset management system, with the Mainflux platform. To simplify the integration between the systems and avoid artificial cross-platform reference, such as special fields in Mainflux Things metadata, it is possible to set Mainflux Thing ID with an existing unique ID while create the Thing. This way, the user can set the the existing ID as the Thing ID of a newly created Thing to keep reference between Thing and the asset that Thing represents. 
-There are two limitations - the existing ID have to be in UUID V4 format and it needs to be unique in the Mainflux domain.
+It is often the case that the user will want to integrate the existing solutions, e.g. an asset management system, with the Mainflux platform. To simplify the integration between the systems and avoid artificial cross-platform reference, such as special fields in Mainflux Things metadata, it is possible to set Mainflux Thing ID with an existing unique ID while create the Thing. This way, the user can set the existing ID as the Thing ID of a newly created Thing to keep reference between Thing and the asset that Thing represents. 
+There are two limitations - the existing ID have to be in UUID V4 format and it has to be unique in the Mainflux domain.
 
-To create a thing with an external ID, you need provide the UUID v4 format ID together with thing name, and other field as well as a `user_token`
+To create a thing with an external ID, you need provide the UUID v4 format ID together with thing name, and other fields as well as a `user_token`
 
 > Must-have: `user_token`
 
@@ -365,7 +365,7 @@ Access-Control-Expose-Headers: Location
 ```
 
 ### Create Channel with external ID
-Channel is a group of things which could represent a special category in existing systems, e.g. a building level channel could represent the level of a smarting building system. For helping to keep the reference, it is possible to set a existing ID while create the Mainflux channel. There are two limitations - the existing ID have to be in UUID V4 format and it needs to be unique in the Mainflux domain.
+Channel is a group of things that could represent a special category in existing systems, e.g. a building level channel could represent the level of a smarting building system. For helping to keep the reference, it is possible to set an existing ID while creating the Mainflux channel. There are two limitations - the existing ID has to be in UUID V4 format and it has to be unique in the Mainflux domain.
 
 To create a channel with external ID, the user needs provide a UUID v4 format unique ID, and a `user_token`
 
@@ -847,7 +847,7 @@ Adds access rights on thing groups to the user group.
 curl -s -S -i -X POST http://localhost/groups/<user_group_id>/share -d '{"thing_group_id": "<thing_group_id>"}' -H 'Content-Type: application/json' -H "Authorization: <user_token>"
 ```
 
-Each user from the the group identified by `user_group_id` will have `read`, `write`, and `delete` policies on the things grouped by `thing_group_id`. Therefore, they will be able to do operations defined under [Things Policies section](/authorization/#things-service-related-policies).
+Each user from the group identified by `user_group_id` will have `read`, `write`, and `delete` policies on the things grouped by `thing_group_id`. Therefore, they will be able to do operations defined under [Things Policies section](/authorization/#things-service-related-policies).
 
 ## Policies
 
