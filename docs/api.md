@@ -190,6 +190,30 @@ Access-Control-Expose-Headers: Location
 {"things":[{"id":"64140f0b-6448-41cf-967e-1bbcc703c332","name":"thing_name","key":"659aa6ca-1781-4a69-9a20-689ddb235506"}]}
 ```
 
+### Create Thing with External ID
+It is often the case that the user will want to integrate the existing solutions, e.g. an asset management system, with the Mainflux platform. To simplify the integration between the systems and avoid artificial cross-platform reference, such as special fields in Mainflux Things metadata, it is possible to set Mainflux Thing ID with an existing unique ID while create the Thing. This way, the user can set the existing ID as the Thing ID of a newly created Thing to keep reference between Thing and the asset that Thing represents. 
+There are two limitations - the existing ID have to be in UUID V4 format and it has to be unique in the Mainflux domain.
+
+To create a thing with an external ID, you need provide the UUID v4 format ID together with thing name, and other fields as well as a `user_token`
+
+> Must-have: `user_token`
+
+```bash
+curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: <user_token>" http://localhost/things/bulk -d '[{"id": "<xxxxxxxx-xxxx-xxxx-xxxxxxxxxxxxxxxx>","name": "<thing_name>"}]'
+```
+
+Response:
+```bash
+HTTP/1.1 201 Created
+Server: nginx/1.16.0
+Date: Wed, 10 Mar 2021 15:18:37 GMT
+Content-Type: application/json
+Content-Length: 119
+Connection: keep-alive
+Access-Control-Expose-Headers: Location
+
+{"things":[{"id":"<xxxxxxxx-xxxx-xxxx-xxxxxxxxxxxxxxxx>","name":"thing_name","key":"659aa6ca-1781-4a69-9a20-689ddb235506"}]}
+```
 ### Create Things
 You can create multiple things at once by entering a series of things structures and a `user_token`
 
@@ -212,6 +236,27 @@ Access-Control-Expose-Headers: Location
 {"things":[{"id":"4328f3e4-4c67-40b3-9491-0ab782c48d50","name":"thing_name_1","key":"828c6985-c2d6-419e-a124-ba99147b9920"},{"id":"38aa33fe-39e5-4ee3-97ba-4227cfac63f6","name":"thing_name_2","key":"f73e7342-06c1-499a-9584-35de495aa338"}]}
 ```
 
+### Create Things with external ID
+The same as creating a Thing with external ID the user can create multiple things at once by providing UUID v4 format unique ID in a series of things together with a `user_token`
+
+> Must-have: `user_token` and at least two things
+
+```bash
+curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: <user_token>" http://localhost/things/bulk -d '[{"id": "<xxxxxxxx-xxxx-xxxx-xxxxxxxxxxxxxxx1>","name": "<thing_name_1>"},{"id": "<xxxxxxxx-xxxx-xxxx-xxxxxxxxxxxxxxx2>","name": "<thing_name_2>"}]'
+```
+
+Response:
+```bash
+HTTP/1.1 201 Created
+Server: nginx/1.16.0
+Date: Wed, 10 Mar 2021 15:19:48 GMT
+Content-Type: application/json
+Content-Length: 227
+Connection: keep-alive
+Access-Control-Expose-Headers: Location
+
+{"things":[{"id":"<xxxxxxxx-xxxx-xxxx-xxxxxxxxxxxxxxx1>","name":"thing_name_1","key":"828c6985-c2d6-419e-a124-ba99147b9920"},{"id":"<xxxxxxxx-xxxx-xxxx-xxxxxxxxxxxxxxx2>","name":"thing_name_2","key":"f73e7342-06c1-499a-9584-35de495aa338"}]}
+```
 ### Get Thing
 You can get thing entity by entering the thing ID and `user_token`
 
@@ -319,8 +364,31 @@ Warning-Deprecated: This endpoint will be depreciated in v1.0.0. It will be repl
 Access-Control-Expose-Headers: Location
 ```
 
+### Create Channel with external ID
+Channel is a group of things that could represent a special category in existing systems, e.g. a building level channel could represent the level of a smarting building system. For helping to keep the reference, it is possible to set an existing ID while creating the Mainflux channel. There are two limitations - the existing ID has to be in UUID V4 format and it has to be unique in the Mainflux domain.
+
+To create a channel with external ID, the user needs provide a UUID v4 format unique ID, and a `user_token`
+
+> Must-have: `user_token`
+
+```bash
+curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: <user_token>" http://localhost/channels -d '{"id": "<xxxxxxxx-xxxx-xxxx-xxxxxxxxxxxxxxxx>","name": "<channel_name>"}'
+```
+
+Response:
+```bash
+HTTP/1.1 201 Created
+Server: nginx/1.16.0
+Date: Wed, 10 Mar 2021 15:26:51 GMT
+Content-Type: application/json
+Content-Length: 0
+Connection: keep-alive
+Location: /channels/db4b7428-e278-4fe3-b85a-d65554d6abe9
+Warning-Deprecated: This endpoint will be depreciated in v1.0.0. It will be replaced with the bulk endpoint currently found at /channels/bulk.
+Access-Control-Expose-Headers: Location
+```
 ### Create Channels
-As with things, you can create multiple channels at once
+The same as creating a channel with external ID the user can create multiple channels at once by providing UUID v4 format unique ID in a series of channels together with a `user_token`
 
 > Must-have: `user_token` and at least 2 channels
 
@@ -341,6 +409,27 @@ Access-Control-Expose-Headers: Location
 {"channels":[{"id":"b8073d41-01dc-46ad-bb26-cfecc596c6c1","name":"channel_name_1"},{"id":"2200527a-f590-4fe5-b9d6-892fc6f825c3","name":"channel_name_2"}]}
 ```
 
+### Create Channels with external ID
+As with things, you can create multiple channels with external ID at once
+
+> Must-have: `user_token` and at least 2 channels
+
+```bash
+curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: <user_token>" http://localhost/channels/bulk -d '[{"id": "<xxxxxxxx-xxxx-xxxx-xxxxxxxxxxxxxxx1>","name": "<channel_name_1>"}, {"id": "<xxxxxxxx-xxxx-xxxx-xxxxxxxxxxxxxxx2>","name": "<channel_name_2>"}]'
+```
+
+Response:
+```bash
+HTTP/1.1 201 Created
+Server: nginx/1.16.0
+Date: Wed, 10 Mar 2021 15:28:10 GMT
+Content-Type: application/json
+Content-Length: 143
+Connection: keep-alive
+Access-Control-Expose-Headers: Location
+
+{"channels":[{"id":"<xxxxxxxx-xxxx-xxxx-xxxxxxxxxxxxxxx1>","name":"channel_name_1"},{"id":"<xxxxxxxx-xxxx-xxxx-xxxxxxxxxxxxxxx2>","name":"channel_name_2"}]}
+```
 ### Get Channel
 Get a channel entity for a logged in user
 
@@ -758,7 +847,7 @@ Adds access rights on thing groups to the user group.
 curl -s -S -i -X POST http://localhost/groups/<user_group_id>/share -d '{"thing_group_id": "<thing_group_id>"}' -H 'Content-Type: application/json' -H "Authorization: <user_token>"
 ```
 
-Each user from the the group identified by `user_group_id` will have `read`, `write`, and `delete` policies on the things grouped by `thing_group_id`. Therefore, they will be able to do operations defined under [Things Policies section](/authorization/#things-service-related-policies).
+Each user from the group identified by `user_group_id` will have `read`, `write`, and `delete` policies on the things grouped by `thing_group_id`. Therefore, they will be able to do operations defined under [Things Policies section](/authorization/#things-service-related-policies).
 
 ## Policies
 
