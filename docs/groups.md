@@ -21,17 +21,17 @@ Access-Control-Expose-Headers: Location
 * **group_description** - description of group up to 1024 characters.
 * **parent_id** - id of parent group, if not specified created group is tree root.
 * **metadata** - custom metadata that can be attached to group object for specific application needs.
-  
+
 ## Fetch a group
 ```bash
-curl -s -S -X GET http://localhost/groups/01F2TTDYGMP6DW083NE6E0DKH2 -H "Authorization: $TOK" 
+curl -s -S -X GET http://localhost/groups/01F2TTDYGMP6DW083NE6E0DKH2 -H "Authorization: $TOK"
 ```
-                                                                           
+
 
 ## Create a child
 
 ```bash
-curl -is -S -X POST http://localhost/groups -d '{"name":"test1","description":"<group_description>","parent_id":"01F2TTDYGMP6DW083NE6E0DKH2","metadata":{"group_attr":"attr_value"}}' -H 'Content-Type: application/json' -H "Authorization: $TOK" 
+curl -is -S -X POST http://localhost/groups -d '{"name":"test1","description":"<group_description>","parent_id":"01F2TTDYGMP6DW083NE6E0DKH2","metadata":{"group_attr":"attr_value"}}' -H 'Content-Type: application/json' -H "Authorization: $TOK"
 HTTP/1.1 201 Created
 Server: nginx/1.16.0
 Date: Fri, 09 Apr 2021 08:09:37 GMT
@@ -111,7 +111,7 @@ To fetch a group hierarchy you can either fetch children for a group or a direct
 ```
 * **tree** - if true response is JSON that represent a groups tree structure. If ommited or `false` than groups will be retrieve as list
 * **level** - limits the hierarchy to be retrieved. Max level to be fetched in one request is 5.
-  
+
 ### Fetch children
 
 ```bash
@@ -294,7 +294,7 @@ curl -sSX GET http://localhost/groups/users/01F2TTDYGMP6DW083NE6E0DKH2  -H "Auth
 For entity that is being put in multiple groups it is possible to retrieve a list of groups it belongs to.
 
 ```bash
-curl -sSX GET http://localhost/members/<member_id>/groups  -H "Authorization: $TOK" | jq 
+curl -sSX GET http://localhost/members/<member_id>/groups  -H "Authorization: $TOK" | jq
 {
   "total": 1,
   "level": 0,

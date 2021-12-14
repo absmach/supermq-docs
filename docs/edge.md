@@ -1,6 +1,6 @@
 # Edge
 
-Mainflux IoT platform provides services for supporting management of devices on the edge. Typically, IoT solution includes devices (sensors/actuators) deployed in far edge and connected through some proxy gateway. 
+Mainflux IoT platform provides services for supporting management of devices on the edge. Typically, IoT solution includes devices (sensors/actuators) deployed in far edge and connected through some proxy gateway.
 Although most devices could be connected to the Mainflux directly, using gateways decentralizes system, decreases load on the cloud and makes setup less difficult. Also, gateways can provide additional data processing, filtering and storage.
 
 Services that can be used on gateway to enable data and control plane for edge:
@@ -79,7 +79,7 @@ curl -s -S -X GET http://mainflux-domain.com:8202/things/bootstrap/<external_id>
 
 - `external_id` is usually MAC address, but anything that suits applications requirements can be used
 - `external_key` is key that will be provided to agent process
-- `thing_id` is mainflux thing id 
+- `thing_id` is mainflux thing id
 - `channels` is 2-element array where first channel is CONTROL and second is DATA, both channels should be assigned to thing
 - `content` is used for configuring parameters of agent and export service.
 
@@ -120,11 +120,11 @@ mosquitto_sub -d -u $TH -P $KEY  -t channels/$CH/messages/res/# -h some-domain-n
 mosquitto_pub -d -u $TH -P $KEY  -t channels/$CH/messages/req -h some-domain-name -p 1883  -m '[{"bn":"1:", "n":"exec", "vs":"ls, -l"}]'
 ```
 
-#### Remote terminal 
+#### Remote terminal
 
 This can be checked from the UI, click on the details for gateway and below the gateway parameters you will se box with prompt, if `agent` is running and it is properly connected you should be able to execute commands remotely.
 
-#### Heartbeat 
+#### Heartbeat
 If there are services that are running on same gateway as `agent` and they are publishing heartbeat to NATS subject `heartbeat.service_name.service`
 You can get the list of services by sending following mqtt message
 
@@ -141,7 +141,7 @@ You can send commands to services running on the same edge gateway as Agent if t
 Service commands are being sent via MQTT to topic:
 
 `channels/<control_channel_id>/messages/services/<service_name>/<subtopic>`
-  
+
 when messages is received Agent forwards them to NATS on subject:
 
 `commands.<service_name>.<subtopic>`
@@ -149,7 +149,7 @@ when messages is received Agent forwards them to NATS on subject:
 Payload is up to the application and service itself.
 
 
-### EdgeX 
+### EdgeX
 
 [Edgex](https://github.com/edgexfoundry/edgex-go) control messages are sent and received over control channel. MF sends a control SenML of the following form:
 ```
@@ -174,7 +174,7 @@ Commands are:
 * PING
 
 **Operation**
-  
+
 ```
 mosquitto_pub -u <thing_id> -P <thing_key> -t channels/<channel_id>/messages/req -h localhost -m '[{"bn":"1:", "n":"control", "vs":"edgex-operation, start, edgex-support-notifications, edgex-core-data"}]'
 ```
@@ -195,7 +195,7 @@ mosquitto_sub -u <thing_id> -P <thing_key> -t channels/<channel_id>/messages/#
 You can observe commands and response from commands executed against edgex
 ```
 [{"bn":"1:", "n":"control", "vs":"edgex-metrics, edgex-support-notifications, edgex-core-data"}]                                                                            
-[{"bn":"1","n":"edgex-metrics","vs":"{\"Metrics\":{\"edgex-core-data\":{\"CpuBusyAvg\":15.568632467698606,\"Memory\":{\"Alloc\":2040136,\"Frees\":876344,\"LiveObjects\":15134,\"Mallocs\":891478,\"Sys\":73332984,\"TotalAlloc\":80657464}},\"edgex-support-notifications\":{\"CpuBusyAvg\":14.65381169745318,\"Memory\":{\"Alloc\":961784,\"Frees\":127430,\"LiveObjects\":6095,\"Mallocs\":133525,\"Sys\":72808696,\"TotalAlloc\":11665416}}}}\n"}] 
+[{"bn":"1","n":"edgex-metrics","vs":"{\"Metrics\":{\"edgex-core-data\":{\"CpuBusyAvg\":15.568632467698606,\"Memory\":{\"Alloc\":2040136,\"Frees\":876344,\"LiveObjects\":15134,\"Mallocs\":891478,\"Sys\":73332984,\"TotalAlloc\":80657464}},\"edgex-support-notifications\":{\"CpuBusyAvg\":14.65381169745318,\"Memory\":{\"Alloc\":961784,\"Frees\":127430,\"LiveObjects\":6095,\"Mallocs\":133525,\"Sys\":72808696,\"TotalAlloc\":11665416}}}}\n"}]
 ```
 
 ## Export
@@ -296,7 +296,7 @@ Values from environment variables will be used to populate export.toml
 ```bash
 curl -X GET http://localhost:8170/version
 {"service":"export","version":"0.0.1"}%
-``` 
+```
 
 #### MQTT connection
 
@@ -309,11 +309,11 @@ Additionally, you will need MQTT client certificates if you enable mTLS. To obta
 
 #### MTLS
 
-To setup `MTLS` connection `Export` service requires client certificate and `mtls` in config or `MF_EXPORT_MQTT_MTLS` must be set to `true`. 
+To setup `MTLS` connection `Export` service requires client certificate and `mtls` in config or `MF_EXPORT_MQTT_MTLS` must be set to `true`.
 Client certificate can be provided in a file, `client_cert_path` and `client_cert_key_path` are used for specifying path to certificate files.
 If MTLS is used and no certificate file paths are specified then `Export` will look in `client_cert` and `client_cert_key` of config file expecting certificate content stored as string.
 
-#### Routes 
+#### Routes
 
 Routes are being used for specifying which subscriber's topic(subject) goes to which publishing topic.
 Currently only MQTT is supported for publishing.
@@ -345,7 +345,7 @@ Edit Mainflux [docker-compose.yml][docker-compose]. NATS section must look like 
     ports:
       - 4222:4222
 ```
-  
+
 ### How to save config via agent
 
 Configuration file for `Export` service can be sent over MQTT using [Agent][agent] service.
@@ -491,13 +491,13 @@ build/mainflux-agent
 git clone https://github.com/mainflux/export
 make
 ```
-Edit the `configs/config.toml` setting 
+Edit the `configs/config.toml` setting
 - `username` - thing from the results of provision request.
 - `password` - key from the results of provision request.
 - `mqtt_topic` - in routes set to `channels/<channel_data_id>/messages` from results of provision.
 - `nats_topic` - whatever you need, export will subscribe to `export.<nats_topic>` and forward messages to MQTT.
 - `host` - url of MQTT broker.
-  
+
 ```toml
 [exp]
   cache_pass = ""

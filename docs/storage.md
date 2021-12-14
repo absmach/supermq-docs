@@ -40,7 +40,7 @@ format = "senml"
 content_type = "application/senml+json"
 ```
 
-Usually, the payload of the IoT message contains message time. It can be in different formats (like base time and record time in the case of SenML) and the message field can be under the arbitrary key. Usually, we would want to map that time to the Mainflux Message field Created and for that reason, we need to configure the Transformer to be able to read the field, parse it using proper format and location (if devices time is different than the service time), and map it to Maifnlux Message.
+Usually, the payload of the IoT message contains message time. It can be in different formats (like base time and record time in the case of SenML) and the message field can be under the arbitrary key. Usually, we would want to map that time to the Mainflux Message field Created and for that reason, we need to configure the Transformer to be able to read the field, parse it using proper format and location (if devices time is different than the service time), and map it to Mainflux Message.
 
 For JSON transformer you can configure `time_fields` in the `[transformer]` section to use arbitrary fields from the JSON message payload as timestamp. `time_fields` is represented by an array of objects with fields `field_name`, `field_format` and `location` that represent respectively the name of the JSON key to use as timestamp, the time format to use for the field value and a the time location. Here is an example:
 

@@ -9,9 +9,7 @@ git clone <forked repository> $SOMEPATH/mainflux
 cd $SOMEPATH/mainflux
 ```
 
-**Note:** If your `$SOMEPATH` is equal to `$GOPATH/src/github.com/mainflux/mainflux`, 
-make sure that your `$GOROOT` and `$GOPATH` do not overlap (otherwise, go 
-modules won't work).
+**Note:** If your `$SOMEPATH` is equal to `$GOPATH/src/github.com/mainflux/mainflux`, make sure that your `$GOROOT` and `$GOPATH` do not overlap (otherwise, go modules won't work).
 
 ## Building
 
