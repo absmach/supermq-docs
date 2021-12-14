@@ -1,4 +1,4 @@
-# Kuberbetes
+# Kubernetes
 
 Mainflux can be easily deployed on Kubernetes platform by using Helm Chart from official [Mainflux DevOps GitHub repository](https://github.com/mainflux/devops).
 
@@ -11,7 +11,7 @@ Mainflux can be easily deployed on Kubernetes platform by using Helm Chart from 
 
 ### Kubernetes
 Kubernetes is an open source container orchestration engine for automating deployment, scaling, and management of containerised applications.
-Install it locally or have access to a cluster. Follow [these instructions](https://kubernetes.io/docs/setup/) if you need more information. 
+Install it locally or have access to a cluster. Follow [these instructions](https://kubernetes.io/docs/setup/) if you need more information.
 
 ### Kubectl
 Kubectl is official Kubernetes command line client. Follow [these instructions](https://kubernetes.io/docs/tasks/tools/install-kubectl/) to install it.
