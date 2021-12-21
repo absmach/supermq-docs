@@ -31,7 +31,7 @@ Response should look like this:
 }
 ```
 
-For more information about the Users service API, please check out the [API documentation](https://github.com/mainflux/mainflux/blob/master/users/openapi.yml).
+For more information about the Users service API, please check out the [API documentation](https://github.com/mainflux/mainflux/blob/master/api/users.yml).
 
 ### System Provisioning
 
@@ -140,7 +140,7 @@ You can specify `offset` and `limit` parameters in order to fetch a specific set
 The response's body will contain a list of the things filtered by name and/or metadata:
 
 ```bash
-HTTP/2 200 
+HTTP/2 200
 server: nginx/1.16.0
 date: Mon, 15 Mar 2021 18:34:10 GMT
 content-type: application/json
@@ -262,7 +262,7 @@ curl -s -S -i --cacert docker/ssl/certs/ca.crt -X DELETE -H "Authorization: <use
 
 ### Access Control
 
-Channel can be observed as a communication group of things. Only things that are connected to the channel can send and receive messages from other things in this channel. 
+Channel can be observed as a communication group of things. Only things that are connected to the channel can send and receive messages from other things in this channel.
 Things that are not connected to this channel are not allowed to communicate over it.
 
 Only user, who is the owner of a channel and of the things, can connect the things to the channel (which is equivalent of giving permissions to these things to communicate over given communication group).
@@ -357,7 +357,7 @@ If you want to disconnect your thing from the channel, send following request:
 curl -s -S -i --cacert docker/ssl/certs/ca.crt -X DELETE -H "Authorization: <user_auth_token>" https://localhost/channels/<channel_id>/things/<thing_id>
 ```
 
-For more information about the Things service API, please check out the [API documentation](https://github.com/mainflux/mainflux/blob/master/things/openapi.yml).
+For more information about the Things service API, please check out the [API documentation](https://github.com/mainflux/mainflux/blob/master/api/things.yml).
 
 ## Provision Service
 
@@ -630,7 +630,7 @@ Agent will retrieve connections parameters and connect to Mainflux cloud.
 [exp]: https://github.com/mainflux/export
 [cli]: https://github.com/mainflux/mainflux/tree/master/cli
 
-For more information about the Provision service API, please check out the [API documentation](https://github.com/mainflux/mainflux/blob/master/provision/openapi.yml).
+For more information about the Provision service API, please check out the [API documentation](https://github.com/mainflux/mainflux/blob/master/api/provision.yml).
 
 ## Certs Service
 Issues certificates for things. `Certs` service can create certificates to be used when `Mainflux` is deployed to support mTLS.  
@@ -638,7 +638,7 @@ Issues certificates for things. `Certs` service can create certificates to be us
 
 Certificate service can create certificates in two modes:
 1. Development mode - to be used when no PKI is deployed, this works similar to the [make thing_cert](../docker/ssl/Makefile)
-2. PKI mode - certificates issued by PKI, when you deploy `Vault` as PKI certificate management `cert` service will proxy requests to `Vault` previously checking access rights and saving info on successfully created certificate. 
+2. PKI mode - certificates issued by PKI, when you deploy `Vault` as PKI certificate management `cert` service will proxy requests to `Vault` previously checking access rights and saving info on successfully created certificate.
 
 
 
@@ -669,7 +669,7 @@ curl -s -S  -X POST  http://localhost:8204/certs -H "Authorization: $TOK" -H 'Co
 ### PKI mode
 
 When `MF_CERTS_VAULT_HOST` is set it is presumed that `Vault` is installed and `certs` service will issue certificates using `Vault` API.
-First you'll need to set up `Vault`. 
+First you'll need to set up `Vault`.
 To setup `Vault` follow steps in [Build Your Own Certificate Authority (CA)](https://learn.hashicorp.com/tutorials/vault/pki-engine).
 
 To setup certs service with `Vault` following environment variables must be set:
@@ -690,4 +690,4 @@ In this mode certificates can also be revoked:
 curl -s -S -X DELETE http://localhost:8204/certs/revoke -H "Authorization: $TOK" -H 'Content-Type: application/json'   -d '{"thing_id":"c30b8842-507c-4bcd-973c-74008cef3be5"}'
 ```
 
-For more information about the Certification service API, please check out the [API documentation](https://github.com/mainflux/mainflux/blob/master/certs/openapi.yml).
+For more information about the Certification service API, please check out the [API documentation](https://github.com/mainflux/mainflux/blob/master/api/certs.yml).

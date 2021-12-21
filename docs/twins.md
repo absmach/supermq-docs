@@ -190,7 +190,7 @@ As you can see, the first two states correspond to the definition **1** and have
 Twin belongs to a Mainflux user, tenant representing a physical person or an organization. User owns Mainflux things and channels as well as twins. Mainflux user provides authorization and authentication mechanisms to twins service. For more details, please see [Authentication with Mainflux keys](authentication.md). In practical terms, we need to create a Mainflux user in order to create a digital twin. Every twin belongs to exactly one user. One user can have unlimited number of digital twins.
 
 ### Twin Operations
-For more information about the Twins service HTTP API please refer to the [twins service OpenAPI file](https://github.com/mainflux/mainflux/blob/master/twins/openapi.yml).
+For more information about the Twins service HTTP API please refer to the [twins service OpenAPI file](https://github.com/mainflux/mainflux/blob/master/api/twins.yml).
 
 #### Create and Update
 Create and update requests use JSON body to initialize and modify, respectively, twin. You can omit every piece of data - every key-value pair - from the JSON. However, you must send at least an empty JSON body.
