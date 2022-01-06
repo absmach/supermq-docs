@@ -893,40 +893,64 @@ Date: Wed, 03 Nov 2021 13:00:05 GMT
 
 ## API Key
 
-### Create API Key
-Generates a new API key. Thew new API key will be uniquely identified by its ID.
+### Issue API Key
+Generates a new API key. Then new API key will be uniquely identified by its ID.
+Duration is expressed in seconds.
 
 > Must-have: `user_token`
 
 ```bash
-curl -isSX POST  http://localhost/keys -H 'Content-Type: application/json' -d '{"type":0, "token":"<user_token>", "duration":100000}'
+curl -isSX POST  http://localhost/keys -H "Content-Type: application/json" -H "Authorization: <user_token>" -d '{"type":2, "duration":10000}'
 ```
 
 Response:
 ```bash
 HTTP/1.1 201 Created
 Server: nginx/1.20.0
-Date: Wed, 01 Dec 2021 15:23:50 GMT
+Date: Sun, 19 Dec 2021 17:39:44 GMT
 Content-Type: application/json
-Content-Length: 273
+Content-Length: 476
 Connection: keep-alive
 Access-Control-Expose-Headers: Location
 
-{"value":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2Mzg0MDgyMzAsImlhdCI6MTYzODM3MjIzMCwiaXNzIjoibWFpbmZsdXguYXV0aCIsInR5cGUiOjB9.niDXlGC8G_NhyaT9WxlW_7srfsexOQd0bWTViJAObJU","issued_at":"2021-12-01T15:23:50.964773058Z","expires_at":"2021-12-02T01:23:50.964773058Z"}
+{"id":"4d62fb1e-085e-435c-a0c5-5255febfa35b","value":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NDAwMzU1ODQsImp0aSI6IjRkNjJmYjFlLTA4NWUtNDM1Yy1hMGM1LTUyNTVmZWJmYTM1YiIsImlhdCI6MTYzOTkzNTU4NCwiaXNzIjoibWFpbmZsdXguYXV0aCIsInN1YiI6ImZscDFAZW1haWwuY29tIiwiaXNzdWVyX2lkIjoiYzkzY2FmYjMtYjNhNy00ZTdmLWE0NzAtMTVjMTRkOGVkMWUwIiwidHlwZSI6Mn0.RnvjhygEPPWFDEUKtfk5okzVhZzOcO0azr8gd5vby5M","issued_at":"2021-12-19T17:39:44.175088349Z","expires_at":"2021-12-20T21:26:24.175088349Z"}
 ```
 
-### Gets API key details for the given key
+### Get API key details
 
-> Must-have: 'user_token' and 'key_id"
+> Must-have: 'user_token' and 'key_id'
 
 ```bash
-TODO
+curl -isSX GET  http://localhost/keys/<key_id> -H 'Content-Type: application/json' -H 'Authorization: <user_token>'
+```
+
+Response:
+```bash
+HTTP/1.1 200 OK
+Server: nginx/1.20.0
+Date: Sun, 19 Dec 2021 17:43:30 GMT
+Content-Type: application/json
+Content-Length: 218
+Connection: keep-alive
+Access-Control-Expose-Headers: Location
+
+{"id":"f630f594-d967-4c54-85ef-af58efe8e8ed","issuer_id":"c93cafb3-b3a7-4e7f-a470-15c14d8ed1e0","subject":"test@email.com","type":2,"issued_at":"2021-12-19T17:42:40.884521Z","expires_at":"2021-12-20T21:29:20.884521Z"}
 ```
 
 ### Revoke API key identified by the given ID
 
-> Must-have: 'user_token' and 'key_id"
+> Must-have: 'user_token' and 'key_id'
 
 ```bash
-TODO
+curl -isSX DELETE  http://localhost/keys/<key_id> -H 'Content-Type: application/json' -H 'Authorization: <user_token>'  
+```
+
+Response:
+```bash
+HTTP/1.1 204 No Content
+Server: nginx/1.20.0
+Date: Sun, 19 Dec 2021 17:47:11 GMT
+Content-Type: application/json
+Connection: keep-alive
+Access-Control-Expose-Headers: Location
 ```
