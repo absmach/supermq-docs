@@ -31,7 +31,7 @@ Available Commands:
   provision   Bulk create things and channels from a config file
   things      Things management
   users       Users management
-  version     Mainflux system version
+  health      Mainflux Things service health check
 
 Flags:
   -c, --content-type string    Mainflux message content type (default "application/senml+json")
@@ -78,9 +78,9 @@ Available Commands:
 ```
 
 ## Service
-#### Get the version of Mainflux services
+#### Get Mainflux Things services health check
 ```bash
-mainflux-cli version
+mainflux-cli health
 ```
 
 ### Users management
