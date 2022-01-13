@@ -174,20 +174,20 @@ To create a thing, you need the thing and a `user_token`
 > Must-have: `user_token`
 
 ```bash
-curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: <user_token>" http://localhost/things/bulk -d '[{"name": "<thing_name>"}]'
+curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: <user_token>" http://localhost/things -d '{"name": "<thing_name>"}'
 ```
 
 Response:
 ```bash
 HTTP/1.1 201 Created
-Server: nginx/1.16.0
-Date: Wed, 10 Mar 2021 15:18:37 GMT
+Server: nginx/1.20.0
+Date: Wed, 12 Jan 2022 14:20:05 GMT
 Content-Type: application/json
-Content-Length: 119
+Content-Length: 0
 Connection: keep-alive
+Location: /things/647216d6-2f02-4358-9752-afffbf12a642
+Warning-Deprecated: This endpoint will be depreciated in v1.0.0. It will be replaced with the bulk endpoint currently found at /things/bulk.
 Access-Control-Expose-Headers: Location
-
-{"things":[{"id":"64140f0b-6448-41cf-967e-1bbcc703c332","name":"thing_name","key":"659aa6ca-1781-4a69-9a20-689ddb235506"}]}
 ```
 
 ### Create Thing with External ID
