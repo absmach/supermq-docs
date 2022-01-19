@@ -295,7 +295,7 @@ Values from environment variables will be used to populate export.toml
 - `port` - HTTP port where status of `Export` service can be fetched.
 ```bash
 curl -X GET http://localhost:8170/health
-{"description":"Mainflux export service","version":"0.0.1", "status": "pass"}%
+'{"status": "pass", "version":"0.12.1", "commit":"57cca9677721025da055c47957fc3e869e0325aa" , "description":"export service", "build_time": "2022-01-19_10:13:17"}'
 ```
 
 #### MQTT connection
