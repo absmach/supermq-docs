@@ -514,7 +514,7 @@ Access-Control-Expose-Headers: Location
 ```
 
 ### Connect
-Connect thing to channel
+Connect things to channels
 
 > Must-have: `user_token`, `channel_id` and `thing_id`
 
@@ -533,9 +533,28 @@ Connection: keep-alive
 Access-Control-Expose-Headers: Location
 ```
 
-### Disconnect
+Connect thing to channel
 
-- Disconnect things from channels specified by lists of IDs.
+> Must-have: `user_token`, `channel_id` and `thing_id`
+
+```bash
+curl -s -S -i -X PUT -H "Content-Type: application/json" -H "Authorization: <user_token>" http://localhost/channels/<channel_id>/things/<thing_id>
+```
+
+Response:
+```bash
+HTTP/1.1 200 OK
+Server: nginx/1.20.0
+Date: Fri, 21 Jan 2022 15:20:47 GMT
+Content-Type: application/json
+Content-Length: 0
+Connection: keep-alive
+Warning-Deprecated: This endpoint will be depreciated in v1.0.0. It will be replaced with the bulk endpoint found at /connect.
+Access-Control-Expose-Headers: Location
+```
+
+### Disconnect
+Disconnect things from channels specified by lists of IDs.
 
 > Must-have: `user_token`, `channel_ids` and `thing_ids`
 
@@ -551,7 +570,7 @@ Date: Sun, 11 Jul 2021 17:23:39 GMT
 Content-Length: 0
 ```
 
-- Disconnect the thing from the channel
+Disconnect thing from the channel
 
 > Must-have: `user_token`, `channel_id` and `thing_id`
 
