@@ -33,7 +33,11 @@ helm repo add bitnami https://charts.bitnami.com/bitnami
 ```
 
 ### Nginx Ingress Controller
-Follow [these instructions](https://kubernetes.github.io/ingress-nginx/deploy/) to install it.
+Follow [these instructions](https://kubernetes.github.io/ingress-nginx/deploy/) to install it or:
+
+```bash
+helm install ingress-nginx ingress-nginx/ingress-nginx --version 3.26.0 --create-namespace -n ingress-nginx
+```
 
 ## Deploying Mainflux
 Get Helm charts from [Mainflux DevOps GitHub repository](https://github.com/mainflux/devops):
@@ -177,7 +181,7 @@ and add in spec->ports:
 
 ## TLS & mTLS
 
-For testing purposes you can generate certificates as explained in detail in (authentication)[/authentication] chapter of this document. So, you can use (this script)[https://github.com/mainflux/mainflux/blob/master/docker/ssl/Makefile] and after replacing all `localhost` with your hostname, run:
+For testing purposes you can generate certificates as explained in detail in [authentication](/authentication) chapter of this document. So, you can use [this script](https://github.com/mainflux/mainflux/blob/master/docker/ssl/Makefile) and after replacing all `localhost` with your hostname, run:
 
 ```
 make ca
