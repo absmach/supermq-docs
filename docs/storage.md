@@ -189,7 +189,7 @@ Note that you will receive only those messages that were sent by authorization t
 You can specify `offset` and `limit` parameters in order to fetch specific group of messages. An example of HTTP request looks like:
 
 ```bash
-curl -s -S -i  -H "Authorization: <thing_token>" http://localhost:<service_port>/channels/<channel_id>/messages?offset=0&limit=5&format=<subtopic>
+curl -s -S -i  -H "Authorization: Thing <thing_key>" http://localhost:<service_port>/channels/<channel_id>/messages?offset=0&limit=5&format=<subtopic>
 ```
 
 If you don't provide `offset` and `limit` parameters, default values will be used instead: 0 for `offset` and 10 for `limit`.

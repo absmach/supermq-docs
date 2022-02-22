@@ -228,7 +228,7 @@ Create and update requests use JSON body to initialize and modify, respectively,
 Create request uses POST HTTP method to create twin:
 
 ```bash
-curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: <user_auth_token>" http://localhost:8191/twins -d '<twin_data>'
+curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: Bearer <user_token>" http://localhost:8191/twins -d '<twin_data>'
 ```
 
 If you do not suply the definition, the empty definition of the form
@@ -246,18 +246,18 @@ will be created.
 
 ##### Update
 ```bash
-curl -s -S -i -X PUT -H "Content-Type: application/json" -H "Authorization: <user_auth_token>" http://localhost:8191/<twin_id> -d '<twin_data>'
+curl -s -S -i -X PUT -H "Content-Type: application/json" -H "Authorization: Bearer <user_token>" http://localhost:8191/<twin_id> -d '<twin_data>'
 ```
 
 #### View
 ```bash
-curl -s -S -i -X GET -H "Authorization: <user_auth_token>" http://localhost:8191/twins/<twin_id>
+curl -s -S -i -X GET -H "Authorization: Bearer <user_token>" http://localhost:8191/twins/<twin_id>
 ```
 
 #### List
 
 ```bash
-curl -s -S -i -X GET -H "Authorization: <user_auth_token>" http://localhost:8191/twins
+curl -s -S -i -X GET -H "Authorization: Bearer <user_token>" http://localhost:8191/twins
 ```
 
 List requests accepts `limit` and `offset` query parameters. By default, i.e. without these parameters, list requests fetches only first ten twins (or less, if there are less then ten twins).
@@ -265,25 +265,25 @@ List requests accepts `limit` and `offset` query parameters. By default, i.e. wi
 You can fetch twins [10-29) like this:
 
 ```bash
-curl -s -S -i -X GET -H "Authorization: <user_auth_token>" http://localhost:8191/twins?offset=10&limit=20
+curl -s -S -i -X GET -H "Authorization: Bearer <user_token>" http://localhost:8191/twins?offset=10&limit=20
 ```
 
 #### Delete
 ```bash
-curl -s -S -i -X DELETE -H "Authorization: <user_auth_token>" http://localhost:8191/twins/<twin_id>
+curl -s -S -i -X DELETE -H "Authorization: Bearer <user_token>" http://localhost:8191/twins/<twin_id>
 ```
 
 ### STATES operations
 #### List
 ```bash
-curl -s -S -i -X GET -H "Authorization: <user_auth_token>" http://localhost:8191/states/<twin_id>
+curl -s -S -i -X GET -H "Authorization: Bearer <user_token>" http://localhost:8191/states/<twin_id>
 ```
 
 List requests accepts `limit` and `offset` query parameters. By default, i.e. without these parameters, list requests fetches only first ten states (or less, if there are less then ten states).
 
 You can fetch states [10-29) like this:
 ```bash
-curl -s -S -i -X GET -H "Authorization: <user_auth_token>" http://localhost:8191/states/<twin_id>?offset=10&limit=20
+curl -s -S -i -X GET -H "Authorization: Bearer <user_token>" http://localhost:8191/states/<twin_id>?offset=10&limit=20
 ```
 
 ### Notifications

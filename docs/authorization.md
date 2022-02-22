@@ -6,7 +6,7 @@ Mainflux uses policies to control permissions on entities: **users**, **things**
 
 Policies define permissions for the entities. For example, *which user* has *access* to *a specific thing*. Such policies have three main components: **subject**, **object**, and **relation**.
 
-To put it briefly: 
+To put it briefly:
 
 **Subject**: As the name suggests, it is the subject that will have the policy such as *users*. Mainflux uses entity UUID on behalf of the real entities.
 
@@ -18,13 +18,13 @@ To put it briefly:
 
 All three components create a single policy.
 
-For example, let's assume we have a following policy: `"user_id_123" has "read" relation on "thing_id_123"`. This policy means that subject (a user with ID: `user_id_123`) has a relation (`read`) on the object (a thing with ID: `thing_id_123`). Based upon this example, If the user wants to view a `Thing`, Mainflux first identifies the user with Authentication Keys and checks the policy as: 
+For example, let's assume we have a following policy: `"user_id_123" has "read" relation on "thing_id_123"`. This policy means that subject (a user with ID: `user_id_123`) has a relation (`read`) on the object (a thing with ID: `thing_id_123`). Based upon this example, If the user wants to view a `Thing`, Mainflux first identifies the user with Authentication Keys and checks the policy as:
 ```
-User with ID: `user_id_123` has `read` relation on the thing with ID: `thing_id_123`. 
+User with ID: `user_id_123` has `read` relation on the thing with ID: `thing_id_123`.
 ```
 If the user has no such policy, the operation will be denied; otherwise, the operation will be allowed. In this case, since the user `user_id_123` has the policy, the `read` operation on the thing `thing_id_123` will be allowed for the user with ID `user_id_123`. On the other hand, requests coming from other users (who have a different ID than `user_id_123`) will be denied.
 
-In order to check whether a user has the policy or not, Mainflux makes a gRPC call to Keto API, then Keto handles the checking existence of the policy. 
+In order to check whether a user has the policy or not, Mainflux makes a gRPC call to Keto API, then Keto handles the checking existence of the policy.
 
 All policies are stored in the Keto Database. The database responsible for storing all policies is deployed along with the Mainflux, as a standalone PostgreSQL database container.
 
@@ -37,10 +37,10 @@ Mainflux comes with predefined policies.
 - By default, Mainflux allows anybody to create a user. If you disable this default policy, only *admin* is able to create a user.
 This default policy can be disabled through an environment variable called `MF_USERS_ALLOW_SELF_REGISTER` in deployment time. `MF_USERS_ALLOW_SELF_REGISTER` is a boolean. Therefore, it expects `"true"` or `"false"`. If you assign `"false"` to this environment variable, only *admin* can create a user.
 Mainflux creates a special policy to enable this feature as follows: `user#create@*`. This policy dictates that subject `*` has `create` relation on the object `users`. Here, Mainflux uses a special `*` subject to represent all users. If this policy is defined, everybody can create new users.
-- All users are a `member of the users`. To be more precise, once the new user is created, the policy service creates the following policy: 
+- All users are a `member of the users`. To be more precise, once the new user is created, the policy service creates the following policy:
 `users#member@<user_id>` indicating that the subject `<user_id`> has `member` relation on the object `users`.
-- The admin has a special policy indicating that the user is admin. This policy is the following: 
-`<admin_id>` has `member` relation on the object `authorities`. 
+- The admin has a special policy indicating that the user is admin. This policy is the following:
+`<admin_id>` has `member` relation on the object `authorities`.
 
 ### Things service related policies
 
@@ -62,7 +62,7 @@ Mainflux creates a special policy to enable this feature as follows: `user#creat
 - **`read`, `write` and `delete`**: Controls access control for the Things.
 - **`create`**: Mainflux uses special `create` policy to allow everybody to create new users. If you want to enable this feature through the HTTP, you need to make following request:
 ```bash
-curl -isSX POST http://localhost/policies -d '{"subjects":["*"],"policies": ["create"], "object": "user"}' -H "Authorization: <admin_auth_token>" -H 'Content-Type: application/json'
+curl -isSX POST http://localhost/policies -d '{"subjects":["*"],"policies": ["create"], "object": "user"}' -H "Authorization: Bearer <admin_token>" -H 'Content-Type: application/json'
 ```
 
 ## Add Policies
@@ -72,7 +72,7 @@ You can add policies as well through an HTTP endpoint. *Only* admin can use this
 **Caveat:** Only policies defined under [Summary of the Defined Policies](#summary-of-the-defined-policies) are allowed. Other policies are not allowed. For example, you can add `member` policy but not `custom-member` policy because `custom-member` policy is not defined on the system.
 
 ```bash
-curl -isSX POST http://localhost/policies -d '{"subjects": ["<subject_id1>",..."<subject_idN>"], "object": "<object>", "policies": ["<action_1>, ..."<action_N>"]}' -H "Authorization: <admin_token>" -H 'Content-Type: application/json'
+curl -isSX POST http://localhost/policies -d '{"subjects": ["<subject_id1>",..."<subject_idN>"], "object": "<object>", "policies": ["<action_1>, ..."<action_N>"]}' -H "Authorization: Bearer <admin_token>" -H 'Content-Type: application/json'
 ```
 
 ## Delete Policies
@@ -81,7 +81,7 @@ The admin can delete policies. Only policies defined on [Predefined Policies sec
 > Must-have: admin_token, object, subjects_ids and policies
 
 ```bash
-curl -isSX PUT http://localhost/policies -d '{"subjects": ["<subject_id1>",..."<subject_idN>"], "object": "<object>", "policies": ["<action_1>, ..."<action_N>"]}' -H "Authorization: <admin_token>" -H 'Content-Type: application/json'
+curl -isSX PUT http://localhost/policies -d '{"subjects": ["<subject_id1>",..."<subject_idN>"], "object": "<object>", "policies": ["<action_1>, ..."<action_N>"]}' -H "Authorization: Bearer <admin_token>" -H 'Content-Type: application/json'
 ```
 
 *admin_token* must belong to the admin.
@@ -94,34 +94,34 @@ Date: Wed, 03 Nov 2021 13:00:05 GMT
 
 ```
 
-If you delete policies, the policy will be removed from the policy storage. Further authorization checks related to that policy will fail. 
+If you delete policies, the policy will be removed from the policy storage. Further authorization checks related to that policy will fail.
 
 For example, let's assume `user1` has `read` policy on the thing `thing-123`. If you delete this policy as:
 ```bash
-curl -isSX PUT http://localhost/policies -d '{"subjects": ["<user1_id>"], "object": "thing-123", "policies": ["read"]}' -H "Authorization: <admin_token>" -H 'Content-Type: application/json'
+curl -isSX PUT http://localhost/policies -d '{"subjects": ["<user1_id>"], "object": "thing-123", "policies": ["read"]}' -H "Authorization: Bearer <admin_token>" -H 'Content-Type: application/json'
 ```
 `user1` will not be able to view the `thing-123` anymore because the policy which allows `user1` to view `thing-123` is deleted by the admin.
 
 ## Example usage of adding a policy
 
-Suppose we are using the Mainflux version that doesn't have a policies feature yet. Once you migrate a new version of the Mainflux including the Policy feature, your users will face a lack of authorization. For example, there is a user created before the Policy feature. This user is authenticated by `<user_auth_token`>. Although the following operation is valid, the user will have an authorization error.
+Suppose we are using the Mainflux version that doesn't have a policies feature yet. Once you migrate a new version of the Mainflux including the Policy feature, your users will face a lack of authorization. For example, there is a user created before the Policy feature. This user is authenticated by `<user_token`>. Although the following operation is valid, the user will have an authorization error.
 ```bash
-mainflux-cli things create '{"name":"user-thing"}' <user_auth_token>
+mainflux-cli things create '{"name":"user-thing"}' <user_token>
 
 error: failed to create entity: 403 Forbidden
 ```
 
 The reason is that the user has not enough policy to create a new Thing after migration. In order to create a new thing, the user has to have a `member` relation on the `users` key. So that, Mainflux understands that the requester user is authorized to create new Things.
 
-The easiest solution for this problem is adding policies for the users through the HTTP endpoint. As described above, the user needs a `member` relation on the `users`. 
+The easiest solution for this problem is adding policies for the users through the HTTP endpoint. As described above, the user needs a `member` relation on the `users`.
 
 ```bash
-curl -isSX POST http://localhost/policies -d '{"subjects":["<user_id>"],"policies": ["member"], "object": "users"}' -H "Authorization: <admin_auth_token> " -H 'Content-Type: application/json' 
+curl -isSX POST http://localhost/policies -d '{"subjects":["<user_id>"],"policies": ["member"], "object": "users"}' -H "Authorization: Bearer <admin_token> " -H 'Content-Type: application/json'
 ```
 
 So what this request does is add new policies for the subject defined in the `subjects` field of the request body. Henceforth, the subject (here `<user_id>`) will have a `member` relation on the object `users`. This policy allows the user to create new Things.
 
-Please, keep in mind that this endpoint requires you to use `<admin_auth_token>`, not any token. So, the token must belong to the admin.
+Please, keep in mind that this endpoint requires you to use `<admin_token>`, not any token. So, the token must belong to the admin.
 
 ## Example usage of sharing a Thing
 
@@ -129,18 +129,18 @@ Let's assume, we have two users (called `user1` and `user2`) registered on the s
 Let's create a thing with the following command:
 
 ```bash
-mainflux-cli things create '{"name":"user1-thing"}' <user1_auth_token>           
+mainflux-cli things create '{"name":"user1-thing"}' <user1_token>           
 
 created: a1109d52-6281-410e-93ae-38ba7daa9381
 ```
 
-This command creates a thing called `"user1-thing"` with ID = `a1109d52-6281-410e-93ae-38ba7daa9381`. Mainflux identifies the `user1` by using the `<user1_auth_token>`. After identifying the requester as `user1`, the Policy service adds `read`, `write` and `delete` policies to `user1` on `"user1-thing"`.
+This command creates a thing called `"user1-thing"` with ID = `a1109d52-6281-410e-93ae-38ba7daa9381`. Mainflux identifies the `user1` by using the `<user1_token>`. After identifying the requester as `user1`, the Policy service adds `read`, `write` and `delete` policies to `user1` on `"user1-thing"`.
 
 
 If `user2` wants to view the `"user1-thing"`, the request will be denied.
 
 ```bash
-mainflux-cli things get a1109d52-6281-410e-93ae-38ba7daa9381 <user2_auth_token>
+mainflux-cli things get a1109d52-6281-410e-93ae-38ba7daa9381 <user2_token>
 
 error: failed to fetch entity : 403 Forbidden
 ```
@@ -150,7 +150,7 @@ After identifying the requester as `user2`, the Policy service checks that `Is u
 Now, `user1` wants to share the `"user1-thing"` with `user2`. `user1` can achieve this via HTTP endpoint for sharing things as follows:
 
 ```bash
-curl -isSX POST http://localhost/things/a1109d52-6281-410e-93ae-38ba7daa9381/share -d '{"user_ids":["<user2_id>]", "policies": ["read", "delete"]}' -H "Authorization: <user1_auth_token>" -H 'Content-Type: application/json'
+curl -isSX POST http://localhost/things/a1109d52-6281-410e-93ae-38ba7daa9381/share -d '{"user_ids":["<user2_id>]", "policies": ["read", "delete"]}' -H "Authorization: Bearer <user1_token>" -H 'Content-Type: application/json'
 
 HTTP/1.1 200 OK
 Server: nginx/1.20.0
@@ -169,7 +169,7 @@ Now, `user2` has `read` and `delete` policies on `"user1-thing"` which allows `u
 
 Let's try again viewing the `"user1-thing"` as `user2`:
 ```bash
-mainflux-cli things get a1109d52-6281-410e-93ae-38ba7daa9381 <user2_auth_token>
+mainflux-cli things get a1109d52-6281-410e-93ae-38ba7daa9381 <user2_token>
 
 {
   "id": "a1109d52-6281-410e-93ae-38ba7daa9381",
@@ -178,7 +178,7 @@ mainflux-cli things get a1109d52-6281-410e-93ae-38ba7daa9381 <user2_auth_token>
 }
 ```
 
-As we expected, the operation is successfully done. The policy server checked that `Is user2 allowed to view "user1-thing"?` Since `user2` has a `read` policy on `"user1-thing"`, the Policy server allows this request. 
+As we expected, the operation is successfully done. The policy server checked that `Is user2 allowed to view "user1-thing"?` Since `user2` has a `read` policy on `"user1-thing"`, the Policy server allows this request.
 
 ## Example usage of Groups
 
@@ -202,20 +202,20 @@ curl -s -S -i -X POST -H "Content-Type: application/json" http://localhost/token
 
 It is convenient to store the generated token because the token will be required in further steps repeatedly.
 ```bash
-export user1_token=<user1_token>
+export USER1TOKEN=<USER1TOKEN>
 ```
 
 And create a Thing called `thing-test`
 ```bash
-curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: $user1_token" http://localhost/things/bulk -d '[{"name": "thing-test"}]'
+curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: Bearer $USER1TOKEN" http://localhost/things/bulk -d '[{"name": "thing-test"}]'
 ```
 
 > Note: We will need the ID of newly created Thing in further steps. Again, it is better to store it.
 
-If `user2@example.com` tries to view `thing-test`, the operation will be denied by policy service because `user2@example.com` has no policies related to reading `thing-test`. 
+If `user2@example.com` tries to view `thing-test`, the operation will be denied by policy service because `user2@example.com` has no policies related to reading `thing-test`.
 
 ```bash
-curl -s -S -i -X GET -H "Authorization: $user2_token" http://localhost/things/<thing_id>
+curl -s -S -i -X GET -H "Authorization: Bearer $USER2TOKEN" http://localhost/things/<thing_id>
 HTTP/1.1 403 Forbidden
 Server: nginx/1.20.0
 Date: Fri, 05 Nov 2021 06:03:42 GMT
@@ -229,7 +229,7 @@ Connection: keep-alive
 It is time to create a new Group and put all entities into that Group. Mainflux provides HTTP API for Groups like other entities. We will utilize this HTTP API for Group operations. For more details about Groups, please see [Groups documentation](/groups).
 
 ```
-curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: $user1_token" http://localhost/groups -d '{"name": "my_group"}'
+curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: Bearer $USER1TOKEN" http://localhost/groups -d '{"name": "my_group"}'
 HTTP/1.1 201 Created
 Server: nginx/1.20.0
 Date: Fri, 05 Nov 2021 06:10:32 GMT
@@ -240,14 +240,14 @@ Location: /groups/01FKQBGQEP71DG9C99J37YBJD7
 Access-Control-Expose-Headers: Location
 ```
 
-The `POST /groups` API creates a new group. In our case, it creates a group called `my_group`. Since `user1@example.com`'s token is used, the policy service creates a policy to indicate that `user1@example.com` is *member* of *my_group*. 
+The `POST /groups` API creates a new group. In our case, it creates a group called `my_group`. Since `user1@example.com`'s token is used, the policy service creates a policy to indicate that `user1@example.com` is *member* of *my_group*.
 
 In the *Location response header*, you can see the ID of the `my_group`. For the response above, the location is `Location: /groups/01FKQBGQEP71DG9C99J37YBJD7`. Therefore, the group ID of `my_group` is `01FKQBGQEP71DG9C99J37YBJD7`. We will need this ID while assigning new members to `my_group`.
 
 The group `my_group` includes just a member that is `user1@example.com`, yet. In order to add new members, we will use [`POST /groups/<group_id>/members`](/groups/#assign-a-member-to-a-group). While assigning entities, you will need the ID of the entities respectively. Let's start with assigning `thing-test` to `my_group`.
 
 ```bash
- curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: $user1_token" http://localhost/groups/<group_id>/members -d '{"members":["<thing_id>"], "type":"things"}'
+ curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: Bearer $USER1TOKEN" http://localhost/groups/<group_id>/members -d '{"members":["<thing_id>"], "type":"things"}'
 ```
 
 The crucial point here is that since we are assigning a Thing to the Group, the `"type"` field of the request body **must be** `things`.
@@ -255,7 +255,7 @@ The crucial point here is that since we are assigning a Thing to the Group, the 
 Now, assign `user2@example.com` to `my_group`.
 
 ```bash
-curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: $user1_token" http://localhost/groups/$g/members -d '{"members": "c0fb3fdb-ecfa-407a-bd11-93884d70baf7"], "type":"users"}'
+curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: Bearer $USER1TOKEN" http://localhost/groups/$g/members -d '{"members": "c0fb3fdb-ecfa-407a-bd11-93884d70baf7"], "type":"users"}'
 ```
 
 Again, please be careful about the `"type"` field of the request body. Since we are assigning the user, the type is `users`.
@@ -265,7 +265,7 @@ Again, please be careful about the `"type"` field of the request body. Since we 
 Okay, let's check whether `user2@example.com` is capable to view the `my-thing`. Previously, the Policy service denied that request from `user2@example.com`. Try again:
 
 ```bash
-curl -s -S -i -X GET -H "Authorization: $user2_token" http://localhost/things/<thing_id>
+curl -s -S -i -X GET -H "Authorization: Bearer $USER2TOKEN" http://localhost/things/<thing_id>
 HTTP/1.1 200 OK
 Server: nginx/1.20.0
 Date: Fri, 05 Nov 2021 06:36:03 GMT
@@ -282,13 +282,13 @@ Successful as we expected. Since `user2@example.com` and `my-thing` reside in th
 If you unassign user2@example.com, the user cannot access `my-thing`. In order to test it, you can unassign the `user2@example.com` as follows:
 
 ```bash
-curl -s -S -i -X DELETE -H "Content-Type: application/json" -H "Authorization: $user1_token" http://localhost/groups/$g/members -d '{"members": "c0fb3fdb-ecfa-407a-bd11-93884d70baf7"], "type":"users"}'
+curl -s -S -i -X DELETE -H "Content-Type: application/json" -H "Authorization: Bearer $USER1TOKEN" http://localhost/groups/$g/members -d '{"members": "c0fb3fdb-ecfa-407a-bd11-93884d70baf7"], "type":"users"}'
 ```
 
-Since `user2@example.com` is not a member of the my_group anymore, the Policy service denies incoming request related to viewing the `my-thing` from `user2@example.com`. 
+Since `user2@example.com` is not a member of the my_group anymore, the Policy service denies incoming request related to viewing the `my-thing` from `user2@example.com`.
 
 ```bash
-curl -s -S -i -X GET -H "Authorization: $user2_token" http://localhost/things/$th
+curl -s -S -i -X GET -H "Authorization: Bearer $USER2TOKEN" http://localhost/things/$th
 HTTP/1.1 403 Forbidden
 Server: nginx/1.20.0
 Date: Fri, 05 Nov 2021 06:39:47 GMT
@@ -309,7 +309,7 @@ In this example, we will demonstrate how you can share access of the Users group
 2. Create a Thing and User group, and assign members to groups,
 3. Share access of the groups
 
-First of all, obtain a token for the default admin. You can use any user but for the simplicity of the document, the default admin will be used. 
+First of all, obtain a token for the default admin. You can use any user but for the simplicity of the document, the default admin will be used.
 
 > By default, Mainflux uses credentials described in [.env](https://github.com/mainflux/mainflux/blob/master/docker/.env#L46) for the default admin.
 
@@ -356,13 +356,13 @@ Access-Control-Allow-Origin: *
 Access-Control-Allow-Methods: *
 Access-Control-Allow-Headers: *
 ```
-You can obtain the user ID via `Location`. The ID of the `user@example.com` is `f31f8a0a-11b1-4aa6-a4a3-9629378c0326`. 
+You can obtain the user ID via `Location`. The ID of the `user@example.com` is `f31f8a0a-11b1-4aa6-a4a3-9629378c0326`.
 
 After creating the new user, we have two users on the system as `admin@example.com` and `user@example.com`.
 Then, the admin creates multiple Things called `admin-thing-1` and `admin-thing-2`.
 
 ```bash
-curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: $token" http://localhost/things/bulk -d '[{"name": "a
+curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: Bearer $TOKEN" http://localhost/things/bulk -d '[{"name": "a
 dmin-thing-1"}, {"name": "admin-thing-2"}]'
 
 HTTP/1.1 201 Created
@@ -387,7 +387,7 @@ If `user@example.com` logs in the system, `user@example.com` cannot access the t
 The next step is creating the user and things Groups respectively. You can create groups as follows:
 
 ```bash
-curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: $token" http://localhost/groups -d '{"name": "user_group"}'
+curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: Bearer $TOKEN" http://localhost/groups -d '{"name": "user_group"}'
 HTTP/1.1 201 Created
 Server: nginx/1.20.0
 Date: Wed, 13 Oct 2021 09:24:39 GMT
@@ -398,7 +398,7 @@ Location: /groups/01FHWFFMME9N2N26DG0DMNRWRW
 Access-Control-Expose-Headers: Location
 ```
 ```bash
-curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: $token" http://localhost/groups -d '{"name": "thing_group"}'
+curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: Bearer $TOKEN" http://localhost/groups -d '{"name": "thing_group"}'
 HTTP/1.1 201 Created
 Server: nginx/1.20.0
 Date: Wed, 13 Oct 2021 09:24:58 GMT
@@ -417,7 +417,7 @@ export tg=01FHWFG78DSYA458D8ST4YQ9Y9
 
 After creating groups, we are ready to assign new members to groups. Let's start with the user group.
 ```bash
-curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: $token" http://localhost/groups/$ug/members -d '{"members":["f31f8a0a-11b1-4aa6-a4a3-9629378c0326"], "type":"users"}'
+curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: Bearer $TOKEN" http://localhost/groups/$ug/members -d '{"members":["f31f8a0a-11b1-4aa6-a4a3-9629378c0326"], "type":"users"}'
 
 HTTP/1.1 200 OK
 Server: nginx/1.20.0
@@ -431,7 +431,7 @@ If you remember, `f31f8a0a-11b1-4aa6-a4a3-9629378c0326` is the ID of the `user@e
 
 Now, we can assign Things to the thing group.
 ```bash
-curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: $token" http://localhost/groups/$tg/members -d '{"members":["c3d75452-ae00-4aea-84f9-29ab79fd0d26", "ee589c61-0b98-4176-9da0-d91913087be6"], "type":"things"}'
+curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: Bearer $TOKEN" http://localhost/groups/$tg/members -d '{"members":["c3d75452-ae00-4aea-84f9-29ab79fd0d26", "ee589c61-0b98-4176-9da0-d91913087be6"], "type":"things"}'
 
 HTTP/1.1 200 OK
 Server: nginx/1.20.0
@@ -445,7 +445,7 @@ The same logic applies here as well. The IDs of the things that `admin@example.c
 
 Before moving to the third step, let's analyze the current situation. We have two groups, two users, and two things. The first group is the user group and consists of two users, `admin@example.com` (since the admin created the group) and `user@example.com`. The second group is the thing group. It includes two things created by `admin@example.com`.  `user@example.com` still has no access to things created by `admin@example.com`. You can verify it as:
 ```bash
-curl -s -S -i -X GET -H "Authorization: $usertoken" http://localhost/things/$th1
+curl -s -S -i -X GET -H "Authorization: Bearer $TOKEN" http://localhost/things/$th1
 HTTP/1.1 403 Forbidden
 Server: nginx/1.20.0
 Date: Wed, 13 Oct 2021 09:51:45 GMT
@@ -456,7 +456,7 @@ Connection: keep-alive
 {"error":"failed to perform authorization over the entity"}
 ```
 ```bash
-curl -s -S -i -X GET -H "Authorization: $usertoken" http://localhost/things/$th2
+curl -s -S -i -X GET -H "Authorization: Bearer $TOKEN" http://localhost/things/$th2
 HTTP/1.1 403 Forbidden
 Server: nginx/1.20.0
 Date: Wed, 13 Oct 2021 09:51:49 GMT
@@ -467,26 +467,26 @@ Connection: keep-alive
 {"error":"failed to perform authorization over the entity"}
 ```
 
-The `$usertoken` is the token for `user@example.com`. As you can see, requests to access things are denied.
+The `$TOKEN` is the token for `user@example.com`. As you can see, requests to access things are denied.
 
 Now, let's assign group access rights.
 ```bash
-curl -s -S -i -X POST http://localhost/groups/$ug/share -d '{"thing_group_id": "01FHWFG78DSYA458D8ST4YQ9Y9"}' -H 'Content-Type: application/json' -H "Authorization: $token"
+curl -s -S -i -X POST http://localhost/groups/$ug/share -d '{"thing_group_id": "01FHWFG78DSYA458D8ST4YQ9Y9"}' -H 'Content-Type: application/json' -H "Authorization: Bearer $TOKEN"
 HTTP/1.1 200 OK
 Server: nginx/1.20.0
 Date: Wed, 13 Oct 2021 09:59:13 GMT
 Content-Type: application/json
 Content-Length: 3
 Connection: keep-alive
-Access-Control-Expose-Headers: Location 
+Access-Control-Expose-Headers: Location
 ```
 
-Now, all the members of the `user_group` have access to things within the `thing_group`. Therefore, `user@example.com` has `read`, `write` and `delete` policies on the things within the thing_group. 
+Now, all the members of the `user_group` have access to things within the `thing_group`. Therefore, `user@example.com` has `read`, `write` and `delete` policies on the things within the thing_group.
 
 Try to access things as `user@example.com`.
 
 ```bash
-curl -s -S -i -X GET -H "Authorization: $usertoken" http://localhost/things/$th1
+curl -s -S -i -X GET -H "Authorization: Bearer $TOKEN" http://localhost/things/$th1
 HTTP/1.1 200 OK
 Server: nginx/1.20.0
 Date: Wed, 13 Oct 2021 10:02:19 GMT
@@ -498,7 +498,7 @@ Access-Control-Expose-Headers: Location
 {"id":"c3d75452-ae00-4aea-84f9-29ab79fd0d26","name":"admin-thing-1","key":"4fb36389-f7a5-424d-8c4f-da5c9e91f3c5"}
 ```
 ```bash
-curl -s -S -i -X GET -H "Authorization: $usertoken" http://localhost/things/$th2
+curl -s -S -i -X GET -H "Authorization: Bearer $TOKEN" http://localhost/things/$th2
 HTTP/1.1 200 OK
 Server: nginx/1.20.0
 Date: Wed, 13 Oct 2021 10:02:21 GMT
@@ -513,7 +513,7 @@ Successful!
 
 Let's assume, `admin@example.com` does not want to share things with `user@example.com` anymore. In order to achieve that, `admin@example.com` unassigns `user@example.com` from the `user_group`.
 ```bash
-curl -s -S -i -X DELETE -H "Content-Type: application/json" -H "Authorization: $token" http://localhost/groups/$ug/members -d '{"members":["f31f8a0a-11b1-4aa6-a4a3-9629378c0326"], "type":"users"}'
+curl -s -S -i -X DELETE -H "Content-Type: application/json" -H "Authorization: Bearer $TOKEN" http://localhost/groups/$ug/members -d '{"members":["f31f8a0a-11b1-4aa6-a4a3-9629378c0326"], "type":"users"}'
 
 HTTP/1.1 204 No Content
 Server: nginx/1.20.0
@@ -526,7 +526,7 @@ Access-Control-Expose-Headers: Location
 Now, when `user@example.com` tries to access the things, the request will be denied.
 
 ```bash
-curl -s -S -i -X GET -H "Authorization: $usertoken" http://localhost/things/$th1
+curl -s -S -i -X GET -H "Authorization: Bearer $TOKEN" http://localhost/things/$th1
 HTTP/1.1 403 Forbidden
 Server: nginx/1.20.0
 Date: Wed, 13 Oct 2021 10:10:26 GMT
@@ -537,7 +537,7 @@ Connection: keep-alive
 {"error":"failed to perform authorization over the entity"}
 ```
 ```bash
-curl -s -S -i -X GET -H "Authorization: $usertoken" http://localhost/things/$th2
+curl -s -S -i -X GET -H "Authorization: Bearer $TOKEN" http://localhost/things/$th2
 HTTP/1.1 403 Forbidden
 Server: nginx/1.20.0
 Date: Wed, 13 Oct 2021 10:10:28 GMT

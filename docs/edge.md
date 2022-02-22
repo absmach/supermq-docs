@@ -42,7 +42,7 @@ Gateway can be provisioned with [`provision`](/provision/) service.
 When you provisioned gateway as described in [provision](/provision/) you can check results
 
 ```bash
-curl -s -S -X GET http://mainflux-domain.com:8202/things/bootstrap/<external_id> -H "Authorization: <external_key>" -H 'Content-Type: application/json' |jq
+curl -s -S -X GET http://mainflux-domain.com:8202/things/bootstrap/<external_id> -H "Authorization: Thing <external_key>" -H 'Content-Type: application/json' |jq
 ```
 
 ```json
@@ -427,7 +427,7 @@ TOK=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1ODk5MDQ4MDQsImlhdCI6MTU4OTg
 Provision a gateway:
 
 ```bash
-curl -s -S  -X POST  http://localhost:8190/mapping -H "Authorization: $TOK" -H 'Content-Type: application/json'   -d '{"name":"testing",  "external_id" : "54:FG:66:DC:43", "external_key":"223334fw2" }' | jq
+curl -s -S  -X POST  http://localhost:8190/mapping -H "Authorization: Bearer $TOKEN" -H 'Content-Type: application/json'   -d '{"name":"testing",  "external_id" : "54:FG:66:DC:43", "external_key":"223334fw2" }' | jq
 ```
 ```json
 {
