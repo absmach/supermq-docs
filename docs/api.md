@@ -89,12 +89,40 @@ Access-Control-Allow-Headers: *
 ```
 
 ### Get All Users
-You can get all users in the database by calling the this function
+You can get all users in the database by querying this endpoint. List all users request accepts limit and offset query parameters
+
 
 > Must-have: `user_token`
 
 ```bash
 curl -s -S -i -X GET -H "Authorization: Bearer <user_token>" http://localhost/users
+```
+
+Response:
+```bash
+HTTP/1.1 200 OK
+Server: nginx/1.16.0
+Date: Wed, 10 Mar 2021 15:11:28 GMT
+Content-Type: application/json
+Content-Length: 217
+Connection: keep-alive
+Strict-Transport-Security: max-age=63072000; includeSubdomains
+X-Frame-Options: DENY
+X-Content-Type-Options: nosniff
+Access-Control-Allow-Origin: *
+Access-Control-Allow-Methods: *
+Access-Control-Allow-Headers: *
+
+{"total":2,"offset":0,"limit":10,"Users":[{"id":"4bf4a13a-e9c3-4207-aa11-fe569986c301","email":"admin@example.com"},{"id":"d782b42b-e317-4cd7-9dd0-4e2ea0f349c8","email":"test@email.com"}]}
+```
+
+If you want to paginate your results then use this
+
+> Must have: `user_token`, `offset`, `limit` and `name`
+
+
+```bash
+curl -s -S -i -X GET -H "Authorization: Bearer <user_token>" http://localhost/users?offset=<offset>&limit=<limit>&name=<name>
 ```
 
 Response:
@@ -280,12 +308,33 @@ Access-Control-Expose-Headers: Location
 ```
 
 ### Get All Things
-Get all things, list requests accepts limit and offset query parameters
+You can get all things in the database by querying this endpoint. List all things request accepts limit and offset query parameters
 
 > Must-have: `user_token`
 
 ```bash
 curl -s -S -i -X GET -H "Authorization: Bearer <user_token>" http://localhost/things
+```
+
+Response:
+```bash
+HTTP/1.1 200 OK
+Server: nginx/1.16.0
+Date: Wed, 10 Mar 2021 15:21:49 GMT
+Content-Type: application/json
+Content-Length: 391
+Connection: keep-alive
+Access-Control-Expose-Headers: Location
+
+{"total":3,"offset":0,"limit":10,"order":"","direction":"","things":[{"id":"64140f0b-6448-41cf-967e-1bbcc703c332","name":"thing_name","key":"659aa6ca-1781-4a69-9a20-689ddb235506"},{"id":"4328f3e4-4c67-40b3-9491-0ab782c48d50","name":"thing_name_1","key":"828c6985-c2d6-419e-a124-ba99147b9920"},{"id":"38aa33fe-39e5-4ee3-97ba-4227cfac63f6","name":"thing_name_2","key":"f73e7342-06c1-499a-9584-35de495aa338"}]}
+```
+
+If you want to paginate your results then use this
+
+> Must-have: `user_token`, `offset`, `limit` and `name`
+
+```bash
+curl -s -S -i -X GET -H "Authorization: Bearer <user_token>" http://localhost/things?offset=<offset>&limit=<limit>&name=<name>
 ```
 
 Response:
