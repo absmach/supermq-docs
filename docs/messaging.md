@@ -9,13 +9,13 @@ of message publishing for each of the supported protocols.
 To publish message over channel, thing should send following request:
 
 ```
-curl -s -S -i --cacert docker/ssl/certs/ca.crt -X POST -H "Authorization: <thing_token>" https://localhost/http/channels/<channel_id>/messages -d '[{"bn":"some-base-name:","bt":1.276020076001e+09, "bu":"A","bver":5, "n":"voltage","u":"V","v":120.1}, {"n":"current","t":-5,"v":1.2}, {"n":"current","t":-4,"v":1.3}]'
+curl -s -S -i --cacert docker/ssl/certs/ca.crt -X POST -H "Authorization: Thing <thing_key>" https://localhost/http/channels/<channel_id>/messages -d '[{"bn":"some-base-name:","bt":1.276020076001e+09, "bu":"A","bver":5, "n":"voltage","u":"V","v":120.1}, {"n":"current","t":-5,"v":1.2}, {"n":"current","t":-4,"v":1.3}]'
 ```
 
 Note that if you're going to use senml message format, you should always send
 messages as an array.
 
-For more information about the HTTP messaging service API, please check out the [API documentation](https://github.com/mainflux/mainflux/blob/master/http/openapi.yml).
+For more information about the HTTP messaging service API, please check out the [API documentation](https://github.com/mainflux/mainflux/blob/master/api/http.yml).
 
 ## MQTT
 
@@ -41,15 +41,23 @@ to every command.
 
 ## CoAP
 
-CoAP adapter implements CoAP protocol using underlying UDP and according to [RFC 7252](https://tools.ietf.org/html/rfc7252). To send and receive messages over CoAP, you can use [Copper](https://github.com/mkovatsc/Copper) CoAP user-agent. To set the add-on, please follow the installation instructions provided [here](https://github.com/mkovatsc/Copper#how-to-integrate-the-copper-sources-into-firefox). Once the Mozilla Firefox and Copper are ready and CoAP adapter is running locally on the default port (5683), you can navigate to the appropriate URL and start using CoAP. The URL should look like this:
+CoAP adapter implements CoAP protocol using underlying UDP and according to [RFC 7252](https://tools.ietf.org/html/rfc7252). To send and receive messages over CoAP, you can use [CoAP CLI](https://github.com/mainflux/coap-cli). To set the add-on, please follow the installation instructions provided [here](https://github.com/mainflux/coap-cli).
+
+###
+Examples:
 
 ```
-coap://localhost/channels/<channel_id>/messages?auth=<thing_auth_key>
+coap-cli get channels/0bb5ba61-a66e-4972-bab6-26f19962678f/messages/subtopic -auth 1e1017e6-dee7-45b4-8a13-00e6afeb66eb -o
 ```
-
+```
+coap-cli post channels/0bb5ba61-a66e-4972-bab6-26f19962678f/messages/subtopic -auth 1e1017e6-dee7-45b4-8a13-00e6afeb66eb -d "hello world"
+```
+```
+coap-cli post channels/0bb5ba61-a66e-4972-bab6-26f19962678f/messages/subtopic -auth 1e1017e6-dee7-45b4-8a13-00e6afeb66eb -d "hello world" -h 0.0.0.0 -p 1234
+```
 To send a message, use `POST` request.
-To subscribe, send `GET` request with Observe option set to 0. There are two ways to unsubscribe:
-  1) Send `GET` request with Observe option set to 1.
+To subscribe, send `GET` request with Observe option (flag `o`) set to false. There are two ways to unsubscribe:
+  1) Send `GET` request with Observe option set to true.
   2) Forget the token and send `RST` message as a response to `CONF` message received by the server.
 
 The most of the notifications received from the Adapter are non-confirmable. By [RFC 7641](https://tools.ietf.org/html/rfc7641#page-18):
@@ -58,8 +66,42 @@ The most of the notifications received from the Adapter are non-confirmable. By 
 
 CoAP Adapter sends these notifications every 12 hours. To configure this period, please check [adapter documentation](https://www.github.com/mainflux/mainflux/tree/master/coap/README.md) If the client is no longer interested in receiving notifications, the second scenario described above can be used to unsubscribe.
 
-## WS
-Mainflux supports [MQTT-over-WS](https://www.hivemq.com/blog/mqtt-essentials-special-mqtt-over-websockets/#:~:text=In%20MQTT%20over%20WebSockets%2C%20the,(WebSockets%20also%20leverage%20TCP).), rather than pure WS protocol. this bring numerous benefits for IoT applications that are derived from the properties of MQTT - like QoS and PUB/SUB features.
+## WebSocket
+
+To publish and receive messages over channel using web socket, you should first
+send handshake request to `/channels/<channel_id>/messages` path. Don't forget
+to send `Authorization` header with thing authorization token. In order to pass
+message content type to WS adapter you can use `Content-Type` header.
+
+If you are not able to send custom headers in your handshake request, send them as
+query parameter `authorization` and `content-type`. Then your path should look like
+this `/channels/<channel_id>/messages?authorization=<thing_auth_key>&content-type=<content-type>`.
+
+If you are using the docker environment prepend the url with `ws`. So for example
+`/ws/channels/<channel_id>/messages?authorization=<thing_auth_key>&content-type=<content-type>`.
+
+### Basic nodejs example
+
+```javascript
+const WebSocket = require('ws');
+// do not verify self-signed certificates if you are using one
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0'
+// cbf02d60-72f2-4180-9f82-2c957db929d1  is an example of a thing_auth_key
+const ws = new WebSocket('wss://localhost/ws/channels/1/messages?authorization=cbf02d60-72f2-4180-9f82-2c957db929d1&content-type=application%2Fsenml%2Bjson')
+ws.on('open', () => {
+    ws.send('something')
+})
+ws.on('message', (data) => {
+    console.log(data)
+})
+ws.on('error', (e) => {
+    console.log(e)
+})
+```
+
+## MQTT-over-WS
+
+Mainflux also supports [MQTT-over-WS](https://www.hivemq.com/blog/mqtt-essentials-special-mqtt-over-websockets/#:~:text=In%20MQTT%20over%20WebSockets%2C%20the,(WebSockets%20also%20leverage%20TCP).), rather along with pure WS protocol. this bring numerous benefits for IoT applications that are derived from the properties of MQTT - like QoS and PUB/SUB features.
 
 There are 2 reccomended Javascript libraries for implementing browser support for Mainflux MQTT-over-WS connectivity:
 
