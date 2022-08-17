@@ -16,10 +16,10 @@ This will start Mainflux docker composition, which will output the logs from the
 
 ## Step 2 - Install the CLI
 Open a new terminal from which you can interact with the running Mainflux system. The easiest way to do this is by using the Mainflux CLI,
-which can be downloaded as a tarball from GitHub (here we use release `0.12.1` but be sure to use the [latest CLI release](https://github.com/mainflux/mainflux/releases)):
+which can be downloaded as a tarball from GitHub (here we use release `0.13.0` but be sure to use the [latest CLI release](https://github.com/mainflux/mainflux/releases)):
 
 ```bash
-wget -O- https://github.com/mainflux/mainflux/releases/download/0.12.1/mainflux-cli_0.12.1_linux-amd64.tar.gz | tar xvz -C $GOBIN
+wget -O- https://github.com/mainflux/mainflux/releases/download/0.13.0/mainflux-cli_0.13.0_linux-amd64.tar.gz | tar xvz -C $GOBIN
 ```
 
 > Make sure that `$GOBIN` is added to your `$PATH` so that `mainflux-cli` command can be accessible system-wide
