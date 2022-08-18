@@ -240,17 +240,8 @@ This will install `gnatsd` binary that can be simply run by executing:
 gnatsd
 ```
 
-If you want to change the default message broker to RabbitMQ you need to install it on the local system.
+If you want to change the default message broker to [RabbitMQ](https://www.rabbitmq.com/download.html), [VerneMQ](https://vernemq.com/downloads/) or [Kafka](https://kafka.apache.org/quickstart) you need to install it on the local system.
 
-To do this you can check out the various methods of installing rabbitmq on your local system [here](https://www.rabbitmq.com/download.html).
-
-If you want to change the default message broker to VerneMQ you need to install it on the local system.
-
-To do this you can check out the various methods of installing VerneMQ on your local system [here](https://vernemq.com/downloads/).
-
-If you want to change the default message broker to Kafka you need to install it on the local system.
-
-To do this you can check out the various methods of installing VerneMQ on your local system [here](https://kafka.apache.org/quickstart).
 
 #### PostgreSQL
 Mainflux uses PostgreSQL to store metadata (`users`, `things` and `channels` entities alongside with authorization tokens).
