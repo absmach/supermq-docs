@@ -166,6 +166,54 @@ Access-Control-Allow-Methods: *
 Access-Control-Allow-Headers: *
 ```
 
+### Enable User
+Changing the user status to enabled can be done by calling the enable user function
+
+> Must-have: `user_id` and `user_token`
+
+```bash
+curl -s -S -i -X GET -H "Authorization: Bearer <user_token>" http://localhost/users/<user_id>/enable
+```
+
+Response:
+```bash
+HTTP/1.1 204 No Content
+Server: nginx/1.20.0
+Date: Thu, 18 Aug 2022 13:28:39 GMT
+Content-Type: application/json
+Connection: keep-alive
+Strict-Transport-Security: max-age=63072000; includeSubdomains
+X-Frame-Options: DENY
+X-Content-Type-Options: nosniff
+Access-Control-Allow-Origin: *
+Access-Control-Allow-Methods: *
+Access-Control-Allow-Headers: *
+```
+
+### Disable User
+Changing the user status to disabled can be done by calling the disable user function
+
+> Must-have: `user_id` and `user_token`
+
+```bash
+curl -s -S -i -X GET -H "Authorization: Bearer <user_token>" http://localhost/users/<user_id>/disable
+```
+
+Response:
+```bash
+HTTP/1.1 204 No Content
+Server: nginx/1.20.0
+Date: Thu, 18 Aug 2022 13:28:20 GMT
+Content-Type: application/json
+Connection: keep-alive
+Strict-Transport-Security: max-age=63072000; includeSubdomains
+X-Frame-Options: DENY
+X-Content-Type-Options: nosniff
+Access-Control-Allow-Origin: *
+Access-Control-Allow-Methods: *
+Access-Control-Allow-Headers: *
+
+```
 ## Things
 
 ### Create Thing
