@@ -227,7 +227,7 @@ To create a thing with an external ID, you need provide the UUID v4 format ID to
 > Must-have: `user_token`
 
 ```bash
-curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: Bearer <user_token>" http://localhost/things/bulk -d '[{"id": "<xxxxxxxx-xxxx-xxxx-xxxxxxxxxxxxxxxx>","name": "<thing_name>"}]'
+curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: Bearer <user_token>" http://localhost/things/bulk -d '[{"id": "<thing_id>","name": "<thing_name>"}]'
 ```
 
 Response:
@@ -240,7 +240,7 @@ Content-Length: 119
 Connection: keep-alive
 Access-Control-Expose-Headers: Location
 
-{"things":[{"id":"<xxxxxxxx-xxxx-xxxx-xxxxxxxxxxxxxxxx>","name":"thing_name","key":"659aa6ca-1781-4a69-9a20-689ddb235506"}]}
+{"things":[{"id":"4328f3e4-4c67-40b3-9491-0ab782c48d50","name":"thing_name","key":"659aa6ca-1781-4a69-9a20-689ddb235506"}]}
 ```
 ### Create Things
 You can create multiple things at once by entering a series of things structures and a `user_token`
@@ -270,7 +270,7 @@ The same as creating a Thing with external ID the user can create multiple thing
 > Must-have: `user_token` and at least two things
 
 ```bash
-curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: Bearer <user_token>" http://localhost/things/bulk -d '[{"id": "<xxxxxxxx-xxxx-xxxx-xxxxxxxxxxxxxxx1>","name": "<thing_name_1>"},{"id": "<xxxxxxxx-xxxx-xxxx-xxxxxxxxxxxxxxx2>","name": "<thing_name_2>"}]'
+curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: Bearer <user_token>" http://localhost/things/bulk -d '[{"id": "<thing_id_1>","name": "<thing_name_1>"},{"id": "<thing_id_2>","name": "<thing_name_2>"}]'
 ```
 
 Response:
@@ -283,7 +283,7 @@ Content-Length: 227
 Connection: keep-alive
 Access-Control-Expose-Headers: Location
 
-{"things":[{"id":"<xxxxxxxx-xxxx-xxxx-xxxxxxxxxxxxxxx1>","name":"thing_name_1","key":"828c6985-c2d6-419e-a124-ba99147b9920"},{"id":"<xxxxxxxx-xxxx-xxxx-xxxxxxxxxxxxxxx2>","name":"thing_name_2","key":"f73e7342-06c1-499a-9584-35de495aa338"}]}
+{"things":[{"id":"<thing_id_1>","name":"thing_name_1","key":"828c6985-c2d6-419e-a124-ba99147b9920"},{"id":"<thing_id_2>","name":"thing_name_2","key":"f73e7342-06c1-499a-9584-35de495aa338"}]}
 ```
 ### Get Thing
 You can get thing entity by entering the thing ID and `user_token`
@@ -422,7 +422,7 @@ To create a channel with external ID, the user needs provide a UUID v4 format un
 > Must-have: `user_token`
 
 ```bash
-curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: Bearer <user_token>" http://localhost/channels -d '{"id": "<xxxxxxxx-xxxx-xxxx-xxxxxxxxxxxxxxxx>","name": "<channel_name>"}'
+curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: Bearer <user_token>" http://localhost/channels -d '{"id": "<channel_id>","name": "<channel_name>"}'
 ```
 
 Response:
@@ -465,7 +465,7 @@ As with things, you can create multiple channels with external ID at once
 > Must-have: `user_token` and at least 2 channels
 
 ```bash
-curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: Bearer <user_token>" http://localhost/channels/bulk -d '[{"id": "<xxxxxxxx-xxxx-xxxx-xxxxxxxxxxxxxxx1>","name": "<channel_name_1>"}, {"id": "<xxxxxxxx-xxxx-xxxx-xxxxxxxxxxxxxxx2>","name": "<channel_name_2>"}]'
+curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: Bearer <user_token>" http://localhost/channels/bulk -d '[{"id": "<channel_id_1>","name": "<channel_name_1>"}, {"id": "<channel_id_2>","name": "<channel_name_2>"}]'
 ```
 
 Response:
@@ -478,7 +478,7 @@ Content-Length: 143
 Connection: keep-alive
 Access-Control-Expose-Headers: Location
 
-{"channels":[{"id":"<xxxxxxxx-xxxx-xxxx-xxxxxxxxxxxxxxx1>","name":"channel_name_1"},{"id":"<xxxxxxxx-xxxx-xxxx-xxxxxxxxxxxxxxx2>","name":"channel_name_2"}]}
+{"channels":[{"id":"<channel_id_1>","name":"channel_name_1"},{"id":"<channel_id_2>","name":"channel_name_2"}]}
 ```
 ### Get Channel
 Get a channel entity for a logged in user
