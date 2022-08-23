@@ -86,7 +86,7 @@ Available Commands:
   delete        Delete channel
   get           Get channel
   not-connected Not-connected list
-  update       Update channel
+  update        Update channel
 
 Flags:
   -h, --help   help for channels
@@ -111,7 +111,6 @@ Global Flags:
   -u, --users-url string       Users service URL (default "http://localhost")
 
 Use "mainflux-cli channels [command] --help" for more information about a command.
-
 ```
 
 ## Service
