@@ -88,9 +88,20 @@ const WebSocket = require('ws');
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0'
 // cbf02d60-72f2-4180-9f82-2c957db929d1  is an example of a thing_auth_key
 const ws = new WebSocket('wss://localhost/ws/channels/1/messages?authorization=cbf02d60-72f2-4180-9f82-2c957db929d1&content-type=application%2Fsenml%2Bjson')
+s.on('open', () => {
+    ws.send('something')
+})
+ws.on('message', (data) => {
+    console.log(data)
+})
+ws.on('error', (e) => {
+    console.log(e)
+})
+```
 
 ## MQTT-over-WS
-Mainflux supports [MQTT-over-WS](https://www.hivemq.com/blog/mqtt-essentials-special-mqtt-over-websockets/#:~:text=In%20MQTT%20over%20WebSockets%2C%20the,(WebSockets%20also%20leverage%20TCP).), rather than pure WS protocol. this bring numerous benefits for IoT applications that are derived from the properties of MQTT - like QoS and PUB/SUB features.
+
+Mainflux also supports [MQTT-over-WS](https://www.hivemq.com/blog/mqtt-essentials-special-mqtt-over-websockets/#:~:text=In%20MQTT%20over%20WebSockets%2C%20the,(WebSockets%20also%20leverage%20TCP).), along with pure WS protocol. this bring numerous benefits for IoT applications that are derived from the properties of MQTT - like QoS and PUB/SUB features.
 
 There are 2 reccomended Javascript libraries for implementing browser support for Mainflux MQTT-over-WS connectivity:
 
