@@ -4,7 +4,7 @@ Bridging with an OPC-UA Server can be done over the [opcua-adapter](https://gith
 
 ## Run OPC-UA Server
 
-The OPC-UA Server is used for connectivity layer. It allows various methods to read informations from the OPC-UA server and its nodes. The current version of the opcua-adapter still experimental and only `Browse` and `Subscribe` methods are implemented.
+The OPC-UA Server is used for connectivity layer. It allows various methods to read information from the OPC-UA server and its nodes. The current version of the opcua-adapter still experimental and only `Browse` and `Subscribe` methods are implemented.
 [Public OPC-UA test servers](https://github.com/node-opcua/node-opcua/wiki/publicly-available-OPC-UA-Servers-and-Clients) are available for testing of OPC-UA clients and can be used for development and test purposes.
 
 ## Mainflux OPC-UA Adapter

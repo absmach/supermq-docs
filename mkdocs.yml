@@ -4,16 +4,17 @@
 #
 
 copyright: Copyright (c) Mainflux
-repo_url: https://github.com/mainflux/docs
+repo_url: https://github.com/mainflux/mainflux
 site_description: Mainflux IoT System
 site_name: Mainflux
-theme: readthedocs
-
-extra:
-  logo: docs/img/logo.png
-  author:
-    github: mainflux/mainflux
-    twitter: mainflux
+site_url: https://docs.mainflux.io
+edit_uri: ""
+theme:
+  name: material
+  logo: img/logo.png
+  favicon: img/logo.png
+  icon:
+    repo: fontawesome/brands/github
 
 markdown_extensions:
   - admonition
@@ -32,8 +33,10 @@ nav:
   - Edge: edge.md
   - Security: security.md
   - Authentication: authentication.md
+  - Authorization: authorization.md
   - CLI: cli.md
   - API: api.md
+  - Groups: groups.md
   - Bootstrap: bootstrap.md
   - Twins: twins.md
   - Tracing: tracing.md

@@ -36,10 +36,12 @@ can be consumed by all of the things connected to it.
 
 ## Messaging
 
-Mainflux uses [NATS](https://nats.io) as its messaging backbone, due to its
+Mainflux uses [NATS](https://nats.io) as its default messaging backbone, due to its
 lightweight and performant nature. You can treat its *subjects* as physical
 representation of Mainflux channels, where subject name is constructed using
-channel unique identifier.
+channel unique identifier. Mainflux also provides the ability to change your
+default message broker to [RabbitMQ](https://www.rabbitmq.com/),
+[VerneMQ](https://vernemq.com/) or [Kafka](https://kafka.apache.org/).
 
 In general, there is no constrained put on content that is being exchanged
 through channels. However, in order to be post-processed and normalized,

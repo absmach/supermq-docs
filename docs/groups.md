@@ -6,7 +6,7 @@ For grouping Mainflux entities there are `groups` object in the `auth` service. 
 
 ## Create a group
 ```bash
-curl -is -S -X POST http://localhost/groups -d '{"name":"<group_name>","description":"<group_description>","parent_id":"<parent_id>","metadata":<group_metadata>}' -H 'Content-Type: application/json' -H "Authorization: $TOK"                    
+curl -is -S -X POST http://localhost/groups -d '{"name":"<group_name>","description":"<group_description>","parent_id":"<parent_id>","metadata":<group_metadata>}' -H 'Content-Type: application/json' -H "Authorization: Bearer $TOKEN"                    
 HTTP/1.1 201 Created
 Server: nginx/1.16.0
 Date: Fri, 09 Apr 2021 08:02:02 GMT
@@ -21,17 +21,17 @@ Access-Control-Expose-Headers: Location
 * **group_description** - description of group up to 1024 characters.
 * **parent_id** - id of parent group, if not specified created group is tree root.
 * **metadata** - custom metadata that can be attached to group object for specific application needs.
-  
+
 ## Fetch a group
 ```bash
-curl -s -S -X GET http://localhost/groups/01F2TTDYGMP6DW083NE6E0DKH2 -H "Authorization: $TOK" 
+curl -s -S -X GET http://localhost/groups/01F2TTDYGMP6DW083NE6E0DKH2 -H "Authorization: Bearer $TOKEN"
 ```
-                                                                           
+
 
 ## Create a child
 
 ```bash
-curl -is -S -X POST http://localhost/groups -d '{"name":"test1","description":"<group_description>","parent_id":"01F2TTDYGMP6DW083NE6E0DKH2","metadata":{"group_attr":"attr_value"}}' -H 'Content-Type: application/json' -H "Authorization: $TOK" 
+curl -is -S -X POST http://localhost/groups -d '{"name":"test1","description":"<group_description>","parent_id":"01F2TTDYGMP6DW083NE6E0DKH2","metadata":{"group_attr":"attr_value"}}' -H 'Content-Type: application/json' -H "Authorization: Bearer $TOKEN"
 HTTP/1.1 201 Created
 Server: nginx/1.16.0
 Date: Fri, 09 Apr 2021 08:09:37 GMT
@@ -45,7 +45,7 @@ Access-Control-Expose-Headers: Location
 ## Fetch a child group
 
 ```bash
-curl -s -S -X GET http://localhost/groups/01F2TTVV5NJH63FE5KXMNPWB8P -H "Authorization: $TOK" | jq
+curl -s -S -X GET http://localhost/groups/01F2TTVV5NJH63FE5KXMNPWB8P -H "Authorization: Bearer $TOKEN" | jq
 {
   "id": "01F2TTVV5NJH63FE5KXMNPWB8P",
   "name": "test1",
@@ -71,7 +71,7 @@ curl -s -S -X GET http://localhost/groups/01F2TTVV5NJH63FE5KXMNPWB8P -H "Authori
 To fetch a group hierarchy you can either fetch children for a group or a direct ascendant line
 ### Fetch a parent
 ```bash
- curl -s -S -X GET http://localhost/groups/<group_id>/parents?tree=true&level=5 -H "Authorization: <auth_token>" | jq
+ curl -s -S -X GET http://localhost/groups/<group_id>/parents?tree=true&level=5 -H "Authorization: Bearer <user_token>" | jq
 {
   "total": 2,
   "level": 1,
@@ -111,11 +111,11 @@ To fetch a group hierarchy you can either fetch children for a group or a direct
 ```
 * **tree** - if true response is JSON that represent a groups tree structure. If ommited or `false` than groups will be retrieve as list
 * **level** - limits the hierarchy to be retrieved. Max level to be fetched in one request is 5.
-  
+
 ### Fetch children
 
 ```bash
-curl -s -S -X GET http://localhost/groups/01F2TTDYGMP6DW083NE6E0DKH2/children\?tree\=true\&level\=5 -H "Authorization: $TOK" | jq
+curl -s -S -X GET http://localhost/groups/01F2TTDYGMP6DW083NE6E0DKH2/children\?tree\=true\&level\=5 -H "Authorization: Bearer $TOKEN" | jq
 {
   "total": 3,
   "level": 5,
@@ -172,7 +172,7 @@ curl -s -S -X GET http://localhost/groups/01F2TTDYGMP6DW083NE6E0DKH2/children\?t
 You can assign members to a group by putting entity ids into a group
 For example assigning users to a group
 ```bash
-curl -isSX POST http://localhost/groups/<group_id>/members -d '{"members":["<user_id1>",..."<user_idN>"],"type":"users"}' -H "Authorization: $TOK" -H 'Content-Type: application/json'
+curl -isSX POST http://localhost/groups/<group_id>/members -d '{"members":["<user_id1>",..."<user_idN>"],"type":"users"}' -H "Authorization: Bearer $TOKEN" -H 'Content-Type: application/json'
 HTTP/1.1 200 OK
 Server: nginx/1.16.0
 Date: Fri, 09 Apr 2021 09:40:35 GMT
@@ -184,7 +184,7 @@ Access-Control-Expose-Headers: Location
 Or assigning things to a group
 
 ```bash
-curl -isSX POST http://localhost/groups/01F2TTDYGMP6DW083NE6E0DKH2/members -d '{"members":["a0b1d516-67c6-4e8d-8ea2-ad4aff444ca3","9a036414-5d47-4122-9e58-b3b6953a2097"],"type":"things"}' -H "Authorization: $TOK" -H 'Content-Type: application/json'
+curl -isSX POST http://localhost/groups/01F2TTDYGMP6DW083NE6E0DKH2/members -d '{"members":["a0b1d516-67c6-4e8d-8ea2-ad4aff444ca3","9a036414-5d47-4122-9e58-b3b6953a2097"],"type":"things"}' -H "Authorization: Bearer $TOKEN" -H 'Content-Type: application/json'
 HTTP/1.1 200 OK
 Server: nginx/1.16.0
 Date: Fri, 09 Apr 2021 09:43:24 GMT
@@ -200,7 +200,7 @@ To fetch members you can use endpoint on `auth`, `things` or `users` service. En
 
 ### Fetching from `auth` service
 ```bash
-curl -sSX GET http://localhost/groups/01F2TTDYGMP6DW083NE6E0DKH2/members  -H "Authorization: $TOK" | jq
+curl -sSX GET http://localhost/groups/01F2TTDYGMP6DW083NE6E0DKH2/members  -H "Authorization: Bearer $TOKEN" | jq
 {
   "limit": 10,
   "total": 0,
@@ -228,7 +228,7 @@ curl -sSX GET http://localhost/groups/01F2TTDYGMP6DW083NE6E0DKH2/members  -H "Au
 
 You can filter by `type`
 ```bash
-curl -sSX GET http://localhost/groups/01F2TTDYGMP6DW083NE6E0DKH2/members\?type\='users'  -H "Authorization: $TOK" | jq
+curl -sSX GET http://localhost/groups/01F2TTDYGMP6DW083NE6E0DKH2/members\?type\='users'  -H "Authorization: Bearer $TOKEN" | jq
 {
   "limit": 10,
   "total": 2,
@@ -251,7 +251,7 @@ curl -sSX GET http://localhost/groups/01F2TTDYGMP6DW083NE6E0DKH2/members\?type\=
 ### Fetching from `users` service
 
 ```
-curl -sSX GET http://localhost/groups/users/01F2TTDYGMP6DW083NE6E0DKH2  -H "Authorization: $TOK" | jq        
+curl -sSX GET http://localhost/groups/users/01F2TTDYGMP6DW083NE6E0DKH2  -H "Authorization: Bearer $TOKEN" | jq        
 {
   "total": 2,
   "offset": 0,
@@ -270,7 +270,7 @@ curl -sSX GET http://localhost/groups/users/01F2TTDYGMP6DW083NE6E0DKH2  -H "Auth
 ```
 ### Fetching from `things` service
 ```
- curl -sSX GET http://localhost/groups/things/01F2TTDYGMP6DW083NE6E0DKH2  -H "Authorization: $TOK" | jq
+ curl -sSX GET http://localhost/groups/things/01F2TTDYGMP6DW083NE6E0DKH2  -H "Authorization: Bearer $TOKEN" | jq
 {
   "total": 2,
   "offset": 0,
@@ -294,7 +294,7 @@ curl -sSX GET http://localhost/groups/users/01F2TTDYGMP6DW083NE6E0DKH2  -H "Auth
 For entity that is being put in multiple groups it is possible to retrieve a list of groups it belongs to.
 
 ```bash
-curl -sSX GET http://localhost/members/<member_id>/groups  -H "Authorization: $TOK" | jq 
+curl -sSX GET http://localhost/members/<member_id>/groups  -H "Authorization: Bearer $TOKEN" | jq
 {
   "total": 1,
   "level": 0,

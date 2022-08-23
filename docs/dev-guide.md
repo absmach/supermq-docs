@@ -9,21 +9,19 @@ git clone <forked repository> $SOMEPATH/mainflux
 cd $SOMEPATH/mainflux
 ```
 
-**Note:** If your `$SOMEPATH` is equal to `$GOPATH/src/github.com/mainflux/mainflux`, 
-make sure that your `$GOROOT` and `$GOPATH` do not overlap (otherwise, go 
-modules won't work).
+**Note:** If your `$SOMEPATH` is equal to `$GOPATH/src/github.com/mainflux/mainflux`, make sure that your `$GOROOT` and `$GOPATH` do not overlap (otherwise, go modules won't work).
 
 ## Building
 
 ### Prerequisites
 
-Make sure that you have [Protocol Buffers](https://developers.google.com/protocol-buffers/) (version 3.11.4) compiler (`protoc`) installed.
+Make sure that you have [Protocol Buffers](https://developers.google.com/protocol-buffers/) (version 3.19.1) compiler (`protoc`) installed.
 
 [Go Protobuf](https://github.com/golang/protobuf) installation instructions are [here](https://github.com/golang/protobuf#installation).
 Go Protobuf uses C bindings, so you will need to install [C++ protobuf](https://github.com/google/protobuf) as a prerequisite.
 Mainflux uses `Protocol Buffers for Go with Gadgets` to generate faster marshaling and unmarshaling Go code. Protocol Buffers for Go with Gadgets installation instructions can be found [here](https://github.com/gogo/protobuf).
 
-A copy of [Go](https://golang.org/doc/install) (version 1.13.3) and docker template (version 3.7) will also need to be installed on your system.
+A copy of [Go](https://golang.org/doc/install) (version 1.17.5) and docker template (version 3.7) will also need to be installed on your system.
 
 If any of these versions seem outdated, the latest can always be found in our [CI script](https://github.com/mainflux/mainflux/blob/master/scripts/ci.sh).
 
@@ -225,10 +223,10 @@ which will do this copying of the binaries.
 ## Deployment
 
 ### Prerequisites
-Mainflux depends on several infrastructural services, notably [NATS](https://www.nats.io/) broker and [PostgreSQL](https://www.postgresql.org/) database.
+Mainflux depends on several infrastructural services, notably the default message broker, [NATS](https://www.nats.io/) and [PostgreSQL](https://www.postgresql.org/) database.
 
-#### NATS
-Mainflux uses NATS as it's central message bus. For development purposes (when not run via Docker), it expects that NATS is installed on the local system.
+#### Message Broker
+Mainflux uses NATS as it's default central message bus. For development purposes (when not run via Docker), it expects that NATS is installed on the local system.
 
 To do this execute:
 
@@ -241,6 +239,9 @@ This will install `gnatsd` binary that can be simply run by executing:
 ```
 gnatsd
 ```
+
+If you want to change the default message broker to [RabbitMQ](https://www.rabbitmq.com/download.html), [VerneMQ](https://vernemq.com/downloads/) or [Kafka](https://kafka.apache.org/quickstart) you need to install it on the local system.
+
 
 #### PostgreSQL
 Mainflux uses PostgreSQL to store metadata (`users`, `things` and `channels` entities alongside with authorization tokens).

@@ -18,9 +18,14 @@ If either the cert or key is not set, the server will use insecure transport.
 
 `MF_THINGS_SERVER_KEY` the path to the server key in pem format.
 
+### Standalone mode
+
+Sometimes it makes sense to run Things as a standalone service to reduce network traffic or simplify deployment. This means that Things service operates only using a single user and is able to authorize it without gRPC communication with Auth service. When running Things in the standalone mode, `Auth` and `Users` services can be omitted from the deployment.
+To run service in a standalone mode, set `MF_THINGS_STANDALONE_EMAIL` and `MF_THINGS_STANDALONE_TOKEN`.
+
 ## Client Configuration
 
-If you wish to secure the gRPC connection to `things` and `users` services you must define the CAs that you trust.  This does not support mutual certificate authentication.
+If you wish to secure the gRPC connection to `Things` and `Users` services you must define the CAs that you trust.  This does not support mutual certificate authentication.
 
 ### Adapter Configuration
 

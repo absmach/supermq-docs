@@ -31,7 +31,7 @@ Available Commands:
   provision   Bulk create things and channels from a config file
   things      Things management
   users       Users management
-  version     Mainflux system version
+  health      Mainflux Things service health check
 
 Flags:
   -c, --content-type string    Mainflux message content type (default "application/senml+json")
@@ -69,25 +69,33 @@ Usage:
   mainflux-cli channels [command]
 
 Available Commands:
-  connections connections <channel_id> <user_auth_token>
-  create      create <JSON_channel> <user_auth_token>
-  delete      delete <channel_id> <user_auth_token>
-  get         get <channel_id | all> <user_auth_token>
-  update      update <JSON_string> <user_auth_token>
+  connections connections <channel_id> <user_token>
+  create      create <JSON_channel> <user_token>
+  delete      delete <channel_id> <user_token>
+  get         get <channel_id | all> <user_token>
+  update      update <JSON_string> <user_token>
 
 ```
 
 ## Service
-#### Get the version of Mainflux services
+#### Get Mainflux Things services health check
 ```bash
-mainflux-cli version
+mainflux-cli health
 ```
 
 ### Users management
 #### Create User
+
+Mainflux has two options for user creation. Either everybody or just the admin is able to create new users. This option is dictated through policies and be configured through environment variable (`MF_USERS_ALLOW_SELF_REGISTER`). If only the admin is allowed to create new users, then the `<user_token>` is required because the token is used to verify that the requester is admin or not. Otherwise, the token is not used, since everybody can create new users. However, the token is still required, in order to be consistent. For more details, please see [Authorization page](authorization.md).
+
 ```bash
-mainflux-cli users create <user_email> <user_password>
+if env `MF_USERS_ALLOW_SELF_REGISTER` is "true" then   
+  mainflux-cli users create <user_email> <user_password>
+else   
+  mainflux-cli users create <user_email> <user_password> <admin_token>
 ```
+
+`MF_USERS_ALLOW_SELF_REGISTER` is `true` by default. Therefore, you do not need to provide `<admin_token>` if `MF_USERS_ALLOW_SELF_REGISTER` is true. On the other hand, if you set `MF_USERS_ALLOW_SELF_REGISTER` to `false`, the Admin token is required for authorization. Therefore, you have to provide the admin token through third argument stated as `<admin_token>`.
 
 #### Login User
 ```bash
@@ -96,105 +104,105 @@ mainflux-cli users token <user_email> <user_password>
 
 #### Retrieve User
 ```bash
-mainflux-cli users get <user_auth_token>
+mainflux-cli users get <user_token>
 ```
 
 #### Update User Metadata
 ```bash
-mainflux-cli users update '{"key1":"value1", "key2":"value2"}' <user_auth_token>
+mainflux-cli users update '{"key1":"value1", "key2":"value2"}' <user_token>
 ```
 
 #### Update User Password
 ```bash
-mainflux-cli users password <old_password> <password> <user_auth_token>
+mainflux-cli users password <old_password> <password> <user_token>
 ```
 
 ### System Provisioning
 #### Create Thing
 ```bash
-mainflux-cli things create '{"name":"myThing"}' <user_auth_token>
+mainflux-cli things create '{"name":"myThing"}' <user_token>
 ```
 
 #### Create Thing with metadata
 ```bash
-mainflux-cli things create '{"name":"myThing", "metadata": {\"key1\":\"value1\"}}' <user_auth_token>
+mainflux-cli things create '{"name":"myThing", "metadata": {\"key1\":\"value1\"}}' <user_token>
 ```
 
 #### Bulk Provision Things
 
 ```bash
-mainflux-cli provision things <file> <user_auth_token>
+mainflux-cli provision things <file> <user_token>
 ```
 
 * `file` - A CSV or JSON file containing things (must have extension `.csv` or `.json`)
-* `user_auth_token` - A valid user auth token for the current system
+* `user_token` - A valid user auth token for the current system
 
 #### Update Thing
 ```bash
-mainflux-cli things update '{"id":"<thing_id>", "name":"myNewName"}' <user_auth_token>
+mainflux-cli things update '{"id":"<thing_id>", "name":"myNewName"}' <user_token>
 ```
 
 #### Remove Thing
 ```bash
-mainflux-cli things delete <thing_id> <user_auth_token>
+mainflux-cli things delete <thing_id> <user_token>
 ```
 
 #### Retrieve a subset list of provisioned Things
 ```bash
-mainflux-cli things get all --offset=1 --limit=5 <user_auth_token>
+mainflux-cli things get all --offset=1 --limit=5 <user_token>
 ```
 
 #### Retrieve Thing By ID
 ```bash
-mainflux-cli things get <thing_id> <user_auth_token>
+mainflux-cli things get <thing_id> <user_token>
 ```
 
 #### Create Channel
 ```bash
-mainflux-cli channels create '{"name":"myChannel"}' <user_auth_token>
+mainflux-cli channels create '{"name":"myChannel"}' <user_token>
 ```
 
 #### Bulk Provision Channels
 ```bash
-mainflux-cli provision channels <file> <user_auth_token>
+mainflux-cli provision channels <file> <user_token>
 ```
 
 * `file` - A CSV or JSON file containing channels (must have extension `.csv` or `.json`)
-* `user_auth_token` - A valid user auth token for the current system
+* `user_token` - A valid user auth token for the current system
 
 #### Update Channel
 ```bash
-mainflux-cli channels update '{"id":"<channel_id>","name":"myNewName"}' <user_auth_token>
+mainflux-cli channels update '{"id":"<channel_id>","name":"myNewName"}' <user_token>
 ```
 
 #### Remove Channel
 ```bash
-mainflux-cli channels delete <channel_id> <user_auth_token>
+mainflux-cli channels delete <channel_id> <user_token>
 ```
 
 #### Retrieve a subset list of provisioned Channels
 ```bash
-mainflux-cli channels get all --offset=1 --limit=5 <user_auth_token>
+mainflux-cli channels get all --offset=1 --limit=5 <user_token>
 ```
 
 #### Retrieve Channel By ID
 ```bash
-mainflux-cli channels get <channel_id> <user_auth_token>
+mainflux-cli channels get <channel_id> <user_token>
 ```
 
 ### Access control
 #### Connect Thing to Channel
 ```bash
-mainflux-cli things connect <thing_id> <channel_id> <user_auth_token>
+mainflux-cli things connect <thing_id> <channel_id> <user_token>
 ```
 
 #### Bulk Connect Things to Channels
 ```bash
-mainflux-cli provision connect <file> <user_auth_token>
+mainflux-cli provision connect <file> <user_token>
 ```
 
 * `file` - A CSV or JSON file containing thing and channel ids (must have extension `.csv` or `.json`)
-* `user_auth_token` - A valid user auth token for the current system
+* `user_token` - A valid user auth token for the current system
 
 An example CSV file might be
 
@@ -222,17 +230,17 @@ A comparable JSON file would be
 
 #### Disconnect Thing from Channel
 ```bash
-mainflux-cli things disconnect <thing_id> <channel_id> <user_auth_token>
+mainflux-cli things disconnect <thing_id> <channel_id> <user_token>
 ```
 
 #### Retrieve a subset list of Channels connected to Thing
 ```bash
-mainflux-cli things connections <thing_id> <user_auth_token>
+mainflux-cli things connections <thing_id> <user_token>
 ```
 
 #### Retrieve a subset list of Things connected to Channel
 ```bash
-mainflux-cli channels connections <channel_id> <user_auth_token>
+mainflux-cli channels connections <channel_id> <user_token>
 ```
 
 
@@ -251,22 +259,22 @@ mainflux-cli messages read <channel_id> <thing_auth_token>
 
 #### Add configuration
 ```bash
-mainflux-cli bootstrap add '{"external_id": "myExtID", "external_key": "myExtKey", "name": "myName", "content": "myContent"}' <user_auth_token>
+mainflux-cli bootstrap add '{"external_id": "myExtID", "external_key": "myExtKey", "name": "myName", "content": "myContent"}' <user_token>
 ```
 
 #### View configuration
 ```bash
-mainflux-cli bootstrap view <thing_id> <user_auth_token>
+mainflux-cli bootstrap view <thing_id> <user_token>
 ```
 
 #### Update configuration
 ```bash
-mainflux-cli bootstrap update '{"MFThing":"<thing_id>", "name": "newName", "content": "newContent"}' <user_auth_token>
+mainflux-cli bootstrap update '{"MFThing":"<thing_id>", "name": "newName", "content": "newContent"}' <user_token>
 ```
 
 #### Remove configuration
 ```bash
-mainflux-cli bootstrap remove <thing_id> <user_auth_token>
+mainflux-cli bootstrap remove <thing_id> <user_token>
 ```
 
 #### Bootstrap configuration
