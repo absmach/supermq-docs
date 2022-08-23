@@ -28,7 +28,7 @@ Mainflux Twins service depends on the Mainflux IoT platform. The following diagr
 
 You use an HTTP client to communicate with the twins service. Every request sent to the twins service is authenticated by users service. Twins service handles CRUD requests and creates, retrieves, updates and deletes twins. The CRUD operations depend on the database to persist and fetch already saved twins.
 
-Twins service listens to NATS server and intercepts messages passing *via* NATS broker. Every Mainflux message contains information about subchannel and topic used to send a message. Twins service compares this info with attribute definitions of twins persisted in the database, fetches the corresponding twins and updates their respective states.
+Twins service listens to the message broker server and intercepts messages passing *via* the message broker. Every Mainflux message contains information about subchannel and topic used to send a message. Twins service compares this info with attribute definitions of twins persisted in the database, fetches the corresponding twins and updates their respective states.
 
 Before we dwell into twin's anatomy, it is important to realize that in order to use Mainflux twin service, you have to [provision Mainflux things and channels](provision.md) and you have to connect things and channels beforehand. As you go, you can modify your things, channels and connections and you can modify your digital twin to reflect these modifications, but you have to have at least a minimal setup in order to use the twin service.
 
@@ -287,7 +287,7 @@ curl -s -S -i -X GET -H "Authorization: Bearer <user_token>" http://localhost:81
 ```
 
 ### Notifications
-Every twin and states related operation publishes notifications *via* NATS. To fully understand what follows, please read about [Mainflux messaging](messaging.md) capabilities and utilities.
+Every twin and states related operation publishes notifications *via* the message broker. To fully understand what follows, please read about [Mainflux messaging](messaging.md) capabilities and utilities.
 
 In order to pick up this notifications, you have to create a Mainflux channel before you start the twins service and inform the twins service about the channel by means of the environment variable, like this:
 
@@ -297,7 +297,7 @@ export MF_TWINS_CHANNEL_ID=f6894dfe-a7c9-4eef-a614-637ebeea5b4c
 
 The twins service will use this channel to publish notifications related to twins creation, update, retrieval and deletion. It will also publish notifications related to state saving into the database.
 
-All notifications will be published on the following NATS subject:
+All notifications will be published on the following message broker subject:
 
 ```
 channels.<mf_twins_channel_id>.<optional_subtopic>
@@ -316,6 +316,6 @@ where `<optional_subtopic>` is one of the following:
 - `save.success` - on successful state save
 - `save.failure` - on state save failure.
 
-Normally, you can use NATS wildcards. In order to learn more about Mainflux channel topic composition, please read about [subtopics](messaging.md). The point is to be able to subscribe to all subjects or any operation pair subject - e.g. create.success/failure - by means of one connection and read all messages or all operation related messages in the context of the same subscription.
+Normally, you can use the default message broker, NATS, wildcards. In order to learn more about Mainflux channel topic composition, please read about [subtopics](messaging.md). The point is to be able to subscribe to all subjects or any operation pair subject - e.g. create.success/failure - by means of one connection and read all messages or all operation related messages in the context of the same subscription.
 
-Since messages published on NATS are republished on any other protocol supported by Mainflux - HTTP, MQTT, CoAP and WS - you can use any supported protocol client to pick up notifications.
+Since messages published on message broker are republished on any other protocol supported by Mainflux - HTTP, MQTT, CoAP and WS - you can use any supported protocol client to pick up notifications.

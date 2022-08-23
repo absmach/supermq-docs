@@ -15,9 +15,9 @@ Services that can be used on gateway to enable data and control plane for edge:
 
 
 Figure shows edge gateway that is running Agent, Export and minimal deployment of Mainflux services.
-Mainflux services enable device management and MQTT protocol, NATS being a central message bus in Mainflux becomes also central message bus for other services like `Agent` and `Export` as well as for any new custom developed service that can be built to interface with devices with any of hardware supported interfaces on the gateway, those services would publish data to NATS where `Export` service can pick them up and send to cloud.
+Mainflux services enable device management and MQTT protocol, NATS being a central message bus as it is the default message broker in Mainflux becomes also central message bus for other services like `Agent` and `Export` as well as for any new custom developed service that can be built to interface with devices with any of hardware supported interfaces on the gateway, those services would publish data to the message broker where `Export` service can pick them up and send to cloud.
 
-Agent can be used to control deployed services as well as to monitor their liveliness through subcribing to `heartbeat` NATS subject where services should publish their liveliness status, like `Export` service does.
+Agent can be used to control deployed services as well as to monitor their liveliness through subcribing to `heartbeat` Message Broker subject where services should publish their liveliness status, like `Export` service does.
 
 ## Agent
 
@@ -28,7 +28,7 @@ Data collected from sensors connected to gateway are being sent over `data` chan
 Agent service has following features:
 * Remote execution of commands
 * Remote terminal, remote session to `bash` managed by `Agent`
-* Heartbeat - listening to NATS topic `heartbeat.>` it can remotely provide info on running services, if services are publishing heartbeat ( like [Export](/edge/#export))
+* Heartbeat - listening to  Message Broker topic `heartbeat.>` it can remotely provide info on running services, if services are publishing heartbeat ( like [Export](/edge/#export))
 * Proxying commands to other gateway services
 * Edgex SMA - remotely making requests to EdgeX endpoints and fetching results, if EdgeX is deployed.
 
@@ -125,7 +125,7 @@ mosquitto_pub -d -u $TH -P $KEY  -t channels/$CH/messages/req -h some-domain-nam
 This can be checked from the UI, click on the details for gateway and below the gateway parameters you will se box with prompt, if `agent` is running and it is properly connected you should be able to execute commands remotely.
 
 #### Heartbeat
-If there are services that are running on same gateway as `agent` and they are publishing heartbeat to NATS subject `heartbeat.service_name.service`
+If there are services that are running on same gateway as `agent` and they are publishing heartbeat to the Message Broker subject `heartbeat.service_name.service`
 You can get the list of services by sending following mqtt message
 
 ```
@@ -136,13 +136,13 @@ Response can be observed on `channels/$CH/messages/res/#`
 
 ### Proxying commands
 
-You can send commands to services running on the same edge gateway as Agent if they are subscribed on same NATS server and correct subject.
+You can send commands to services running on the same edge gateway as Agent if they are subscribed on same the Message Broker server and correct subject.
 
 Service commands are being sent via MQTT to topic:
 
 `channels/<control_channel_id>/messages/services/<service_name>/<subtopic>`
 
-when messages is received Agent forwards them to NATS on subject:
+when messages is received Agent forwards them to the Message Broker on subject:
 
 `commands.<service_name>.<subtopic>`
 
@@ -203,7 +203,7 @@ Mainflux Export service can send message from one Mainflux cloud to another via 
 Export service is subscribed to local message bus and connected to MQTT broker in the cloud.  
 Messages collected on local message bus are redirected to the cloud.
 When connection is lost, if QoS2 is used, messages from the local bus are stored into file or in memory to be resent upon reconnection.
-Additonaly `Export` service publishes liveliness status to `Agent` via NATS subject `heartbeat.export.service`
+Additonaly `Export` service publishes liveliness status to `Agent` via the Message Broker subject `heartbeat.export.service`
 
 
 ### Install
@@ -320,21 +320,21 @@ Currently only MQTT is supported for publishing.
 To match Mainflux requirements `mqtt_topic` must contain `channel/<channel_id>/messages`, additional subtopics can be appended.
 
 - `mqtt_topic` - `channel/<channel_id>/messages/<custom_subtopic>`
-- `nats_topic` - `Export` service will be subscribed to NATS subject `<nats_topic>.>`
+- `nats_topic` - `Export` service will be subscribed to the Message Broker subject `<nats_topic>.>`
 - `subtopic` - messages will be published to MQTT topic `<mqtt_topic>/<subtopic>/<nats_subject>`, where dots in nats_subject are replaced with '/'
 - `workers` - specifies number of workers that will be used for message forwarding.
 - `type` - specifies message transformation:
-    - `default` is for sending messages as they are received on NATS with no transformation (so they should be in SenML or JSON format if we want to persist them in Mainflux in cloud). If you don't want to persist messages in Mainflux or you are not exporting to Mainflux cloud - message format can be anything that suits your application as message passes untransformed.
-    - `mfx` is for messages that are being picked up on internal Mainflux NATS bus. When using `Export` along with Mainflux deployed on gateway ([Fig. 1](#edge)) messages coming from MQTT broker that are published to NATS bus are [Mainflux message][protomsg]. Using `mfx` type will extract payload and `export` will publish it to `mqtt_topic`. Extracted payload is SenML or JSON if we want to persist messages. `nats_topic` in this case must be `channels`, or if you want to pick messages from a specific channel in local Mainflux instance to be exported to cloud you can put `channels.<local_mainflux_channel_id>`.
+    - `default` is for sending messages as they are received on the Message Broker with no transformation (so they should be in SenML or JSON format if we want to persist them in Mainflux in cloud). If you don't want to persist messages in Mainflux or you are not exporting to Mainflux cloud - message format can be anything that suits your application as message passes untransformed.
+    - `mfx` is for messages that are being picked up on internal Mainflux Message Broker bus. When using `Export` along with Mainflux deployed on gateway ([Fig. 1](#edge)) messages coming from MQTT broker that are published to the Message Broker bus are [Mainflux message][protomsg]. Using `mfx` type will extract payload and `export` will publish it to `mqtt_topic`. Extracted payload is SenML or JSON if we want to persist messages. `nats_topic` in this case must be `channels`, or if you want to pick messages from a specific channel in local Mainflux instance to be exported to cloud you can put `channels.<local_mainflux_channel_id>`.
 
 Before running `Export` service edit `configs/config.toml` and provide `username`, `password` and `url`
  * `username` - matches `thing_id` in Mainflux cloud instance
  * `password` - matches `thing_key`
  * `channel` - MQTT part of the topic where to publish MQTT data (`channel/<channel_id>/messages` is format of mainflux MQTT topic) and plays a part in authorization.
 
-If Mainflux and Export service are deployed on same gateway `Export` can be configured to send messages from Mainflux internal NATS bus to Mainflux in a cloud.
-In order for `Export` service to listen on Mainflux NATS deployed on the same machine NATS port must be exposed.
-Edit Mainflux [docker-compose.yml][docker-compose]. NATS section must look like below:
+If Mainflux and Export service are deployed on same gateway `Export` can be configured to send messages from Mainflux internal Message Broker bus to Mainflux in a cloud.
+In order for `Export` service to listen on Mainflux Message Broker deployed on the same machine Message Broker port must be exposed.
+Edit Mainflux [docker-compose.yml][docker-compose]. Default Message Broker, NATS, section must look like below:
 ```
   nats:
     image: nats:1.3.0
