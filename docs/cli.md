@@ -44,7 +44,7 @@ Flags:
   -s, --certs-url string       Certs service URL (default "http://localhost")
   -c, --config string          Config path
   -y, --content-type string    Message content type (default "application/senml+json")
-  -e, --email string           Email query parameter
+  -e, --email string           user email query parameter
   -h, --help                   help for mainflux-cli
   -p, --http-url string        HTTP adapter URL (default "http://localhost/http")
   -i, --insecure               Do not check for TLS cert
@@ -53,7 +53,7 @@ Flags:
   -n, --name string            Name query parameter
   -o, --offset uint            Offset query parameter
   -r, --raw                    Enables raw output mode for easier parsing of output
-  -S, --status string          Status query parameter
+  -S, --status string          user status query parameter
   -t, --things-url string      Things service URL (default "http://localhost")
   -u, --users-url string       Users service URL (default "http://localhost")
 
@@ -97,7 +97,8 @@ Global Flags:
   -s, --certs-url string       Certs service URL (default "http://localhost")
   -c, --config string          Config path
   -y, --content-type string    Message content type (default "application/senml+json")
-  -e, --email string           Email query parameter
+  -e, --email string           user email query parameter
+  -h, --help                   help for mainflux-cli
   -p, --http-url string        HTTP adapter URL (default "http://localhost/http")
   -i, --insecure               Do not check for TLS cert
   -l, --limit uint             Limit query parameter (default 100)
@@ -105,7 +106,7 @@ Global Flags:
   -n, --name string            Name query parameter
   -o, --offset uint            Offset query parameter
   -r, --raw                    Enables raw output mode for easier parsing of output
-  -S, --status string          Status query parameter
+  -S, --status string          user status query parameter
   -t, --things-url string      Things service URL (default "http://localhost")
   -u, --users-url string       Users service URL (default "http://localhost")
 
