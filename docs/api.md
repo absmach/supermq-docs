@@ -89,7 +89,7 @@ Access-Control-Allow-Headers: *
 ```
 
 ### Get All Users
-You can get all users in the database by querying this endpoint. List all users request accepts limit and offset query parameters
+You can get all users in the database by querying this endpoint. List all users request accepts limit, offset, email and metadata query parameters.
 
 
 > Must-have: `user_token`
@@ -118,11 +118,11 @@ Access-Control-Allow-Headers: *
 
 If you want to paginate your results then use this
 
-> Must have: `user_token`, `offset`, `limit` and `name`
-
+> Must have: `user_token`
+> Additional parameters: `offset`, `limit` and `email`
 
 ```bash
-curl -s -S -i -X GET -H "Authorization: Bearer <user_token>" http://localhost/users?offset=<offset>&limit=<limit>&name=<name>
+curl -s -S -i -X GET -H "Authorization: Bearer <user_token>" http://localhost/users?offset=<offset>&limit=<limit>&email=<email>
 ```
 
 Response:
@@ -308,7 +308,7 @@ Access-Control-Expose-Headers: Location
 ```
 
 ### Get All Things
-You can get all things in the database by querying this endpoint. List all things request accepts limit and offset query parameters
+You can get all things in the database by querying this endpoint. List all things request accepts limit, offset, name and metadata query parameters.
 
 > Must-have: `user_token`
 
@@ -331,7 +331,8 @@ Access-Control-Expose-Headers: Location
 
 If you want to paginate your results then use this
 
-> Must-have: `user_token`, `offset`, `limit` and `name`
+> Must have: `user_token`
+> Additional parameters: `offset`, `limit` and `name`
 
 ```bash
 curl -s -S -i -X GET -H "Authorization: Bearer <user_token>" http://localhost/things?offset=<offset>&limit=<limit>&name=<name>
@@ -501,8 +502,8 @@ Access-Control-Expose-Headers: Location
 {"id":"db4b7428-e278-4fe3-b85a-d65554d6abe9","name":"channel_name"}
 ```
 
-### Get Channels
-Get all channels, list requests accepts limit and offset query parameters
+### Get All Channels
+You can get all channels in the database by querying this endpoint. List all channels request accepts limit, offset, name and metadata query parameters.
 
 > Must-have: `user_token`
 
