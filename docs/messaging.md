@@ -66,7 +66,30 @@ The most of the notifications received from the Adapter are non-confirmable. By 
 
 CoAP Adapter sends these notifications every 12 hours. To configure this period, please check [adapter documentation](https://www.github.com/mainflux/mainflux/tree/master/coap/README.md) If the client is no longer interested in receiving notifications, the second scenario described above can be used to unsubscribe.
 
-## WS
+## WebSocket
+
+To publish and receive messages over channel using web socket, you should first
+send handshake request to `/channels/<channel_id>/messages` path. Don't forget
+to send `Authorization` header with thing authorization token. In order to pass
+message content type to WS adapter you can use `Content-Type` header.
+
+If you are not able to send custom headers in your handshake request, send them as
+query parameter `authorization` and `content-type`. Then your path should look like
+this `/channels/<channel_id>/messages?authorization=<thing_auth_key>&content-type=<content-type>`.
+
+If you are using the docker environment prepend the url with `ws`. So for example
+`/ws/channels/<channel_id>/messages?authorization=<thing_auth_key>&content-type=<content-type>`.
+
+### Basic nodejs example
+
+```javascript
+const WebSocket = require('ws');
+// do not verify self-signed certificates if you are using one
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0'
+// cbf02d60-72f2-4180-9f82-2c957db929d1  is an example of a thing_auth_key
+const ws = new WebSocket('wss://localhost/ws/channels/1/messages?authorization=cbf02d60-72f2-4180-9f82-2c957db929d1&content-type=application%2Fsenml%2Bjson')
+
+## MQTT-over-WS
 Mainflux supports [MQTT-over-WS](https://www.hivemq.com/blog/mqtt-essentials-special-mqtt-over-websockets/#:~:text=In%20MQTT%20over%20WebSockets%2C%20the,(WebSockets%20also%20leverage%20TCP).), rather than pure WS protocol. this bring numerous benefits for IoT applications that are derived from the properties of MQTT - like QoS and PUB/SUB features.
 
 There are 2 reccomended Javascript libraries for implementing browser support for Mainflux MQTT-over-WS connectivity:

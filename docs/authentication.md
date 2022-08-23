@@ -32,7 +32,7 @@ docker-compose -f docker/docker-compose.yml up
 
 ## Mutual TLS Authentication with X.509 Certificates
 
-In most of the cases, HTTPS, MQTTS or secure CoAP are secure enough. However, sometimes you might need an even more secure connection. Mainflux supports mutual TLS authentication (_mTLS_) based on [X.509 certificates](https://tools.ietf.org/html/rfc5280). By default, the TLS protocol only proves the identity of the server to the client using the X.509 certificate and the authentication of the client to the server is left to the application layer. TLS also offers client-to-server authentication using client-side X.509 authentication. This is called two-way or mutual authentication. Mainflux currently supports mTLS over HTTP, MQTT and MQTT over WS protocols. In order to run Docker composition with mTLS turned on, you can execute the following command from the project root:
+In most of the cases, HTTPS, WSS, MQTTS or secure CoAP are secure enough. However, sometimes you might need an even more secure connection. Mainflux supports mutual TLS authentication (_mTLS_) based on [X.509 certificates](https://tools.ietf.org/html/rfc5280). By default, the TLS protocol only proves the identity of the server to the client using the X.509 certificate and the authentication of the client to the server is left to the application layer. TLS also offers client-to-server authentication using client-side X.509 authentication. This is called two-way or mutual authentication. Mainflux currently supports mTLS over HTTP, MQTT, WS and MQTT over WS protocols. In order to run Docker composition with mTLS turned on, you can execute the following command from the project root:
 
 ```bash
 AUTH=x509 docker-compose -f docker/docker-compose.yml up -d
@@ -74,6 +74,31 @@ AUTH=x509 docker-compose -f docker/docker-compose.yml up -d
 ```
 
 Then, you can create user and provision things and channels. Now, in order to send a message from the specific thing to the channel, you need to connect thing to the channel and generate corresponding client certificate using aforementioned commands. To publish a message to the channel, thing should send following request:
+
+### WSS
+```javascript
+const WebSocket = require('ws');
+// Do not verify self-signed certificates if you are using one.
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0'
+// Replace <channel_id> and <thing_key> with real values.
+const ws = new WebSocket('wss://localhost/ws/channels/<channel_id>/messages?authorization=<thing_key>',
+// This is ClientOptions object that contains client cert and client key in the form of string. You can easily load these strings from cert and key files.
+{
+    cert: `-----BEGIN CERTIFICATE-----....`,
+    key: `-----BEGIN RSA PRIVATE KEY-----.....`
+})
+ws.on('open', () => {
+    ws.send('something')
+})
+ws.on('message', (data) => {
+    console.log(data)
+})
+ws.on('error', (e) => {
+    console.log(e)
+})
+```
+
+As you can see, `Authorization` header does not have to be present in the HTTP request, since the key is present in the certificate. However, if you pass `Authorization` header, it _must be the same as the key in the cert_. In the case of MQTTS, `password` filed in CONNECT message _must match the key from the certificate_. In the case of WSS, `Authorization` header or `authorization` query parameter _must match cert key_.
 
 ### HTTPS
 ```bash
