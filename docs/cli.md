@@ -86,7 +86,7 @@ Available Commands:
   delete        Delete channel
   get           Get channel
   not-connected Not-connected list
-  updatev       Update channel
+  update       Update channel
 
 Flags:
   -h, --help   help for channels
@@ -234,7 +234,7 @@ mainflux-cli provision channels <file> <user_token>
 
 #### Update Channel
 ```bash
-mainflux-cli channels updatev '{"id":"<channel_id>","name":"myNewName"}' <user_token>
+mainflux-cli channels update '{"id":"<channel_id>","name":"myNewName"}' <user_token>
 ```
 
 #### Remove Channel
