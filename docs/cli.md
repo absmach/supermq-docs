@@ -138,12 +138,12 @@ else
 mainflux-cli users token <user_email> <user_password>
 ```
 
-#### Retrieve User By ID
+#### Get User
 ```bash
 mainflux-cli users get <user_id> <user_token>
 ```
 
-#### Retrieve All User
+#### Get Users
 ```bash
 mainflux-cli users get all <admin_token>
 ```
@@ -203,20 +203,21 @@ mainflux-cli things identify <thing_key>
 mainflux-cli things delete <thing_id> <user_token>
 ```
 
-#### Retrieve a subset list of provisioned Things
-```bash
-mainflux-cli things get all --offset=1 --limit=5 <user_token>
-```
-
-#### Retrieve Thing By ID
+#### Get Thing
 ```bash
 mainflux-cli things get <thing_id> <user_token>
 ```
 
-#### Retrieve All Things
+#### Get Things
 ```bash
 mainflux-cli things get all <admin_token>
 ```
+
+#### Get a subset list of provisioned Things
+```bash
+mainflux-cli things get all --offset=1 --limit=5 <user_token>
+```
+
 
 #### Create Channel
 ```bash
@@ -241,19 +242,19 @@ mainflux-cli channels update '{"id":"<channel_id>","name":"myNewName"}' <user_to
 mainflux-cli channels delete <channel_id> <user_token>
 ```
 
-#### Retrieve a subset list of provisioned Channels
-```bash
-mainflux-cli channels get all --offset=1 --limit=5 <user_token>
-```
-
-#### Retrieve Channel By ID
+#### Get Channel
 ```bash
 mainflux-cli channels get <channel_id> <user_token>
 ```
 
-#### Retrieve All Channels
+#### Get Channels
 ```bash
 mainflux-cli channels get all <user_token>
+```
+
+#### Get a subset list of provisioned Channels
+```bash
+mainflux-cli channels get all --offset=1 --limit=5 <user_token>
 ```
 
 ### Access control
@@ -299,12 +300,12 @@ A comparable JSON file would be
 mainflux-cli things disconnect <thing_id> <channel_id> <user_token>
 ```
 
-#### Retrieve a subset list of Channels connected to Thing
+#### Get a subset list of Channels connected to Thing
 ```bash
 mainflux-cli things connections <thing_id> <user_token>
 ```
 
-#### Retrieve a subset list of Things connected to Channel
+#### Get a subset list of Things connected to Channel
 ```bash
 mainflux-cli channels connections <channel_id> <user_token>
 ```
