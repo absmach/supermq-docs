@@ -88,13 +88,41 @@ Access-Control-Allow-Headers: *
 {"id":"d782b42b-e317-4cd7-9dd0-4e2ea0f349c8","email":"test@email.com"}
 ```
 
-### Get All Users
-You can get all users in the database by calling the this function
+### Get Users
+You can get all users in the database by querying this endpoint. List all users request accepts limit, offset, email and metadata query parameters.
+
 
 > Must-have: `user_token`
 
 ```bash
 curl -s -S -i -X GET -H "Authorization: Bearer <user_token>" http://localhost/users
+```
+
+Response:
+```bash
+HTTP/1.1 200 OK
+Server: nginx/1.16.0
+Date: Wed, 10 Mar 2021 15:11:28 GMT
+Content-Type: application/json
+Content-Length: 217
+Connection: keep-alive
+Strict-Transport-Security: max-age=63072000; includeSubdomains
+X-Frame-Options: DENY
+X-Content-Type-Options: nosniff
+Access-Control-Allow-Origin: *
+Access-Control-Allow-Methods: *
+Access-Control-Allow-Headers: *
+
+{"total":2,"offset":0,"limit":10,"Users":[{"id":"4bf4a13a-e9c3-4207-aa11-fe569986c301","email":"admin@example.com"},{"id":"d782b42b-e317-4cd7-9dd0-4e2ea0f349c8","email":"test@email.com"}]}
+```
+
+If you want to paginate your results then use this
+
+> Must have: `user_token`
+> Additional parameters: `offset`, `limit` and `email`
+
+```bash
+curl -s -S -i -X GET -H "Authorization: Bearer <user_token>" http://localhost/users?offset=<offset>&limit=<limit>&email=<email>
 ```
 
 Response:
@@ -246,7 +274,7 @@ To create a thing with an external ID, you need provide the UUID v4 format ID to
 > Must-have: `user_token`
 
 ```bash
-curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: Bearer <user_token>" http://localhost/things/bulk -d '[{"id": "<xxxxxxxx-xxxx-xxxx-xxxxxxxxxxxxxxxx>","name": "<thing_name>"}]'
+curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: Bearer <user_token>" http://localhost/things/bulk -d '[{"id": "<thing_id>","name": "<thing_name>"}]'
 ```
 
 Response:
@@ -259,7 +287,7 @@ Content-Length: 119
 Connection: keep-alive
 Access-Control-Expose-Headers: Location
 
-{"things":[{"id":"<xxxxxxxx-xxxx-xxxx-xxxxxxxxxxxxxxxx>","name":"thing_name","key":"659aa6ca-1781-4a69-9a20-689ddb235506"}]}
+{"things":[{"id":"4328f3e4-4c67-40b3-9491-0ab782c48d50","name":"thing_name","key":"659aa6ca-1781-4a69-9a20-689ddb235506"}]}
 ```
 ### Create Things
 You can create multiple things at once by entering a series of things structures and a `user_token`
@@ -289,7 +317,7 @@ The same as creating a Thing with external ID the user can create multiple thing
 > Must-have: `user_token` and at least two things
 
 ```bash
-curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: Bearer <user_token>" http://localhost/things/bulk -d '[{"id": "<xxxxxxxx-xxxx-xxxx-xxxxxxxxxxxxxxx1>","name": "<thing_name_1>"},{"id": "<xxxxxxxx-xxxx-xxxx-xxxxxxxxxxxxxxx2>","name": "<thing_name_2>"}]'
+curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: Bearer <user_token>" http://localhost/things/bulk -d '[{"id": "<thing_id_1>","name": "<thing_name_1>"},{"id": "<thing_id_2>","name": "<thing_name_2>"}]'
 ```
 
 Response:
@@ -302,7 +330,7 @@ Content-Length: 227
 Connection: keep-alive
 Access-Control-Expose-Headers: Location
 
-{"things":[{"id":"<xxxxxxxx-xxxx-xxxx-xxxxxxxxxxxxxxx1>","name":"thing_name_1","key":"828c6985-c2d6-419e-a124-ba99147b9920"},{"id":"<xxxxxxxx-xxxx-xxxx-xxxxxxxxxxxxxxx2>","name":"thing_name_2","key":"f73e7342-06c1-499a-9584-35de495aa338"}]}
+{"things":[{"id":"<thing_id_1>","name":"thing_name_1","key":"828c6985-c2d6-419e-a124-ba99147b9920"},{"id":"<thing_id_2>","name":"thing_name_2","key":"f73e7342-06c1-499a-9584-35de495aa338"}]}
 ```
 ### Get Thing
 You can get thing entity by entering the thing ID and `user_token`
@@ -326,13 +354,35 @@ Access-Control-Expose-Headers: Location
 {"id":"64140f0b-6448-41cf-967e-1bbcc703c332","name":"thing_name","key":"659aa6ca-1781-4a69-9a20-689ddb235506"}
 ```
 
-### Get All Things
-Get all things, list requests accepts limit and offset query parameters
+### Get Things
+You can get all things in the database by querying this endpoint. List all things request accepts limit, offset, name and metadata query parameters.
 
 > Must-have: `user_token`
 
 ```bash
 curl -s -S -i -X GET -H "Authorization: Bearer <user_token>" http://localhost/things
+```
+
+Response:
+```bash
+HTTP/1.1 200 OK
+Server: nginx/1.16.0
+Date: Wed, 10 Mar 2021 15:21:49 GMT
+Content-Type: application/json
+Content-Length: 391
+Connection: keep-alive
+Access-Control-Expose-Headers: Location
+
+{"total":3,"offset":0,"limit":10,"order":"","direction":"","things":[{"id":"64140f0b-6448-41cf-967e-1bbcc703c332","name":"thing_name","key":"659aa6ca-1781-4a69-9a20-689ddb235506"},{"id":"4328f3e4-4c67-40b3-9491-0ab782c48d50","name":"thing_name_1","key":"828c6985-c2d6-419e-a124-ba99147b9920"},{"id":"38aa33fe-39e5-4ee3-97ba-4227cfac63f6","name":"thing_name_2","key":"f73e7342-06c1-499a-9584-35de495aa338"}]}
+```
+
+If you want to paginate your results then use this
+
+> Must have: `user_token`
+> Additional parameters: `offset`, `limit` and `name`
+
+```bash
+curl -s -S -i -X GET -H "Authorization: Bearer <user_token>" http://localhost/things?offset=<offset>&limit=<limit>&name=<name>
 ```
 
 Response:
@@ -419,7 +469,7 @@ To create a channel with external ID, the user needs provide a UUID v4 format un
 > Must-have: `user_token`
 
 ```bash
-curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: Bearer <user_token>" http://localhost/channels -d '{"id": "<xxxxxxxx-xxxx-xxxx-xxxxxxxxxxxxxxxx>","name": "<channel_name>"}'
+curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: Bearer <user_token>" http://localhost/channels -d '{"id": "<channel_id>","name": "<channel_name>"}'
 ```
 
 Response:
@@ -462,7 +512,7 @@ As with things, you can create multiple channels with external ID at once
 > Must-have: `user_token` and at least 2 channels
 
 ```bash
-curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: Bearer <user_token>" http://localhost/channels/bulk -d '[{"id": "<xxxxxxxx-xxxx-xxxx-xxxxxxxxxxxxxxx1>","name": "<channel_name_1>"}, {"id": "<xxxxxxxx-xxxx-xxxx-xxxxxxxxxxxxxxx2>","name": "<channel_name_2>"}]'
+curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: Bearer <user_token>" http://localhost/channels/bulk -d '[{"id": "<channel_id_1>","name": "<channel_name_1>"}, {"id": "<channel_id_2>","name": "<channel_name_2>"}]'
 ```
 
 Response:
@@ -475,7 +525,7 @@ Content-Length: 143
 Connection: keep-alive
 Access-Control-Expose-Headers: Location
 
-{"channels":[{"id":"<xxxxxxxx-xxxx-xxxx-xxxxxxxxxxxxxxx1>","name":"channel_name_1"},{"id":"<xxxxxxxx-xxxx-xxxx-xxxxxxxxxxxxxxx2>","name":"channel_name_2"}]}
+{"channels":[{"id":"<channel_id_1>","name":"channel_name_1"},{"id":"<channel_id_2>","name":"channel_name_2"}]}
 ```
 ### Get Channel
 Get a channel entity for a logged in user
@@ -500,7 +550,7 @@ Access-Control-Expose-Headers: Location
 ```
 
 ### Get Channels
-Get all channels, list requests accepts limit and offset query parameters
+You can get all channels in the database by querying this endpoint. List all channels request accepts limit, offset, name and metadata query parameters.
 
 > Must-have: `user_token`
 
