@@ -86,9 +86,9 @@ If you are using the docker environment prepend the url with `ws`. So for exampl
 const WebSocket = require('ws');
 // do not verify self-signed certificates if you are using one
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0'
-// cbf02d60-72f2-4180-9f82-2c957db929d1  is an example of a thing_auth_key
-const ws = new WebSocket('wss://localhost/ws/channels/1/messages?authorization=cbf02d60-72f2-4180-9f82-2c957db929d1&content-type=application%2Fsenml%2Bjson')
-s.on('open', () => {
+// c02ff576-ccd5-40f6-ba5f-c85377aad529 is an example of a thing_auth_key
+const ws = new WebSocket('ws://localhost:8190/ws/channels/1/messages?authorization=c02ff576-ccd5-40f6-ba5f-c85377aad529')
+ws.on('open', () => {
     ws.send('something')
 })
 ws.on('message', (data) => {
@@ -97,6 +97,85 @@ ws.on('message', (data) => {
 ws.on('error', (e) => {
     console.log(e)
 })
+```
+
+### Basic golang example
+
+
+```golang
+package main
+
+import (
+	"log"
+	"os"
+	"os/signal"
+	"time"
+
+	"github.com/gorilla/websocket"
+)
+
+var done chan interface{}
+var interrupt chan os.Signal
+
+func receiveHandler(connection *websocket.Conn) {
+	defer close(done)
+
+	for {
+		_, msg, err := connection.ReadMessage()
+		if err != nil {
+			log.Fatal("Error in receive: ", err)
+			return
+		}
+
+		log.Printf("Received: %s\n", msg)
+	}
+}
+
+func main() {
+	done = make(chan interface{})
+	interrupt = make(chan os.Signal)
+
+	signal.Notify(interrupt, os.Interrupt)
+
+	channelId := "30315311-56ba-484d-b500-c1e08305511f"
+	thingKey := "c02ff576-ccd5-40f6-ba5f-c85377aad529"
+
+	socketUrl := "ws://localhost:8190/channels/" + channelId + "/messages/?authorization=" + thingKey
+
+	conn, _, err := websocket.DefaultDialer.Dial(socketUrl, nil)
+	if err != nil {
+		log.Fatal("Error connecting to Websocket Server: ", err)
+	} else {
+		log.Println("Connected to the ws adapter")
+	}
+	defer conn.Close()
+
+	go receiveHandler(conn)
+
+	for {
+		select {
+
+		case <-interrupt:
+			log.Println("Interrupt occured, closing the connection...")
+			conn.Close()
+			err := conn.WriteMessage(websocket.TextMessage, []byte("closed this ws client just now"))
+			if err != nil {
+				log.Println("Error during closing websocket: ", err)
+				return
+			}
+
+			select {
+			case <-done:
+				log.Println("Receiver Channel Closed! Exiting...")
+
+			case <-time.After(time.Duration(1) * time.Second):
+				log.Println("Timeout in closing receiving channel. Exiting...")
+			}
+			return
+		}
+	}
+}
+
 ```
 
 ## MQTT-over-WS

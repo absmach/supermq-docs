@@ -32,7 +32,7 @@ docker-compose -f docker/docker-compose.yml up
 
 ## Mutual TLS Authentication with X.509 Certificates
 
-In most of the cases, HTTPS, WSS, MQTTS or secure CoAP are secure enough. However, sometimes you might need an even more secure connection. Mainflux supports mutual TLS authentication (_mTLS_) based on [X.509 certificates](https://tools.ietf.org/html/rfc5280). By default, the TLS protocol only proves the identity of the server to the client using the X.509 certificate and the authentication of the client to the server is left to the application layer. TLS also offers client-to-server authentication using client-side X.509 authentication. This is called two-way or mutual authentication. Mainflux currently supports mTLS over HTTP, MQTT, WS and MQTT over WS protocols. In order to run Docker composition with mTLS turned on, you can execute the following command from the project root:
+In most of the cases, HTTPS, WSS, MQTTS or secure CoAP are secure enough. However, sometimes you might need an even more secure connection. Mainflux supports mutual TLS authentication (_mTLS_) based on [X.509 certificates](https://tools.ietf.org/html/rfc5280). By default, the TLS protocol only proves the identity of the server to the client using the X.509 certificate and the authentication of the client to the server is left to the application layer. TLS also offers client-to-server authentication using client-side X.509 authentication. This is called two-way or mutual authentication. Mainflux currently supports mTLS over HTTP, WS, MQTT and MQTT over WS protocols. In order to run Docker composition with mTLS turned on, you can execute the following command from the project root:
 
 ```bash
 AUTH=x509 docker-compose -f docker/docker-compose.yml up -d
