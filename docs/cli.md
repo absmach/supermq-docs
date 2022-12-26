@@ -25,24 +25,37 @@ Usage:
   mainflux-cli [command]
 
 Available Commands:
+  bootstrap   Bootstrap management
+  certs       Certificates management
   channels    Channels management
+  completion  Generate the autocompletion script for the specified shell
+  groups      Groups management
+  health      Health Check
   help        Help about any command
+  keys        Keys management
   messages    Send or read messages
-  provision   Bulk create things and channels from a config file
+  provision   Provision things and channels from a config file
   things      Things management
   users       Users management
-  health      Mainflux Things service health check
 
 Flags:
-  -c, --content-type string    Mainflux message content type (default "application/senml+json")
+  -a, --auth-url string        Auth service URL (default "http://localhost")
+  -b, --bootstrap-url string   Bootstrap service URL (default "http://localhost")
+  -s, --certs-url string       Certs service URL (default "http://localhost")
+  -c, --config string          Config path
+  -y, --content-type string    Message content type (default "application/senml+json")
+  -e, --email string           User email query parameter
   -h, --help                   help for mainflux-cli
-  -a, --http-prefix string     Mainflux http adapter prefix (default "http")
+  -p, --http-url string        HTTP adapter URL (default "http://localhost/http")
   -i, --insecure               Do not check for TLS cert
-  -l, --limit uint             limit query parameter (default 100)
-  -m, --mainflux-url string    Mainflux host URL (default "http://localhost")
-  -o, --offset uint            offset query parameter
-  -t, --things-prefix string   Mainflux things service prefix
-  -u, --users-prefix string    Mainflux users service prefix
+  -l, --limit uint             Limit query parameter (default 100)
+  -m, --metadata string        Metadata query parameter
+  -n, --name string            Name query parameter
+  -o, --offset uint            Offset query parameter
+  -r, --raw                    Enables raw output mode for easier parsing of output
+  -S, --status string          User status query parameter
+  -t, --things-url string      Things service URL (default "http://localhost")
+  -u, --users-url string       Users service URL (default "http://localhost")
 
 Use "mainflux-cli [command] --help" for more information about a command.
 ```
@@ -62,19 +75,42 @@ mainflux-cli channels -h
 will get you usage info:
 
 ```
-Channels management: create, get, update or delete Channels and get list of Things connected to Channels
+Channels management: create, get, update or delete Channel and get list of Things connected or not connected to a Channel
 
 Usage:
-  mainflux-cli channels [flags]
   mainflux-cli channels [command]
 
 Available Commands:
-  connections connections <channel_id> <user_token>
-  create      create <JSON_channel> <user_token>
-  delete      delete <channel_id> <user_token>
-  get         get <channel_id | all> <user_token>
-  update      update <JSON_string> <user_token>
+  connections   Connections list
+  create        Create channel
+  delete        Delete channel
+  get           Get channel
+  not-connected Not-connected list
+  update        Update channel
 
+Flags:
+  -h, --help   help for channels
+
+Global Flags:
+  -a, --auth-url string        Auth service URL (default "http://localhost")
+  -b, --bootstrap-url string   Bootstrap service URL (default "http://localhost")
+  -s, --certs-url string       Certs service URL (default "http://localhost")
+  -c, --config string          Config path
+  -y, --content-type string    Message content type (default "application/senml+json")
+  -e, --email string           User email query parameter
+  -h, --help                   help for mainflux-cli
+  -p, --http-url string        HTTP adapter URL (default "http://localhost/http")
+  -i, --insecure               Do not check for TLS cert
+  -l, --limit uint             Limit query parameter (default 100)
+  -m, --metadata string        Metadata query parameter
+  -n, --name string            Name query parameter
+  -o, --offset uint            Offset query parameter
+  -r, --raw                    Enables raw output mode for easier parsing of output
+  -S, --status string          User status query parameter
+  -t, --things-url string      Things service URL (default "http://localhost")
+  -u, --users-url string       Users service URL (default "http://localhost")
+
+Use "mainflux-cli channels [command] --help" for more information about a command.
 ```
 
 ## Service
@@ -102,9 +138,14 @@ else
 mainflux-cli users token <user_email> <user_password>
 ```
 
-#### Retrieve User
+#### Get User
 ```bash
-mainflux-cli users get <user_token>
+mainflux-cli users get <user_id> <user_token>
+```
+
+#### Get Users
+```bash
+mainflux-cli users get all <admin_token>
 ```
 
 #### Update User Metadata
@@ -115,6 +156,16 @@ mainflux-cli users update '{"key1":"value1", "key2":"value2"}' <user_token>
 #### Update User Password
 ```bash
 mainflux-cli users password <old_password> <password> <user_token>
+```
+
+#### Enable User
+```bash
+mainflux-cli users enable <user_id> <admin_token>
+```
+
+#### Disable User
+```bash
+mainflux-cli users disable <user_id> <admin_token>
 ```
 
 ### System Provisioning
@@ -142,20 +193,31 @@ mainflux-cli provision things <file> <user_token>
 mainflux-cli things update '{"id":"<thing_id>", "name":"myNewName"}' <user_token>
 ```
 
+#### Identify Thing
+```bash
+mainflux-cli things identify <thing_key>
+```
+
 #### Remove Thing
 ```bash
 mainflux-cli things delete <thing_id> <user_token>
 ```
 
-#### Retrieve a subset list of provisioned Things
+#### Get Thing
+```bash
+mainflux-cli things get <thing_id> <user_token>
+```
+
+#### Get Things
+```bash
+mainflux-cli things get all <admin_token>
+```
+
+#### Get a subset list of provisioned Things
 ```bash
 mainflux-cli things get all --offset=1 --limit=5 <user_token>
 ```
 
-#### Retrieve Thing By ID
-```bash
-mainflux-cli things get <thing_id> <user_token>
-```
 
 #### Create Channel
 ```bash
@@ -180,14 +242,19 @@ mainflux-cli channels update '{"id":"<channel_id>","name":"myNewName"}' <user_to
 mainflux-cli channels delete <channel_id> <user_token>
 ```
 
-#### Retrieve a subset list of provisioned Channels
-```bash
-mainflux-cli channels get all --offset=1 --limit=5 <user_token>
-```
-
-#### Retrieve Channel By ID
+#### Get Channel
 ```bash
 mainflux-cli channels get <channel_id> <user_token>
+```
+
+#### Get Channels
+```bash
+mainflux-cli channels get all <user_token>
+```
+
+#### Get a subset list of provisioned Channels
+```bash
+mainflux-cli channels get all --offset=1 --limit=5 <user_token>
 ```
 
 ### Access control
@@ -233,12 +300,12 @@ A comparable JSON file would be
 mainflux-cli things disconnect <thing_id> <channel_id> <user_token>
 ```
 
-#### Retrieve a subset list of Channels connected to Thing
+#### Get a subset list of Channels connected to Thing
 ```bash
 mainflux-cli things connections <thing_id> <user_token>
 ```
 
-#### Retrieve a subset list of Things connected to Channel
+#### Get a subset list of Things connected to Channel
 ```bash
 mainflux-cli channels connections <channel_id> <user_token>
 ```
