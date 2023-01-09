@@ -9,7 +9,7 @@ of message publishing for each of the supported protocols.
 To publish message over channel, thing should send following request:
 
 ```
-curl -s -S -i --cacert docker/ssl/certs/ca.crt -X POST -H "Authorization: Thing <thing_key>" https://localhost/http/channels/<channel_id>/messages -d '[{"bn":"some-base-name:","bt":1.276020076001e+09, "bu":"A","bver":5, "n":"voltage","u":"V","v":120.1}, {"n":"current","t":-5,"v":1.2}, {"n":"current","t":-4,"v":1.3}]'
+curl -s -S -i --cacert docker/ssl/certs/ca.crt -X POST -H "Content-Type: application/senml+json" -H "Authorization: Thing <thing_key>" https://localhost/http/channels/<channel_id>/messages -d '[{"bn":"some-base-name:","bt":1.276020076001e+09, "bu":"A","bver":5, "n":"voltage","u":"V","v":120.1}, {"n":"current","t":-5,"v":1.2}, {"n":"current","t":-4,"v":1.3}]'
 ```
 
 Note that if you're going to use senml message format, you should always send
@@ -66,8 +66,121 @@ The most of the notifications received from the Adapter are non-confirmable. By 
 
 CoAP Adapter sends these notifications every 12 hours. To configure this period, please check [adapter documentation](https://www.github.com/mainflux/mainflux/tree/master/coap/README.md) If the client is no longer interested in receiving notifications, the second scenario described above can be used to unsubscribe.
 
-## WS
-Mainflux supports [MQTT-over-WS](https://www.hivemq.com/blog/mqtt-essentials-special-mqtt-over-websockets/#:~:text=In%20MQTT%20over%20WebSockets%2C%20the,(WebSockets%20also%20leverage%20TCP).), rather than pure WS protocol. this bring numerous benefits for IoT applications that are derived from the properties of MQTT - like QoS and PUB/SUB features.
+## WebSocket
+
+To publish and receive messages over channel using web socket, you should first
+send handshake request to `/channels/<channel_id>/messages` path. Don't forget
+to send `Authorization` header with thing authorization token. In order to pass
+message content type to WS adapter you can use `Content-Type` header.
+
+If you are not able to send custom headers in your handshake request, send them as
+query parameter `authorization` and `content-type`. Then your path should look like
+this `/channels/<channel_id>/messages?authorization=<thing_auth_key>&content-type=<content-type>`.
+
+If you are using the docker environment prepend the url with `ws`. So for example
+`/ws/channels/<channel_id>/messages?authorization=<thing_auth_key>&content-type=<content-type>`.
+
+### Basic nodejs example
+
+```javascript
+const WebSocket = require('ws');
+// do not verify self-signed certificates if you are using one
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0'
+// c02ff576-ccd5-40f6-ba5f-c85377aad529 is an example of a thing_auth_key
+const ws = new WebSocket('ws://localhost:8190/ws/channels/1/messages?authorization=c02ff576-ccd5-40f6-ba5f-c85377aad529')
+ws.on('open', () => {
+    ws.send('something')
+})
+ws.on('message', (data) => {
+    console.log(data)
+})
+ws.on('error', (e) => {
+    console.log(e)
+})
+```
+
+### Basic golang example
+
+
+```golang
+package main
+
+import (
+	"log"
+	"os"
+	"os/signal"
+	"time"
+
+	"github.com/gorilla/websocket"
+)
+
+var done chan interface{}
+var interrupt chan os.Signal
+
+func receiveHandler(connection *websocket.Conn) {
+	defer close(done)
+
+	for {
+		_, msg, err := connection.ReadMessage()
+		if err != nil {
+			log.Fatal("Error in receive: ", err)
+			return
+		}
+
+		log.Printf("Received: %s\n", msg)
+	}
+}
+
+func main() {
+	done = make(chan interface{})
+	interrupt = make(chan os.Signal)
+
+	signal.Notify(interrupt, os.Interrupt)
+
+	channelId := "30315311-56ba-484d-b500-c1e08305511f"
+	thingKey := "c02ff576-ccd5-40f6-ba5f-c85377aad529"
+
+	socketUrl := "ws://localhost:8190/channels/" + channelId + "/messages/?authorization=" + thingKey
+
+	conn, _, err := websocket.DefaultDialer.Dial(socketUrl, nil)
+	if err != nil {
+		log.Fatal("Error connecting to Websocket Server: ", err)
+	} else {
+		log.Println("Connected to the ws adapter")
+	}
+	defer conn.Close()
+
+	go receiveHandler(conn)
+
+	for {
+		select {
+
+		case <-interrupt:
+			log.Println("Interrupt occured, closing the connection...")
+			conn.Close()
+			err := conn.WriteMessage(websocket.TextMessage, []byte("closed this ws client just now"))
+			if err != nil {
+				log.Println("Error during closing websocket: ", err)
+				return
+			}
+
+			select {
+			case <-done:
+				log.Println("Receiver Channel Closed! Exiting...")
+
+			case <-time.After(time.Duration(1) * time.Second):
+				log.Println("Timeout in closing receiving channel. Exiting...")
+			}
+			return
+		}
+	}
+}
+
+```
+
+## MQTT-over-WS
+
+Mainflux also supports [MQTT-over-WS](https://www.hivemq.com/blog/mqtt-essentials-special-mqtt-over-websockets/#:~:text=In%20MQTT%20over%20WebSockets%2C%20the,(WebSockets%20also%20leverage%20TCP).), along with pure WS protocol. this bring numerous benefits for IoT applications that are derived from the properties of MQTT - like QoS and PUB/SUB features.
 
 There are 2 reccomended Javascript libraries for implementing browser support for Mainflux MQTT-over-WS connectivity:
 
