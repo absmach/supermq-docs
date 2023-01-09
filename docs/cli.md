@@ -365,3 +365,49 @@ mainflux-cli keys retrieve <key_id> <user_token>
 ```bash
 mainflux-cli keys revoke <key_id> <user_token>
 ```
+
+### Groups
+
+#### Create Group
+```bash
+mainflux-cli groups create '{"Name":<group_name>,"Description":<description>,"ParentID":<parent_id>,"Metadata":<metadata>}' <user_token>
+```
+
+#### Get Group
+```bash
+mainflux-cli groups get <group_id> <user_token>
+```
+
+#### Get Groups
+```bash
+mainflux-cli groups get all <admin_token>
+```
+
+#### Get Group Members
+```bash
+mainflux-cli groups members <group_id> <admin_token>
+```
+
+#### Get Memberships
+```bash
+mainflux-cli groups membership <member_id> <admin_token>
+```
+
+#### Assign Members to Group
+```bash
+mainflux-cli groups assign <member_ids> <member_type> <group_id> <user_token>
+```
+
+#### Unassign Members to Group
+```bash
+mainflux-cli groups unassign <member_ids> <group_id>  <user_token>
+```
+#### Delete Group
+```bash
+mainflux-cli groups delete <group_id> <user_token>
+```
+
+#### Bootstrap configuration
+```bash
+mainflux-cli bootstrap bootstrap <external_id> <external_key>
+```
