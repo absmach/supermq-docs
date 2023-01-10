@@ -348,3 +348,20 @@ mainflux-cli bootstrap remove <thing_id> <user_token> -b <bootstrap-url>
 ```bash
 mainflux-cli bootstrap bootstrap <external_id> <external_key> -b <bootstrap-url>
 ```
+
+### Key
+
+#### Issue Key
+```bash
+mainflux-cli keys issue <duration> <user_token>
+```
+
+#### Retrieve Key
+```bash
+mainflux-cli keys retrieve <key_id> <user_token>
+```
+
+#### Revoke Key
+```bash
+mainflux-cli keys revoke <key_id> <user_token>
+```
