@@ -326,22 +326,85 @@ mainflux-cli messages read <channel_id> <thing_auth_token>
 
 #### Add configuration
 ```bash
-mainflux-cli bootstrap add '{"external_id": "myExtID", "external_key": "myExtKey", "name": "myName", "content": "myContent"}' <user_token>
+mainflux-cli bootstrap create '{"external_id": "myExtID", "external_key": "myExtKey", "name": "myName", "content": "myContent"}' <user_token> -b <bootstrap-url>
 ```
 
 #### View configuration
 ```bash
-mainflux-cli bootstrap view <thing_id> <user_token>
+mainflux-cli bootstrap view <thing_id> <user_token> -b <bootstrap-url>
 ```
 
 #### Update configuration
 ```bash
-mainflux-cli bootstrap update '{"MFThing":"<thing_id>", "name": "newName", "content": "newContent"}' <user_token>
+mainflux-cli bootstrap update '{"mainflux_id":"<thing_id>", "name": "newName", "content": "newContent"}' <user_token> -b <bootstrap-url>
 ```
 
 #### Remove configuration
 ```bash
-mainflux-cli bootstrap remove <thing_id> <user_token>
+mainflux-cli bootstrap remove <thing_id> <user_token> -b <bootstrap-url>
+```
+
+#### Bootstrap configuration
+```bash
+mainflux-cli bootstrap bootstrap <external_id> <external_key> -b <bootstrap-url>
+```
+
+### Key
+
+#### Issue Key
+```bash
+mainflux-cli keys issue <duration> <user_token>
+```
+
+#### Retrieve Key
+```bash
+mainflux-cli keys retrieve <key_id> <user_token>
+```
+
+#### Revoke Key
+```bash
+mainflux-cli keys revoke <key_id> <user_token>
+```
+
+### Groups
+
+#### Create Group
+```bash
+mainflux-cli groups create '{"Name":<group_name>,"Description":<description>,"ParentID":<parent_id>,"Metadata":<metadata>}' <user_token>
+```
+
+#### Get Group
+```bash
+mainflux-cli groups get <group_id> <user_token>
+```
+
+#### Get Groups
+```bash
+mainflux-cli groups get all <admin_token>
+```
+
+#### Get Group Members
+```bash
+mainflux-cli groups members <group_id> <admin_token>
+```
+
+#### Get Memberships
+```bash
+mainflux-cli groups membership <member_id> <admin_token>
+```
+
+#### Assign Members to Group
+```bash
+mainflux-cli groups assign <member_ids> <member_type> <group_id> <user_token>
+```
+
+#### Unassign Members to Group
+```bash
+mainflux-cli groups unassign <member_ids> <group_id>  <user_token>
+```
+#### Delete Group
+```bash
+mainflux-cli groups delete <group_id> <user_token>
 ```
 
 #### Bootstrap configuration
