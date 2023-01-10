@@ -416,7 +416,7 @@ mainflux-cli bootstrap bootstrap <external_id> <external_key>
 
 #### Create Group
 ```bash
-mainflux-cli groups create '{"Name":<group_name>,"Description":<description>,"ParentID":<parent_id>,"Metadata":<metadata>}' <user_token>
+mainflux-cli groups create '{"Name":"<group_name>","Description":"<description>","ParentID":"<parent_id>","Metadata":"<metadata>"}' <user_token>
 ```
 
 #### Get Group
