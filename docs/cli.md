@@ -406,8 +406,3 @@ mainflux-cli groups unassign <member_ids> <group_id>  <user_token>
 ```bash
 mainflux-cli groups delete <group_id> <user_token>
 ```
-
-#### Bootstrap configuration
-```bash
-mainflux-cli bootstrap bootstrap <external_id> <external_key>
-```
