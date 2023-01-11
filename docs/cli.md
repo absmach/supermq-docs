@@ -319,7 +319,7 @@ mainflux-cli messages send <channel_id> '[{"bn":"Dev1","n":"temp","v":20}, {"n":
 
 #### Read messages over HTTP
 ```bash
-mainflux-cli messages read <channel_id> <thing_auth_token>
+mainflux-cli messages read <channel_id> <user_token> -R <reader_url>
 ```
 
 ### Bootstrap
