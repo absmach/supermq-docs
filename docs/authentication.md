@@ -109,10 +109,10 @@ curl -s -S -i --cacert docker/ssl/certs/ca.crt --cert docker/ssl/certs/<thing_ce
 
 #### Publish
 ```bash
-mosquitto_pub -u <thing_id> -P <thing_key> -t channels/<channel_id>/messages -h localhost -p 8883  --cafile docker/ssl/certs/ca.crt --cert docker/ssl/certs/<thing_cert_name>.crt --key docker/ssl/certs/<thing_cert_key>.key -m '[{"bn":"some-base-name:","bt":1.276020076001e+09, "bu":"A","bver":5, "n":"voltage","u":"V","v":120.1}, {"n":"current","t":-5,"v":1.2}, {"n":"current","t":-4,"v":1.3}]'
+mosquitto_pub -i <thing_name> -u <thing_id> -P <thing_key> -t channels/<channel_id>/messages -h localhost -p 8883  --cafile docker/ssl/certs/ca.crt --cert docker/ssl/certs/<thing_cert_name>.crt --key docker/ssl/certs/<thing_cert_key>.key -m '[{"bn":"some-base-name:","bt":1.276020076001e+09, "bu":"A","bver":5, "n":"voltage","u":"V","v":120.1}, {"n":"current","t":-5,"v":1.2}, {"n":"current","t":-4,"v":1.3}]'
 ```
 
 #### Subscribe
 ```
-mosquitto_sub -u <thing_id> -P <thing_key> --cafile docker/ssl/certs/ca.crt --cert docker/ssl/certs/<thing_cert_name>.crt --key docker/ssl/certs/<thing_cert_key>.key -t channels/<channel_id>/messages -h localhost -p 8883
+mosquitto_sub -i <thing_name> -u <thing_id> -P <thing_key> --cafile docker/ssl/certs/ca.crt --cert docker/ssl/certs/<thing_cert_name>.crt --key docker/ssl/certs/<thing_cert_key>.key -t channels/<channel_id>/messages -h localhost -p 8883
 ```
