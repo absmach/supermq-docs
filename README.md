@@ -16,7 +16,7 @@ Documentation is auto-generated from Markdown files in this repo.
 
 Install [MkDocs](https://www.mkdocs.org/#installation)
 ```
-pip install mkdocs
+pip install -r requirements.txt
 ```
 
 ## Install
