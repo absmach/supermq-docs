@@ -36,6 +36,7 @@ nav:
   - Authorization: authorization.md
   - CLI: cli.md
   - API: api.md
+  - Entities: entities.md
   - Groups: groups.md
   - Bootstrap: bootstrap.md
   - Twins: twins.md
