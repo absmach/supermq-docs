@@ -1,6 +1,7 @@
 # API
 
 ## Reference
+
 API reference in the Swagger UI can be found at:
 
 [https://api.mainflux.io](https://api.mainflux.io)
@@ -8,6 +9,7 @@ API reference in the Swagger UI can be found at:
 ## Users
 
 ### Create User
+
 To start working with the Mainflux system, you need to create a user account.
 
 > Must-have: e-mail and password (password must contain at least 8 characters)
@@ -17,6 +19,7 @@ curl -s -S -i -X POST -H "Content-Type: application/json" http://localhost/users
 ```
 
 Response:
+
 ```bash
 HTTP/1.1 201 Created
 Server: nginx/1.16.0
@@ -34,6 +37,7 @@ Access-Control-Allow-Headers: *
 ```
 
 ### Create Token
+
 To log in to the Mainflux system, you need to create a `user_token`.
 
 > Must-have: registered e-mail and password
@@ -44,6 +48,7 @@ curl -s -S -i -X POST -H "Content-Type: application/json" http://localhost/token
 ```
 
 Response:
+
 ```bash
 HTTP/1.1 201 Created
 Server: nginx/1.16.0
@@ -62,6 +67,7 @@ Access-Control-Allow-Headers: *
 ```
 
 ### Get User
+
 You can always check the user entity that is logged in by entering the user ID and `user_token`.
 
 > Must-have: `user_id` and `user_token`
@@ -71,6 +77,7 @@ curl -s -S -i -X GET -H "Authorization: Bearer <user_token>" http://localhost/us
 ```
 
 Response:
+
 ```bash
 HTTP/1.1 200 OK
 Server: nginx/1.16.0
@@ -89,8 +96,8 @@ Access-Control-Allow-Headers: *
 ```
 
 ### Get Users
-You can get all users in the database by querying this endpoint. List all users request accepts limit, offset, email and metadata query parameters.
 
+You can get all users in the database by querying this endpoint. List all users request accepts limit, offset, email and metadata query parameters.
 
 > Must-have: `user_token`
 
@@ -99,6 +106,7 @@ curl -s -S -i -X GET -H "Authorization: Bearer <user_token>" http://localhost/us
 ```
 
 Response:
+
 ```bash
 HTTP/1.1 200 OK
 Server: nginx/1.16.0
@@ -126,6 +134,7 @@ curl -s -S -i -X GET -H "Authorization: Bearer <user_token>" http://localhost/us
 ```
 
 Response:
+
 ```bash
 HTTP/1.1 200 OK
 Server: nginx/1.16.0
@@ -144,6 +153,7 @@ Access-Control-Allow-Headers: *
 ```
 
 ### Update User
+
 Updating user's metadata
 
 > Must-have: `user_token`
@@ -154,6 +164,7 @@ curl -s -S -i -X PUT -H "Content-Type: application/json" -H "Authorization: Bear
 ```
 
 Response:
+
 ```bash
 HTTP/1.1 200 OK
 Server: nginx/1.16.0
@@ -170,6 +181,7 @@ Access-Control-Allow-Headers: *
 ```
 
 ### Change Password
+
 Changing the user password can be done by calling the update password function
 
 > Must-have: `user_token`, `old_password` and password (`new_password`)
@@ -179,6 +191,7 @@ curl -s -S -i -X PATCH -H "Content-Type: application/json" -H "Authorization: Be
 ```
 
 Response:
+
 ```bash
 HTTP/1.1 201 Created
 Server: nginx/1.16.0
@@ -195,6 +208,7 @@ Access-Control-Allow-Headers: *
 ```
 
 ### Enable User
+
 Changing the user status to enabled can be done by calling the enable user function
 
 > Must-have: `user_id` and `user_token`
@@ -204,6 +218,7 @@ curl -s -S -i -X GET -H "Authorization: Bearer <user_token>" http://localhost/us
 ```
 
 Response:
+
 ```bash
 HTTP/1.1 204 No Content
 Server: nginx/1.20.0
@@ -219,6 +234,7 @@ Access-Control-Allow-Headers: *
 ```
 
 ### Disable User
+
 Changing the user status to disabled can be done by calling the disable user function
 
 > Must-have: `user_id` and `user_token`
@@ -228,6 +244,7 @@ curl -s -S -i -X GET -H "Authorization: Bearer <user_token>" http://localhost/us
 ```
 
 Response:
+
 ```bash
 HTTP/1.1 204 No Content
 Server: nginx/1.20.0
@@ -241,9 +258,11 @@ Access-Control-Allow-Origin: *
 Access-Control-Allow-Methods: *
 Access-Control-Allow-Headers: *
 ```
+
 ## Things
 
 ### Create Thing
+
 To create a thing, you need the thing and a `user_token`
 
 > Must-have: `user_token`
@@ -253,6 +272,7 @@ curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: Bea
 ```
 
 Response:
+
 ```bash
 HTTP/1.1 201 Created
 Server: nginx/1.20.0
@@ -266,6 +286,7 @@ Access-Control-Expose-Headers: Location
 ```
 
 ### Create Thing with External ID
+
 It is often the case that the user will want to integrate the existing solutions, e.g. an asset management system, with the Mainflux platform. To simplify the integration between the systems and avoid artificial cross-platform reference, such as special fields in Mainflux Things metadata, it is possible to set Mainflux Thing ID with an existing unique ID while create the Thing. This way, the user can set the existing ID as the Thing ID of a newly created Thing to keep reference between Thing and the asset that Thing represents.
 There are two limitations - the existing ID have to be in UUID V4 format and it has to be unique in the Mainflux domain.
 
@@ -278,6 +299,7 @@ curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: Bea
 ```
 
 Response:
+
 ```bash
 HTTP/1.1 201 Created
 Server: nginx/1.16.0
@@ -289,7 +311,9 @@ Access-Control-Expose-Headers: Location
 
 {"things":[{"id":"4328f3e4-4c67-40b3-9491-0ab782c48d50","name":"thing_name","key":"659aa6ca-1781-4a69-9a20-689ddb235506"}]}
 ```
+
 ### Create Things
+
 You can create multiple things at once by entering a series of things structures and a `user_token`
 
 > Must-have: `user_token` and at least two things
@@ -299,6 +323,7 @@ curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: Bea
 ```
 
 Response:
+
 ```bash
 HTTP/1.1 201 Created
 Server: nginx/1.16.0
@@ -312,6 +337,7 @@ Access-Control-Expose-Headers: Location
 ```
 
 ### Create Things with external ID
+
 The same as creating a Thing with external ID the user can create multiple things at once by providing UUID v4 format unique ID in a series of things together with a `user_token`
 
 > Must-have: `user_token` and at least two things
@@ -321,6 +347,7 @@ curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: Bea
 ```
 
 Response:
+
 ```bash
 HTTP/1.1 201 Created
 Server: nginx/1.16.0
@@ -332,7 +359,9 @@ Access-Control-Expose-Headers: Location
 
 {"things":[{"id":"<thing_id_1>","name":"thing_name_1","key":"828c6985-c2d6-419e-a124-ba99147b9920"},{"id":"<thing_id_2>","name":"thing_name_2","key":"f73e7342-06c1-499a-9584-35de495aa338"}]}
 ```
+
 ### Get Thing
+
 You can get thing entity by entering the thing ID and `user_token`
 
 > Must-have: `user_token` and `thing_id`
@@ -342,6 +371,7 @@ curl -s -S -i -X GET -H "Authorization: Bearer <user_token>" http://localhost/th
 ```
 
 Response:
+
 ```bash
 HTTP/1.1 200 OK
 Server: nginx/1.16.0
@@ -355,6 +385,7 @@ Access-Control-Expose-Headers: Location
 ```
 
 ### Get Things
+
 You can get all things in the database by querying this endpoint. List all things request accepts limit, offset, name and metadata query parameters.
 
 > Must-have: `user_token`
@@ -364,6 +395,7 @@ curl -s -S -i -X GET -H "Authorization: Bearer <user_token>" http://localhost/th
 ```
 
 Response:
+
 ```bash
 HTTP/1.1 200 OK
 Server: nginx/1.16.0
@@ -386,6 +418,7 @@ curl -s -S -i -X GET -H "Authorization: Bearer <user_token>" http://localhost/th
 ```
 
 Response:
+
 ```bash
 HTTP/1.1 200 OK
 Server: nginx/1.16.0
@@ -399,6 +432,7 @@ Access-Control-Expose-Headers: Location
 ```
 
 ### Update Thing
+
 Updating a thing entity
 
 > Must-have: `user_token` and `thing_id`
@@ -408,6 +442,7 @@ curl -s -S -i -X PUT -H "Content-Type: application/json" -H  "Authorization: Bea
 ```
 
 Response:
+
 ```bash
 HTTP/1.1 200 OK
 Server: nginx/1.16.0
@@ -419,6 +454,7 @@ Access-Control-Expose-Headers: Location
 ```
 
 ### Delete Thing
+
 To delete a thing you need a `thing_id` and a `user_token`
 
 > Must-have: `user_token` and `thing_id`
@@ -428,6 +464,7 @@ curl -s -S -i -X DELETE -H "Content-Type: application/json" -H  "Authorization: 
 ```
 
 Response:
+
 ```bash
 HTTP/1.1 204 No Content
 Server: nginx/1.16.0
@@ -440,6 +477,7 @@ Access-Control-Expose-Headers: Location
 ## Channels
 
 ### Create Channel
+
 To create a channel, you need a `user_token`
 
 > Must-have: `user_token`
@@ -449,6 +487,7 @@ curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: Bea
 ```
 
 Response:
+
 ```bash
 HTTP/1.1 201 Created
 Server: nginx/1.16.0
@@ -462,6 +501,7 @@ Access-Control-Expose-Headers: Location
 ```
 
 ### Create Channel with external ID
+
 Channel is a group of things that could represent a special category in existing systems, e.g. a building level channel could represent the level of a smarting building system. For helping to keep the reference, it is possible to set an existing ID while creating the Mainflux channel. There are two limitations - the existing ID has to be in UUID V4 format and it has to be unique in the Mainflux domain.
 
 To create a channel with external ID, the user needs provide a UUID v4 format unique ID, and a `user_token`
@@ -473,6 +513,7 @@ curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: Bea
 ```
 
 Response:
+
 ```bash
 HTTP/1.1 201 Created
 Server: nginx/1.16.0
@@ -484,7 +525,9 @@ Location: /channels/db4b7428-e278-4fe3-b85a-d65554d6abe9
 Warning-Deprecated: This endpoint will be depreciated in v1.0.0. It will be replaced with the bulk endpoint currently found at /channels/bulk.
 Access-Control-Expose-Headers: Location
 ```
+
 ### Create Channels
+
 The same as creating a channel with external ID the user can create multiple channels at once by providing UUID v4 format unique ID in a series of channels together with a `user_token`
 
 > Must-have: `user_token` and at least 2 channels
@@ -494,6 +537,7 @@ curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: Bea
 ```
 
 Response:
+
 ```bash
 HTTP/1.1 201 Created
 Server: nginx/1.16.0
@@ -507,6 +551,7 @@ Access-Control-Expose-Headers: Location
 ```
 
 ### Create Channels with external ID
+
 As with things, you can create multiple channels with external ID at once
 
 > Must-have: `user_token` and at least 2 channels
@@ -516,6 +561,7 @@ curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: Bea
 ```
 
 Response:
+
 ```bash
 HTTP/1.1 201 Created
 Server: nginx/1.16.0
@@ -527,7 +573,9 @@ Access-Control-Expose-Headers: Location
 
 {"channels":[{"id":"<channel_id_1>","name":"channel_name_1"},{"id":"<channel_id_2>","name":"channel_name_2"}]}
 ```
+
 ### Get Channel
+
 Get a channel entity for a logged in user
 
 > Must-have: `user_token` and `channel_id`
@@ -537,6 +585,7 @@ curl -s -S -i -X GET -H "Authorization: Bearer <user_token>" http://localhost/ch
 ```
 
 Response:
+
 ```bash
 HTTP/1.1 200 OK
 Server: nginx/1.16.0
@@ -550,6 +599,7 @@ Access-Control-Expose-Headers: Location
 ```
 
 ### Get Channels
+
 You can get all channels in the database by querying this endpoint. List all channels request accepts limit, offset, name and metadata query parameters.
 
 > Must-have: `user_token`
@@ -559,6 +609,7 @@ curl -s -S -i -X GET -H "Authorization: Bearer <user_token>" http://localhost/ch
 ```
 
 Response:
+
 ```bash
 HTTP/1.1 200 OK
 Server: nginx/1.16.0
@@ -572,6 +623,7 @@ Access-Control-Expose-Headers: Location
 ```
 
 ### Update Channel
+
 Update channel entity
 
 > Must-have: `user_token` and `channel_id`
@@ -581,6 +633,7 @@ curl -s -S -i -X PUT -H "Content-Type: application/json" -H  "Authorization: Bea
 ```
 
 Response:
+
 ```bash
 HTTP/1.1 200 OK
 Server: nginx/1.16.0
@@ -592,6 +645,7 @@ Access-Control-Expose-Headers: Location
 ```
 
 ### Delete Channel
+
 Delete a channel entity
 
 > Must-have: `user_token` and `channel_id`
@@ -601,6 +655,7 @@ curl -s -S -i -X DELETE -H "Content-Type: application/json" -H  "Authorization: 
 ```
 
 Response:
+
 ```bash
 HTTP/1.1 204 No Content
 Server: nginx/1.16.0
@@ -611,6 +666,7 @@ Access-Control-Expose-Headers: Location
 ```
 
 ### Connect
+
 Connect things to channels
 
 > Must-have: `user_token`, `channel_id` and `thing_id`
@@ -620,6 +676,7 @@ curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: Bea
 ```
 
 Response:
+
 ```bash
 HTTP/1.1 200 OK
 Server: nginx/1.16.0
@@ -639,6 +696,7 @@ curl -s -S -i -X PUT -H "Content-Type: application/json" -H "Authorization: Bear
 ```
 
 Response:
+
 ```bash
 HTTP/1.1 200 OK
 Server: nginx/1.20.0
@@ -651,6 +709,7 @@ Access-Control-Expose-Headers: Location
 ```
 
 ### Disconnect
+
 Disconnect things from channels specified by lists of IDs.
 
 > Must-have: `user_token`, `channel_ids` and `thing_ids`
@@ -660,6 +719,7 @@ curl -s -S -i -X PUT -H "Content-Type: application/json" -H "Authorization: Bear
 ```
 
 Response:
+
 ```bash
 HTTP/1.1 200 OK
 Content-Type: application/json
@@ -676,6 +736,7 @@ curl -s -S -i -X DELETE -H "Content-Type: application/json" -H "Authorization: B
 ```
 
 Response:
+
 ```bash
 HTTP/1.1 204 No Content
 Server: nginx/1.16.0
@@ -686,6 +747,7 @@ Access-Control-Expose-Headers: Location
 ```
 
 ### Access by Key
+
 Checks if thing has access to a channel
 
 > Must-have: `channel_id` and `thing_key`
@@ -695,6 +757,7 @@ curl -s -S -i -X POST -H "Content-Type: application/json" http://localhost/ident
 ```
 
 Response:
+
 ```bash
 HTTP/1.1 200 OK
 Server: nginx/1.16.0
@@ -708,6 +771,7 @@ Access-Control-Expose-Headers: Location
 ```
 
 ### Access by ID
+
 Checks if thing has access to a channel
 
 > Must-have: `channel_id` and `thing_id`
@@ -717,6 +781,7 @@ curl -s -S -i -X POST -H "Content-Type: application/json" http://localhost/ident
 ```
 
 Response:
+
 ```bash
 HTTP/1.1 200 OK
 Server: nginx/1.16.0
@@ -728,14 +793,17 @@ Access-Control-Expose-Headers: Location
 ```
 
 ### Identify
+
 Validates thing's key and returns it's ID if key is valid
 
 > Must-have: `thing_key`
+
 ```bash
 curl -s -S -i -X POST -H "Content-Type: application/json" http://localhost/identify -d '{"token": "<thing_key>"}'
 ```
 
 Response:
+
 ```bash
 HTTP/1.1 200 OK
 Server: nginx/1.16.0
@@ -751,6 +819,7 @@ Access-Control-Expose-Headers: Location
 ## Messages
 
 ### Send Messages
+
 Sends message via HTTP protocol
 
 > Must-have: `thing_key` and `channel_id`
@@ -760,6 +829,7 @@ curl -s -S -i -X POST -H "Content-Type: application/senml+json" -H "Authorizatio
 ```
 
 Response:
+
 ```bash
 HTTP/1.1 202 Accepted
 Server: nginx/1.16.0
@@ -769,6 +839,7 @@ Connection: keep-alive
 ```
 
 ### Read Messages
+
 Reads messages from database for a given channel
 
 > Must-have: `thing_key` and `channel_id`
@@ -778,6 +849,7 @@ curl -s -S -i -H "Authorization: Thing <thing_key>" http://localhost:<service_po
 ```
 
 Response:
+
 ```bash
 HTTP/1.1 200 OK
 Content-Type: application/json
@@ -790,6 +862,7 @@ Content-Length: 660
 ## Groups
 
 ### Create group
+
 To create a group, you need the group name and a `user_token`
 
 > Must-have: `user_token`
@@ -799,6 +872,7 @@ curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: Bea
 ```
 
 Response:
+
 ```bash
 HTTP/1.1 201 Created
 Server: nginx/1.16.0
@@ -811,6 +885,7 @@ Access-Control-Expose-Headers: Location
 ```
 
 ### Members
+
 Get list of ID's from group
 
 > Must-have: `user_token` and `group_id`
@@ -820,6 +895,7 @@ curl -s -S -i -X GET -H 'Content-Type: application/json' -H "Authorization: Bear
 ```
 
 Response:
+
 ```bash
 HTTP/1.1 200 OK
 Server: nginx/1.16.0
@@ -833,6 +909,7 @@ Access-Control-Expose-Headers: Location
 ```
 
 ### Assign
+
 Assign user, thing or channel to a group
 
 > Must-have: `user_token`, `group_id`, `member_id` and `member_type`
@@ -842,6 +919,7 @@ curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: Bea
 ```
 
 Response:
+
 ```bash
 HTTP/1.1 200 OK
 Server: nginx/1.16.0
@@ -853,6 +931,7 @@ Access-Control-Expose-Headers: Location
 ```
 
 ### Unassign
+
 Unassign user, thing or channel from group
 
 > Must-have: `user_token`, `group_id`, `member_id` and `member_type`
@@ -862,6 +941,7 @@ curl -s -S -i -X DELETE -H "Content-Type: application/json" -H "Authorization: B
 ```
 
 Response:
+
 ```bash
 HTTP/1.1 204 No Content
 Server: nginx/1.16.0
@@ -872,6 +952,7 @@ Access-Control-Expose-Headers: Location
 ```
 
 ### Get group
+
 Get a group entity for a logged in user
 
 > Must-have: `user_token` and `group_id`
@@ -881,6 +962,7 @@ curl -s -S -i -X GET -H "Content-Type: application/json" -H "Authorization: Bear
 ```
 
 Response:
+
 ```bash
 HTTP/1.1 200 OK
 Server: nginx/1.16.0
@@ -894,6 +976,7 @@ Access-Control-Expose-Headers: Location
 ```
 
 ### Get groups
+
 Get all groups, list requests accepts limit and offset query parameters
 
 > Must-have: `user_token`
@@ -903,6 +986,7 @@ curl -s -S -i -X GET -H "Content-Type: application/json" -H "Authorization: Bear
 ```
 
 Response:
+
 ```bash
 HTTP/1.1 200 OK
 Server: nginx/1.16.0
@@ -916,6 +1000,7 @@ Access-Control-Expose-Headers: Location
 ```
 
 ### Update group
+
 Update group entity
 
 > Must-have: `user_token` and `group_id`
@@ -925,6 +1010,7 @@ curl -s -S -i -X PUT -H "Content-Type: application/json" -H  "Authorization: Bea
 ```
 
 Response:
+
 ```bash
 HTTP/1.1 200 OK
 Server: nginx/1.16.0
@@ -936,6 +1022,7 @@ Access-Control-Expose-Headers: Location
 ```
 
 ### Delete group
+
 Delete a group entity
 
 > Must-have: `user_token` and `group_id`
@@ -945,6 +1032,7 @@ curl -s -S -i -X DELETE -H "Content-Type: application/json" -H "Authorization: B
 ```
 
 Response:
+
 ```bash
 HTTP/1.1 204 No Content
 Server: nginx/1.16.0
@@ -955,6 +1043,7 @@ Access-Control-Expose-Headers: Location
 ```
 
 ### Share User Group with Things Group
+
 Adds access rights on thing groups to the user group.
 
 > Must-have: `user_token`, `user_group_id` and `<thing_group_id>`.
@@ -968,6 +1057,7 @@ Each user from the group identified by `user_group_id` will have `read`, `write`
 ## Policies
 
 ### Add policies
+
 The admin can add custom policies. Only policies defined on [Predefined Policies section](/authorization/#summary-of-the-defined-policies) are allowed.
 
 > Must-have: admin_token, object, subjects_ids and policies
@@ -979,6 +1069,7 @@ curl -isSX POST http://localhost/policies -d '{"subjects": ["<subject_id1>",..."
 *admin_token* must belong to the admin.
 
 Response:
+
 ```bash
 HTTP/1.1 201 Created
 Content-Type: application/json
@@ -989,6 +1080,7 @@ Content-Length: 3
 ```
 
 ### Delete policies
+
 The admin can delete policies. Only policies defined on [Predefined Policies section](/authorization/#summary-of-the-defined-policies) are allowed.
 
 > Must-have: admin_token, object, subjects_ids and policies
@@ -1000,73 +1092,10 @@ curl -isSX PUT http://localhost/policies -d '{"subjects": ["<subject_id1>",..."<
 *admin_token* must belong to the admin.
 
 Response:
+
 ```bash
 HTTP/1.1 204 No Content
 Content-Type: application/json
 Date: Wed, 03 Nov 2021 13:00:05 GMT
 
-```
-
-## API Key
-
-### Issue API Key
-Generates a new API key. Then new API key will be uniquely identified by its ID.
-Duration is expressed in seconds.
-
-> Must-have: `user_token`
-
-```bash
-curl -isSX POST  http://localhost/keys -H "Content-Type: application/json" -H "Authorization: Bearer <user_token>" -d '{"type":2, "duration":10000}'
-```
-
-Response:
-```bash
-HTTP/1.1 201 Created
-Server: nginx/1.20.0
-Date: Sun, 19 Dec 2021 17:39:44 GMT
-Content-Type: application/json
-Content-Length: 476
-Connection: keep-alive
-Access-Control-Expose-Headers: Location
-
-{"id":"4d62fb1e-085e-435c-a0c5-5255febfa35b","value":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NDAwMzU1ODQsImp0aSI6IjRkNjJmYjFlLTA4NWUtNDM1Yy1hMGM1LTUyNTVmZWJmYTM1YiIsImlhdCI6MTYzOTkzNTU4NCwiaXNzIjoibWFpbmZsdXguYXV0aCIsInN1YiI6ImZscDFAZW1haWwuY29tIiwiaXNzdWVyX2lkIjoiYzkzY2FmYjMtYjNhNy00ZTdmLWE0NzAtMTVjMTRkOGVkMWUwIiwidHlwZSI6Mn0.RnvjhygEPPWFDEUKtfk5okzVhZzOcO0azr8gd5vby5M","issued_at":"2021-12-19T17:39:44.175088349Z","expires_at":"2021-12-20T21:26:24.175088349Z"}
-```
-
-### Get API key details
-
-> Must-have: 'user_token' and 'key_id'
-
-```bash
-curl -isSX GET  http://localhost/keys/<key_id> -H 'Content-Type: application/json' -H 'Authorization: Bearer <user_token>'
-```
-
-Response:
-```bash
-HTTP/1.1 200 OK
-Server: nginx/1.20.0
-Date: Sun, 19 Dec 2021 17:43:30 GMT
-Content-Type: application/json
-Content-Length: 218
-Connection: keep-alive
-Access-Control-Expose-Headers: Location
-
-{"id":"f630f594-d967-4c54-85ef-af58efe8e8ed","issuer_id":"c93cafb3-b3a7-4e7f-a470-15c14d8ed1e0","subject":"test@email.com","type":2,"issued_at":"2021-12-19T17:42:40.884521Z","expires_at":"2021-12-20T21:29:20.884521Z"}
-```
-
-### Revoke API key identified by the given ID
-
-> Must-have: 'user_token' and 'key_id'
-
-```bash
-curl -isSX DELETE  http://localhost/keys/<key_id> -H 'Content-Type: application/json' -H 'Authorization: Bearer <user_token>'  
-```
-
-Response:
-```bash
-HTTP/1.1 204 No Content
-Server: nginx/1.20.0
-Date: Sun, 19 Dec 2021 17:47:11 GMT
-Content-Type: application/json
-Connection: keep-alive
-Access-Control-Expose-Headers: Location
 ```
