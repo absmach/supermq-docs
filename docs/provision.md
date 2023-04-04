@@ -10,8 +10,34 @@ Provisioning is a process of configuration of an IoT platform in which system op
 
 Use the Mainflux API to create user account:
 
+```bash
+curl -s -S -i --cacert docker/ssl/certs/ca.crt -X POST -H "Content-Type: application/json" https://localhost/users -d '{"name": "John Doe", "credentials": {"identity": "john.doe@email.com", "secret": "12345678"}, "status": "enabled"}'
 ```
-curl -s -S -i --cacert docker/ssl/certs/ca.crt -X POST -H "Content-Type: application/json" https://localhost/users -d '{"email":"john.doe@email.com", "password":"12345678"}'
+
+Response should look like this:
+
+```bash
+HTTP/2 201 
+server: nginx/1.23.3
+date: Tue, 04 Apr 2023 08:40:39 GMT
+content-type: application/json
+content-length: 229
+location: /users/71db4bb0-591e-4f76-b766-b39ced9fc6b8
+strict-transport-security: max-age=63072000; includeSubdomains
+x-frame-options: DENY
+x-content-type-options: nosniff
+access-control-allow-origin: *
+access-control-allow-methods: *
+access-control-allow-headers: *
+
+{
+    "id": "71db4bb0-591e-4f76-b766-b39ced9fc6b8",
+    "name": "John Doe",
+    "credentials": { "identity": "john.doe@email.com", "secret": "" },
+    "created_at": "2023-04-04T08:40:39.319602Z",
+    "updated_at": "2023-04-04T08:40:39.319602Z",
+    "status": "enabled"
+}
 ```
 
 Note that when using official `docker-compose`, all services are behind `nginx` proxy and all traffic is `TLS` encrypted.
@@ -21,17 +47,32 @@ Note that when using official `docker-compose`, all services are behind `nginx` 
 In order for this user to be able to authenticate to the system, you will have to create an authorization token for him:
 
 ```bash
-curl -s -S -i --cacert docker/ssl/certs/ca.crt -X POST -H "Content-Type: application/json" https://localhost/tokens -d '{"email":"john.doe@email.com", "password":"12345678"}'
+curl -s -S -i --cacert docker/ssl/certs/ca.crt -X POST -H "Content-Type: application/json" https://localhost/users/tokens/issue -d '{"identity":"john.doe@email.com", "secret":"12345678"}'
 ```
 
 Response should look like this:
-```json
+
+```bash
+HTTP/2 201 
+server: nginx/1.23.3
+date: Tue, 04 Apr 2023 08:40:58 GMT
+content-type: application/json
+content-length: 709
+strict-transport-security: max-age=63072000; includeSubdomains
+x-frame-options: DENY
+x-content-type-options: nosniff
+access-control-allow-origin: *
+access-control-allow-methods: *
+access-control-allow-headers: *
+
 {
-      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1MjMzODg0NzcsImlhdCI6MTUyMzM1MjQ3NywiaXNzIjoibWFpbmZsdXgiLCJzdWIiOiJqb2huLmRvZUBlbWFpbC5jb20ifQ.cygz9zoqD7Rd8f88hpQNilTCAS1DrLLgLg4PRcH-iAI"
+    "access_token": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODA2NTE2NTgsImlhdCI6MTY4MDU5NzY1OCwiaWRlbnRpdHkiOiJqb2huLmRvZUBlbWFpbC5jb20iLCJpc3MiOiJjbGllbnRzLmF1dGgiLCJzdWIiOiI3MWRiNGJiMC01OTFlLTRmNzYtYjc2Ni1iMzljZWQ5ZmM2YjgiLCJ0eXBlIjoiYWNjZXNzIn0.E4v79FvikIVs-eYOJAgepBX67G2Pzd9YnC-k3xkVrRQcAjHSdMx685jttr9-uuZtF1q3yIpvV-NdQJ2CG5eDtw",
+    "refresh_token": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODA2ODQwNTgsImlhdCI6MTY4MDU5NzY1OCwiaWRlbnRpdHkiOiJqb2huLmRvZUBlbWFpbC5jb20iLCJpc3MiOiJjbGllbnRzLmF1dGgiLCJzdWIiOiI3MWRiNGJiMC01OTFlLTRmNzYtYjc2Ni1iMzljZWQ5ZmM2YjgiLCJ0eXBlIjoicmVmcmVzaCJ9.K236Hz9nsm3dnvW6i7myu5xWcBaNFEMAIeekWkiS_X9y0sQ1LZwl997hkkj4IHFFrbn8KLfmkOfTOqVWgUREFg",
+    "access_type": "Bearer"
 }
 ```
 
-For more information about the Users service API, please check out the [API documentation](https://github.com/mainflux/mainflux/blob/master/api/users.yml).
+For more information about the Users service API, please check out the [API documentation](https://api.mainflux.io/?urls.primaryName=users.ymll).
 
 ### System Provisioning
 
@@ -44,17 +85,29 @@ Before proceeding, make sure that you have created a new account and obtained an
 Things are created by executing request `POST /things` with a JSON payload. Note that you will also need `user_token` in order to create things that belong to this particular user.
 
 ```bash
-curl -s -S -i --cacert docker/ssl/certs/ca.crt -X POST -H "Content-Type: application/json" -H "Authorization: Bearer <user_token>" https://localhost/things -d '{"name":"weio"}'
+curl -s -S -i --cacert docker/ssl/certs/ca.crt -X POST -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" https://localhost/things -d '{"name":"weio"}'
 ```
 
 Response will contain `Location` header whose value represents path to newly created thing:
 
 ```
-HTTP/1.1 201 Created
-Content-Type: application/json
-Location: /things/81380742-7116-4f6f-9800-14fe464f6773
-Date: Tue, 10 Apr 2018 10:02:59 GMT
-Content-Length: 0
+HTTP/2 201 
+server: nginx/1.23.3
+date: Tue, 04 Apr 2023 09:06:50 GMT
+content-type: application/json
+content-length: 282
+location: /things/9dd12d93-21c9-4147-92fe-769386efb6cc
+access-control-expose-headers: Location
+
+{
+    "id": "9dd12d93-21c9-4147-92fe-769386efb6cc",
+    "name": "weio",
+    "owner": "71db4bb0-591e-4f76-b766-b39ced9fc6b8",
+    "credentials": { "secret": "551e9869-d10f-4682-8319-5a4b18073313" },
+    "created_at": "2023-04-04T09:06:50.460258649Z",
+    "updated_at": "2023-04-04T09:06:50.460258649Z",
+    "status": "enabled"
+}
 ```
 
 #### Bulk Provisioning Things
@@ -62,20 +115,41 @@ Content-Length: 0
 Multiple things can be created by executing a `POST /things/bulk` request with a JSON payload.  The payload should contain a JSON array of the things to be created.  If there is an error any of the things, none of the things will be created.
 
 ```bash
-curl -s -S -i --cacert docker/ssl/certs/ca.crt -X POST -H "Content-Type: application/json" -H "Authorization: Bearer <user_token>" https://localhost/things/bulk -d '[{"name":"weio"},{"name":"bob"}]'
+curl -s -S -i --cacert docker/ssl/certs/ca.crt -X POST -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" https://localhost/things/bulk -d '[{"name":"weio"},{"name":"bob"}]'
 ```
 
 The response's body will contain a list of the created things.
 
 ```json
-HTTP/2 201
-server: nginx/1.16.0
-date: Tue, 22 Oct 2019 02:19:15 GMT
+HTTP/2 200 
+server: nginx/1.23.3
+date: Tue, 04 Apr 2023 08:42:04 GMT
 content-type: application/json
-content-length: 222
+content-length: 586
 access-control-expose-headers: Location
 
-{"things":[{"id":"8909adbf-312f-41eb-8cfc-ccc8c4e3655e","name":"weio","key":"4ef103cc-964a-41b5-b75b-b7415c3a3619"},{"id":"2fcd2349-38f7-4b5c-8a29-9607b2ca8ff5","name":"bob","key":"ff0d1490-355c-4dcf-b322-a4c536c8c3bf"}]}
+{
+    "total": 2,
+    "things": [{
+            "id": "1b1cd38f-62cd-4f17-b47e-5ff4e97881e8",
+            "name": "weio",
+            "owner": "71db4bb0-591e-4f76-b766-b39ced9fc6b8",
+            "credentials": { "secret": "43bd950e-0b3f-46f6-a92c-296a6a0bfe66" },
+            "created_at": "2023-04-04T08:42:04.168388927Z",
+            "updated_at": "2023-04-04T08:42:04.168388927Z",
+            "status": "enabled"
+        },
+        {
+            "id": "b594af97-9550-4b11-86e1-2b6db7e329b9",
+            "name": "bob",
+            "owner": "71db4bb0-591e-4f76-b766-b39ced9fc6b8",
+            "credentials": { "secret": "9f89f52e-1b06-4416-8294-ae753b0c4bea" },
+            "created_at": "2023-04-04T08:42:04.168390109Z",
+            "updated_at": "2023-04-04T08:42:04.168390109Z",
+            "status": "enabled"
+        }
+    ]
+}
 ```
 
 #### Retrieving Provisioned Things
@@ -83,95 +157,106 @@ access-control-expose-headers: Location
 In order to retrieve data of provisioned things that is written in database, you can send following request:
 
 ```bash
-curl -s -S -i --cacert docker/ssl/certs/ca.crt -H "Authorization: Bearer <user_token>" https://localhost/things
+curl -s -S -i --cacert docker/ssl/certs/ca.crt -H "Authorization: Bearer $USER_TOKEN" https://localhost/things
 ```
 
 Notice that you will receive only those things that were provisioned by `user_token` owner.
 
 ```json
-HTTP/1.1 200 OK
-Content-Type: application/json
-Date: Tue, 10 Apr 2018 10:50:12 GMT
-Content-Length: 1105
+HTTP/2 200 
+server: nginx/1.23.3
+date: Tue, 04 Apr 2023 08:42:27 GMT
+content-type: application/json
+content-length: 570
+access-control-expose-headers: Location
 
 {
-  "total": 2,
-  "offset": 0,
-  "limit": 10,
-  "things": [
-    {
-      "id": "81380742-7116-4f6f-9800-14fe464f6773",
-      "name": "weio",
-      "key": "7aa91f7a-cbea-4fed-b427-07e029577590"
-    },
-    {
-      "id": "cb63f852-2d48-44f0-a0cf-e450496c6c92",
-      "name": "myapp",
-      "key": "cbf02d60-72f2-4180-9f82-2c957db929d1"
-    }
-  ]
+    "limit": 10,
+    "total": 2,
+    "things": [{
+            "id": "1b1cd38f-62cd-4f17-b47e-5ff4e97881e8",
+            "name": "weio",
+            "owner": "71db4bb0-591e-4f76-b766-b39ced9fc6b8",
+            "credentials": { "secret": "43bd950e-0b3f-46f6-a92c-296a6a0bfe66" },
+            "created_at": "2023-04-04T08:42:04.168388Z",
+            "updated_at": "0001-01-01T00:00:00Z",
+            "status": "enabled"
+        },
+        {
+            "id": "b594af97-9550-4b11-86e1-2b6db7e329b9",
+            "name": "bob",
+            "owner": "71db4bb0-591e-4f76-b766-b39ced9fc6b8",
+            "credentials": { "secret": "9f89f52e-1b06-4416-8294-ae753b0c4bea" },
+            "created_at": "2023-04-04T08:42:04.16839Z",
+            "updated_at": "0001-01-01T00:00:00Z",
+            "status": "enabled"
+        }
+    ]
 }
 ```
 
 You can specify `offset` and `limit` parameters in order to fetch a specific group of things. In that case, your request should look like:
 
 ```bash
-curl -s -S -i --cacert docker/ssl/certs/ca.crt -H "Authorization: Bearer <user_token>" https://localhost/things?offset=0&limit=5
+curl -s -S -i --cacert docker/ssl/certs/ca.crt -H "Authorization: Bearer $USER_TOKEN" https://localhost/things?offset=0&limit=5
 ```
 
 You can specify `name` and/or `metadata` parameters in order to fetch specific group of things. When specifying metadata you can specify just a part of the metadata JSON you want to match.
 
 ```bash
-curl -s -S -i --cacert docker/ssl/certs/ca.crt -H "Authorization: Bearer <user_token>" https://localhost/things?offset=0&limit=5&metadata="\{\"serial\":\"123456\"\}"
+curl -s -S -i --cacert docker/ssl/certs/ca.crt -H "Authorization: Bearer $USER_TOKEN" https://localhost/things?offset=0&limit=5&name="weio"
+```
+
+```bash
+HTTP/2 200 
+server: nginx/1.23.3
+date: Tue, 04 Apr 2023 08:43:09 GMT
+content-type: application/json
+content-length: 302
+access-control-expose-headers: Location
+
+{
+    "limit": 5,
+    "total": 1,
+    "things": [{
+        "id": "1b1cd38f-62cd-4f17-b47e-5ff4e97881e8",
+        "name": "weio",
+        "owner": "71db4bb0-591e-4f76-b766-b39ced9fc6b8",
+        "credentials": { "secret": "43bd950e-0b3f-46f6-a92c-296a6a0bfe66" },
+        "created_at": "2023-04-04T08:42:04.168388Z",
+        "updated_at": "0001-01-01T00:00:00Z",
+        "status": "enabled"
+    }]
+}
 ```
 
 If you don't provide them, default values will be used instead: 0 for `offset` and 10 for `limit`. Note that `limit` cannot be set to values greater than 100. Providing invalid values will be considered malformed request.
 
-#### Searching Provisioned Things
+#### Disable Things
 
-In order to search things with specific name and/or metadata, you can send following request:
+In order to disable you own thing you can send following request:
 
 ```bash
-curl -s -S -i --cacert docker/ssl/certs/ca.crt -X POST -H "Content-Type: application/json" -H "Authorization: Bearer <user_token>" https://localhost/things/search -d '{"metadata":{"foo":"bar"}, "name":"bob", "limit": 10, "offset":0, "order":"name", "dir":"desc"}'
+curl -s -S -i --cacert docker/ssl/certs/ca.crt -X POST -H "Authorization: Bearer $USER_TOKEN" https://localhost/things/1b1cd38f-62cd-4f17-b47e-5ff4e97881e8/disable
 ```
 
-You can specify `offset` and `limit` parameters in order to fetch a specific set of things. Also, you can specify ordering with direction through parameters `order` and `dir`. Ordering values can be `name` or `id` of things, order direction can be `asc` or `desc`. If you don't provide them, default values will be used instead: 0 for `offset` and 10 for `limit`. Note that `limit` cannot be set to values greater than 100. Providing invalid values will be considered malformed request.
-
-The response's body will contain a list of the things filtered by name and/or metadata:
-
 ```bash
-HTTP/2 200
-server: nginx/1.16.0
-date: Mon, 15 Mar 2021 18:34:10 GMT
+HTTP/2 200 
+server: nginx/1.23.3
+date: Tue, 04 Apr 2023 09:00:40 GMT
 content-type: application/json
-content-length: 208
+content-length: 277
 access-control-expose-headers: Location
 
 {
-  "total": 1,
-  "offset": 0,
-  "limit": 10,
-  "order": "name",
-  "direction": "desc",
-  "things": [
-    {
-      "id": "1b86eea5-94b6-41fa-be9f-d10c85a8994d",
-      "name": "bob",
-      "key": "d72de10f-4963-4bf1-a454-874a39bb498e",
-      "metadata": {
-        "foo": "bar"
-      }
-    }
-  ]
+    "id": "1b1cd38f-62cd-4f17-b47e-5ff4e97881e8",
+    "name": "weio",
+    "owner": "71db4bb0-591e-4f76-b766-b39ced9fc6b8",
+    "credentials": { "secret": "43bd950e-0b3f-46f6-a92c-296a6a0bfe66" },
+    "created_at": "2023-04-04T08:42:04.168388Z",
+    "updated_at": "2023-04-04T08:42:04.168388Z",
+    "status": "disabled"
 }
-```
-
-#### Removing Things
-
-In order to remove you own thing you can send following request:
-
-```bash
-curl -s -S -i --cacert docker/ssl/certs/ca.crt -X DELETE -H "Authorization: Bearer <user_token>" https://localhost/things/<thing_id>
 ```
 
 #### Provisioning Channels
@@ -180,18 +265,29 @@ curl -s -S -i --cacert docker/ssl/certs/ca.crt -X DELETE -H "Authorization: Bear
 
 Channels are created by executing request `POST /channels`:
 
-```
-curl -s -S -i --cacert docker/ssl/certs/ca.crt -X POST -H "Content-Type: application/json" -H "Authorization: Bearer <user_token>" https://localhost/channels -d '{"name":"mychan"}'
+```bash
+curl -s -S -i --cacert docker/ssl/certs/ca.crt -X POST -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" https://localhost/channels -d '{"name":"mychan"}'
 ```
 
 After sending request you should receive response with `Location` header that contains path to newly created channel:
 
-```
-HTTP/1.1 201 Created
-Content-Type: application/json
-Location: /channels/19daa7a8-a489-4571-8714-ef1a214ed914
-Date: Tue, 10 Apr 2018 11:30:07 GMT
-Content-Length: 0
+```bash
+HTTP/2 201 
+server: nginx/1.23.3
+date: Tue, 04 Apr 2023 09:18:10 GMT
+content-type: application/json
+content-length: 235
+location: /channels/0a67a8ee-eda9-408e-af83-f895096b7359
+access-control-expose-headers: Location
+
+{
+    "id": "0a67a8ee-eda9-408e-af83-f895096b7359",
+    "owner_id": "71db4bb0-591e-4f76-b766-b39ced9fc6b8",
+    "name": "mychan",
+    "created_at": "2023-04-04T09:18:10.26603Z",
+    "updated_at": "2023-04-04T09:18:10.26603Z",
+    "status": "enabled"
+}
 ```
 
 #### Bulk Provisioning Channels
@@ -199,20 +295,38 @@ Content-Length: 0
 Multiple channels can be created by executing a `POST /things/bulk` request with a JSON payload.  The payload should contain a JSON array of the channels to be created.  If there is an error any of the channels, none of the channels will be created.
 
 ```bash
-curl -s -S -i --cacert docker/ssl/certs/ca.crt -X POST -H "Content-Type: application/json" -H "Authorization: Bearer <user_token>" https://localhost/channels/bulk -d '[{"name":"joe"},{"name":"betty"}]'
+curl -s -S -i --cacert docker/ssl/certs/ca.crt -X POST -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" https://localhost/channels/bulk -d '[{"name":"joe"},{"name":"betty"}]'
 ```
 
 The response's body will contain a list of the created channels.
 
 ```json
-HTTP/2 201
-server: nginx/1.16.0
-date: Tue, 22 Oct 2019 02:14:41 GMT
+HTTP/2 200 
+server: nginx/1.23.3
+date: Tue, 04 Apr 2023 09:11:16 GMT
 content-type: application/json
-content-length: 135
+content-length: 487
 access-control-expose-headers: Location
 
-{"channels":[{"id":"5a21bbcb-4c9a-4bb4-af31-9982d00f7a6e","name":"joe"},{"id":"d74b119b-2eea-4285-a999-9f747869bb45","name":"betty"}]}
+{
+    "channels": [{
+            "id": "5ec1beb9-1b76-47e6-a9ef-baf9e4ae5820",
+            "owner_id": "71db4bb0-591e-4f76-b766-b39ced9fc6b8",
+            "name": "joe",
+            "created_at": "2023-04-04T09:11:16.131972Z",
+            "updated_at": "2023-04-04T09:11:16.131972Z",
+            "status": "disabled"
+        },
+        {
+            "id": "ff1316f1-d3c6-4590-8bf3-33774d79eab2",
+            "owner_id": "71db4bb0-591e-4f76-b766-b39ced9fc6b8",
+            "name": "betty",
+            "created_at": "2023-04-04T09:11:16.138881Z",
+            "updated_at": "2023-04-04T09:11:16.138881Z",
+            "status": "disabled"
+        }
+    ]
+}
 ```
 
 #### Retrieving Provisioned Channels
@@ -220,44 +334,73 @@ access-control-expose-headers: Location
 To retreve provisioned channels you should send request to `/channels` with authorization token in `Authorization` header:
 
 ```bash
-curl -s -S -i --cacert docker/ssl/certs/ca.crt -H "Authorization: Bearer <user_token>" https://localhost/channels
+curl -s -S -i --cacert docker/ssl/certs/ca.crt -H "Authorization: Bearer $USER_TOKEN" https://localhost/channels
 ```
 
 Note that you will receive only those channels that were created by authorization token's owner.
 
 ```json
-HTTP/1.1 200 OK
-Content-Type: application/json
-Date: Tue, 10 Apr 2018 11:38:06 GMT
-Content-Length: 139
+HTTP/2 200 
+server: nginx/1.23.3
+date: Tue, 04 Apr 2023 09:13:48 GMT
+content-type: application/json
+content-length: 495
+access-control-expose-headers: Location
 
 {
-  "total": 1,
-  "offset": 0,
-  "limit": 10,
-  "channels": [
-    {
-      "id": "19daa7a8-a489-4571-8714-ef1a214ed914",
-      "name": "mychan"
-    }
-  ]
+    "total": 2,
+    "channels": [{
+            "id": "5ec1beb9-1b76-47e6-a9ef-baf9e4ae5820",
+            "owner_id": "71db4bb0-591e-4f76-b766-b39ced9fc6b8",
+            "name": "joe",
+            "created_at": "2023-04-04T09:11:16.131972Z",
+            "updated_at": "2023-04-04T09:11:16.131972Z",
+            "status": "enabled"
+        },
+        {
+            "id": "ff1316f1-d3c6-4590-8bf3-33774d79eab2",
+            "owner_id": "71db4bb0-591e-4f76-b766-b39ced9fc6b8",
+            "name": "betty",
+            "created_at": "2023-04-04T09:11:16.138881Z",
+            "updated_at": "2023-04-04T09:11:16.138881Z",
+            "status": "enabled"
+        }
+    ]
 }
 ```
 
 You can specify  `offset` and  `limit` parameters in order to fetch specific group of channels. In that case, your request should look like:
 
 ```bash
-curl -s -S -i --cacert docker/ssl/certs/ca.crt -H "Authorization: Bearer <user_token>" https://localhost/channels?offset=0&limit=5
+curl -s -S -i --cacert docker/ssl/certs/ca.crt -H "Authorization: Bearer $USER_TOKEN" https://localhost/channels?offset=0&limit=5
 ```
 
 If you don't provide them, default values will be used instead: 0 for `offset` and 10 for `limit`. Note that `limit` cannot be set to values greater than 100. Providing invalid values will be considered malformed request.
 
-#### Removing Channels
+#### Disabling Channels
 
-In order to remove specific channel you should send following request:
+In order to disable specific channel you should send following request:
 
 ``` bash
-curl -s -S -i --cacert docker/ssl/certs/ca.crt -X DELETE -H "Authorization: Bearer <user_token>" https://localhost/channels/<channel_id>
+curl -s -S -i --cacert docker/ssl/certs/ca.crt -X POST -H "Authorization: Bearer $USER_TOKEN" https://localhost/channels/5ec1beb9-1b76-47e6-a9ef-baf9e4ae5820/disable
+```
+
+```bash
+HTTP/2 200 
+server: nginx/1.23.3
+date: Tue, 04 Apr 2023 09:16:31 GMT
+content-type: application/json
+content-length: 235
+access-control-expose-headers: Location
+
+{
+    "id": "5ec1beb9-1b76-47e6-a9ef-baf9e4ae5820",
+    "owner_id": "71db4bb0-591e-4f76-b766-b39ced9fc6b8",
+    "name": "joe",
+    "created_at": "2023-04-04T09:11:16.131972Z",
+    "updated_at": "2023-04-04T09:11:16.131972Z",
+    "status": "disabled"
+}
 ```
 
 ### Access Control
@@ -272,89 +415,105 @@ To connect a thing to the channel you should send following request:
 > This endpoint will be depreciated in 0.11.0.  It will be replaced with the bulk endpoint found at /connect.
 
 ```bash
-curl -s -S -i --cacert docker/ssl/certs/ca.crt -X PUT -H "Authorization: Bearer <user_token>" https://localhost/channels/<channel_id>/things/<thing_id>
+curl -s -S -i --cacert docker/ssl/certs/ca.crt -X PUT -H "Authorization: Bearer $USER_TOKEN" https://localhost/channels/<channel_id>/things/<thing_id>
+```
+
+```bash
+HTTP/2 201 
+server: nginx/1.23.3
+date: Tue, 04 Apr 2023 09:20:23 GMT
+content-type: application/json
+content-length: 266
+access-control-expose-headers: Location
+
+{
+    "owner_id": "71db4bb0-591e-4f76-b766-b39ced9fc6b8",
+    "subject": "b594af97-9550-4b11-86e1-2b6db7e329b9",
+    "object": "ff1316f1-d3c6-4590-8bf3-33774d79eab2",
+    "actions": ["m_write", "m_read"],
+    "created_at": "2023-04-04T09:20:23.015342Z",
+    "updated_at": "2023-04-04T09:20:23.015342Z"
+}
 ```
 
 To connect multiple things to a channel, you can send the following request:
 
 ```bash
-curl -s -S -i --cacert docker/ssl/certs/ca.crt -X POST -H "Content-Type: application/json" -H "Authorization: Bearer <user_token>" https://localhost/connect -d '{"channel_ids":["<channel_id>", "<channel_id>"],"thing_ids":["<thing_id>", "<thing_id>"]}'
+curl -s -S -i --cacert docker/ssl/certs/ca.crt -X POST -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" https://localhost/connect -d '{"channel_ids":["<channel_id>", "<channel_id>"],"thing_ids":["<thing_id>", "<thing_id>"]}'
 ```
 
 You can observe which things are connected to specific channel:
 
 ```bash
-curl -s -S -i --cacert docker/ssl/certs/ca.crt -H "Authorization: Bearer <user_token>" https://localhost/channels/<channel_id>/things
-```
-
-You can also observe which things are not connected to specific channel by adding a query parameter `connected=false` to the HTTP request:
-
-```
-curl -s -S -i --cacert docker/ssl/certs/ca.crt -H "Authorization: Bearer <user_token>" https://localhost/channels/<channel_id>/things?connected=false
+curl -s -S -i --cacert docker/ssl/certs/ca.crt -H "Authorization: Bearer $USER_TOKEN" https://localhost/channels/<channel_id>/things
 ```
 
 Response that you'll get should look like this:
 
 ```json
+HTTP/2 200 
+server: nginx/1.23.3
+date: Tue, 04 Apr 2023 09:53:21 GMT
+content-type: application/json
+content-length: 254
+access-control-expose-headers: Location
+
 {
-  "total": 2,
-  "offset": 0,
-  "limit": 10,
-  "things": [
-    {
-      "id": "3ffb3880-d1e6-4edd-acd9-4294d013f35b",
-      "name": "d0",
-      "key": "b1996995-237a-4552-94b2-83ec2e92a040",
-      "metadata": "{}"
-    },
-    {
-      "id": "94d166d6-6477-43dc-93b7-5c3707dbef1e",
-      "name": "d1",
-      "key": "e4588a68-6028-4740-9f12-c356796aebe8",
-      "metadata": "{}"
-    }
-  ]
+    "limit": 10,
+    "total": 1,
+    "things": [{
+        "id": "b594af97-9550-4b11-86e1-2b6db7e329b9",
+        "name": "bob",
+        "credentials": { "secret": "9f89f52e-1b06-4416-8294-ae753b0c4bea" },
+        "created_at": "2023-04-04T08:42:04.16839Z",
+        "updated_at": "0001-01-01T00:00:00Z",
+        "status": "enabled"
+    }]
 }
 ```
 
 You can observe to which channels is specified thing connected:
 
 ```bash
-curl -s -S -i --cacert docker/ssl/certs/ca.crt -H "Authorization: Bearer <user_token>" https://localhost/things/<thing_id>/channels
-```
-
-You can also observe to which channels is specified thing not connected by adding a query parameter `connected=false` to the HTTP request:
-
-```
-curl -s -S -i --cacert docker/ssl/certs/ca.crt -H "Authorization: Bearer <user_token>" https://localhost/things/<thing_id>/channels?connected=false
+curl -s -S -i --cacert docker/ssl/certs/ca.crt -H "Authorization: Bearer $USER_TOKEN" https://localhost/things/<thing_id>/channels
 ```
 
 Response that you'll get should look like this:
 
-```json
+```bash
+HTTP/2 200 
+server: nginx/1.23.3
+date: Tue, 04 Apr 2023 09:57:10 GMT
+content-type: application/json
+content-length: 261
+access-control-expose-headers: Location
+
 {
-  "total": 2,
-  "offset": 0,
-  "limit": 10,
-  "channels": [
-    {
-      "id": "5e62eb13-2695-4860-8d87-85b8a2f80fd4",
-      "name": "c1",
-      "metadata": "{}"
-    },
-    {
-      "id": "c4b5e19a-7ffe-4172-b2c5-c8b9d570a165",
-      "name": "c0",
-      "metadata":"{}"
-    }
-  ]
+    "total": 1,
+    "channels": [{
+        "id": "ff1316f1-d3c6-4590-8bf3-33774d79eab2",
+        "owner_id": "71db4bb0-591e-4f76-b766-b39ced9fc6b8",
+        "name": "betty",
+        "created_at": "2023-04-04T09:11:16.138881Z",
+        "updated_at": "2023-04-04T09:11:16.138881Z",
+        "status": "enabled"
+    }]
 }
 ```
 
 If you want to disconnect your thing from the channel, send following request:
 
 ```bash
-curl -s -S -i --cacert docker/ssl/certs/ca.crt -X DELETE -H "Authorization: Bearer <user_token>" https://localhost/channels/<channel_id>/things/<thing_id>
+curl -s -S -i --cacert docker/ssl/certs/ca.crt -X DELETE -H "Authorization: Bearer $USER_TOKEN" https://localhost/channels/<channel_id>/things/<thing_id>
+```
+
+Response that you'll get should look like this:
+
+```bash
+HTTP/2 204 
+server: nginx/1.23.3
+date: Tue, 04 Apr 2023 09:57:53 GMT
+access-control-expose-headers: Location
 ```
 
 For more information about the Things service API, please check out the [API documentation](https://github.com/mainflux/mainflux/blob/master/api/things.yml).
@@ -486,8 +645,9 @@ Example of provision layout below
 `[bootstrap.content]` will be marshalled and saved into `content` field in bootstrap configs when request to `/mappings` is made, `content` field from bootstrap config is used to create `Agent` and `Export` configuration files upon `Agent` fetching bootstrap configuration.
 
 ### Authentication
+
 In order to create necessary entities provision service needs to authenticate against Mainflux.
-To provide authentication credentials to the provision service you can pass it in as an environment variable or in a config file as Mainflux user and password or as API token (that can be issued on `/users` or `/keys` endpoint of [auth][auth].
+To provide authentication credentials to the provision service you can pass it in as an environment variable or in a config file as Mainflux user and password or as API token (that can be issued on `/users/tokens/issue` endpoint of [users service][users].
 
 Additionally, users or API token can be passed in Authorization header, this authentication takes precedence over others.
 
@@ -614,10 +774,6 @@ MF_AGENT_BOOTSTRAP_ID=gateway MF_AGENT_BOOTSTRAP_KEY=external_key MF_AGENT_BOOTS
 Agent will retrieve connections parameters and connect to Mainflux cloud.
 
 
-
-
-
-
 [mainflux]: https://github.com/mainflux/mainflux
 [bootstrap]: https://github.com/mainflux/mainflux/tree/master/bootstrap
 [export]: https://github.com/mainflux/export
@@ -626,7 +782,7 @@ Agent will retrieve connections parameters and connect to Mainflux cloud.
 [config]: https://github.com/mainflux/mainflux/tree/master/provision#configuration
 [env]: https://github.com/mainflux/mainflux/blob/master/.env
 [conftoml]: https://github.com/mainflux/mainflux/blob/master/docker/addons/provision/configs/config.toml
-[auth]: https://github.com/mainflux/mainflux/blob/master/auth/README.md
+[users]: https://github.com/mainflux/mainflux/blob/master/users/README.md
 [exp]: https://github.com/mainflux/export
 [cli]: https://github.com/mainflux/mainflux/tree/master/cli
 
