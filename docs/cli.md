@@ -20,7 +20,7 @@ which will build `mainflux-cli` in `<project_root>/build` folder.
 
 Executing `build/mainflux-cli` without any arguments will output help with all available commands and flags:
 
-```
+```bash
 Usage:
   mainflux-cli [command]
 
@@ -32,14 +32,12 @@ Available Commands:
   groups      Groups management
   health      Health Check
   help        Help about any command
-  keys        Keys management
   messages    Send or read messages
   provision   Provision things and channels from a config file
   things      Things management
   users       Users management
 
 Flags:
-  -a, --auth-url string        Auth service URL (default "http://localhost")
   -b, --bootstrap-url string   Bootstrap service URL (default "http://localhost")
   -s, --certs-url string       Certs service URL (default "http://localhost")
   -c, --config string          Config path
@@ -53,6 +51,7 @@ Flags:
   -n, --name string            Name query parameter
   -o, --offset uint            Offset query parameter
   -r, --raw                    Enables raw output mode for easier parsing of output
+  -R, --reader-url string      Reader URL (default "http://localhost")
   -S, --status string          User status query parameter
   -t, --things-url string      Things service URL (default "http://localhost")
   -u, --users-url string       Users service URL (default "http://localhost")
@@ -63,7 +62,19 @@ Use "mainflux-cli [command] --help" for more information about a command.
 It is also possible to use the docker image `mainflux/cli` to execute CLI command:
 
 ```bash
-docker run -it --rm mainflux/cli -m http://<IP_SERVER> [command]
+docker run -it --rm mainflux/cli -u http://<IP_SERVER> [command]
+```
+
+For example:
+
+```bash
+docker run -it --rm mainflux/cli -u http://192.168.160.1 users token admin@example.com 12345678
+
+{
+  "access_token": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODA2MjEzMDcsImlhdCI6MTY4MDYyMDQwNywiaWRlbnRpdHkiOiJhZG1pbkBleGFtcGxlLmNvbSIsImlzcyI6ImNsaWVudHMuYXV0aCIsInN1YiI6ImYxZTA5Y2YxLTgzY2UtNDE4ZS1iZDBmLWU3M2I3M2MxNDM2NSIsInR5cGUiOiJhY2Nlc3MifQ.iKdBv3Ko7PKuhjTC6Xs-DvqfKScjKted3ZMorTwpXCd4QrRSsz6NK_lARG6LjpE0JkymaCMVMZlzykyQ6ZgwpA",
+  "access_type": "Bearer",
+  "refresh_token": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODA3MDY4MDcsImlhdCI6MTY4MDYyMDQwNywiaWRlbnRpdHkiOiJhZG1pbkBleGFtcGxlLmNvbSIsImlzcyI6ImNsaWVudHMuYXV0aCIsInN1YiI6ImYxZTA5Y2YxLTgzY2UtNDE4ZS1iZDBmLWU3M2I3M2MxNDM2NSIsInR5cGUiOiJyZWZyZXNoIn0.-0tOtXFZi48VS-FxkCnVxnW2RUkJvqUmzRz3_EYSSKFyKealoFrv7sZIUvrdvKomnUFzXshP0EygL8vjWP1SFw"
+}
 ```
 
 You can execute each command with `-h` flag for more information about that command, e.g.
@@ -72,33 +83,31 @@ You can execute each command with `-h` flag for more information about that comm
 mainflux-cli channels -h
 ```
 
-will get you usage info:
+Response should look like this:
 
-```
+```bash
 Channels management: create, get, update or delete Channel and get list of Things connected or not connected to a Channel
 
 Usage:
   mainflux-cli channels [command]
 
 Available Commands:
-  connections   Connections list
-  create        Create channel
-  delete        Delete channel
-  get           Get channel
-  not-connected Not-connected list
-  update        Update channel
+  connections Connections list
+  create      Create channel
+  disable     Change channel status to disabled
+  enable      Change channel status to enabled
+  get         Get channel
+  update      Update channel
 
 Flags:
   -h, --help   help for channels
 
 Global Flags:
-  -a, --auth-url string        Auth service URL (default "http://localhost")
   -b, --bootstrap-url string   Bootstrap service URL (default "http://localhost")
   -s, --certs-url string       Certs service URL (default "http://localhost")
   -c, --config string          Config path
   -y, --content-type string    Message content type (default "application/senml+json")
   -e, --email string           User email query parameter
-  -h, --help                   help for mainflux-cli
   -p, --http-url string        HTTP adapter URL (default "http://localhost/http")
   -i, --insecure               Do not check for TLS cert
   -l, --limit uint             Limit query parameter (default 100)
@@ -106,6 +115,7 @@ Global Flags:
   -n, --name string            Name query parameter
   -o, --offset uint            Offset query parameter
   -r, --raw                    Enables raw output mode for easier parsing of output
+  -R, --reader-url string      Reader URL (default "http://localhost")
   -S, --status string          User status query parameter
   -t, --things-url string      Things service URL (default "http://localhost")
   -u, --users-url string       Users service URL (default "http://localhost")
@@ -114,69 +124,91 @@ Use "mainflux-cli channels [command] --help" for more information about a comman
 ```
 
 ## Service
-#### Get Mainflux Things services health check
+
+### Get Mainflux Things services health check
+
 ```bash
 mainflux-cli health
 ```
 
-### Users management
-#### Create User
+Response should look like this:
 
-Mainflux has two options for user creation. Either everybody or just the admin is able to create new users. This option is dictated through policies and be configured through environment variable (`MF_USERS_ALLOW_SELF_REGISTER`). If only the admin is allowed to create new users, then the `<user_token>` is required because the token is used to verify that the requester is admin or not. Otherwise, the token is not used, since everybody can create new users. However, the token is still required, in order to be consistent. For more details, please see [Authorization page](authorization.md).
-
-```bash
-if env `MF_USERS_ALLOW_SELF_REGISTER` is "true" then   
-  mainflux-cli users create <user_email> <user_password>
-else   
-  mainflux-cli users create <user_email> <user_password> <admin_token>
+```json
+{
+  "build_time": "2023-04-04_12:56:15",
+  "commit": "d5d3f8b2c0cccb1b9c5c00c43554f0afb4bc38f9",
+  "description": "things service",
+  "status": "pass",
+  "version": "0.13.0"
+}
 ```
 
-`MF_USERS_ALLOW_SELF_REGISTER` is `true` by default. Therefore, you do not need to provide `<admin_token>` if `MF_USERS_ALLOW_SELF_REGISTER` is true. On the other hand, if you set `MF_USERS_ALLOW_SELF_REGISTER` to `false`, the Admin token is required for authorization. Therefore, you have to provide the admin token through third argument stated as `<admin_token>`.
+### Users management
+
+#### Create User
+
+Mainflux has two options for user creation. Either the `<user_token>` is provided or not. If the `<user_token>` is provided then the created user will be owned by the user identified by the `<user_token>`. Otherwise, when the token is not used, since everybody can create new users, the user will not have an owner. However, the token is still required, in order to be consistent. For more details, please see [Authorization page](authorization.md).
+
+```bash
+mainflux-cli users create <user_name> <user_email> <user_password>
+
+mainflux-cli users create <user_name> <user_email> <user_password> <user_token>
+```
 
 #### Login User
+
 ```bash
 mainflux-cli users token <user_email> <user_password>
 ```
 
 #### Get User
+
 ```bash
 mainflux-cli users get <user_id> <user_token>
 ```
 
 #### Get Users
+
 ```bash
-mainflux-cli users get all <admin_token>
+mainflux-cli users get all <user_token>
 ```
 
 #### Update User Metadata
+
 ```bash
-mainflux-cli users update '{"key1":"value1", "key2":"value2"}' <user_token>
+mainflux-cli users update <user_id> '{"name":"value1", "metadata":{"value2": "value3"}}' <user_token>
 ```
 
 #### Update User Password
+
 ```bash
 mainflux-cli users password <old_password> <password> <user_token>
 ```
 
 #### Enable User
+
 ```bash
-mainflux-cli users enable <user_id> <admin_token>
+mainflux-cli users enable <user_id> <user_token>
 ```
 
 #### Disable User
+
 ```bash
-mainflux-cli users disable <user_id> <admin_token>
+mainflux-cli users disable <user_id> <user_token>
 ```
 
 ### System Provisioning
+
 #### Create Thing
+
 ```bash
 mainflux-cli things create '{"name":"myThing"}' <user_token>
 ```
 
 #### Create Thing with metadata
+
 ```bash
-mainflux-cli things create '{"name":"myThing", "metadata": {\"key1\":\"value1\"}}' <user_token>
+mainflux-cli things create '{"name":"myThing", "metadata": {"key1":"value1"}}' <user_token>
 ```
 
 #### Bulk Provision Things
@@ -185,85 +217,179 @@ mainflux-cli things create '{"name":"myThing", "metadata": {\"key1\":\"value1\"}
 mainflux-cli provision things <file> <user_token>
 ```
 
-* `file` - A CSV or JSON file containing things (must have extension `.csv` or `.json`)
+* `file` - A CSV or JSON file containing thing names (must have extension `.csv` or `.json`)
 * `user_token` - A valid user auth token for the current system
 
+An example CSV file might be:
+
+```csv
+thing1,
+thing2,
+thing3,
+```
+
+in which the first column is thing names.
+
+A comparable JSON file would be
+
+```json
+[{
+        "name": "<thing1_name>",
+        "status": "enabled"
+    },
+    {
+        "name": "<thing2_name>",
+        "status": "disabled"
+    }, {
+
+        "name": "<thing3_name>",
+        "status": "enabled",
+        "credentials": {
+            "identity": "<thing3_identity>",
+            "secret": "<thing3_secret>"
+        }
+    }
+]
+```
+
+With JSON you can be able to specify more fields of the channels you want to create
+
 #### Update Thing
+
 ```bash
-mainflux-cli things update '{"id":"<thing_id>", "name":"myNewName"}' <user_token>
+mainflux-cli things update <thing_id> '{"name":"value1", "metadata":{"key1": "value2"}}' <user_token>
 ```
 
 #### Identify Thing
+
 ```bash
 mainflux-cli things identify <thing_key>
 ```
 
-#### Remove Thing
+#### Enable Thing
+
 ```bash
-mainflux-cli things delete <thing_id> <user_token>
+mainflux-cli things enable <thing_id> <user_token>
+```
+
+#### Disable Thing
+
+```bash
+mainflux-cli things disable <thing_id> <user_token>
 ```
 
 #### Get Thing
+
 ```bash
 mainflux-cli things get <thing_id> <user_token>
 ```
 
 #### Get Things
+
 ```bash
-mainflux-cli things get all <admin_token>
+mainflux-cli things get all <user_token>
 ```
 
 #### Get a subset list of provisioned Things
+
 ```bash
 mainflux-cli things get all --offset=1 --limit=5 <user_token>
 ```
 
-
 #### Create Channel
+
 ```bash
 mainflux-cli channels create '{"name":"myChannel"}' <user_token>
 ```
 
 #### Bulk Provision Channels
+
 ```bash
 mainflux-cli provision channels <file> <user_token>
 ```
 
-* `file` - A CSV or JSON file containing channels (must have extension `.csv` or `.json`)
+* `file` - A CSV or JSON file containing channel names (must have extension `.csv` or `.json`)
 * `user_token` - A valid user auth token for the current system
 
+An example CSV file might be:
+
+```csv
+<channel1_name>,
+<channel2_name>,
+<channel3_name>,
+```
+
+in which the first column is channel names.
+
+A comparable JSON file would be
+
+```json
+[{
+        "name": "<channel1_name>",
+        "description": "<channel1_description>",
+        "status": "enabled"
+    },
+    {
+        "name": "<channel2_name>",
+        "description": "<channel2_description>",
+        "status": "disabled"
+    }, {
+
+        "name": "<channel3_name>",
+        "description": "<channel3_description>",
+        "status": "enabled"
+    }
+]
+```
+
+With JSON you can be able to specify more fields of the channels you want to create
+
 #### Update Channel
+
 ```bash
 mainflux-cli channels update '{"id":"<channel_id>","name":"myNewName"}' <user_token>
 ```
 
-#### Remove Channel
+#### Enable Channel
+
 ```bash
-mainflux-cli channels delete <channel_id> <user_token>
+mainflux-cli channels enable <channel_id> <user_token>
+```
+
+#### Disable Channel
+
+```bash
+mainflux-cli channels disable <channel_id> <user_token>
 ```
 
 #### Get Channel
+
 ```bash
 mainflux-cli channels get <channel_id> <user_token>
 ```
 
 #### Get Channels
+
 ```bash
 mainflux-cli channels get all <user_token>
 ```
 
 #### Get a subset list of provisioned Channels
+
 ```bash
 mainflux-cli channels get all --offset=1 --limit=5 <user_token>
 ```
 
 ### Access control
+
 #### Connect Thing to Channel
+
 ```bash
 mainflux-cli things connect <thing_id> <channel_id> <user_token>
 ```
 
 #### Bulk Connect Things to Channels
+
 ```bash
 mainflux-cli provision connect <file> <user_token>
 ```
@@ -274,8 +400,8 @@ mainflux-cli provision connect <file> <user_token>
 An example CSV file might be
 
 ```csv
-<thing_id>,<channel_id>
-<thing_id>,<channel_id>
+<thing_id1>,<channel_id1>
+<thing_id2>,<channel_id2>
 ```
 
 in which the first column is thing IDs and the second column is channel IDs.  A connection will be created for each thing to each channel.  This example would result in 4 connections being created.
@@ -284,40 +410,45 @@ A comparable JSON file would be
 
 ```json
 {
-    "thing_ids": [
-        "<thing_id>",
-        "<thing_id>"
+    "client_ids": [
+        "<thing_id1>",
+        "<thing_id2>"
     ],
-    "channel_ids": [
-        "<channel_id>",
-        "<channel_id>"
+    "group_ids": [
+        "<channel_id1>",
+        "<channel_id2>"
     ]
 }
 ```
 
 #### Disconnect Thing from Channel
+
 ```bash
 mainflux-cli things disconnect <thing_id> <channel_id> <user_token>
 ```
 
 #### Get a subset list of Channels connected to Thing
+
 ```bash
 mainflux-cli things connections <thing_id> <user_token>
 ```
 
 #### Get a subset list of Things connected to Channel
+
 ```bash
 mainflux-cli channels connections <channel_id> <user_token>
 ```
 
-
 ### Messaging
+
 #### Send a message over HTTP
+
 ```bash
-mainflux-cli messages send <channel_id> '[{"bn":"Dev1","n":"temp","v":20}, {"n":"hum","v":40}, {"bn":"Dev2", "n":"temp","v":20}, {"n":"hum","v":40}]' <thing_auth_token>
+mainflux-cli messages send <channel_id> '[{"bn":"Dev1","n":"temp","v":20}, {"n":"hum","v":40}, {"bn":"Dev2", "n":"temp","v":20}, {"n":"hum","v":40}]' <thing_secret>
 ```
 
 #### Read messages over HTTP
+
 ```bash
 mainflux-cli messages read <channel_id> <user_token> -R <reader_url>
 ```
@@ -325,84 +456,87 @@ mainflux-cli messages read <channel_id> <user_token> -R <reader_url>
 ### Bootstrap
 
 #### Add configuration
+
 ```bash
 mainflux-cli bootstrap create '{"external_id": "myExtID", "external_key": "myExtKey", "name": "myName", "content": "myContent"}' <user_token> -b <bootstrap-url>
 ```
 
 #### View configuration
+
 ```bash
-mainflux-cli bootstrap view <thing_id> <user_token> -b <bootstrap-url>
+mainflux-cli bootstrap get <thing_id> <user_token> -b <bootstrap-url>
 ```
 
 #### Update configuration
+
 ```bash
 mainflux-cli bootstrap update '{"mainflux_id":"<thing_id>", "name": "newName", "content": "newContent"}' <user_token> -b <bootstrap-url>
 ```
 
 #### Remove configuration
+
 ```bash
 mainflux-cli bootstrap remove <thing_id> <user_token> -b <bootstrap-url>
 ```
 
 #### Bootstrap configuration
+
 ```bash
 mainflux-cli bootstrap bootstrap <external_id> <external_key> -b <bootstrap-url>
-```
-
-### Key
-
-#### Issue Key
-```bash
-mainflux-cli keys issue <duration> <user_token>
-```
-
-#### Retrieve Key
-```bash
-mainflux-cli keys retrieve <key_id> <user_token>
-```
-
-#### Revoke Key
-```bash
-mainflux-cli keys revoke <key_id> <user_token>
 ```
 
 ### Groups
 
 #### Create Group
+
 ```bash
-mainflux-cli groups create '{"Name":"<group_name>","Description":"<description>","ParentID":"<parent_id>","Metadata":"<metadata>"}' <user_token>
+mainflux-cli groups create '{"name":"<group_name>","description":"<description>","parentID":"<parent_id>","metadata":"<metadata>"}' <user_token>
 ```
 
 #### Get Group
+
 ```bash
 mainflux-cli groups get <group_id> <user_token>
 ```
 
 #### Get Groups
+
 ```bash
-mainflux-cli groups get all <admin_token>
+mainflux-cli groups get all <user_token>
 ```
 
 #### Get Group Members
+
 ```bash
-mainflux-cli groups members <group_id> <admin_token>
+mainflux-cli groups members <group_id> <user_token>
 ```
 
 #### Get Memberships
+
 ```bash
-mainflux-cli groups membership <member_id> <admin_token>
+mainflux-cli groups membership <member_id> <user_token>
 ```
 
 #### Assign Members to Group
+
 ```bash
 mainflux-cli groups assign <member_ids> <member_type> <group_id> <user_token>
 ```
 
 #### Unassign Members to Group
+
 ```bash
 mainflux-cli groups unassign <member_ids> <group_id>  <user_token>
 ```
-#### Delete Group
+
+#### Enable Group
+
 ```bash
-mainflux-cli groups delete <group_id> <user_token>
+mainflux-cli groups enable <group_id> <user_token>
+```
+
+#### Disable Group
+
+```bash
+mainflux-cli groups disable <group_id> <user_token>
 ```
