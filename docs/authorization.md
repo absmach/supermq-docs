@@ -2,31 +2,115 @@
 
 ## Policies
 
-Mainflux uses policies to control permissions on entities: **users**, **things**, and **groups**. Under the hood, Mainflux uses [ORY Keto](https://www.ory.sh/keto/) that is an open-source implementation of ["Zanzibar: Google's Consistent, Global Authorization System"](https://www.usenix.org/conference/atc19/presentation/pang).
+Mainflux uses policies to control permissions on entities: **users**, **things**, and **groups**. Under the hood, Mainflux uses its own fine grained access control list.
 
-Policies define permissions for the entities. For example, *which user* has *access* to *a specific thing*. Such policies have three main components: **subject**, **object**, and **relation**.
+Policies define permissions for the entities. For example, *which user* has *access* to *a specific thing*. Such policies have three main components: **subject**, **object**, and **action**.
 
 To put it briefly:
 
-**Subject**: As the name suggests, it is the subject that will have the policy such as *users*. Mainflux uses entity UUID on behalf of the real entities.
+**Subject**: As the name suggests, it is the subject that will have the policy such as *users* or *things*. Mainflux uses entity UUID on behalf of the real entities.
 
-**Object**: Objects are Mainflux entities (e.g. *thing* or *group*) represented by their UUID.
+**Object**: Objects are Mainflux entities (e.g. *channels* or *group* or *things*) represented by their UUID.
 
-**Relation**: This is the action that the subject wants to do on the object.
+**Action**: This is the action that the subject wants to do on the object. This is one of the supported actions (read, write, update, delete, list or add)
 
-> For more conceptual details, you can refer [official ORY Keto documentation](https://www.ory.sh/keto/docs)
+Above this we have a domain specifier called **entityType**. This either specific group level access or client level acess. With client level access a client can have an action to another client in the same group. While group level access a client has an action to a group i.e direct association.
 
 All three components create a single policy.
 
-For example, let's assume we have a following policy: `"user_id_123" has "read" relation on "thing_id_123"`. This policy means that subject (a user with ID: `user_id_123`) has a relation (`read`) on the object (a thing with ID: `thing_id_123`). Based upon this example, If the user wants to view a `Thing`, Mainflux first identifies the user with Authentication Keys and checks the policy as:
-```
-User with ID: `user_id_123` has `read` relation on the thing with ID: `thing_id_123`.
-```
-If the user has no such policy, the operation will be denied; otherwise, the operation will be allowed. In this case, since the user `user_id_123` has the policy, the `read` operation on the thing `thing_id_123` will be allowed for the user with ID `user_id_123`. On the other hand, requests coming from other users (who have a different ID than `user_id_123`) will be denied.
+```go
+// Policy represents an argument struct for making policy-related function calls.
 
-In order to check whether a user has the policy or not, Mainflux makes a gRPC call to Keto API, then Keto handles the checking existence of the policy.
+type Policy struct {
+    Subject   string    `json:"subject"`
+    Object    string    `json:"object"`
+    Actions   []string  `json:"actions"`
+}
 
-All policies are stored in the Keto Database. The database responsible for storing all policies is deployed along with the Mainflux, as a standalone PostgreSQL database container.
+var examplePolicy = Policy{
+    Subject: userToken,
+    Object:  groupID,
+    Actions: []string{groupListAction},
+}
+```
+
+Policies handling initial implementation are meant to be used on the **Group** level.
+
+There are three types of policies:
+
+- M Policy for messages
+- G Policy for Group rights
+- C Policy for Clients that are group members
+
+M Policy represents client rights to send and receive messages to a channel. Only channel members with corresponding rights can publish or receive messages to/from the channel.
+
+G Policy represents the client's rights to modify the group/channel itself. Only group/channel members with correct rights can modify or update the group/channel, or add/remove members to/from the group.
+
+Finally, the C policy represents the rights the member has over other members of the group/channel.
+
+## Example
+
+The rules are specified in the **policies** association table. The table looks like this:
+
+| subject | object | actions                                     |
+| ------- | ------ | ------------------------------------------- |
+| clientA | groupA | ["g_add", "g_list", "g_update", "g_delete"] |
+| clientB | groupA | ["c_list", "c_update", "c_delete"]          |
+| clientC | groupA | ["c_update"]                                |
+| clientD | groupA | ["c_list"]                                  |
+| clientE | groupB | ["c_list", "c_update", "c_delete"]          |
+| clientF | groupB | ["c_update"]                                |
+| clientD | groupB | ["c_list"]                                  |
+| clientG | groupC | ["m_read"]                                  |
+| clientH | groupC | ["m_read", "m_write"]                       |
+
+Actions such as `c_list`, and `c_update` represent actions that allowed for the client with `client_id` to execute over all the other clients that are members of the group with `gorup_id`. Actions such as `g_update` represent actions allowed for the client with `client_id` to execute against a group with `group_id`.
+
+For the sake of simplicity, all the operations at the moment are executed on the **group level** - the group acts as a namespace in the context of authorization and is required.
+
+1. Actions for `clientA`
+
+      - when `clientA` lists groups `groupA` will be listed
+      - they can add members to `groupA`
+      - they can update `groupA`
+      - they can change the status of `groupA`
+
+2. Actions for `clientB`
+
+      - when they list clients they will list `clientA`, `clientC` and `clientD` since they are connected in the same group `groupA` and they have `c_list` actions
+      - they can update clients connected to the same group they are connected in i.e they can update `clientA`, `clientC` and `clientD` since they are in the same `groupA`
+      - they can change clients status of clients connected to the same group they are connected in i.e they are able to change the status of `clientA`, `clientC` and `clientD` since they are in the same group `groupA`
+
+3. Actions for `clientC`
+
+      - they can update clients connected to the same group they are connected in i.e they can update `clientA`, `clientB` and `clientD` since they are in the same `groupA`
+
+4. Actions for `clientD`
+
+      - when they list clients they will list `clientA`, `clientB` and `clientC` since they are connected in the same group `groupA` and they have `c_list` actions and also `clientE` and `clientF` since they are connected to the same group `groupB` and they have `c_list` actions
+
+5. Actions for `clientE`
+
+      - when they list clients they will list `clientF` and `clientD` since they are connected in the same group `groupB` and they have `c_list` actions
+      - they can update clients connected to the same group they are connected in i.e they can update `clientF` and `clientD` since they are in the same `groupB`
+
+6. Actions for `clientF`
+
+      - they can update clients connected to the same group they are connected in i.e they can update `clientE`, and `clientD` since they are in the same `groupB`
+
+7. Actions for `clientG`
+
+      - they can read messages posted in group `groupC`
+
+8. Actions for `clientH`
+
+      - they can read from `groupC` and write messages to `groupC`
+
+If the user has no such policy, the operation will be denied; otherwise, the operation will be allowed.
+
+In order to check whether a user has the policy or not, Mainflux makes a gRPC call to policies API, then policies sub-service handles the checking existence of the policy.
+
+All policies are stored in the Postgres Database. The database responsible for storing all policies is deployed along with the Mainflux.
 
 ## Predefined Policies
 
@@ -34,33 +118,28 @@ Mainflux comes with predefined policies.
 
 ### Users service related policies
 
-- By default, Mainflux allows anybody to create a user. If you disable this default policy, only *admin* is able to create a user.
-This default policy can be disabled through an environment variable called `MF_USERS_ALLOW_SELF_REGISTER` in deployment time. `MF_USERS_ALLOW_SELF_REGISTER` is a boolean. Therefore, it expects `"true"` or `"false"`. If you assign `"false"` to this environment variable, only *admin* can create a user.
-Mainflux creates a special policy to enable this feature as follows: `user#create@*`. This policy dictates that subject `*` has `create` relation on the object `users`. Here, Mainflux uses a special `*` subject to represent all users. If this policy is defined, everybody can create new users.
-- All users are a `member of the users`. To be more precise, once the new user is created, the policy service creates the following policy:
-`users#member@<user_id>` indicating that the subject `<user_id`> has `member` relation on the object `users`.
-- The admin has a special policy indicating that the user is admin. This policy is the following:
-`<admin_id>` has `member` relation on the object `authorities`.
+- By default, Mainflux allows anybody to create a user.
+- The admin has a special policy indicating that the user is admin. This is implemented using roles as the following:
+`<admin_id>` has `admin` role as part of its description.
 
 ### Things service related policies
 
-- There are 3 policies regarding `Things`: `read`, `write` and `delete`.
-- When a user creates a thing, the user will have `read`, `write` and `delete` policies on the `Thing`.
-- In order to view a thing, you need `read` policy on that thing.
-- In order to update and share the thing, you need a `write` policy on that thing.
-- In order to remove a thing, you need a `delete` policy on that thing.
+- There are 3 policies regarding `Things`: `c_add`, `c_update`, `c_list` and `c_delete`.
+- When a user creates a thing, the user will have `c_update`, `c_list` and `c_delete` policies on the `Thing` since they are the owner.
+- In order to view a thing, you need `c_list` policy on that thing.
+- In order to update and share the thing, you need a `c_update` policy on that thing.
+- In order to remove a thing, you need a `c_delete` policy on that thing.
 
 ### Group entity related policies
 
-- Once the user creates a new group, the user will have a `member` policy on the group.
-- If you assign a new User member to your group, the new user will have a `member` policy on this particular group.
-- If you assign a new Thing member to your group, whatever has `member` policy on that group will have `read`, `write` and `delete` policies on the Things defined in the Group.
-- Mainflux allows users to assign access rights of the Things group with the Users group. Thus, each member of the User group can access Things defined in the Thing group. In order to do so, the Policy service adds members of the User group as a `member` of the Thing Group. Therefore, the Users group members have `read`, `write` and `delete` policy on the Things defined in the Thing Group.
+- Once the user creates a new group, the user will have a `g_add`, `g_update`, `g_list` and `g_delete` policy on the group.
 
 ### Summary of the Defined Policies
+
 - **`member`**: Identifies registered user's role such as `admin`. Also, it indicates memberships on the Group entity.
 - **`read`, `write` and `delete`**: Controls access control for the Things.
 - **`create`**: Mainflux uses special `create` policy to allow everybody to create new users. If you want to enable this feature through the HTTP, you need to make following request:
+
 ```bash
 curl -isSX POST http://localhost/policies -d '{"subjects":["*"],"policies": ["create"], "object": "user"}' -H "Authorization: Bearer <admin_token>" -H 'Content-Type: application/json'
 ```
@@ -76,6 +155,7 @@ curl -isSX POST http://localhost/policies -d '{"subjects": ["<subject_id1>",..."
 ```
 
 ## Delete Policies
+
 The admin can delete policies. Only policies defined on [Predefined Policies section](/authorization/#summary-of-the-defined-policies) are allowed.
 
 > Must-have: admin_token, object, subjects_ids and policies
@@ -87,6 +167,7 @@ curl -isSX PUT http://localhost/policies -d '{"subjects": ["<subject_id1>",..."<
 *admin_token* must belong to the admin.
 
 Response:
+
 ```bash
 HTTP/1.1 204 No Content
 Content-Type: application/json
@@ -97,14 +178,17 @@ Date: Wed, 03 Nov 2021 13:00:05 GMT
 If you delete policies, the policy will be removed from the policy storage. Further authorization checks related to that policy will fail.
 
 For example, let's assume `user1` has `read` policy on the thing `thing-123`. If you delete this policy as:
+
 ```bash
 curl -isSX PUT http://localhost/policies -d '{"subjects": ["<user1_id>"], "object": "thing-123", "policies": ["read"]}' -H "Authorization: Bearer <admin_token>" -H 'Content-Type: application/json'
 ```
+
 `user1` will not be able to view the `thing-123` anymore because the policy which allows `user1` to view `thing-123` is deleted by the admin.
 
 ## Example usage of adding a policy
 
 Suppose we are using the Mainflux version that doesn't have a policies feature yet. Once you migrate a new version of the Mainflux including the Policy feature, your users will face a lack of authorization. For example, there is a user created before the Policy feature. This user is authenticated by `<user_token`>. Although the following operation is valid, the user will have an authorization error.
+
 ```bash
 mainflux-cli things create '{"name":"user-thing"}' <user_token>
 
@@ -135,7 +219,6 @@ created: a1109d52-6281-410e-93ae-38ba7daa9381
 ```
 
 This command creates a thing called `"user1-thing"` with ID = `a1109d52-6281-410e-93ae-38ba7daa9381`. Mainflux identifies the `user1` by using the `<user1_token>`. After identifying the requester as `user1`, the Policy service adds `read`, `write` and `delete` policies to `user1` on `"user1-thing"`.
-
 
 If `user2` wants to view the `"user1-thing"`, the request will be denied.
 
@@ -168,6 +251,7 @@ Access-Control-Expose-Headers: Location
 Now, `user2` has `read` and `delete` policies on `"user1-thing"` which allows `user2` to view and delete `"user1-thing"`. However, `user2` cannot update the `"user1-thing"` because `user2` has no `write` policy on `"user1-thing"`.
 
 Let's try again viewing the `"user1-thing"` as `user2`:
+
 ```bash
 mainflux-cli things get a1109d52-6281-410e-93ae-38ba7daa9381 <user2_token>
 
@@ -185,27 +269,33 @@ As we expected, the operation is successfully done. The policy server checked th
 In this scenario, there will be two users called `user1@example.com` and `user2@example.com`. `user1@example.com` will create one Thing called `thing-test`. Then, the Group entity will be utilized to store all of the created entities (`user1@example.com`, `user2@example.com`, and `thing-test`). At the end of this scenario, we will verify that although `user2@example.com` has no ownership of `thing-test`, `user2@example.com` can access the `thing-test` because they are in the same group.
 
 Let's start with creating users:
+
 - Create `user1@example.com`
+
 ```bash
 curl -s -S -i -X POST -H "Content-Type: application/json" http://localhost/users -d '{"email":"user1@example.com", "password":"12345678"}'
 ```
 
 - Create `user2@example.com`
+
 ```bash
 curl -s -S -i -X POST -H "Content-Type: application/json" http://localhost/users -d '{"email":"user2@example.com", "password":"12345678"}'
 ```
 
 Now, let's create a Thing called `thing-test` owned by `user1@example.com`. Prior to creating it, first, obtain a token for `user1@example.com` as follows:
+
 ```bash
 curl -s -S -i -X POST -H "Content-Type: application/json" http://localhost/tokens -d '{"email":"user1@example.com", "password":"12345678"}'
 ```
 
 It is convenient to store the generated token because the token will be required in further steps repeatedly.
+
 ```bash
 export USER1TOKEN=<USER1TOKEN>
 ```
 
 And create a Thing called `thing-test`
+
 ```bash
 curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: Bearer $USER1TOKEN" http://localhost/things/bulk -d '[{"name": "thing-test"}]'
 ```
@@ -228,7 +318,7 @@ Connection: keep-alive
 
 It is time to create a new Group and put all entities into that Group. Mainflux provides HTTP API for Groups like other entities. We will utilize this HTTP API for Group operations. For more details about Groups, please see [Groups documentation](/groups).
 
-```
+```bash
 curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: Bearer $USER1TOKEN" http://localhost/groups -d '{"name": "my_group"}'
 HTTP/1.1 201 Created
 Server: nginx/1.20.0
@@ -335,10 +425,11 @@ Access-Control-Allow-Headers: *
 You can store the generated token because we will need it in further steps.
 
 ```bash
-$ export token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MzQxNDk2MDUsImlhdCI6MTYzNDExMzYwNSwiaXNzIjoibWFpbmZsdXguYXV0aCIsInN1YiI6ImFkbWluQGV4YW1wbGUuY29tIiwiaXNzdWVyX2lkIjoiOTA3MjkzMDMtZDMwZC00YmQ5LTkwMTYtNDljMThjZmY4YjUxIiwidHlwZSI6MH0.G1kjXiGX76BqpytmLdXtjLF9s9K5CVm4ScNMIaKlkwE
+export token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MzQxNDk2MDUsImlhdCI6MTYzNDExMzYwNSwiaXNzIjoibWFpbmZsdXguYXV0aCIsInN1YiI6ImFkbWluQGV4YW1wbGUuY29tIiwiaXNzdWVyX2lkIjoiOTA3MjkzMDMtZDMwZC00YmQ5LTkwMTYtNDljMThjZmY4YjUxIiwidHlwZSI6MH0.G1kjXiGX76BqpytmLdXtjLF9s9K5CVm4ScNMIaKlkwE
 ```
 
 Now, we can create a new user as follows:
+
 ```bash
 curl -s -S -i -X POST -H "Content-Type: application/json" http://localhost/users -d '{"email":"user@example.com", "password":"12345678"}'
 
@@ -356,6 +447,7 @@ Access-Control-Allow-Origin: *
 Access-Control-Allow-Methods: *
 Access-Control-Allow-Headers: *
 ```
+
 You can obtain the user ID via `Location`. The ID of the `user@example.com` is `f31f8a0a-11b1-4aa6-a4a3-9629378c0326`.
 
 After creating the new user, we have two users on the system as `admin@example.com` and `user@example.com`.
@@ -375,6 +467,7 @@ Access-Control-Expose-Headers: Location
 
 {"things":[{"id":"c3d75452-ae00-4aea-84f9-29ab79fd0d26","name":"admin-thing-1","key":"4fb36389-f7a5-424d-8c4f-da5c9e91f3c5"},{"id":"ee589c61-0b98-4176-9da0-d91913087be6","name":"admin-thing-2","key":"410f5889-c756-470d-bd65-2e99b4ecc679"}]}
 ```
+
 ```bash
 export th1=c3d75452-ae00-4aea-84f9-29ab79fd0d26
 export th2=ee589c61-0b98-4176-9da0-d91913087be6
@@ -397,6 +490,7 @@ Connection: keep-alive
 Location: /groups/01FHWFFMME9N2N26DG0DMNRWRW
 Access-Control-Expose-Headers: Location
 ```
+
 ```bash
 curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: Bearer $TOKEN" http://localhost/groups -d '{"name": "thing_group"}'
 HTTP/1.1 201 Created
@@ -410,12 +504,14 @@ Access-Control-Expose-Headers: Location
 ```
 
 Again, you can obtain group IDs via `Location` in response. It is convenient to store them in variables.
+
 ```bash
 export ug=01FHWFFMME9N2N26DG0DMNRWRW
 export tg=01FHWFG78DSYA458D8ST4YQ9Y9
 ```
 
 After creating groups, we are ready to assign new members to groups. Let's start with the user group.
+
 ```bash
 curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: Bearer $TOKEN" http://localhost/groups/$ug/members -d '{"members":["f31f8a0a-11b1-4aa6-a4a3-9629378c0326"], "type":"users"}'
 
@@ -427,9 +523,11 @@ Content-Length: 0
 Connection: keep-alive
 Access-Control-Expose-Headers: Location
 ```
+
 If you remember, `f31f8a0a-11b1-4aa6-a4a3-9629378c0326` is the ID of the `user@example.com`. Since the `$ug` represents the ID of the user group called `user_group`, we indicated the type of the group as `"users"` in the request body.
 
 Now, we can assign Things to the thing group.
+
 ```bash
 curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: Bearer $TOKEN" http://localhost/groups/$tg/members -d '{"members":["c3d75452-ae00-4aea-84f9-29ab79fd0d26", "ee589c61-0b98-4176-9da0-d91913087be6"], "type":"things"}'
 
@@ -441,9 +539,11 @@ Content-Length: 0
 Connection: keep-alive
 Access-Control-Expose-Headers: Location
 ```
+
 The same logic applies here as well. The IDs of the things that `admin@example.com` created are `c3d75452-ae00-4aea-84f9-29ab79fd0d26` and `ee589c61-0b98-4176-9da0-d91913087be6`. Since the `$tg` represents the ID of the thing group called `thing_group`, we indicated the type of the group as `"things"` in the request body.
 
 Before moving to the third step, let's analyze the current situation. We have two groups, two users, and two things. The first group is the user group and consists of two users, `admin@example.com` (since the admin created the group) and `user@example.com`. The second group is the thing group. It includes two things created by `admin@example.com`.  `user@example.com` still has no access to things created by `admin@example.com`. You can verify it as:
+
 ```bash
 curl -s -S -i -X GET -H "Authorization: Bearer $TOKEN" http://localhost/things/$th1
 HTTP/1.1 403 Forbidden
@@ -455,6 +555,7 @@ Connection: keep-alive
 
 {"error":"failed to perform authorization over the entity"}
 ```
+
 ```bash
 curl -s -S -i -X GET -H "Authorization: Bearer $TOKEN" http://localhost/things/$th2
 HTTP/1.1 403 Forbidden
@@ -470,6 +571,7 @@ Connection: keep-alive
 The `$TOKEN` is the token for `user@example.com`. As you can see, requests to access things are denied.
 
 Now, let's assign group access rights.
+
 ```bash
 curl -s -S -i -X POST http://localhost/groups/$ug/share -d '{"thing_group_id": "01FHWFG78DSYA458D8ST4YQ9Y9"}' -H 'Content-Type: application/json' -H "Authorization: Bearer $TOKEN"
 HTTP/1.1 200 OK
@@ -497,6 +599,7 @@ Access-Control-Expose-Headers: Location
 
 {"id":"c3d75452-ae00-4aea-84f9-29ab79fd0d26","name":"admin-thing-1","key":"4fb36389-f7a5-424d-8c4f-da5c9e91f3c5"}
 ```
+
 ```bash
 curl -s -S -i -X GET -H "Authorization: Bearer $TOKEN" http://localhost/things/$th2
 HTTP/1.1 200 OK
@@ -509,9 +612,11 @@ Access-Control-Expose-Headers: Location
 
 {"id":"ee589c61-0b98-4176-9da0-d91913087be6","name":"admin-thing-2","key":"410f5889-c756-470d-bd65-2e99b4ecc679"}
 ```
+
 Successful!
 
 Let's assume, `admin@example.com` does not want to share things with `user@example.com` anymore. In order to achieve that, `admin@example.com` unassigns `user@example.com` from the `user_group`.
+
 ```bash
 curl -s -S -i -X DELETE -H "Content-Type: application/json" -H "Authorization: Bearer $TOKEN" http://localhost/groups/$ug/members -d '{"members":["f31f8a0a-11b1-4aa6-a4a3-9629378c0326"], "type":"users"}'
 
@@ -536,6 +641,7 @@ Connection: keep-alive
 
 {"error":"failed to perform authorization over the entity"}
 ```
+
 ```bash
 curl -s -S -i -X GET -H "Authorization: Bearer $TOKEN" http://localhost/things/$th2
 HTTP/1.1 403 Forbidden
