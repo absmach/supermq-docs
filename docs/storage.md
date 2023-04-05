@@ -87,6 +87,7 @@ for InfluxDB will be transformed to:
     "d/loc/y": 2
 }
 ```
+
 while for other Writers it will preserve its original format.
 
 The message format is stored in *the subtopic*. It's the last part of the subtopic. In the example:
@@ -187,14 +188,16 @@ Note that you will receive only those messages that were sent by authorization t
 You can specify `offset` and `limit` parameters in order to fetch specific group of messages. An example of HTTP request looks like:
 
 ```bash
-curl -s -S -i  -H "Authorization: Thing <thing_key>" http://localhost:<service_port>/channels/<channel_id>/messages?offset=0&limit=5&format=<subtopic>
+curl -s -S -i  -H "Authorization: Thing <thing_secret>" http://localhost:<service_port>/channels/<channel_id>/messages?offset=0&limit=5&format=<subtopic>
 ```
 
 If you don't provide `offset` and `limit` parameters, default values will be used instead: 0 for `offset` and 10 for `limit`.
 The `format` parameter indicates the last subtopic of the message. As indicated under the [`Writers`](storage.md#writers) section, the message format is stored in the subtopic as the last part of the subtopic. In the example:
+
 ```
 http://localhost:<service_port>/channels/<channelID>/messages/home/temperature/myFormat
 ```
+
 the message format is `myFormat` and the value for `format=<subtopic>` is `format=myFormat`.
 
 ### InfluxDB Reader

@@ -140,7 +140,7 @@ func main() {
 	signal.Notify(interrupt, os.Interrupt)
 
 	channelId := "30315311-56ba-484d-b500-c1e08305511f"
-	thingKey := "c02ff576-ccd5-40f6-ba5f-c85377aad529"
+	thingSecret := "c02ff576-ccd5-40f6-ba5f-c85377aad529"
 
 	socketUrl := "ws://localhost:8186/channels/" + channelId + "/messages/?authorization=" + thingKey
 
