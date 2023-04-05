@@ -42,7 +42,7 @@ Gateway can be provisioned with [`provision`](/provision/) service.
 When you provisioned gateway as described in [provision](/provision/) you can check results
 
 ```bash
-curl -s -S -X GET http://mainflux-domain.com:8202/things/bootstrap/<external_id> -H "Authorization: Thing <external_key>" -H 'Content-Type: application/json' |jq
+curl -s -S -X GET http://mainflux-domain.com:9013/things/bootstrap/<external_id> -H "Authorization: Thing <external_key>" -H 'Content-Type: application/json' |jq
 ```
 
 ```json
@@ -95,8 +95,8 @@ MF_AGENT_LOG_LEVEL=debug \
 MF_AGENT_BOOTSTRAP_KEY=edged \
 MF_AGENT_BOOTSTRAP_ID=34:e1:2d:e6:cf:03 ./mainflux-agent
 
-{"level":"info","message":"Requesting config for 34:e1:2d:e6:cf:03 from http://localhost:8202/things/bootstrap","ts":"2019-12-05T04:47:24.98411512Z"}
-{"level":"info","message":"Getting config for 34:e1:2d:e6:cf:03 from http://localhost:8202/things/bootstrap succeeded","ts":"2019-12-05T04:47:24.995465239Z"}
+{"level":"info","message":"Requesting config for 34:e1:2d:e6:cf:03 from http://localhost:9013/things/bootstrap","ts":"2019-12-05T04:47:24.98411512Z"}
+{"level":"info","message":"Getting config for 34:e1:2d:e6:cf:03 from http://localhost:9013/things/bootstrap succeeded","ts":"2019-12-05T04:47:24.995465239Z"}
 {"level":"info","message":"Connected to MQTT broker","ts":"2019-12-05T04:47:25.009645082Z"}
 {"level":"info","message":"Agent service started, exposed port 9000","ts":"2019-12-05T04:47:25.009755345Z"}
 {"level":"info","message":"Subscribed to MQTT broker","ts":"2019-12-05T04:47:25.012930443Z"}
@@ -109,9 +109,9 @@ MF_AGENT_BOOTSTRAP_ID=34:e1:2d:e6:cf:03 ./mainflux-agent
 
 ```bash
 # Set connection parameters as environment variables in shell
-CH=`curl -s -S -X GET http://some-domain-name:8202/things/bootstrap/34:e1:2d:e6:cf:03 -H "Authorization: edged" -H 'Content-Type: application/json' | jq -r '.mainflux_channels[0].id'`
-TH=`curl -s  -S -X GET http://some-domain-name:8202/things/bootstrap/34:e1:2d:e6:cf:03 -H "Authorization: edged" -H 'Content-Type: application/json' | jq -r .mainflux_id`
-KEY=`curl -s  -S -X GET http://some-domain-name:8202/things/bootstrap/34:e1:2d:e6:cf:03 -H "Authorization: edged" -H 'Content-Type: application/json' | jq -r .mainflux_key`
+CH=`curl -s -S -X GET http://some-domain-name:9013/things/bootstrap/34:e1:2d:e6:cf:03 -H "Authorization: edged" -H 'Content-Type: application/json' | jq -r '.mainflux_channels[0].id'`
+TH=`curl -s  -S -X GET http://some-domain-name:9013/things/bootstrap/34:e1:2d:e6:cf:03 -H "Authorization: edged" -H 'Content-Type: application/json' | jq -r .mainflux_id`
+KEY=`curl -s  -S -X GET http://some-domain-name:9013/things/bootstrap/34:e1:2d:e6:cf:03 -H "Authorization: edged" -H 'Content-Type: application/json' | jq -r .mainflux_key`
 
 # Subscribe for response
 mosquitto_sub -d -u $TH -P $KEY  -t channels/$CH/messages/res/# -h some-domain-name -p 1883
@@ -412,12 +412,12 @@ docker-compose -f docker/addons/provision/docker-compose.yml up
 
 Create user:
 ```bash
-mainflux-cli -m http://localhost:8180 users create test@email.com 12345678
+mainflux-cli -m http://localhost:9002 users create test@email.com 12345678
 ```
 
 Obtain user token:
 ```bash
-mainflux-cli -m http://localhost:8180 users token test@email.com 12345678
+mainflux-cli -m http://localhost:9002 users token test@email.com 12345678
 
 created: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1ODk5MDQ4MDQsImlhdCI6MTU4OTg2ODgwNCwiaXNzIjoibWFpbmZsdXguYXV0aG4iLCJzdWIiOiJ0ZXN0QGVtYWlsLmNvbSIsInR5cGUiOjB9.VSwpGoflOLqrHlCGoVVFPBdnnvsAhv2gc3EomXg9yM0
 
@@ -427,7 +427,7 @@ TOK=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1ODk5MDQ4MDQsImlhdCI6MTU4OTg
 Provision a gateway:
 
 ```bash
-curl -s -S  -X POST  http://localhost:8190/mapping -H "Authorization: Bearer $TOKEN" -H 'Content-Type: application/json'   -d '{"name":"testing",  "external_id" : "54:FG:66:DC:43", "external_key":"223334fw2" }' | jq
+curl -s -S  -X POST  http://localhost:9016/mapping -H "Authorization: Bearer $TOKEN" -H 'Content-Type: application/json'   -d '{"name":"testing",  "external_id" : "54:FG:66:DC:43", "external_key":"223334fw2" }' | jq
 ```
 ```json
 {
@@ -475,10 +475,10 @@ Start the [NATS][nats] and [Agent][agent] service:
 gnatsd
 MF_AGENT_BOOTSTRAP_ID=54:FG:66:DC:43 \
 MF_AGENT_BOOTSTRAP_KEY="223334fw2" \
-MF_AGENT_BOOTSTRAP_URL=http://localhost:8202/things/bootstrap \
+MF_AGENT_BOOTSTRAP_URL=http://localhost:9013/things/bootstrap \
 build/mainflux-agent
-{"level":"info","message":"Requesting config for 54:FG:66:DC:43 from http://localhost:8202/things/bootstrap","ts":"2020-05-07T15:50:58.041145096Z"}
-{"level":"info","message":"Getting config for 54:FG:66:DC:43 from http://localhost:8202/things/bootstrap succeeded","ts":"2020-05-07T15:50:58.120779415Z"}
+{"level":"info","message":"Requesting config for 54:FG:66:DC:43 from http://localhost:9013/things/bootstrap","ts":"2020-05-07T15:50:58.041145096Z"}
+{"level":"info","message":"Getting config for 54:FG:66:DC:43 from http://localhost:9013/things/bootstrap succeeded","ts":"2020-05-07T15:50:58.120779415Z"}
 {"level":"info","message":"Saving export config file /configs/export/config.toml","ts":"2020-05-07T15:50:58.121602229Z"}
 {"level":"warn","message":"Failed to save export config file Error writing config file: open /configs/export/config.toml: no such file or directory","ts":"2020-05-07T15:50:58.121752142Z"}
 {"level":"info","message":"Client agent-88529fb2-6c1e-4b60-b9ab-73b5d89f7404 connected","ts":"2020-05-07T15:50:58.128500603Z"}
