@@ -1097,7 +1097,7 @@ curl -s -S -i -X PUT -H "Content-Type: application/json" -H  "Authorization: Bea
 For example:
 
 ```bash
-curl -s -S -i -X PATCH -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" http://localhost/things/ee6de1d4-aa1d-443a-9848-7857a90d03bd -d '{"name": "new name"}'
+curl -s -S -i -X PATCH -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" http://localhost/things/ee6de1d4-aa1d-443a-9848-7857a90d03bd -d '{"owner": "f7c55a1f-dde8-4880-9796-b3a0cd05745b"}'
 ```
 
 Response:
@@ -1105,37 +1105,38 @@ Response:
 ```bash
 HTTP/1.1 200 OK
 Server: nginx/1.23.3
-Date: Wed, 05 Apr 2023 12:36:15 GMT
+Date: Wed, 05 Apr 2023 15:04:32 GMT
 Content-Type: application/json
-Content-Length: 280
+Content-Length: 294
 Connection: keep-alive
 Access-Control-Expose-Headers: Location
 
 {
     "id": "ee6de1d4-aa1d-443a-9848-7857a90d03bd",
     "name": "new name",
+    "tags": ["tag"],
     "owner": "f7c55a1f-dde8-4880-9796-b3a0cd05745b",
     "credentials": { "secret": "cae79321-7494-4dc3-bd01-980c2d45cb80" },
     "created_at": "2023-04-05T12:21:34.111149Z",
-    "updated_at": "2023-04-05T12:36:15.721722Z",
+    "updated_at": "2023-04-05T15:04:32.76775Z",
     "status": "enabled"
 }
 ```
 
-### Update Thing
+### Update Thing Secret
 
-Updating a thing entity
+Updating a thing secret
 
 > Must-have: `user_token` and `thing_id`
 
 ```bash
-curl -s -S -i -X PUT -H "Content-Type: application/json" -H  "Authorization: Bearer <user_token>" http://localhost/things/<thing_id> -d '{"name": "<thing_name>"}'
+curl -s -S -i -X PUT -H "Content-Type: application/json" -H  "Authorization: Bearer <user_token>" http://localhost/things/<thing_id>/secret -d '{"secret": "<thing_secret>"}'
 ```
 
 For example:
 
 ```bash
-curl -s -S -i -X PATCH -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" http://localhost/things/ee6de1d4-aa1d-443a-9848-7857a90d03bd -d '{"name": "new name"}'
+curl -s -S -i -X PATCH -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" http://localhost/things/ee6de1d4-aa1d-443a-9848-7857a90d03bd/secret -d '{"secret": "secret-key"}'
 ```
 
 Response:
@@ -1143,48 +1144,100 @@ Response:
 ```bash
 HTTP/1.1 200 OK
 Server: nginx/1.23.3
-Date: Wed, 05 Apr 2023 12:36:15 GMT
+Date: Wed, 05 Apr 2023 15:05:52 GMT
 Content-Type: application/json
-Content-Length: 280
+Content-Length: 269
 Connection: keep-alive
 Access-Control-Expose-Headers: Location
 
 {
     "id": "ee6de1d4-aa1d-443a-9848-7857a90d03bd",
     "name": "new name",
+    "tags": ["tag"],
     "owner": "f7c55a1f-dde8-4880-9796-b3a0cd05745b",
-    "credentials": { "secret": "cae79321-7494-4dc3-bd01-980c2d45cb80" },
+    "credentials": { "secret": "secret-key" },
     "created_at": "2023-04-05T12:21:34.111149Z",
-    "updated_at": "2023-04-05T12:36:15.721722Z",
+    "updated_at": "2023-04-05T15:05:52.755776Z",
     "status": "enabled"
 }
 ```
 
-### Delete Thing
+### Enable Thing
 
-To delete a thing you need a `thing_id` and a `user_token`
+To enable a thing you need a `thing_id` and a `user_token`
 
 > Must-have: `user_token` and `thing_id`
 
 ```bash
-curl -s -S -i -X DELETE -H "Content-Type: application/json" -H  "Authorization: Bearer <user_token>" http://localhost/things/<thing_id>
+curl -s -S -i -X POST -H "Content-Type: application/json" -H  "Authorization: Bearer <user_token>" http://localhost/things/<thing_id>/enable
 ```
 
 For example:
 
 ```bash
-curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" http://localhost/things/bulk -d '[{"name": "thing_name_1"}, {"name": "thing_name_2"}]'
+curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" http://localhost/things/ee6de1d4-aa1d-443a-9848-7857a90d03bd/enable
 ```
 
 Response:
 
 ```bash
-HTTP/1.1 204 No Content
-Server: nginx/1.16.0
-Date: Wed, 10 Mar 2021 15:24:44 GMT
+HTTP/1.1 200 OK
+Server: nginx/1.23.3
+Date: Wed, 05 Apr 2023 15:08:12 GMT
 Content-Type: application/json
+Content-Length: 269
 Connection: keep-alive
 Access-Control-Expose-Headers: Location
+
+{
+    "id": "ee6de1d4-aa1d-443a-9848-7857a90d03bd",
+    "name": "new name",
+    "tags": ["tag"],
+    "owner": "f7c55a1f-dde8-4880-9796-b3a0cd05745b",
+    "credentials": { "secret": "secret-key" },
+    "created_at": "2023-04-05T12:21:34.111149Z",
+    "updated_at": "2023-04-05T15:05:52.755776Z",
+    "status": "enabled"
+}
+```
+
+### Disable Thing
+
+To disable a thing you need a `thing_id` and a `user_token`
+
+> Must-have: `user_token` and `thing_id`
+
+```bash
+curl -s -S -i -X POST -H "Content-Type: application/json" -H  "Authorization: Bearer <user_token>" http://localhost/things/<thing_id>/disable
+```
+
+For example:
+
+```bash
+curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" http://localhost/things/ee6de1d4-aa1d-443a-9848-7857a90d03bd/disable
+```
+
+Response:
+
+```bash
+HTTP/1.1 200 OK
+Server: nginx/1.23.3
+Date: Wed, 05 Apr 2023 15:07:24 GMT
+Content-Type: application/json
+Content-Length: 270
+Connection: keep-alive
+Access-Control-Expose-Headers: Location
+
+{
+    "id": "ee6de1d4-aa1d-443a-9848-7857a90d03bd",
+    "name": "new name",
+    "tags": ["tag"],
+    "owner": "f7c55a1f-dde8-4880-9796-b3a0cd05745b",
+    "credentials": { "secret": "secret-key" },
+    "created_at": "2023-04-05T12:21:34.111149Z",
+    "updated_at": "2023-04-05T15:05:52.755776Z",
+    "status": "disabled"
+}
 ```
 
 ## Channels
@@ -1199,18 +1252,32 @@ To create a channel, you need a `user_token`
 curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: Bearer <user_token>" http://localhost/channels -d '{"name": "<channel_name>"}'
 ```
 
+For example:
+
+```bash
+curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" http://localhost/channels -d '{"name": "examplechannel"}'
+```
+
 Response:
 
 ```bash
 HTTP/1.1 201 Created
-Server: nginx/1.16.0
-Date: Wed, 10 Mar 2021 15:26:51 GMT
+Server: nginx/1.23.3
+Date: Wed, 05 Apr 2023 15:14:15 GMT
 Content-Type: application/json
-Content-Length: 0
+Content-Length: 225
 Connection: keep-alive
-Location: /channels/db4b7428-e278-4fe3-b85a-d65554d6abe9
-Warning-Deprecated: This endpoint will be depreciated in v1.0.0. It will be replaced with the bulk endpoint currently found at /channels/bulk.
+Location: /channels/1365b640-11cc-4d7e-8e7e-3b86e7651045
 Access-Control-Expose-Headers: Location
+
+{
+    "id": "1365b640-11cc-4d7e-8e7e-3b86e7651045",
+    "owner_id": "f7c55a1f-dde8-4880-9796-b3a0cd05745b",
+    "name": "examplechannel",
+    "created_at": "2023-04-05T15:14:15.815801Z",
+    "updated_at": "2023-04-05T15:14:15.815801Z",
+    "status": "enabled"
+}
 ```
 
 ### Create Channel with external ID
@@ -1225,18 +1292,32 @@ To create a channel with external ID, the user needs provide a UUID v4 format un
 curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: Bearer <user_token>" http://localhost/channels -d '{"id": "<channel_id>","name": "<channel_name>"}'
 ```
 
+For example:
+
+```bash
+curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" http://localhost/channels -d '{"id": "ee6de1d4-aa1d-443a-9848-7857a90d03bd", "name": "examplechannel2"}'
+```
+
 Response:
 
 ```bash
 HTTP/1.1 201 Created
-Server: nginx/1.16.0
-Date: Wed, 10 Mar 2021 15:26:51 GMT
+Server: nginx/1.23.3
+Date: Wed, 05 Apr 2023 15:15:57 GMT
 Content-Type: application/json
-Content-Length: 0
+Content-Length: 226
 Connection: keep-alive
-Location: /channels/db4b7428-e278-4fe3-b85a-d65554d6abe9
-Warning-Deprecated: This endpoint will be depreciated in v1.0.0. It will be replaced with the bulk endpoint currently found at /channels/bulk.
+Location: /channels/ee6de1d4-aa1d-443a-9848-7857a90d03bd
 Access-Control-Expose-Headers: Location
+
+{
+    "id": "ee6de1d4-aa1d-443a-9848-7857a90d03bd",
+    "owner_id": "f7c55a1f-dde8-4880-9796-b3a0cd05745b",
+    "name": "examplechannel2",
+    "created_at": "2023-04-05T15:15:57.911075Z",
+    "updated_at": "2023-04-05T15:15:57.911075Z",
+    "status": "enabled"
+}
 ```
 
 ### Create Channels
@@ -1249,18 +1330,42 @@ The same as creating a channel with external ID the user can create multiple cha
 curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: Bearer <user_token>" http://localhost/channels/bulk -d '[{"name": "<channel_name_1>"}, {"name": "<channel_name_2>"}]'
 ```
 
+For example:
+
+```bash
+curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" http://localhost/channels/bulk -d '[{"name": "channel_name_1"}, {"name": "channel_name_2"}]'
+```
+
 Response:
 
 ```bash
-HTTP/1.1 201 Created
-Server: nginx/1.16.0
-Date: Wed, 10 Mar 2021 15:28:10 GMT
+HTTP/1.1 200 OK
+Server: nginx/1.23.3
+Date: Wed, 05 Apr 2023 15:17:09 GMT
 Content-Type: application/json
-Content-Length: 143
+Content-Length: 465
 Connection: keep-alive
 Access-Control-Expose-Headers: Location
 
-{"channels":[{"id":"b8073d41-01dc-46ad-bb26-cfecc596c6c1","name":"channel_name_1"},{"id":"2200527a-f590-4fe5-b9d6-892fc6f825c3","name":"channel_name_2"}]}
+{
+    "channels": [{
+            "id": "830cf52a-4928-4cfb-af44-e82a696c9ac9",
+            "owner_id": "f7c55a1f-dde8-4880-9796-b3a0cd05745b",
+            "name": "channel_name_1",
+            "created_at": "2023-04-05T15:17:09.340468Z",
+            "updated_at": "2023-04-05T15:17:09.340468Z",
+            "status": "enabled"
+        },
+        {
+            "id": "a902ae6e-da9a-46a8-a555-cd2fc87c64a9",
+            "owner_id": "f7c55a1f-dde8-4880-9796-b3a0cd05745b",
+            "name": "channel_name_2",
+            "created_at": "2023-04-05T15:17:09.344149Z",
+            "updated_at": "2023-04-05T15:17:09.344149Z",
+            "status": "enabled"
+        }
+    ]
+}
 ```
 
 ### Create Channels with external ID
@@ -1273,18 +1378,43 @@ As with things, you can create multiple channels with external ID at once
 curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: Bearer <user_token>" http://localhost/channels/bulk -d '[{"id": "<channel_id_1>","name": "<channel_name_1>"}, {"id": "<channel_id_2>","name": "<channel_name_2>"}]'
 ```
 
+For example:
+
+```bash
+curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" http://localhost/channels/bulk -d '[{"id": "977bbd33-5b59-4b7a-a9c3-111111111111","name": "channel_name_1a"}, {"id": "977bbd33-5b59-4b7a-a9c3-111111111112","name": "channel_name_2a"}]'
+```
+
 Response:
 
 ```bash
-HTTP/1.1 201 Created
-Server: nginx/1.16.0
-Date: Wed, 10 Mar 2021 15:28:10 GMT
+HTTP/1.1 200 OK
+Server: nginx/1.23.3
+Date: Wed, 05 Apr 2023 15:19:13 GMT
 Content-Type: application/json
-Content-Length: 143
+Content-Length: 467
 Connection: keep-alive
 Access-Control-Expose-Headers: Location
 
-{"channels":[{"id":"<channel_id_1>","name":"channel_name_1"},{"id":"<channel_id_2>","name":"channel_name_2"}]}
+{                              
+  "channels": [
+    {
+      "id": "977bbd33-5b59-4b7a-a9c3-111111111111",
+      "owner_id": "f7c55a1f-dde8-4880-9796-b3a0cd05745b",
+      "name": "channel_name_1a",
+      "created_at": "2023-04-05T15:19:13.151359Z",
+      "updated_at": "2023-04-05T15:19:13.151359Z",
+      "status": "enabled"
+    },
+    {
+      "id": "977bbd33-5b59-4b7a-a9c3-111111111112",
+      "owner_id": "f7c55a1f-dde8-4880-9796-b3a0cd05745b",
+      "name": "channel_name_2a",
+      "created_at": "2023-04-05T15:19:13.154335Z",
+      "updated_at": "2023-04-05T15:19:13.154335Z",
+      "status": "enabled"
+    }
+  ]
+}
 ```
 
 ### Get Channel
@@ -1297,18 +1427,31 @@ Get a channel entity for a logged in user
 curl -s -S -i -X GET -H "Authorization: Bearer <user_token>" http://localhost/channels/<channel_id>
 ```
 
+For example:
+
+```bash
+curl -s -S -i -X GET -H "Authorization: Bearer $USER_TOKEN" http://localhost/channels/1365b640-11cc-4d7e-8e7e-3b86e7651045
+```
+
 Response:
 
 ```bash
 HTTP/1.1 200 OK
-Server: nginx/1.16.0
-Date: Wed, 10 Mar 2021 15:29:49 GMT
+Server: nginx/1.23.3
+Date: Wed, 05 Apr 2023 15:20:13 GMT
 Content-Type: application/json
-Content-Length: 63
+Content-Length: 225
 Connection: keep-alive
 Access-Control-Expose-Headers: Location
 
-{"id":"db4b7428-e278-4fe3-b85a-d65554d6abe9","name":"channel_name"}
+{
+    "id": "1365b640-11cc-4d7e-8e7e-3b86e7651045",
+    "owner_id": "f7c55a1f-dde8-4880-9796-b3a0cd05745b",
+    "name": "examplechannel",
+    "created_at": "2023-04-05T15:14:15.815801Z",
+    "updated_at": "2023-04-05T15:14:15.815801Z",
+    "status": "enabled"
+}
 ```
 
 ### Get Channels
@@ -1321,18 +1464,75 @@ You can get all channels in the database by querying this endpoint. List all cha
 curl -s -S -i -X GET -H "Authorization: Bearer <user_token>" http://localhost/channels
 ```
 
+For example:
+
+```bash
+curl -s -S -i -X GET -H "Authorization: Bearer $USER_TOKEN" http://localhost/channels
+```
+
 Response:
 
 ```bash
 HTTP/1.1 200 OK
-Server: nginx/1.16.0
-Date: Wed, 10 Mar 2021 15:30:34 GMT
+Server: nginx/1.23.3
+Date: Wed, 05 Apr 2023 15:20:54 GMT
 Content-Type: application/json
-Content-Length: 264
+Content-Length: 1378
 Connection: keep-alive
 Access-Control-Expose-Headers: Location
 
-{"total":3,"offset":0,"limit":10,"order":"","direction":"","channels":[{"id":"db4b7428-e278-4fe3-b85a-d65554d6abe9","name":"channel_name"},{"id":"b8073d41-01dc-46ad-bb26-cfecc596c6c1","name":"channel_name_1"},{"id":"2200527a-f590-4fe5-b9d6-892fc6f825c3","name":"channel_name_2"}]}
+{
+    "total": 6,
+    "channels": [{
+            "id": "1365b640-11cc-4d7e-8e7e-3b86e7651045",
+            "owner_id": "f7c55a1f-dde8-4880-9796-b3a0cd05745b",
+            "name": "examplechannel",
+            "created_at": "2023-04-05T15:14:15.815801Z",
+            "updated_at": "2023-04-05T15:14:15.815801Z",
+            "status": "enabled"
+        },
+        {
+            "id": "ee6de1d4-aa1d-443a-9848-7857a90d03bd",
+            "owner_id": "f7c55a1f-dde8-4880-9796-b3a0cd05745b",
+            "name": "examplechannel2",
+            "created_at": "2023-04-05T15:15:57.911075Z",
+            "updated_at": "2023-04-05T15:15:57.911075Z",
+            "status": "enabled"
+        },
+        {
+            "id": "830cf52a-4928-4cfb-af44-e82a696c9ac9",
+            "owner_id": "f7c55a1f-dde8-4880-9796-b3a0cd05745b",
+            "name": "channel_name_1",
+            "created_at": "2023-04-05T15:17:09.340468Z",
+            "updated_at": "2023-04-05T15:17:09.340468Z",
+            "status": "enabled"
+        },
+        {
+            "id": "a902ae6e-da9a-46a8-a555-cd2fc87c64a9",
+            "owner_id": "f7c55a1f-dde8-4880-9796-b3a0cd05745b",
+            "name": "channel_name_2",
+            "created_at": "2023-04-05T15:17:09.344149Z",
+            "updated_at": "2023-04-05T15:17:09.344149Z",
+            "status": "enabled"
+        },
+        {
+            "id": "977bbd33-5b59-4b7a-a9c3-111111111111",
+            "owner_id": "f7c55a1f-dde8-4880-9796-b3a0cd05745b",
+            "name": "channel_name_1a",
+            "created_at": "2023-04-05T15:19:13.151359Z",
+            "updated_at": "2023-04-05T15:19:13.151359Z",
+            "status": "enabled"
+        },
+        {
+            "id": "977bbd33-5b59-4b7a-a9c3-111111111112",
+            "owner_id": "f7c55a1f-dde8-4880-9796-b3a0cd05745b",
+            "name": "channel_name_2a",
+            "created_at": "2023-04-05T15:19:13.154335Z",
+            "updated_at": "2023-04-05T15:19:13.154335Z",
+            "status": "enabled"
+        }
+    ]
+}
 ```
 
 ### Update Channel
@@ -1345,37 +1545,108 @@ Update channel entity
 curl -s -S -i -X PUT -H "Content-Type: application/json" -H  "Authorization: Bearer <user_token>" http://localhost/channels/<channel_id> -d '{"name": "<channel_name>"}'
 ```
 
+For example:
+
+```bash
+curl -s -S -i -X PUT -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" http://localhost/channels/1365b640-11cc-4d7e-8e7e-3b86e7651045 -d '{"name": "new name", "metadata": {"foo": "bar"}}'
+```
+
 Response:
 
 ```bash
 HTTP/1.1 200 OK
-Server: nginx/1.16.0
-Date: Wed, 10 Mar 2021 15:32:08 GMT
+Server: nginx/1.23.3
+Date: Wed, 05 Apr 2023 15:22:56 GMT
 Content-Type: application/json
-Content-Length: 0
+Content-Length: 244
 Connection: keep-alive
 Access-Control-Expose-Headers: Location
+
+{
+    "id": "1365b640-11cc-4d7e-8e7e-3b86e7651045",
+    "owner_id": "f7c55a1f-dde8-4880-9796-b3a0cd05745b",
+    "name": "new name",
+    "metadata": { "foo": "bar" },
+    "created_at": "2023-04-05T15:14:15.815801Z",
+    "updated_at": "2023-04-05T15:22:55.995476Z",
+    "status": "enabled"
+}
 ```
 
-### Delete Channel
+### Enable Channel
 
-Delete a channel entity
+To enable a channel you need a `channel_id` and a `user_token`
 
 > Must-have: `user_token` and `channel_id`
 
 ```bash
-curl -s -S -i -X DELETE -H "Content-Type: application/json" -H  "Authorization: Bearer <user_token>" http://localhost/channels/<channel_id>
+curl -s -S -i -X POST -H "Content-Type: application/json" -H  "Authorization: Bearer <user_token>" http://localhost/channels/<channel_id>/enable
+```
+
+For example:
+
+```bash
+curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" http://localhost/channels/1365b640-11cc-4d7e-8e7e-3b86e7651045/enable
 ```
 
 Response:
 
 ```bash
-HTTP/1.1 204 No Content
-Server: nginx/1.16.0
-Date: Wed, 10 Mar 2021 15:33:21 GMT
+HTTP/1.1 200 OK
+Server: nginx/1.23.3
+Date: Wed, 05 Apr 2023 15:24:30 GMT
 Content-Type: application/json
+Content-Length: 244
 Connection: keep-alive
 Access-Control-Expose-Headers: Location
+
+{
+    "id": "1365b640-11cc-4d7e-8e7e-3b86e7651045",
+    "owner_id": "f7c55a1f-dde8-4880-9796-b3a0cd05745b",
+    "name": "new name",
+    "metadata": { "foo": "bar" },
+    "created_at": "2023-04-05T15:14:15.815801Z",
+    "updated_at": "2023-04-05T15:22:55.995476Z",
+    "status": "enabled"
+}
+```
+
+### Disable Channel
+
+To disable a channel you need a `channel_id` and a `user_token`
+
+> Must-have: `user_token` and `channel_id`
+
+```bash
+curl -s -S -i -X POST -H "Content-Type: application/json" -H  "Authorization: Bearer <user_token>" http://localhost/channels/<channel_id>/disable
+```
+
+For example:
+
+```bash
+curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" http://localhost/channels/1365b640-11cc-4d7e-8e7e-3b86e7651045/disable
+```
+
+Response:
+
+```bash
+HTTP/1.1 200 OK
+Server: nginx/1.23.3
+Date: Wed, 05 Apr 2023 15:24:04 GMT
+Content-Type: application/json
+Content-Length: 245
+Connection: keep-alive
+Access-Control-Expose-Headers: Location
+
+{
+    "id": "1365b640-11cc-4d7e-8e7e-3b86e7651045",
+    "owner_id": "f7c55a1f-dde8-4880-9796-b3a0cd05745b",
+    "name": "new name",
+    "metadata": { "foo": "bar" },
+    "created_at": "2023-04-05T15:14:15.815801Z",
+    "updated_at": "2023-04-05T15:22:55.995476Z",
+    "status": "disabled"
+}
 ```
 
 ### Connect
@@ -1385,19 +1656,36 @@ Connect things to channels
 > Must-have: `user_token`, `channel_id` and `thing_id`
 
 ```bash
-curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: Bearer <user_token>" http://localhost/connect -d '{"channel_ids": ["<channel_id>"], "thing_ids": ["<thing_id>"]}'
+curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: Bearer <user_token>" http://localhost/connect -d '{"group_ids": ["<channel_id>"], "client_ids": ["<thing_id>"]}'
+```
+
+For example:
+
+```bash
+curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" http://localhost/connect -d '{"group_ids": ["830cf52a-4928-4cfb-af44-e82a696c9ac9"], "client_ids": ["ee6de1d4-aa1d-443a-9848-7857a90d03bd"]}'
 ```
 
 Response:
 
 ```bash
-HTTP/1.1 200 OK
-Server: nginx/1.16.0
-Date: Wed, 10 Mar 2021 15:36:32 GMT
+HTTP/1.1 201 Created
+Server: nginx/1.23.3
+Date: Wed, 05 Apr 2023 15:35:29 GMT
 Content-Type: application/json
-Content-Length: 0
+Content-Length: 231
 Connection: keep-alive
 Access-Control-Expose-Headers: Location
+
+{
+    "policies": [{
+        "owner_id": "",
+        "subject": "ee6de1d4-aa1d-443a-9848-7857a90d03bd",
+        "object": "830cf52a-4928-4cfb-af44-e82a696c9ac9",
+        "actions": ["m_write", "m_read"],
+        "created_at": "0001-01-01T00:00:00Z",
+        "updated_at": "0001-01-01T00:00:00Z"
+    }]
+}
 ```
 
 Connect thing to channel
@@ -1405,39 +1693,63 @@ Connect thing to channel
 > Must-have: `user_token`, `channel_id` and `thing_id`
 
 ```bash
-curl -s -S -i -X PUT -H "Content-Type: application/json" -H "Authorization: Bearer <user_token>" http://localhost/channels/<channel_id>/things/<thing_id>
+curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: Bearer <user_token>" http://localhost/channels/<channel_id>/things/<thing_id>
+```
+
+For example:
+
+```bash
+curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" http://localhost/channels/830cf52a-4928-4cfb-af44-e82a696c9ac9/things/977bbd33-5b59-4b7a-a9c3-8adda5d98255
 ```
 
 Response:
 
 ```bash
-HTTP/1.1 200 OK
-Server: nginx/1.20.0
-Date: Fri, 21 Jan 2022 15:20:47 GMT
+HTTP/1.1 201 Created
+Server: nginx/1.23.3
+Date: Wed, 05 Apr 2023 15:37:01 GMT
 Content-Type: application/json
-Content-Length: 0
+Content-Length: 281
 Connection: keep-alive
-Warning-Deprecated: This endpoint will be depreciated in v1.0.0. It will be replaced with the bulk endpoint found at /connect.
 Access-Control-Expose-Headers: Location
+
+{
+    "policies": [{
+        "owner_id": "f7c55a1f-dde8-4880-9796-b3a0cd05745b",
+        "subject": "977bbd33-5b59-4b7a-a9c3-8adda5d98255",
+        "object": "830cf52a-4928-4cfb-af44-e82a696c9ac9",
+        "actions": ["m_write", "m_read"],
+        "created_at": "2023-04-05T15:37:01.120301Z",
+        "updated_at": "2023-04-05T15:37:01.120301Z"
+    }]
+}
 ```
 
 ### Disconnect
 
 Disconnect things from channels specified by lists of IDs.
 
-> Must-have: `user_token`, `channel_ids` and `thing_ids`
+> Must-have: `user_token`, `group_ids` and `client_ids`
 
 ```bash
-curl -s -S -i -X PUT -H "Content-Type: application/json" -H "Authorization: Bearer <user_token>" http://localhost:<service_port>/disconnect -d '{"thing_ids": ["<thing_id_1>", "<thing_id_2>"], "channel_ids": ["<channel_id_1>", "<channel_id_2>"]}'
+curl -s -S -i -X PUT -H "Content-Type: application/json" -H "Authorization: Bearer <user_token>" http://localhost/disconnect -d '{"client_ids": ["<thing_id_1>", "<thing_id_2>"], "group_ids": ["<channel_id_1>", "<channel_id_2>"]}'
+```
+
+For example:
+
+```bash
+curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" http://localhost/disconnect -d '{"group_ids": ["830cf52a-4928-4cfb-af44-e82a696c9ac9"], "client_ids": ["ee6de1d4-aa1d-443a-9848-7857a90d03bd"]}'
 ```
 
 Response:
 
 ```bash
-HTTP/1.1 200 OK
+HTTP/1.1 204 No Content
+Server: nginx/1.23.3
+Date: Wed, 05 Apr 2023 15:39:19 GMT
 Content-Type: application/json
-Date: Sun, 11 Jul 2021 17:23:39 GMT
-Content-Length: 0
+Connection: keep-alive
+Access-Control-Expose-Headers: Location
 ```
 
 Disconnect thing from the channel
@@ -1448,12 +1760,18 @@ Disconnect thing from the channel
 curl -s -S -i -X DELETE -H "Content-Type: application/json" -H "Authorization: Bearer <user_token>" http://localhost/channels/<channel_id>/things/<thing_id>
 ```
 
+For example:
+
+```bash
+curl -s -S -i -X DELETE -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" http://localhost/channels/830cf52a-4928-4cfb-af44-e82a696c9ac9/things/977bbd33-5b59-4b7a-a9c3-8adda5d98255
+```
+
 Response:
 
 ```bash
 HTTP/1.1 204 No Content
-Server: nginx/1.16.0
-Date: Wed, 10 Mar 2021 15:38:14 GMT
+Server: nginx/1.23.3
+Date: Wed, 05 Apr 2023 15:40:58 GMT
 Content-Type: application/json
 Connection: keep-alive
 Access-Control-Expose-Headers: Location
@@ -1463,24 +1781,30 @@ Access-Control-Expose-Headers: Location
 
 Checks if thing has access to a channel
 
-> Must-have: `channel_id` and `thing_key`
+> Must-have: `channel_id` and `thing_secret`
 
 ```bash
-curl -s -S -i -X POST -H "Content-Type: application/json" http://localhost/identify/channels/<channel_id>/access-by-key -d '{"token": "<thing_key>"}'
+curl -s -S -i -X POST -H "Content-Type: application/json" http://localhost/identify/channels/<channel_id>/access-by-key -d '{"client_id": "<thing_secret>", "action": "m_read" | "m_write", "entity_type": "group"}'
+```
+
+For example:
+
+```bash
+curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" http://localhost/identify/channels/830cf52a-4928-4cfb-af44-e82a696c9ac9/access-by-key -d '{"client_id": "a83b9afb-9022-4f9e-ba3d-4354a08c273a", "action": "m_read", "entity_type": "group"}'
 ```
 
 Response:
 
 ```bash
 HTTP/1.1 200 OK
-Server: nginx/1.16.0
-Date: Mon, 22 Mar 2021 13:10:53 GMT
+Server: nginx/1.23.3
+Date: Wed, 05 Apr 2023 15:46:43 GMT
 Content-Type: application/json
 Content-Length: 46
 Connection: keep-alive
 Access-Control-Expose-Headers: Location
 
-{"id":"d69d0098-072b-41bf-8c6e-ce4dbb12d333"}
+{"id":"977bbd33-5b59-4b7a-a9c3-8adda5d98255"}
 ```
 
 ### Access by ID
@@ -1490,15 +1814,21 @@ Checks if thing has access to a channel
 > Must-have: `channel_id` and `thing_id`
 
 ```bash
-curl -s -S -i -X POST -H "Content-Type: application/json" http://localhost/identify/channels/<channel_id>/access-by-id -d '{"thing_id": "<thing_id>"}'
+curl -s -S -i -X POST -H "Content-Type: application/json" http://localhost/identify/channels/<channel_id>/access-by-id -d '{"client_id": "<thing_id>", "action": "m_read" | "m_write", "entity_type": "group"}'
+```
+
+For example:
+
+```bash
+curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" http://localhost/identify/channels/830cf52a-4928-4cfb-af44-e82a696c9ac9/access-by-id -d '{"client_id": "977bbd33-5b59-4b7a-a9c3-8adda5d98255", "action": "m_read", "entity_type": "group"}'
 ```
 
 Response:
 
 ```bash
 HTTP/1.1 200 OK
-Server: nginx/1.16.0
-Date: Mon, 22 Mar 2021 15:02:02 GMT
+Server: nginx/1.23.3
+Date: Wed, 05 Apr 2023 15:45:04 GMT
 Content-Type: application/json
 Content-Length: 0
 Connection: keep-alive
@@ -1509,24 +1839,30 @@ Access-Control-Expose-Headers: Location
 
 Validates thing's key and returns it's ID if key is valid
 
-> Must-have: `thing_key`
+> Must-have: `thing_secret`
 
 ```bash
-curl -s -S -i -X POST -H "Content-Type: application/json" http://localhost/identify -d '{"token": "<thing_key>"}'
+curl -s -S -i -X POST -H "Content-Type: application/json" http://localhost/identify -d '{"token": "<thing_secret>"}'
+```
+
+For example:
+
+```bash
+curl -s -S -i -X POST -H "Content-Type: application/json" http://localhost/identify -d '{"token": "a83b9afb-9022-4f9e-ba3d-4354a08c273a"}'
 ```
 
 Response:
 
 ```bash
 HTTP/1.1 200 OK
-Server: nginx/1.16.0
-Date: Mon, 22 Mar 2021 15:04:41 GMT
+Server: nginx/1.23.3
+Date: Wed, 05 Apr 2023 15:47:43 GMT
 Content-Type: application/json
 Content-Length: 46
 Connection: keep-alive
 Access-Control-Expose-Headers: Location
 
-{"id":"d69d0098-072b-41bf-8c6e-ce4dbb12d333"}
+{"id":"977bbd33-5b59-4b7a-a9c3-8adda5d98255"}
 ```
 
 ## Messages
@@ -1535,18 +1871,24 @@ Access-Control-Expose-Headers: Location
 
 Sends message via HTTP protocol
 
-> Must-have: `thing_key` and `channel_id`
+> Must-have: `thing_secret` and `channel_id`
 
 ```bash
-curl -s -S -i -X POST -H "Content-Type: application/senml+json" -H "Authorization: Thing <thing_key>" http://localhost/http/channels/<channel_id>/messages -d '[{"bn":"some-base-name:","bt":1.276020076001e+09,"bu":"A","bver":5,"n":"voltage","u":"V","v":120.1}, {"n":"current","t":-5,"v":1.2}, {"n":"current","t":-4,"v":1.3}]'
+curl -s -S -i -X POST -H "Content-Type: application/senml+json" -H "Authorization: Thing <thing_secret>" http://localhost/http/channels/<channel_id>/messages -d '[{"bn":"some-base-name:","bt":1.276020076001e+09,"bu":"A","bver":5,"n":"voltage","u":"V","v":120.1}, {"n":"current","t":-5,"v":1.2}, {"n":"current","t":-4,"v":1.3}]'
+```
+
+For example:
+
+```bash
+curl -s -S -i -X POST -H "Content-Type: application/senml+json" -H "Authorization: Thing a83b9afb-9022-4f9e-ba3d-4354a08c273a" http://localhost/http/channels/830cf52a-4928-4cfb-af44-e82a696c9ac9/messages -d '[{"bn":"some-base-name:","bt":1.276020076001e+09,"bu":"A","bver":5,"n":"voltage","u":"V","v":120.1}, {"n":"current","t":-5,"v":1.2}, {"n":"current","t":-4,"v":1.3}]'
 ```
 
 Response:
 
 ```bash
 HTTP/1.1 202 Accepted
-Server: nginx/1.16.0
-Date: Wed, 10 Mar 2021 16:53:54 GMT
+Server: nginx/1.23.3
+Date: Wed, 05 Apr 2023 15:58:35 GMT
 Content-Length: 0
 Connection: keep-alive
 ```
@@ -1555,10 +1897,16 @@ Connection: keep-alive
 
 Reads messages from database for a given channel
 
-> Must-have: `thing_key` and `channel_id`
+> Must-have: `thing_secret` and `channel_id`
 
 ```bash
-curl -s -S -i -H "Authorization: Thing <thing_key>" http://localhost:<service_port>/channels/<channel_id>/messages?offset=0&limit=5
+curl -s -S -i -H "Authorization: Thing <thing_secret>" http://localhost:<service_port>/channels/<channel_id>/messages?offset=0&limit=5
+```
+
+For example:
+
+```bash
+curl -s -S -i -H "Authorization: Thing a83b9afb-9022-4f9e-ba3d-4354a08c273a" http://localhost:9009/channels/830cf52a-4928-4cfb-af44-e82a696c9ac9/messages
 ```
 
 Response:
@@ -1566,10 +1914,43 @@ Response:
 ```bash
 HTTP/1.1 200 OK
 Content-Type: application/json
-Date: Wed, 10 Mar 2021 16:54:58 GMT
+Date: Wed, 05 Apr 2023 16:01:49 GMT
 Content-Length: 660
 
-{"offset":0,"limit":10,"format":"messages","total":3,"messages":[{"channel_name":"1a0cde06-8e5c-4f07-aac5-95aff4a19ea0","publisher":"33eb28c3-4ca2-45c3-b1c5-d5d049c6c24e","protocol":"http","name":"some-base-name:voltage","unit":"V","time":1276020076.001,"value":120.1},{"channel_name":"1a0cde06-8e5c-4f07-aac5-95aff4a19ea0","publisher":"33eb28c3-4ca2-45c3-b1c5-d5d049c6c24e","protocol":"http","name":"some-base-name:current","unit":"A","time":1276020072.001,"value":1.3},{"channel_name":"1a0cde06-8e5c-4f07-aac5-95aff4a19ea0","publisher":"33eb28c3-4ca2-45c3-b1c5-d5d049c6c24e","protocol":"http","name":"some-base-name:current","unit":"A","time":1276020071.001,"value":1.2}]}
+{
+    "offset": 0,
+    "limit": 10,
+    "format": "messages",
+    "total": 3,
+    "messages": [{
+            "channel": "830cf52a-4928-4cfb-af44-e82a696c9ac9",
+            "publisher": "977bbd33-5b59-4b7a-a9c3-8adda5d98255",
+            "protocol": "http",
+            "name": "some-base-name:voltage",
+            "unit": "V",
+            "time": 1276020076.001,
+            "value": 120.1
+        },
+        {
+            "channel": "830cf52a-4928-4cfb-af44-e82a696c9ac9",
+            "publisher": "977bbd33-5b59-4b7a-a9c3-8adda5d98255",
+            "protocol": "http",
+            "name": "some-base-name:current",
+            "unit": "A",
+            "time": 1276020072.001,
+            "value": 1.3
+        },
+        {
+            "channel": "830cf52a-4928-4cfb-af44-e82a696c9ac9",
+            "publisher": "977bbd33-5b59-4b7a-a9c3-8adda5d98255",
+            "protocol": "http",
+            "name": "some-base-name:current",
+            "unit": "A",
+            "time": 1276020071.001,
+            "value": 1.2
+        }
+    ]
+}
 ```
 
 ## Groups
