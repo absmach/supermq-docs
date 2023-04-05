@@ -14,7 +14,7 @@ To put it briefly:
 
 **Action**: This is the action that the subject wants to do on the object. This is one of the supported actions (read, write, update, delete, list or add)
 
-Above this we have a domain specifier called **entityType**. This either specific group level access or client level acess. With client level access a client can have an action to another client in the same group. While group level access a client has an action to a group i.e direct association.
+Above this we have a domain specifier called **entityType**. This either specific group level access or client level acess. With group level access a client can have an action to another client in the same group. While client level access a client has an action to a group i.e direct association.
 
 All three components create a single policy.
 
@@ -38,15 +38,15 @@ Policies handling initial implementation are meant to be used on the **Group** l
 
 There are three types of policies:
 
-- M Policy for messages
-- G Policy for Group rights
-- C Policy for Clients that are group members
+- **m_** Policy for messages i.e read or write action.
+- **g_** Policy for Group rights i.e add, list, update or delete action.
+- **c_** Policy for Clients that are group members i.e add, list, update or delete action.
 
-M Policy represents client rights to send and receive messages to a channel. Only channel members with corresponding rights can publish or receive messages to/from the channel.
+**m_** Policy represents client rights to send and receive messages to a channel. Only channel members with corresponding rights can publish or receive messages to/from the channel.
 
-G Policy represents the client's rights to modify the group/channel itself. Only group/channel members with correct rights can modify or update the group/channel, or add/remove members to/from the group.
+**g_** Policy represents the client's rights to modify the group/channel itself. Only group/channel members with correct rights can modify or update the group/channel, or add/remove members to/from the group.
 
-Finally, the C policy represents the rights the member has over other members of the group/channel.
+Finally, the **c_** policy represents the rights the member has over other members of the group/channel.
 
 ## Example
 
@@ -70,8 +70,8 @@ For the sake of simplicity, all the operations at the moment are executed on the
 
 1. Actions for `clientA`
 
-      - when `clientA` lists groups `groupA` will be listed
       - they can add members to `groupA`
+      - when `clientA` lists groups `groupA` will be listed
       - they can update `groupA`
       - they can change the status of `groupA`
 
@@ -134,24 +134,115 @@ Mainflux comes with predefined policies.
 
 - Once the user creates a new group, the user will have a `g_add`, `g_update`, `g_list` and `g_delete` policy on the group.
 
-### Summary of the Defined Policies
-
-- **`member`**: Identifies registered user's role such as `admin`. Also, it indicates memberships on the Group entity.
-- **`read`, `write` and `delete`**: Controls access control for the Things.
-- **`create`**: Mainflux uses special `create` policy to allow everybody to create new users. If you want to enable this feature through the HTTP, you need to make following request:
-
-```bash
-curl -isSX POST http://localhost/policies -d '{"subjects":["*"],"policies": ["create"], "object": "user"}' -H "Authorization: Bearer <admin_token>" -H 'Content-Type: application/json'
-```
+### Summary of Defined Policies
 
 ## Add Policies
 
 You can add policies as well through an HTTP endpoint. *Only* admin can use this endpoint. Therefore, you need an authentication token for the admin.
 
-**Caveat:** Only policies defined under [Summary of the Defined Policies](#summary-of-the-defined-policies) are allowed. Other policies are not allowed. For example, you can add `member` policy but not `custom-member` policy because `custom-member` policy is not defined on the system.
+*admin_token* must belong to the admin.
+
+> Must-have: admin_token, object_id, subjects_id and policy_actions
 
 ```bash
-curl -isSX POST http://localhost/policies -d '{"subjects": ["<subject_id1>",..."<subject_idN>"], "object": "<object>", "policies": ["<action_1>, ..."<action_N>"]}' -H "Authorization: Bearer <admin_token>" -H 'Content-Type: application/json'
+curl -isSX POST 'http://localhost/policies' -H 'Content-Type: application/json' -H 'Authorization: Bearer <admin_token>' -d '{"subject": "<client_id>", "object": "<object_id>", "actions": ["<action_1>", ..., "<action_N>"]}'
+```
+
+For example:
+
+```bash
+curl -isSX POST 'http://localhost/policies' -H 'Content-Type: application/json' -H 'Authorization: Bearer <admin_token>' -d '{"subject": "3ad70dcb-b612-45a4-802a-06b166cd0372", "object": "6f048d29-3eef-4282-a649-f452d7910b53", "actions": ["c_list", "g_list"]}'
+```
+
+Response:
+
+```bash
+HTTP/1.1 201 Created
+Server: nginx/1.23.3
+Date: Wed, 05 Apr 2023 08:31:35 GMT
+Content-Type: application/json
+Content-Length: 0
+Connection: keep-alive
+Strict-Transport-Security: max-age=63072000; includeSubdomains
+X-Frame-Options: DENY
+X-Content-Type-Options: nosniff
+Access-Control-Allow-Origin: *
+Access-Control-Allow-Methods: *
+Access-Control-Allow-Headers: *
+```
+
+## Updating Policies
+
+> Must-have: admin_token, object_id, subjects_id and policy_actions
+
+```bash
+curl -isSX PUT 'http://localhost/policies' -H 'Content-Type: application/json' -H 'Authorization: Bearer <admin_token>' -d '{"subject": "<client_id>", "object": "<object_id>", "actions": ["<action_1>", ..., "<action_N>"]}'
+```
+
+For example:
+
+```bash
+curl -isSX PUT 'http://localhost/policies' -H 'Content-Type: application/json' -H 'Authorization: Bearer <admin_token>' -d '{"subject": "3ad70dcb-b612-45a4-802a-06b166cd0372", "object": "6f048d29-3eef-4282-a649-f452d7910b53", "actions": ["c_delete"]}'
+```
+
+Response:
+
+```bash
+HTTP/1.1 204 No Content
+Server: nginx/1.23.3
+Date: Wed, 05 Apr 2023 08:38:38 GMT
+Content-Type: application/json
+Connection: keep-alive
+Strict-Transport-Security: max-age=63072000; includeSubdomains
+X-Frame-Options: DENY
+X-Content-Type-Options: nosniff
+Access-Control-Allow-Origin: *
+Access-Control-Allow-Methods: *
+Access-Control-Allow-Headers: *
+```
+
+## Lisiting Policies
+
+> Must-have: admin_token
+
+```bash
+curl -isSX GET 'http://localhost/policies' -H 'Content-Type: application/json' -H 'Authorization: Bearer <admin_token>'
+```
+
+For example:
+
+```bash
+curl -isSX GET 'http://localhost/policies' -H 'Content-Type: application/json' -H 'Authorization: Bearer <admin_token>'
+```
+
+Response:
+
+```bash
+HTTP/1.1 200 OK
+Server: nginx/1.23.3
+Date: Wed, 05 Apr 2023 08:38:12 GMT
+Content-Type: application/json
+Content-Length: 290
+Connection: keep-alive
+Strict-Transport-Security: max-age=63072000; includeSubdomains
+X-Frame-Options: DENY
+X-Content-Type-Options: nosniff
+Access-Control-Allow-Origin: *
+Access-Control-Allow-Methods: *
+Access-Control-Allow-Headers: *
+
+{
+    "limit": 10,
+    "total": 1,
+    "policies": [{
+        "owner_id": "6ff06698-4dac-4281-866b-af0e500c4509",
+        "subject": "3ad70dcb-b612-45a4-802a-06b166cd0372",
+        "object": "6f048d29-3eef-4282-a649-f452d7910b53",
+        "actions": ["c_delete"],
+        "created_at": "0001-01-01T00:00:00Z",
+        "updated_at": "0001-01-01T00:00:00Z"
+    }]
+}
 ```
 
 ## Delete Policies
@@ -162,16 +253,24 @@ The admin can delete policies. Only policies defined on [Predefined Policies sec
 
 ```bash
 curl -isSX PUT http://localhost/policies -d '{"subjects": ["<subject_id1>",..."<subject_idN>"], "object": "<object>", "policies": ["<action_1>, ..."<action_N>"]}' -H "Authorization: Bearer <admin_token>" -H 'Content-Type: application/json'
-```
 
-*admin_token* must belong to the admin.
+curl -isSX DELETE 'http://localhost/policies/6f048d29-3eef-4282-a649-f452d7910b53/3ad70dcb-b612-45a4-802a-06b166cd0372' -H 'Accept: application/json' -H 'Authorization: Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODA3MzcyODAsImlhdCI6MTY4MDY4MzI4MCwiaWRlbnRpdHkiOiJleGFtcGxlQHVzZXIuY29tIiwiaXNzIjoiY2xpZW50cy5hdXRoIiwic3ViIjoiNmZmMDY2OTgtNGRhYy00MjgxLTg2NmItYWYwZTUwMGM0NTA5IiwidHlwZSI6ImFjY2VzcyJ9.gWWqcTUgasroSzJOeFOYC_gc91ukQ7Kr71Xxv3aEQEDabf2HA8sQZ1d0NZ79grhoYTSY1iROEOfCtF-288J85A'
+```
 
 Response:
 
 ```bash
 HTTP/1.1 204 No Content
+Server: nginx/1.23.3
+Date: Wed, 05 Apr 2023 08:40:22 GMT
 Content-Type: application/json
-Date: Wed, 03 Nov 2021 13:00:05 GMT
+Connection: keep-alive
+Strict-Transport-Security: max-age=63072000; includeSubdomains
+X-Frame-Options: DENY
+X-Content-Type-Options: nosniff
+Access-Control-Allow-Origin: *
+Access-Control-Allow-Methods: *
+Access-Control-Allow-Headers: *
 
 ```
 
