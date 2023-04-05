@@ -97,7 +97,7 @@ http://localhost:8185/channels/<channelID>/messages/home/temperature/myFormat
 
 the message format is `myFormat`. It can be any valid subtopic name, JSON transformer is format-agnostic. The format is used by the JSON message consumers so that they can process the message properly. If the format is not present (i.e. message subtopic is empty), JSON Transformer will report an error.  Message writers will store the message(s) in the table/collection/measurement (depending on the underlying database) with the name of the format (which in the example is `myFormat`). Mainflux writers will try to save any format received (whether it will be successful depends on the writer implementation and the underlying database), but it's recommended that publishers don't send different formats to the same subtopic.
 
-### InfluxDB, InfluxDB Writer and Grafana
+### InfluxDB, InfluxDB Writer
 
 From the project root execute the following command:
 
@@ -109,15 +109,13 @@ This will install and start:
 
 - [InfluxDB](https://docs.influxdata.com/influxdb) - time series database
 - InfluxDB writer - message repository implementation for InfluxDB
-- [Grafana](https://grafana.com) - tool for database exploration and data visualization and analytics
 
 Those new services will take some additional ports:
 
 - 8086 by InfluxDB
 - 8900 by InfluxDB writer service
-- 3001 by Grafana
 
-To access Grafana, navigate to `http://localhost:3001` and login with: `admin`, password: `admin`
+To access Influx-UI, navigate to `http://localhost:8086` and login with: `mainflux`, password: `mainflux`
 
 ### Cassandra and Cassandra Writer
 
