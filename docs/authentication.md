@@ -3,7 +3,7 @@
 ## User authentication
 
 For user authentication Mainflux uses Authentication keys.
-There is one two types of authentication keys:
+There are two types of authentication keys:
 
 - User key - keys issued to the user upon login request
 - Recovery key - password recovery key
