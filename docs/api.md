@@ -23,11 +23,7 @@ For example:
 
 ```bash
 curl -s -S -i -X POST -H "Content-Type: application/json" http://localhost/users -d '{"credentials": {"identity": "john.doe@email.com", "secret": "12345678"}, "name": "John Doe", "status": "enabled"}'
-```
 
-Response:
-
-```bash
 HTTP/1.1 201 Created
 Server: nginx/1.23.3
 Date: Wed, 05 Apr 2023 09:36:36 GMT
@@ -56,11 +52,7 @@ You can also use <user_token> so that the new user has an owner for example:
 
 ```bash
 curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" http://localhost/users -d '{"credentials": {"identity": "john.doe2@email.com", "secret": "12345678"}}'
-```
 
-Response:
-
-```bash
 HTTP/1.1 201 Created
 Server: nginx/1.23.3
 Date: Wed, 05 Apr 2023 09:51:30 GMT
@@ -100,11 +92,7 @@ For example:
 
 ```bash
 curl -s -S -i -X POST -H "Content-Type: application/json" http://localhost/users/tokens/issue -d '{"identity": "john.doe@email.com", "secret": "12345678"}'
-```
 
-Response:
-
-```bash
 HTTP/1.1 201 Created
 Server: nginx/1.23.3
 Date: Wed, 05 Apr 2023 09:43:04 GMT
@@ -139,11 +127,7 @@ For example:
 
 ```bash
 curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: Bearer $REFRESH_TOKEN" http://localhost/users/tokens/refresh
-```
 
-Response:
-
-```bash
 HTTP/1.1 201 Created
 Server: nginx/1.23.3
 Date: Wed, 05 Apr 2023 10:44:15 GMT
@@ -178,11 +162,7 @@ For example:
 
 ```bash
 curl -s -S -i -X GET -H "Authorization: Bearer $USER_TOKEN" http://localhost/users/838dc3bb-fac9-4b39-ba4c-97a051c7c10d
-```
 
-Response:
-
-```bash
 HTTP/1.1 200 OK
 Server: nginx/1.23.3
 Date: Wed, 05 Apr 2023 09:52:28 GMT
@@ -223,11 +203,7 @@ For example:
 
 ```bash
 curl -s -S -i -X GET -H "Authorization: Bearer $USER_TOKEN" http://localhost/users
-```
 
-Response:
-
-```bash
 HTTP/1.1 200 OK
 Server: nginx/1.23.3
 Date: Wed, 05 Apr 2023 09:53:19 GMT
@@ -268,11 +244,7 @@ For example:
 
 ```bash
 curl -s -S -i -X GET -H "Authorization: Bearer $USER_TOKEN" http://localhost/users?offset=0&limit=5&identity=john.doe2@email.com
-```
 
-Response:
-
-```bash
 HTTP/1.1 200 OK
 Server: nginx/1.23.3
 Date: Wed, 05 Apr 2023 09:57:11 GMT
@@ -315,11 +287,7 @@ For example:
 
 ```bash
 curl -s -S -i -X PATCH -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" http://localhost/users/838dc3bb-fac9-4b39-ba4c-97a051c7c10d -d '{"name": "new name", "metadata":{"foo":"bar"}}'
-```
 
-Response:
-
-```bash
 HTTP/1.1 200 OK
 Server: nginx/1.23.3
 Date: Wed, 05 Apr 2023 10:03:36 GMT
@@ -360,11 +328,7 @@ For example:
 
 ```bash
 curl -s -S -i -X PATCH -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" http://localhost/users/838dc3bb-fac9-4b39-ba4c-97a051c7c10d/tags -d '{"tags":["foo","bar"]}'
-```
 
-Response:
-
-```bash
 HTTP/1.1 200 OK
 Server: nginx/1.23.3
 Date: Wed, 05 Apr 2023 10:10:24 GMT
@@ -406,11 +370,7 @@ For example:
 
 ```bash
 curl -s -S -i -X PATCH -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" http://localhost/users/838dc3bb-fac9-4b39-ba4c-97a051c7c10d/owner -d '{"owner": "b8b2d3c6-7365-4670-af5c-d6fe0ae2c1d3"}'
-```
 
-Response:
-
-```bash
 HTTP/1.1 200 OK
 Server: nginx/1.23.3
 Date: Wed, 05 Apr 2023 10:12:31 GMT
@@ -453,11 +413,7 @@ For example:
 
 ```bash
 curl -s -S -i -X PATCH -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" http://localhost/users/838dc3bb-fac9-4b39-ba4c-97a051c7c10d/identity -d '{"identity": "updated.john.doe@email.com"}'
-```
 
-Response:
-
-```bash
 HTTP/1.1 200 OK
 Server: nginx/1.23.3
 Date: Wed, 05 Apr 2023 10:16:55 GMT
@@ -498,11 +454,7 @@ For example:
 
 ```bash
 curl -s -S -i -X PATCH -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" http://localhost/users/secret -d '{"old_secret":"12345678", "new_secret":"12345678a"}'
-```
 
-Response:
-
-```bash
 HTTP/1.1 201 Created
 Server: nginx/1.16.0
 Date: Wed, 10 Mar 2021 15:17:36 GMT
@@ -531,11 +483,7 @@ For example:
 
 ```bash
 curl -s -S -i -X POST -H "Authorization: Bearer $USER_TOKEN" http://localhost/users/838dc3bb-fac9-4b39-ba4c-97a051c7c10d/enable
-```
 
-Response:
-
-```bash
 HTTP/1.1 200 OK
 Server: nginx/1.23.3
 Date: Wed, 05 Apr 2023 10:40:54 GMT
@@ -576,11 +524,7 @@ For example:
 
 ```bash
 curl -s -S -i -X POST -H "Authorization: Bearer $USER_TOKEN" http://localhost/users/838dc3bb-fac9-4b39-ba4c-97a051c7c10d/disable
-```
 
-Response:
-
-```bash
 HTTP/1.1 200 OK
 Server: nginx/1.23.3
 Date: Wed, 05 Apr 2023 10:40:29 GMT
@@ -622,11 +566,7 @@ For example:
 
 ```bash
 curl -s -S -i -X GET -H "Authorization: Bearer $USER_TOKEN" http://localhost/users/838dc3bb-fac9-4b39-ba4c-97a051c7c10d/memberships
-```
 
-Response:
-
-```bash
 HTTP/1.1 200 OK
 Server: nginx/1.23.3
 Date: Wed, 05 Apr 2023 11:55:58 GMT
@@ -670,11 +610,7 @@ For example:
 
 ```bash
 curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" http://localhost/things -d '{"name": "examplething"}'
-```
 
-Response:
-
-```bash
 HTTP/1.1 201 Created
 Server: nginx/1.23.3
 Date: Wed, 05 Apr 2023 12:21:34 GMT
@@ -712,11 +648,7 @@ For example:
 
 ```bash
 curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" http://localhost/things -d '{"id": "977bbd33-5b59-4b7a-a9c3-8adda5d98255", "name": "examplething"}'
-```
 
-Response:
-
-```bash
 HTTP/1.1 201 Created
 Server: nginx/1.23.3
 Date: Wed, 05 Apr 2023 12:22:39 GMT
@@ -751,11 +683,7 @@ For example:
 
 ```bash
 curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" http://localhost/things/bulk -d '[{"name": "thing_name_1"}, {"name": "thing_name_2"}]'
-```
 
-Response:
-
-```bash
 HTTP/1.1 200 OK
 Server: nginx/1.23.3
 Date: Wed, 05 Apr 2023 12:23:44 GMT
@@ -802,11 +730,7 @@ For example:
 
 ```bash
 curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" http://localhost/things/bulk -d '[{"id": "eb2670ba-a2be-4ea4-83cb-111111111111","name": "thing_name_1"},{"id": "eb2670ba-a2be-4ea4-83cb-111111111112","name": "thing_name_2"}]'
-```
 
-Response:
-
-```bash
 HTTP/1.1 200 OK
 Server: nginx/1.23.3
 Date: Wed, 05 Apr 2023 12:28:51 GMT
@@ -853,11 +777,7 @@ For example:
 
 ```bash
 curl -s -S -i -X GET -H "Authorization: Bearer $USER_TOKEN" http://localhost/things/ee6de1d4-aa1d-443a-9848-7857a90d03bd
-```
 
-Response:
-
-```bash
 HTTP/1.1 200 OK
 Server: nginx/1.23.3
 Date: Wed, 05 Apr 2023 12:31:28 GMT
@@ -891,11 +811,7 @@ For example:
 
 ```bash
 curl -s -S -i -X GET -H "Authorization: Bearer $USER_TOKEN" http://localhost/things
-```
 
-Response:
-
-```bash
 HTTP/1.1 200 OK
 Server: nginx/1.23.3
 Date: Wed, 05 Apr 2023 12:30:33 GMT
@@ -978,11 +894,7 @@ For example:
 
 ```bash
 curl -s -S -i -X GET -H "Authorization: Bearer $USER_TOKEN" http://localhost/things?offset=1&limit=5&name=thing_name_2
-```
 
-Response:
-
-```bash
 HTTP/1.1 200 OK
 Server: nginx/1.23.3
 Date: Wed, 05 Apr 2023 12:34:15 GMT
@@ -1021,11 +933,7 @@ For example:
 
 ```bash
 curl -s -S -i -X PATCH -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" http://localhost/things/ee6de1d4-aa1d-443a-9848-7857a90d03bd -d '{"name": "new name"}'
-```
 
-Response:
-
-```bash
 HTTP/1.1 200 OK
 Server: nginx/1.23.3
 Date: Wed, 05 Apr 2023 12:36:15 GMT
@@ -1059,11 +967,7 @@ For example:
 
 ```bash
 curl -s -S -i -X PATCH -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" http://localhost/things/ee6de1d4-aa1d-443a-9848-7857a90d03bd/tags -d '{"tags": ["tag"]}'
-```
 
-Response:
-
-```bash
 HTTP/1.1 200 OK
 Server: nginx/1.23.3
 Date: Wed, 05 Apr 2023 12:37:47 GMT
@@ -1098,11 +1002,7 @@ For example:
 
 ```bash
 curl -s -S -i -X PATCH -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" http://localhost/things/ee6de1d4-aa1d-443a-9848-7857a90d03bd -d '{"owner": "f7c55a1f-dde8-4880-9796-b3a0cd05745b"}'
-```
 
-Response:
-
-```bash
 HTTP/1.1 200 OK
 Server: nginx/1.23.3
 Date: Wed, 05 Apr 2023 15:04:32 GMT
@@ -1137,11 +1037,7 @@ For example:
 
 ```bash
 curl -s -S -i -X PATCH -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" http://localhost/things/ee6de1d4-aa1d-443a-9848-7857a90d03bd/secret -d '{"secret": "secret-key"}'
-```
 
-Response:
-
-```bash
 HTTP/1.1 200 OK
 Server: nginx/1.23.3
 Date: Wed, 05 Apr 2023 15:05:52 GMT
@@ -1176,11 +1072,7 @@ For example:
 
 ```bash
 curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" http://localhost/things/ee6de1d4-aa1d-443a-9848-7857a90d03bd/enable
-```
 
-Response:
-
-```bash
 HTTP/1.1 200 OK
 Server: nginx/1.23.3
 Date: Wed, 05 Apr 2023 15:08:12 GMT
@@ -1215,11 +1107,7 @@ For example:
 
 ```bash
 curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" http://localhost/things/ee6de1d4-aa1d-443a-9848-7857a90d03bd/disable
-```
 
-Response:
-
-```bash
 HTTP/1.1 200 OK
 Server: nginx/1.23.3
 Date: Wed, 05 Apr 2023 15:07:24 GMT
@@ -1256,11 +1144,7 @@ For example:
 
 ```bash
 curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" http://localhost/channels -d '{"name": "examplechannel"}'
-```
 
-Response:
-
-```bash
 HTTP/1.1 201 Created
 Server: nginx/1.23.3
 Date: Wed, 05 Apr 2023 15:14:15 GMT
@@ -1296,11 +1180,7 @@ For example:
 
 ```bash
 curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" http://localhost/channels -d '{"id": "ee6de1d4-aa1d-443a-9848-7857a90d03bd", "name": "examplechannel2"}'
-```
 
-Response:
-
-```bash
 HTTP/1.1 201 Created
 Server: nginx/1.23.3
 Date: Wed, 05 Apr 2023 15:15:57 GMT
@@ -1334,11 +1214,7 @@ For example:
 
 ```bash
 curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" http://localhost/channels/bulk -d '[{"name": "channel_name_1"}, {"name": "channel_name_2"}]'
-```
 
-Response:
-
-```bash
 HTTP/1.1 200 OK
 Server: nginx/1.23.3
 Date: Wed, 05 Apr 2023 15:17:09 GMT
@@ -1382,11 +1258,7 @@ For example:
 
 ```bash
 curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" http://localhost/channels/bulk -d '[{"id": "977bbd33-5b59-4b7a-a9c3-111111111111","name": "channel_name_1a"}, {"id": "977bbd33-5b59-4b7a-a9c3-111111111112","name": "channel_name_2a"}]'
-```
 
-Response:
-
-```bash
 HTTP/1.1 200 OK
 Server: nginx/1.23.3
 Date: Wed, 05 Apr 2023 15:19:13 GMT
@@ -1431,11 +1303,7 @@ For example:
 
 ```bash
 curl -s -S -i -X GET -H "Authorization: Bearer $USER_TOKEN" http://localhost/channels/1365b640-11cc-4d7e-8e7e-3b86e7651045
-```
 
-Response:
-
-```bash
 HTTP/1.1 200 OK
 Server: nginx/1.23.3
 Date: Wed, 05 Apr 2023 15:20:13 GMT
@@ -1468,11 +1336,7 @@ For example:
 
 ```bash
 curl -s -S -i -X GET -H "Authorization: Bearer $USER_TOKEN" http://localhost/channels
-```
 
-Response:
-
-```bash
 HTTP/1.1 200 OK
 Server: nginx/1.23.3
 Date: Wed, 05 Apr 2023 15:20:54 GMT
@@ -1549,11 +1413,7 @@ For example:
 
 ```bash
 curl -s -S -i -X PUT -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" http://localhost/channels/1365b640-11cc-4d7e-8e7e-3b86e7651045 -d '{"name": "new name", "metadata": {"foo": "bar"}}'
-```
 
-Response:
-
-```bash
 HTTP/1.1 200 OK
 Server: nginx/1.23.3
 Date: Wed, 05 Apr 2023 15:22:56 GMT
@@ -1587,11 +1447,7 @@ For example:
 
 ```bash
 curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" http://localhost/channels/1365b640-11cc-4d7e-8e7e-3b86e7651045/enable
-```
 
-Response:
-
-```bash
 HTTP/1.1 200 OK
 Server: nginx/1.23.3
 Date: Wed, 05 Apr 2023 15:24:30 GMT
@@ -1625,11 +1481,7 @@ For example:
 
 ```bash
 curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" http://localhost/channels/1365b640-11cc-4d7e-8e7e-3b86e7651045/disable
-```
 
-Response:
-
-```bash
 HTTP/1.1 200 OK
 Server: nginx/1.23.3
 Date: Wed, 05 Apr 2023 15:24:04 GMT
@@ -1663,11 +1515,7 @@ For example:
 
 ```bash
 curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" http://localhost/connect -d '{"group_ids": ["830cf52a-4928-4cfb-af44-e82a696c9ac9"], "client_ids": ["ee6de1d4-aa1d-443a-9848-7857a90d03bd"]}'
-```
 
-Response:
-
-```bash
 HTTP/1.1 201 Created
 Server: nginx/1.23.3
 Date: Wed, 05 Apr 2023 15:35:29 GMT
@@ -1700,11 +1548,7 @@ For example:
 
 ```bash
 curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" http://localhost/channels/830cf52a-4928-4cfb-af44-e82a696c9ac9/things/977bbd33-5b59-4b7a-a9c3-8adda5d98255
-```
 
-Response:
-
-```bash
 HTTP/1.1 201 Created
 Server: nginx/1.23.3
 Date: Wed, 05 Apr 2023 15:37:01 GMT
@@ -1739,11 +1583,7 @@ For example:
 
 ```bash
 curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" http://localhost/disconnect -d '{"group_ids": ["830cf52a-4928-4cfb-af44-e82a696c9ac9"], "client_ids": ["ee6de1d4-aa1d-443a-9848-7857a90d03bd"]}'
-```
 
-Response:
-
-```bash
 HTTP/1.1 204 No Content
 Server: nginx/1.23.3
 Date: Wed, 05 Apr 2023 15:39:19 GMT
@@ -1764,11 +1604,7 @@ For example:
 
 ```bash
 curl -s -S -i -X DELETE -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" http://localhost/channels/830cf52a-4928-4cfb-af44-e82a696c9ac9/things/977bbd33-5b59-4b7a-a9c3-8adda5d98255
-```
 
-Response:
-
-```bash
 HTTP/1.1 204 No Content
 Server: nginx/1.23.3
 Date: Wed, 05 Apr 2023 15:40:58 GMT
@@ -1791,11 +1627,7 @@ For example:
 
 ```bash
 curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" http://localhost/identify/channels/830cf52a-4928-4cfb-af44-e82a696c9ac9/access-by-key -d '{"client_id": "a83b9afb-9022-4f9e-ba3d-4354a08c273a", "action": "m_read", "entity_type": "group"}'
-```
 
-Response:
-
-```bash
 HTTP/1.1 200 OK
 Server: nginx/1.23.3
 Date: Wed, 05 Apr 2023 15:46:43 GMT
@@ -1821,11 +1653,7 @@ For example:
 
 ```bash
 curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" http://localhost/identify/channels/830cf52a-4928-4cfb-af44-e82a696c9ac9/access-by-id -d '{"client_id": "977bbd33-5b59-4b7a-a9c3-8adda5d98255", "action": "m_read", "entity_type": "group"}'
-```
 
-Response:
-
-```bash
 HTTP/1.1 200 OK
 Server: nginx/1.23.3
 Date: Wed, 05 Apr 2023 15:45:04 GMT
@@ -1849,11 +1677,7 @@ For example:
 
 ```bash
 curl -s -S -i -X POST -H "Content-Type: application/json" http://localhost/identify -d '{"token": "a83b9afb-9022-4f9e-ba3d-4354a08c273a"}'
-```
 
-Response:
-
-```bash
 HTTP/1.1 200 OK
 Server: nginx/1.23.3
 Date: Wed, 05 Apr 2023 15:47:43 GMT
@@ -1881,11 +1705,7 @@ For example:
 
 ```bash
 curl -s -S -i -X POST -H "Content-Type: application/senml+json" -H "Authorization: Thing a83b9afb-9022-4f9e-ba3d-4354a08c273a" http://localhost/http/channels/830cf52a-4928-4cfb-af44-e82a696c9ac9/messages -d '[{"bn":"some-base-name:","bt":1.276020076001e+09,"bu":"A","bver":5,"n":"voltage","u":"V","v":120.1}, {"n":"current","t":-5,"v":1.2}, {"n":"current","t":-4,"v":1.3}]'
-```
 
-Response:
-
-```bash
 HTTP/1.1 202 Accepted
 Server: nginx/1.23.3
 Date: Wed, 05 Apr 2023 15:58:35 GMT
@@ -1907,11 +1727,7 @@ For example:
 
 ```bash
 curl -s -S -i -H "Authorization: Thing a83b9afb-9022-4f9e-ba3d-4354a08c273a" http://localhost:9009/channels/830cf52a-4928-4cfb-af44-e82a696c9ac9/messages
-```
 
-Response:
-
-```bash
 HTTP/1.1 200 OK
 Content-Type: application/json
 Date: Wed, 05 Apr 2023 16:01:49 GMT
@@ -1971,11 +1787,7 @@ For example:
 ```bash
 curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" http://localhost/groups -d '{"name": "testgroup",
 "description": "test group description"}'
-```
 
-Response:
-
-```bash
 HTTP/1.1 201 Created
 Server: nginx/1.23.3
 Date: Wed, 05 Apr 2023 10:56:45 GMT
@@ -2007,11 +1819,7 @@ For example:
 ```bash
 curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" http://localhost/groups -d '{"name": "testgroup2",
 "description": "test group 2 description", "parent_id": "977bbd33-5b59-4b7a-a9c3-8adda5d98255"}'
-```
 
-Response:
-
-```bash
 HTTP/1.1 201 Created
 Server: nginx/1.23.3
 Date: Wed, 05 Apr 2023 10:57:26 GMT
@@ -2047,11 +1855,7 @@ For example:
 
 ```bash
 curl -s -S -i -X GET -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" http://localhost/groups/7aeafccb-7c07-4c0e-a321-85ae014a73eb
-```
 
-Response:
-
-```bash
 HTTP/1.1 200 OK
 Server: nginx/1.23.3
 Date: Wed, 05 Apr 2023 10:58:30 GMT
@@ -2086,11 +1890,7 @@ For example:
 
 ```bash
 curl -s -S -i -X GET -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" http://localhost/groups
-```
 
-Response:
-
-```bash
 HTTP/1.1 200 OK
 Server: nginx/1.23.3
 Date: Wed, 05 Apr 2023 10:59:23 GMT
@@ -2138,11 +1938,7 @@ For example:
 
 ```bash
 curl -s -S -i -X GET -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" http://localhost/groups/7aeafccb-7c07-4c0e-a321-85ae014a73eb/parents?tree=true
-```
 
-Response:
-
-```bash
 HTTP/1.1 200 OK
 Server: nginx/1.23.3
 Date: Wed, 05 Apr 2023 11:39:00 GMT
@@ -2192,11 +1988,7 @@ For example:
 
 ```bash
 curl -s -S -i -X GET -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" http://localhost/groups/977bbd33-5b59-4b7a-a9c3-8adda5d98255/children?tree=true
-```
 
-Response:
-
-```bash
 HTTP/1.1 200 OK
 Server: nginx/1.23.3
 Date: Wed, 05 Apr 2023 11:40:34 GMT
@@ -2249,11 +2041,7 @@ For example:
 
 ```bash
 curl -s -S -i -X PUT -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" http://localhost/groups/7aeafccb-7c07-4c0e-a321-85ae014a73eb -d '{"name": "new name", "description": "new description", "metadata": {"foo":"bar"}}'
-```
 
-Response:
-
-```bash
 HTTP/1.1 200 OK
 Server: nginx/1.23.3
 Date: Wed, 05 Apr 2023 11:02:08 GMT
@@ -2289,11 +2077,7 @@ For example:
 
 ```bash
 curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" http://localhost/groups/7aeafccb-7c07-4c0e-a321-85ae014a73eb/disable
-```
 
-Response:
-
-```bash
 HTTP/1.1 200 OK
 Server: nginx/1.23.3
 Date: Wed, 05 Apr 2023 11:03:36 GMT
@@ -2329,11 +2113,7 @@ For example:
 
 ```bash
 curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" http://localhost/groups/7aeafccb-7c07-4c0e-a321-85ae014a73eb/enable
-```
 
-Response:
-
-```bash
 HTTP/1.1 200 OK
 Server: nginx/1.23.3
 Date: Wed, 05 Apr 2023 11:04:29 GMT
@@ -2369,11 +2149,7 @@ For example:
 
 ```bash
 curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" http://localhost/policies -d '{"subject": "838dc3bb-fac9-4b39-ba4c-97a051c7c10d", "object": "977bbd33-5b59-4b7a-a9c3-8adda5d98255", "actions":["g_add", "c_list"]}'
-```
 
-Response:
-
-```bash
 HTTP/1.1 201 Created
 Server: nginx/1.23.3
 Date: Wed, 05 Apr 2023 11:48:01 GMT
@@ -2403,11 +2179,7 @@ For example:
 
 ```bash
 curl -s -S -i -X GET -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" http://localhost/groups/977bbd33-5b59-4b7a-a9c3-8adda5d98255/members
-```
 
-Response:
-
-```bash
 HTTP/1.1 200 OK
 Server: nginx/1.23.3
 Date: Wed, 05 Apr 2023 11:52:06 GMT
@@ -2455,11 +2227,7 @@ For example:
 
 ```bash
 curl -s -S -i -X DELETE -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" http://localhost/policies/977bbd33-5b59-4b7a-a9c3-8adda5d98255/838dc3bb-fac9-4b39-ba4c-97a051c7c10d -d '{"actions":["g_add", "c_list"]}'
-```
 
-Response:
-
-```bash
 HTTP/1.1 204 No Content
 Server: nginx/1.23.3
 Date: Wed, 05 Apr 2023 11:59:32 GMT
@@ -2489,11 +2257,7 @@ For example:
 
 ```bash
 curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" http://localhost/policies -d '{"subject": "838dc3bb-fac9-4b39-ba4c-97a051c7c10d", "object": "977bbd33-5b59-4b7a-a9c3-8adda5d98255", "actions":["g_add", "c_list"]}'
-```
 
-Response:
-
-```bash
 HTTP/1.1 201 Created
 Server: nginx/1.23.3
 Date: Wed, 05 Apr 2023 11:48:01 GMT
@@ -2522,11 +2286,7 @@ For example:
 
 ```bash
 curl -s -S -i -X PUT -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" http://localhost/policies -d '{"subject": "838dc3bb-fac9-4b39-ba4c-97a051c7c10d", "object": "977bbd33-5b59-4b7a-a9c3-8adda5d98255", "actions":["g_add", "c_list"]}'
-```
 
-Response:
-
-```bash
 HTTP/1.1 204 No Content
 Server: nginx/1.23.3
 Date: Wed, 05 Apr 2023 12:20:05 GMT
@@ -2554,11 +2314,7 @@ For example:
 
 ```bash
 curl -s -S -i -X DELETE -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" http://localhost/policies/977bbd33-5b59-4b7a-a9c3-8adda5d98255/838dc3bb-fac9-4b39-ba4c-97a051c7c10d -d '{"actions":["g_add", "c_list"]}'
-```
 
-Response:
-
-```bash
 HTTP/1.1 204 No Content
 Server: nginx/1.23.3
 Date: Wed, 05 Apr 2023 11:59:32 GMT
