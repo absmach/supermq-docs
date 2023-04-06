@@ -6,6 +6,7 @@ Mainflux supports various storage databases in which messages are stored:
 - MongoDB
 - InfluxDB
 - PostgreSQL
+- Timescale
 
 These storages are activated via docker-compose add-ons.
 
@@ -15,7 +16,7 @@ In order to run these services, core services, as well as the network from the c
 
 ## Writers
 
-Writers provide an implementation of various `message writers`. Message writers are services that consume Mainflux messages, transform them to desired format and store them in specific data store. The path of the configuration file can be set using the following environment variables: `MF_CASSANDRA_WRITER_CONFIG_PATH`, `MF_POSTGRES_WRITER_CONFIG_PATH`, `MF_INFLUX_WRITER_CONFIG_PATH` and `MF_MONGO_WRITER_CONFIG_PATH`.
+Writers provide an implementation of various `message writers`. Message writers are services that consume Mainflux messages, transform them to desired format and store them in specific data store. The path of the configuration file can be set using the following environment variables: `MF_CASSANDRA_WRITER_CONFIG_PATH`, `MF_POSTGRES_WRITER_CONFIG_PATH`, `MF_INFLUX_WRITER_CONFIG_PATH`, `MF_MONGO_WRITER_CONFIG_PATH` and `MF_TIMESCALE_WRITER_CONFIG_PATH`.
 
 ### Subscriber config
 
@@ -51,9 +52,10 @@ time_fields = [{ field_name = "seconds_key", field_format = "unix",    location 
                { field_name = "millis_key",  field_format = "unix_ms", location = "UTC"},
                { field_name = "micros_key",  field_format = "unix_us", location = "UTC"},
                { field_name = "nanos_key",   field_format = "unix_ns", location = "UTC"}]
-
+```
 
 JSON transformer can be used for any JSON payload. For the messages that contain _JSON array as the root element_, JSON Transformer does normalization of the data: it creates a separate JSON message for each JSON object in the root. In order to be processed and stored properly, JSON messages need to contain message format information. For the sake of simplicity, nested JSON objects are flatten to a single JSON object in InfluxDB, using composite keys separated by the `/` separator. This implies that the separator character (`/`) _is not allowed in the JSON object key_ while using InfluxDB. Apart from InfluxDB, separator character (`/`) usage in the JSON object key is permitted, since other [Writer](storage.md#writers) types do not flat the nested JSON objects. For example, the following JSON object:
+
 ```json
 {
     "name": "name",
@@ -141,6 +143,14 @@ docker-compose -f docker/addons/postgres-writer/docker-compose.yml up -d
 ```
 
 Postgres default port (5432) is exposed, so you can use various tools for database inspection and data visualization.
+
+### Timescale and Timescale Writer
+
+```bash
+docker-compose -f docker/addons/timescale-writer/docker-compose.yml up -d
+```
+
+Timescale default port (5432) is exposed, so you can use various tools for database inspection and data visualization.
 
 ## Readers
 
@@ -230,4 +240,12 @@ To start PostgreSQL reader, execute the following command:
 
 ```bash
 docker-compose -f docker/addons/postgres-reader/docker-compose.yml up -d
+```
+
+### Timescale Reader
+
+To start Timescale reader, execute the following command:
+
+```bash
+docker-compose -f docker/addons/timescale-reader/docker-compose.yml up -d
 ```
