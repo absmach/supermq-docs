@@ -128,7 +128,7 @@ _Please note that Cassandra may not be suitable for your testing environment bec
 
 ### MongoDB and MongoDB Writer
 
-```bas8202h
+```bash
 docker-compose -f docker/addons/mongodb-writer/docker-compose.yml up -d
 ```
 
