@@ -114,7 +114,6 @@ Those new services will take some additional ports:
 
 - 8086 by InfluxDB
 - 9006 by InfluxDB writer service
-- 3001 by Grafana
 
 To access Influx-UI, navigate to `http://localhost:8086` and login with: `mainflux`, password: `mainflux`
 
