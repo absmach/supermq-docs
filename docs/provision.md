@@ -650,7 +650,7 @@ To issue a certificate:
 
 TOKEN=`curl  -s --insecure -S -X POST http://localhost/tokens -H 'Content-Type: application/json' -d '{"email":"edge@email.com","password":"12345678"}' | jq -r '.token'`
 
-curl -s -S  -X POST  http://localhost:8204/certs -H "Authorization: Bearer $TOKEN" -H 'Content-Type: application/json'   -d '{"thing_id":<thing_id>, "rsa_bits":2048, "key_type":"rsa"}'
+curl -s -S  -X POST  http://localhost:9019/certs -H "Authorization: Bearer $TOKEN" -H 'Content-Type: application/json'   -d '{"thing_id":<thing_id>, "rsa_bits":2048, "key_type":"rsa"}'
 ```
 
 ```json
@@ -687,7 +687,7 @@ Issuing certificate is same as in **Development** mode.
 In this mode certificates can also be revoked:
 
 ```bash
-curl -s -S -X DELETE http://localhost:8204/certs/revoke -H "Authorization: Bearer $TOKEN" -H 'Content-Type: application/json'   -d '{"thing_id":"c30b8842-507c-4bcd-973c-74008cef3be5"}'
+curl -s -S -X DELETE http://localhost:9019/certs/revoke -H "Authorization: Bearer $TOKEN" -H 'Content-Type: application/json'   -d '{"thing_id":"c30b8842-507c-4bcd-973c-74008cef3be5"}'
 ```
 
 For more information about the Certification service API, please check out the [API documentation](https://github.com/mainflux/mainflux/blob/master/api/certs.yml).
