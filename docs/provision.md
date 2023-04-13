@@ -500,9 +500,9 @@ Provision service can be run as a standalone or in docker composition as addon t
 
 Standalone:
 ```bash
-MF_PROVISION_BS_SVC_URL=http://localhost:8202/things \
-MF_PROVISION_THINGS_LOCATION=http://localhost:8182 \
-MF_PROVISION_USERS_LOCATION=http://localhost:8180 \
+MF_PROVISION_BS_SVC_URL=http://localhost:9013/things \
+MF_PROVISION_THINGS_LOCATION=http://localhost:9000 \
+MF_PROVISION_USERS_LOCATION=http://localhost:9002 \
 MF_PROVISION_CONFIG_FILE=docker/addons/provision/configs/config.toml \
 build/mainflux-provision
 ```
@@ -516,12 +516,12 @@ docker-compose -f docker/addons/provision/docker-compose.yml up
 
 For the case that credentials or API token is passed in configuration file or environment variables, call to `/mapping` endpoint doesn't require `Authentication` header:
 ```bash
-curl -s -S  -X POST  http://localhost:8888/mapping  -H 'Content-Type: application/json' -d '{"external_id": "33:52:77:99:43", "external_key": "223334fw2"}'
+curl -s -S  -X POST  http://localhost:9016/mapping  -H 'Content-Type: application/json' -d '{"external_id": "33:52:77:99:43", "external_key": "223334fw2"}'
 ```
 
 In the case that provision service is not deployed with credentials or API key or you want to use user other than one being set in environment (or config file):
 ```bash
-curl -s -S  -X POST  http://localhost:8091/mapping -H "Authorization: Bearer <token|api_key>" -H 'Content-Type: application/json' -d '{"external_id": "<external_id>", "external_key": "<external_key>"}'
+curl -s -S  -X POST  http://localhost:9016/mapping -H "Authorization: Bearer <token|api_key>" -H 'Content-Type: application/json' -d '{"external_id": "<external_id>", "external_key": "<external_key>"}'
 ```
 
 Or if you want to specify a name for thing different than in `config.toml` you can specify post data as:
@@ -593,13 +593,13 @@ TOKEN=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1OTY1ODU3MDUsImlhdCI6MTU5N
 Make a call to provision endpoint
 
 ```
-curl -s -S  -X POST  http://mainflux.com:8190/mapping -H "Authorization: Bearer $TOKEN" -H 'Content-Type: application/json'   -d '{"name":"edge-gw",  "external_id" : "gateway", "external_key":"external_key" }'
+curl -s -S  -X POST  http://mainflux.com:9016/mapping -H "Authorization: Bearer $TOKEN" -H 'Content-Type: application/json'   -d '{"name":"edge-gw",  "external_id" : "gateway", "external_key":"external_key" }'
 ```
 
 To check the results you can make a call to bootstrap endpoint
 
 ```
-curl -s -S -X GET http://mainflux.com:8202/things/bootstrap/gateway -H "Authorization: Thing external_key" -H 'Content-Type: application/json'
+curl -s -S -X GET http://mainflux.com:9013/things/bootstrap/gateway -H "Authorization: Thing external_key" -H 'Content-Type: application/json'
 ```
 
 Or you can start `Agent` with:
@@ -608,7 +608,7 @@ Or you can start `Agent` with:
 git clone https://github.com/mainflux/agent
 cd agent
 make
-MF_AGENT_BOOTSTRAP_ID=gateway MF_AGENT_BOOTSTRAP_KEY=external_key MF_AGENT_BOOTSTRAP_URL=http://mainflux.ccom:8202/things/bootstrap build/mainflux-agent
+MF_AGENT_BOOTSTRAP_ID=gateway MF_AGENT_BOOTSTRAP_KEY=external_key MF_AGENT_BOOTSTRAP_URL=http://mainflux.ccom:9013/things/bootstrap build/mainflux-agent
 ```
 
 Agent will retrieve connections parameters and connect to Mainflux cloud.

@@ -87,7 +87,7 @@ const WebSocket = require('ws');
 // do not verify self-signed certificates if you are using one
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0'
 // c02ff576-ccd5-40f6-ba5f-c85377aad529 is an example of a thing_auth_key
-const ws = new WebSocket('ws://localhost:8190/ws/channels/1/messages?authorization=c02ff576-ccd5-40f6-ba5f-c85377aad529')
+const ws = new WebSocket('ws://localhost:8186/ws/channels/1/messages?authorization=c02ff576-ccd5-40f6-ba5f-c85377aad529')
 ws.on('open', () => {
     ws.send('something')
 })
@@ -140,7 +140,7 @@ func main() {
 	channelId := "30315311-56ba-484d-b500-c1e08305511f"
 	thingKey := "c02ff576-ccd5-40f6-ba5f-c85377aad529"
 
-	socketUrl := "ws://localhost:8190/channels/" + channelId + "/messages/?authorization=" + thingKey
+	socketUrl := "ws://localhost:8186/channels/" + channelId + "/messages/?authorization=" + thingKey
 
 	conn, _, err := websocket.DefaultDialer.Dial(socketUrl, nil)
 	if err != nil {
@@ -187,8 +187,8 @@ There are 2 reccomended Javascript libraries for implementing browser support fo
 1. [Eclipse Paho JavaScript Client](https://www.eclipse.org/paho/index.php?page=clients/js/index.php)
 2. [MQTT.js](https://github.com/mqttjs/MQTT.js)
 
-As WS is an extension of HTTP protocol, Mainflux exposes it on port `80`, so it's usage is practically transparent.
-Additionally, please notice that since same port as for HTTP is used (`80`), and extension URL `/mqtt` should be used -
+As WS is an extension of HTTP protocol, Mainflux exposes it on port `8008`, so it's usage is practically transparent.
+Additionally, please notice that since same port as for HTTP is used (`8008`), and extension URL `/mqtt` should be used -
 i.e. connection URL should be `ws://<host_addr>/mqtt`.
 
 For quick testing you can use [HiveMQ UI tool](http://www.hivemq.com/demos/websocket-client/).
@@ -246,7 +246,7 @@ Here is an example of a browser application connecting to Mainflux server and se
 
 **N.B.** Eclipse Paho lib adds sub-URL `/mqtt` automaticlly, so procedure for connecting to the server can be something like this:
 ```javascript
-var loc = { hostname: 'localhost', port: 80 }
+var loc = { hostname: 'localhost', port: 8008 }
 // Create a client instance
 client = new Paho.MQTT.Client(loc.hostname, Number(loc.port), "clientId")
 // Connect the client
