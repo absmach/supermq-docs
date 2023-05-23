@@ -20,9 +20,6 @@ The Jaeger service can be disabled by using the `scale` flag with ```docker-comp
 --scale jaeger=0
 ```
 
-```make rungw``` will run all of the Mainflux services except for the Jaeger service.  This is currently the only difference from ```make run```.  
-> The ```make rungw``` command runs Mainflux for gateway devices.  There could potentially be more differences running with this command in the future.
-
 Jaeger uses 5 ports within the Mainflux framework.  These ports can be edited in the `.env` file.
 
 | Variable            | Description                                       | Default     |
