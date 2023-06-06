@@ -32,7 +32,7 @@ Jaeger uses 5 ports within the Mainflux framework.  These ports can be edited in
 
 ## Message Tracing
 
-Mainflux provides for tracing of messages ingested into the mainflux platform. The message metadata such as topic, sub-topic, subscriber and publisher is also included in traces. ![HTTP Message Publishing trace](img/messagePub.png)
+Mainflux provides for tracing of messages ingested into the mainflux platform. The message metadata such as topic, sub-topic, subscriber and publisher is also included in traces. ![HTTP Message Publishing trace](img/tracing/messagePub.png)
 
 The messages are tracked from end to end from the point they are published to the consumers where they are stored. ![Influx DB consumer trace](https://user-images.githubusercontent.com/44265300/241806789-a56f368c-a89f-4b5d-88fe-25b971ca4718.png)
 
