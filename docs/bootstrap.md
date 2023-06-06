@@ -121,4 +121,4 @@ curl -s -S -i -X PUT -H "Authorization: Bearer <user_token>" -H "Content-Type: a
 
 In order to disconnect, the same request should be sent with the value of `state` set to 0.
 
-For more information about the Bootstrap service API, please check out the [API documentation](https://github.com/mainflux/mainflux/blob/master/api/bootstrap.yml).
+For more information about the Bootstrap service API, please check out the [API documentation](https://github.com/mainflux/mainflux/blob/master/api/openapi/bootstrap.yml).
