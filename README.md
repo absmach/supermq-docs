@@ -1,6 +1,6 @@
 # Mainflux
 
-
+![build][build]
 [![license][license]](LICENSE)
 [![chat][gitter-badge]][gitter]
 
@@ -60,3 +60,4 @@ Thank you for your interest in Mainflux and the desire to contribute!
 [blog]: https://medium.com/mainflux-iot-platform
 [twitter]: https://twitter.com/mainflux
 [docs]: https://docs.mainflux.io
+[build]: https://github.com/mainflux/docs/actions/workflows/main.yaml/badge.svg
