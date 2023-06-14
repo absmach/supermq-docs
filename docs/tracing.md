@@ -20,9 +20,6 @@ The Jaeger service can be disabled by using the `scale` flag with ```docker-comp
 --scale jaeger=0
 ```
 
-```make rungw``` will run all of the Mainflux services except for the Jaeger service.  This is currently the only difference from ```make run```.  
-> The ```make rungw``` command runs Mainflux for gateway devices.  There could potentially be more differences running with this command in the future.
-
 Jaeger uses 5 ports within the Mainflux framework.  These ports can be edited in the `.env` file.
 
 | Variable            | Description                                       | Default     |
@@ -32,6 +29,12 @@ Jaeger uses 5 ports within the Mainflux framework.  These ports can be edited in
 | MF_JAEGER_COLLECTOR | Collector for jaeger.thrift directly from clients | 14268       |
 | MF_JAEGER_CONFIGS   | Configuration server                              | 5778        |
 | MF_JAEGER_URL       | Jaeger access from within Mainflux                | jaeger:6831 |
+
+## Message Tracing
+
+Mainflux provides for tracing of messages ingested into the mainflux platform. The message metadata such as topic, sub-topic, subscriber and publisher is also included in traces. ![HTTP Message Publishing trace](img/tracing/messagePub.png)
+
+The messages are tracked from end to end from the point they are published to the consumers where they are stored. ![Influx DB consumer trace](https://user-images.githubusercontent.com/44265300/241806789-a56f368c-a89f-4b5d-88fe-25b971ca4718.png)
 
 ## Example
 
