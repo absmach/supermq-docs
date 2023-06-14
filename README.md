@@ -12,19 +12,18 @@ Documentation is auto-generated from Markdown files in this repo.
 
 > Additional practical information about Mainflux system, news and tutorials can be found on the [Mainflux blog][blog].
 
-## Prerequisites
-
-Install [MkDocs](https://www.mkdocs.org/#installation)
-```
-pip install -r requirements.txt
-```
-
 ## Install
 
 Doc repo can be fetched from GitHub:
 
 ```bash
 git clone git@github.com:mainflux/docs.git
+```
+
+Install [MkDocs](https://www.mkdocs.org/#installation)
+
+```bash
+pip install -r requirements.txt
 ```
 
 ## Usage
