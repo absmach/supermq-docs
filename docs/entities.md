@@ -7,27 +7,27 @@ The Clients service is a component that will replace and unify the Mainflux Thin
 The client entity is represented by the Client struct in Go. The fields of this struct are as follows:
 
 ```golang
-// Credentials represent client credentials: it is
-// "identity" which can be a username, email, or generated name;
-// and "secret" which can be a password, secret key or access token.
+// Credentials represent client credentials: its
+// "identity" which can be a username, email, generated name;
+// and "secret" which can be a password or access token.
 type Credentials struct {
-    Identity string `json:"identity"` // username or generated login ID
-    Secret   string `json:"secret"`   // password or token
+  Identity string `json:"identity,omitempty"` // username or generated login ID
+  Secret   string `json:"secret"`             // password or token
 }
 
-// Client represents a generic Client account.
-// Each client is identified using its identity and secret
+// Client represents generic Client.
 type Client struct {
-    ID          string      `json:"id"`
-    Name        string      `json:"name,omitempty"`
-    Tags        []string    `json:"tags,omitempty"` // tags related to the client
-    Owner       string      `json:"owner,omitempty"`
-    Credentials Credentials `json:"credentials"`
-    Metadata    Metadata    `json:"metadata,omitempty"` // metadata used for customized describing of the client
-    CreatedAt   time.Time   `json:"created_at"`
-    UpdatedAt   time.Time   `json:"updated_at"`
-    Status      Status      `json:"status"`         // status for the client which can be either 1 for enabled, 0 for disabled
-    Role        Role        `json:"role,omitempty"` // role of the client which can be either 1 for admin, 0 for the user
+  ID          string      `json:"id"`
+  Name        string      `json:"name,omitempty"`
+  Tags        []string    `json:"tags,omitempty"`
+  Owner       string      `json:"owner,omitempty"` // nullable
+  Credentials Credentials `json:"credentials"`
+  Metadata    Metadata    `json:"metadata,omitempty"`
+  CreatedAt   time.Time   `json:"created_at"`
+  UpdatedAt   time.Time   `json:"updated_at,omitempty"`
+  UpdatedBy   string      `json:"updated_by,omitempty"`
+  Status      Status      `json:"status"`         // 1 for enabled, 0 for disabled
+  Role        Role        `json:"role,omitempty"` // 1 for admin, 0 for normal user
 }
 ```
 
@@ -41,6 +41,7 @@ type Client struct {
 - `Metadata` is an optional field that is used for customized describing of the client.
 - `CreatedAt` is a field that represents the time when the client was created. It is a time.Time value.
 - `UpdatedAt` is a field that represents the time when the client was last updated. It is a time.Time value.
+- `UpdatedBy` is a field that represents the user who last updated the client.
 - `Status` is a field that represents the status for the client. It can be either 1 for enabled or 0 for disabled.
 - `Role` is an optional field that represents the role of the client. It can be either 1 for admin or 0 for the user.
 
@@ -55,7 +56,7 @@ For grouping Mainflux entities there are `groups` object in the `auth` service. 
 ### Create a user
 
 ```bash
-curl -isSX POST 'http://localhost:8180/users' -H 'Content-Type: application/json' -H 'Accept: application/json' --data-raw '{"credentials": {"identity": "example@mainflux.com", "secret": "12345678"}, "name": "example user", "tags": ["tag"], "metadata": {}, "status": "enabled"}'
+curl -isSX POST 'http://localhost/users' -H 'Content-Type: application/json' -H 'Accept: application/json' --data-raw '{"credentials": {"identity": "example@mainflux.com", "secret": "12345678"}, "name": "example user", "tags": ["tag"], "metadata": {}, "status": "enabled"}'
 ```
 
 Response
@@ -63,20 +64,28 @@ Response
 ```bash
 HTTP/1.1 201 Created
 Server: nginx/1.23.3
-Date: Mon, 03 Apr 2023 13:13:13 GMT
+Date: Thu, 15 Jun 2023 11:32:49 GMT
 Content-Type: application/json
-Content-Length: 250
+Content-Length: 242
 Connection: keep-alive
-Location: /users/adf0a03d-4832-4e25-a4e7-d14e6fd2653b
+Location: /users/a97b5d58-7375-4343-987c-9c1a79fa65d2
 Access-Control-Expose-Headers: Location
 
-{"id":"adf0a03d-4832-4e25-a4e7-d14e6fd2653b","name":"example user","tags":["tag"],"credentials":{"identity":"example@mainflux.com","secret":""},"created_at":"2023-04-03T13:13:13.873058Z","updated_at":"2023-04-03T13:13:13.873058Z","status":"enabled"}
+{
+  "id": "a97b5d58-7375-4343-987c-9c1a79fa65d2",
+  "name": "example user",
+  "tags": ["tag"],
+  "credentials": { "identity": "example@mainflux.com", "secret": "" },
+  "created_at": "2023-06-15T11:32:49.85689Z",
+  "updated_at": "0001-01-01T00:00:00Z",
+  "status": "enabled"
+}
 ```
 
 ### Fetch a user
 
 ```bash
-curl -ssX GET 'http://localhost:8180/users/e6f8c485-c993-4518-81bd-d12de1a371e3' -H 'Accept: application/json' -H 'Authorization: Bearer $USER_TOKEN'
+curl -issX GET 'http://localhost/users/a97b5d58-7375-4343-987c-9c1a79fa65d2' -H 'Accept: application/json' -H "Authorization: Bearer $ADMIN_TOKEN"
 ```
 
 Response
@@ -84,19 +93,30 @@ Response
 ```bash
 HTTP/1.1 200 OK
 Server: nginx/1.23.3
-Date: Mon, 03 Apr 2023 19:24:13 GMT
+Date: Thu, 15 Jun 2023 11:34:21 GMT
 Content-Type: application/json
-Content-Length: 310
+Content-Length: 302
 Connection: keep-alive
 Access-Control-Expose-Headers: Location
 
-{"id":"e6f8c485-c993-4518-81bd-d12de1a371e3","name":"example user","tags":["tag"],"credentials":{"identity":"example@mainflux.com","secret":"$2a$10$8jP4lZjDZlVBwUU2JIGOPeeGeQ.RoPuw9eCQ0aVb.BmR0sLggQh1q"},"created_at":"2023-04-03T19:21:29.064658Z","updated_at":"2023-04-03T19:21:29.064658Z","status":"enabled"}
+{
+  "id": "a97b5d58-7375-4343-987c-9c1a79fa65d2",
+  "name": "example user",
+  "tags": ["tag"],
+  "credentials": {
+    "identity": "example@mainflux.com",
+    "secret": "$2a$10$yN4c7xUnTb9DFoiqLOLuIOb44pfnKIWQfi8KpeKDw9QxctK/mB5FC"
+  },
+  "created_at": "2023-06-15T11:32:49.85689Z",
+  "updated_at": "0001-01-01T00:00:00Z",
+  "status": "enabled"
+}
 ```
 
 ### Update a user
 
 ```bash
-curl -isSX PATCH 'http://localhost:8180/users/e6f8c485-c993-4518-81bd-d12de1a371e3' -H 'Content-Type: application/json' -H 'Accept: application/json' -H 'Authorization: Bearer $USER_TOKEN' -d '{"name": "newname", "metadata": {"updated": "metadata update"}}'
+curl -isSX PATCH 'http://localhost/users/a97b5d58-7375-4343-987c-9c1a79fa65d2' -H 'Content-Type: application/json' -H 'Accept: application/json' -H "Authorization: Bearer $ADMIN_TOKEN" -d '{"name": "newname", "metadata": {"updated": "metadata update"}}'
 ```
 
 Response
@@ -104,19 +124,29 @@ Response
 ```bash
 HTTP/1.1 200 OK
 Server: nginx/1.23.3
-Date: Mon, 03 Apr 2023 19:27:26 GMT
+Date: Thu, 15 Jun 2023 11:35:19 GMT
 Content-Type: application/json
-Content-Length: 286
+Content-Length: 337
 Connection: keep-alive
 Access-Control-Expose-Headers: Location
 
-{"id":"e6f8c485-c993-4518-81bd-d12de1a371e3","name":"newname","tags":["tag"],"credentials":{"identity":"example@mainflux.com","secret":""},"metadata":{"updated":"metadata update"},"created_at":"2023-04-03T19:21:29.064658Z","updated_at":"2023-04-03T19:27:26.747974Z","status":"enabled"}
+{
+  "id": "a97b5d58-7375-4343-987c-9c1a79fa65d2",
+  "name": "newname",
+  "tags": ["tag"],
+  "credentials": { "identity": "example@mainflux.com", "secret": "" },
+  "metadata": { "updated": "metadata update" },
+  "created_at": "2023-06-15T11:32:49.85689Z",
+  "updated_at": "2023-06-15T11:35:19.283805Z",
+  "updated_by": "532311a4-c13b-4061-b991-98dcae7a934e",
+  "status": "enabled"
+}
 ```
 
 ### Disable a user
 
 ```bash
-curl -isSX POST 'http://localhost:8180/users/e6f8c485-c993-4518-81bd-d12de1a371e3/disable' -H 'Content-Type: application/json' -H 'Accept: application/json' -H 'Authorization: Bearer $USER_TOKEN'
+curl -isSX POST 'http://localhost/users/a97b5d58-7375-4343-987c-9c1a79fa65d2/disable' -H 'Content-Type: application/json' -H 'Accept: application/json' -H "Authorization: Bearer $ADMIN_TOKEN"
 ```
 
 Response
@@ -124,19 +154,29 @@ Response
 ```bash
 HTTP/1.1 200 OK
 Server: nginx/1.23.3
-Date: Mon, 03 Apr 2023 19:29:44 GMT
+Date: Thu, 15 Jun 2023 11:35:50 GMT
 Content-Type: application/json
-Content-Length: 287
+Content-Length: 338
 Connection: keep-alive
 Access-Control-Expose-Headers: Location
 
-{"id":"e6f8c485-c993-4518-81bd-d12de1a371e3","name":"newname","tags":["tag"],"credentials":{"identity":"example@mainflux.com","secret":""},"metadata":{"updated":"metadata update"},"created_at":"2023-04-03T19:21:29.064658Z","updated_at":"2023-04-03T19:27:26.747974Z","status":"disabled"}
+{
+  "id": "a97b5d58-7375-4343-987c-9c1a79fa65d2",
+  "name": "newname",
+  "tags": ["tag"],
+  "credentials": { "identity": "example@mainflux.com", "secret": "" },
+  "metadata": { "updated": "metadata update" },
+  "created_at": "2023-06-15T11:32:49.85689Z",
+  "updated_at": "2023-06-15T11:35:19.283805Z",
+  "updated_by": "532311a4-c13b-4061-b991-98dcae7a934e",
+  "status": "disabled"
+}
 ```
 
 ### Create a group
 
 ```bash
-curl -isSX POST 'http://localhost:8180/groups' -H 'Content-Type: application/json' -H 'Accept: application/json' -H 'Authorization: Bearer $USER_TOKEN' -d '{"name": "newgroup", "description": "new group", "metadata": {},"status": "enabled"}'
+curl -isSX POST 'http://localhost/groups' -H 'Content-Type: application/json' -H 'Accept: application/json' -H "Authorization: Bearer $ADMIN_TOKEN" -d '{"name": "newgroup", "description": "new group", "metadata": {},"status": "enabled"}'
 ```
 
 Response
@@ -144,20 +184,28 @@ Response
 ```bash
 HTTP/1.1 201 Created
 Server: nginx/1.23.3
-Date: Mon, 03 Apr 2023 19:32:17 GMT
+Date: Thu, 15 Jun 2023 11:36:42 GMT
 Content-Type: application/json
-Content-Length: 245
+Content-Length: 238
 Connection: keep-alive
-Location: /groups/f9904878-86d8-47e1-91b2-f134161b8c30
+Location: /groups/b9b13722-bff4-45cf-96ac-c9ea634e1d15
 Access-Control-Expose-Headers: Location
 
-{"id":"f9904878-86d8-47e1-91b2-f134161b8c30","owner_id":"e6f8c485-c993-4518-81bd-d12de1a371e3","name":"newgroup","description":"new group","created_at":"2023-04-03T19:32:17.977839Z","updated_at":"2023-04-03T19:32:17.977839Z","status":"enabled"}
+{
+  "id": "b9b13722-bff4-45cf-96ac-c9ea634e1d15",
+  "owner_id": "532311a4-c13b-4061-b991-98dcae7a934e",
+  "name": "newgroup",
+  "description": "new group",
+  "created_at": "2023-06-15T11:36:42.696351Z",
+  "updated_at": "0001-01-01T00:00:00Z",
+  "status": "enabled"
+}
 ```
 
 ### Fetch a group
 
 ```bash
-curl -isSX GET 'http://localhost:8180/groups/f9904878-86d8-47e1-91b2-f134161b8c30' -H 'Accept: application/json' -H 'Authorization: Bearer $USER_TOKEN'
+curl -isSX GET 'http://localhost/groups/b9b13722-bff4-45cf-96ac-c9ea634e1d15' -H 'Accept: application/json' -H "Authorization: Bearer $ADMIN_TOKEN"
 ```
 
 Response
@@ -165,19 +213,27 @@ Response
 ```bash
 HTTP/1.1 200 OK
 Server: nginx/1.23.3
-Date: Mon, 03 Apr 2023 19:41:20 GMT
+Date: Thu, 15 Jun 2023 11:41:49 GMT
 Content-Type: application/json
-Content-Length: 245
+Content-Length: 238
 Connection: keep-alive
 Access-Control-Expose-Headers: Location
 
-{"id":"f9904878-86d8-47e1-91b2-f134161b8c30","owner_id":"e6f8c485-c993-4518-81bd-d12de1a371e3","name":"newgroup","description":"new group","created_at":"2023-04-03T19:32:17.977839Z","updated_at":"2023-04-03T19:32:17.977839Z","status":"enabled"}
+{
+  "id": "b9b13722-bff4-45cf-96ac-c9ea634e1d15",
+  "owner_id": "532311a4-c13b-4061-b991-98dcae7a934e",
+  "name": "newgroup",
+  "description": "new group",
+  "created_at": "2023-06-15T11:36:42.696351Z",
+  "updated_at": "0001-01-01T00:00:00Z",
+  "status": "enabled"
+}
 ```
 
 ### Update a group
 
 ```bash
-curl -X PUT 'http://localhost:8180/groups/f9904878-86d8-47e1-91b2-f134161b8c30' -H 'Content-Type: application/json' -H 'Accept: application/json' -H 'Authorization: Bearer $USER_TOKEN' -d '{"name": "new name", "metadata": {"isActive": false, "age": 40, "address": "701 Harbor Lane, Sheatown, Minnesota, 3159"}, "description": "new group description"}'
+curl -isSX PUT 'http://localhost/groups/b9b13722-bff4-45cf-96ac-c9ea634e1d15' -H 'Content-Type: application/json' -H 'Accept: application/json' -H "Authorization: Bearer $ADMIN_TOKEN" -d '{"name": "new name", "metadata": {"isActive": false, "age": 40, "address": "701 Harbor Lane, Sheatown, Minnesota, 3159"}, "description": "new group description"}'
 ```
 
 Response
@@ -185,19 +241,33 @@ Response
 ```bash
 HTTP/1.1 200 OK
 Server: nginx/1.23.3
-Date: Mon, 03 Apr 2023 19:43:17 GMT
+Date: Thu, 15 Jun 2023 11:42:30 GMT
 Content-Type: application/json
-Content-Length: 350
+Content-Length: 403
 Connection: keep-alive
 Access-Control-Expose-Headers: Location
 
-{"id":"f9904878-86d8-47e1-91b2-f134161b8c30","owner_id":"e6f8c485-c993-4518-81bd-d12de1a371e3","name":"new name","description":"new group description","metadata":{"address":"701 Harbor Lane, Sheatown, Minnesota, 3159","age":40,"isActive":false},"created_at":"2023-04-03T19:32:17.977839Z","updated_at":"2023-04-03T19:43:17.34955Z","status":"enabled"}
+{
+  "id": "b9b13722-bff4-45cf-96ac-c9ea634e1d15",
+  "owner_id": "532311a4-c13b-4061-b991-98dcae7a934e",
+  "name": "new name",
+  "description": "new group description",
+  "metadata": {
+    "address": "701 Harbor Lane, Sheatown, Minnesota, 3159",
+    "age": 40,
+    "isActive": false
+  },
+  "created_at": "2023-06-15T11:36:42.696351Z",
+  "updated_at": "2023-06-15T11:42:30.978852Z",
+  "updated_by": "532311a4-c13b-4061-b991-98dcae7a934e",
+  "status": "enabled"
+}
 ```
 
 ### Disable a group
 
 ```bash
-curl -isSX POST 'http://localhost:8180/groups/f9904878-86d8-47e1-91b2-f134161b8c30/disable' -H 'Content-Type: application/json' -H 'Accept: application/json' -H 'Authorization: Bearer $USER_TOKEN'
+curl -isSX POST 'http://localhost/groups/b9b13722-bff4-45cf-96ac-c9ea634e1d15/disable' -H 'Content-Type: application/json' -H 'Accept: application/json' -H "Authorization: Bearer $ADMIN_TOKEN"
 ```
 
 Response
@@ -205,20 +275,34 @@ Response
 ```bash
 HTTP/1.1 200 OK
 Server: nginx/1.23.3
-Date: Mon, 03 Apr 2023 19:45:15 GMT
+Date: Thu, 15 Jun 2023 11:43:05 GMT
 Content-Type: application/json
-Content-Length: 351
+Content-Length: 404
 Connection: keep-alive
 Access-Control-Expose-Headers: Location
 
-{"id":"f9904878-86d8-47e1-91b2-f134161b8c30","owner_id":"e6f8c485-c993-4518-81bd-d12de1a371e3","name":"new name","description":"new group description","metadata":{"address":"701 Harbor Lane, Sheatown, Minnesota, 3159","age":40,"isActive":false},"created_at":"2023-04-03T19:32:17.977839Z","updated_at":"2023-04-03T19:43:17.34955Z","status":"disabled"}
+{
+  "id": "b9b13722-bff4-45cf-96ac-c9ea634e1d15",
+  "owner_id": "532311a4-c13b-4061-b991-98dcae7a934e",
+  "name": "new name",
+  "description": "new group description",
+  "metadata": {
+    "address": "701 Harbor Lane, Sheatown, Minnesota, 3159",
+    "age": 40,
+    "isActive": false
+  },
+  "created_at": "2023-06-15T11:36:42.696351Z",
+  "updated_at": "2023-06-15T11:42:30.978852Z",
+  "updated_by": "532311a4-c13b-4061-b991-98dcae7a934e",
+  "status": "disabled"
+}
 
 ```
 
 ### Connect user to group
 
 ```bash
-curl -isSX POST 'http://localhost:8180/policies' -H 'Content-Type: application/json' -H 'Accept: application/json' -H 'Authorization: Bearer $USER_TOKEN' -d '{"subject": "e6f8c485-c993-4518-81bd-d12de1a371e3", "object": "f9904878-86d8-47e1-91b2-f134161b8c30", "actions": ["c_list", "g_list"]}'
+curl -isSX POST 'http://localhost/policies' -H 'Content-Type: application/json' -H 'Accept: application/json' -H "Authorization: Bearer $ADMIN_TOKEN" -d '{"subject": "a97b5d58-7375-4343-987c-9c1a79fa65d2", "object": "b9b13722-bff4-45cf-96ac-c9ea634e1d15", "actions": ["c_list", "g_list"]}'
 ```
 
 Response
@@ -226,7 +310,7 @@ Response
 ```bash
 HTTP/1.1 201 Created
 Server: nginx/1.23.3
-Date: Mon, 03 Apr 2023 19:46:37 GMT
+Date: Thu, 15 Jun 2023 11:43:52 GMT
 Content-Type: application/json
 Content-Length: 0
 Connection: keep-alive
@@ -236,7 +320,7 @@ Access-Control-Expose-Headers: Location
 ### List members of a group
 
 ```bash
-curl -isSX GET 'http://localhost:8180/groups/f9904878-86d8-47e1-91b2-f134161b8c30/members' -H 'Accept: application/json' -H 'Authorization: Bearer $USER_TOKEN'
+curl -isSX GET 'http://localhost/groups/b9b13722-bff4-45cf-96ac-c9ea634e1d15/members' -H 'Accept: application/json' -H "Authorization: Bearer $ADMIN_TOKEN"
 ```
 
 Response
@@ -244,19 +328,34 @@ Response
 ```bash
 HTTP/1.1 200 OK
 Server: nginx/1.23.3
-Date: Mon, 03 Apr 2023 19:49:53 GMT
+Date: Thu, 15 Jun 2023 11:44:08 GMT
 Content-Type: application/json
-Content-Length: 314
+Content-Length: 320
 Connection: keep-alive
 Access-Control-Expose-Headers: Location
 
-{"limit":10,"total":1,"members":[{"id":"e6f8c485-c993-4518-81bd-d12de1a371e3","name":"newname","tags":["tag"],"credentials":{"identity":"example@mainflux.com","secret":""},"metadata":{"updated":"metadata update"},"created_at":"2023-04-03T19:21:29.064658Z","updated_at":"0001-01-01T00:00:00Z","status":"enabled"}]}
+{
+  "limit": 10,
+  "total": 1,
+  "members": [
+    {
+      "id": "a97b5d58-7375-4343-987c-9c1a79fa65d2",
+      "name": "newname",
+      "tags": ["tag"],
+      "credentials": { "identity": "example@mainflux.com", "secret": "" },
+      "metadata": { "updated": "metadata update" },
+      "created_at": "2023-06-15T11:32:49.85689Z",
+      "updated_at": "2023-06-15T11:35:19.283805Z",
+      "status": "enabled"
+    }
+  ]
+}
 ```
 
 ### List memberships of a group
 
 ```bash
-curl -isSX GET 'http://localhost:8180/users/e6f8c485-c993-4518-81bd-d12de1a371e3/memberships' -H 'Accept: application/json' -H 'Authorization: Bearer $USER_TOKEN'
+curl -isSX GET 'http://localhost/users/a97b5d58-7375-4343-987c-9c1a79fa65d2/memberships' -H 'Accept: application/json' -H "Authorization: Bearer $ADMIN_TOKEN"
 ```
 
 Response
@@ -264,19 +363,40 @@ Response
 ```bash
 HTTP/1.1 200 OK
 Server: nginx/1.23.3
-Date: Mon, 03 Apr 2023 19:50:56 GMT
+Date: Thu, 15 Jun 2023 11:44:35 GMT
 Content-Type: application/json
-Content-Length: 378
+Content-Length: 452
 Connection: keep-alive
 Access-Control-Expose-Headers: Location
 
-{"total":1,"memberships":[{"id":"f9904878-86d8-47e1-91b2-f134161b8c30","owner_id":"e6f8c485-c993-4518-81bd-d12de1a371e3","name":"new name","description":"new group description","metadata":{"address":"701 Harbor Lane, Sheatown, Minnesota, 3159","age":40,"isActive":false},"created_at":"2023-04-03T19:32:17.977839Z","updated_at":"2023-04-03T19:43:17.34955Z","status":"enabled"}]}
+{
+  "limit": 0,
+  "offset": 0,
+  "total": 1,
+  "memberships": [
+    {
+      "id": "b9b13722-bff4-45cf-96ac-c9ea634e1d15",
+      "owner_id": "532311a4-c13b-4061-b991-98dcae7a934e",
+      "name": "new name",
+      "description": "new group description",
+      "metadata": {
+        "address": "701 Harbor Lane, Sheatown, Minnesota, 3159",
+        "age": 40,
+        "isActive": false
+      },
+      "created_at": "2023-06-15T11:36:42.696351Z",
+      "updated_at": "2023-06-15T11:42:30.978852Z",
+      "updated_by": "532311a4-c13b-4061-b991-98dcae7a934e",
+      "status": "enabled"
+    }
+  ]
+}
 ```
 
 ### Disconnect user from a group
 
 ```bash
-curl -isSX DELETE 'http://localhost:8180/policies/f9904878-86d8-47e1-91b2-f134161b8c30/e6f8c485-c993-4518-81bd-d12de1a371e3' -H 'Accept: application/json' -H 'Authorization: Bearer $USER_TOKEN'
+curl -isSX DELETE 'http://localhost/policies/b9b13722-bff4-45cf-96ac-c9ea634e1d15/a97b5d58-7375-4343-987c-9c1a79fa65d2' -H 'Accept: application/json' -H "Authorization: Bearer $ADMIN_TOKEN"
 ```
 
 Response
@@ -284,9 +404,8 @@ Response
 ```bash
 HTTP/1.1 204 No Content
 Server: nginx/1.23.3
-Date: Mon, 03 Apr 2023 19:52:08 GMT
+Date: Thu, 15 Jun 2023 11:45:02 GMT
 Content-Type: application/json
-Content-Length: 378
 Connection: keep-alive
 Access-Control-Expose-Headers: Location
 ```
@@ -296,7 +415,7 @@ Access-Control-Expose-Headers: Location
 ### Create a thing
 
 ```bash
-curl -isSX POST 'http://localhost/things' -H 'Content-Type: application/json' -H 'Accept: application/json' -H 'Authorization: Bearer $USER_TOKEN' -d '{"name": "new thing", "tags": ["tag"], "metadata": {}, "status": "enabled"}'
+curl -isSX POST 'http://localhost/things' -H 'Content-Type: application/json' -H 'Accept: application/json' -H "Authorization: Bearer $ADMIN_TOKEN" -d '{"name": "new thing", "tags": ["tag"], "metadata": {}, "status": "enabled"}'
 ```
 
 Response
@@ -304,20 +423,29 @@ Response
 ```bash
 HTTP/1.1 201 Created
 Server: nginx/1.23.3
-Date: Mon, 03 Apr 2023 20:12:47 GMT
+Date: Thu, 15 Jun 2023 11:45:28 GMT
 Content-Type: application/json
-Content-Length: 302
+Content-Length: 291
 Connection: keep-alive
-Location: /things/5b4eb2bd-4b63-4b74-86fd-0ebd411454fc
+Location: /things/604320a4-9e5a-43fd-a8e0-4967ff7799c3
 Access-Control-Expose-Headers: Location
 
-{"id":"5b4eb2bd-4b63-4b74-86fd-0ebd411454fc","name":"new thing","tags":["tag"],"owner":"e6f8c485-c993-4518-81bd-d12de1a371e3","credentials":{"secret":"06c1d538-124c-4da5-ad3d-43a05e1fdb41"},"created_at":"2023-04-03T20:12:47.486442525Z","updated_at":"2023-04-03T20:12:47.486442525Z","status":"enabled"}
+{
+  "id": "604320a4-9e5a-43fd-a8e0-4967ff7799c3",
+  "name": "new thing",
+  "tags": ["tag"],
+  "owner": "532311a4-c13b-4061-b991-98dcae7a934e",
+  "credentials": { "secret": "fa88572e-e79f-4c1b-a05b-5a7be919a979" },
+  "created_at": "2023-06-15T11:45:28.85782811Z",
+  "updated_at": "0001-01-01T00:00:00Z",
+  "status": "enabled"
+}
 ```
 
 ### Fetch a thing
 
 ```bash
-curl -isSX GET 'http://localhost/things/5b4eb2bd-4b63-4b74-86fd-0ebd411454fc' -H 'Accept: application/json' -H 'Authorization: Bearer $USER_TOKEN'
+curl -isSX GET 'http://localhost/things/604320a4-9e5a-43fd-a8e0-4967ff7799c3' -H 'Accept: application/json' -H "Authorization: Bearer $ADMIN_TOKEN"
 ```
 
 Response
@@ -325,19 +453,28 @@ Response
 ```bash
 HTTP/1.1 200 OK
 Server: nginx/1.23.3
-Date: Mon, 03 Apr 2023 20:13:36 GMT
+Date: Thu, 15 Jun 2023 11:46:05 GMT
 Content-Type: application/json
-Content-Length: 296
+Content-Length: 289
 Connection: keep-alive
 Access-Control-Expose-Headers: Location
 
-{"id":"5b4eb2bd-4b63-4b74-86fd-0ebd411454fc","name":"new thing","tags":["tag"],"owner":"e6f8c485-c993-4518-81bd-d12de1a371e3","credentials":{"secret":"06c1d538-124c-4da5-ad3d-43a05e1fdb41"},"created_at":"2023-04-03T20:12:47.486442Z","updated_at":"2023-04-03T20:12:47.486442Z","status":"enabled"}
+{
+  "id": "604320a4-9e5a-43fd-a8e0-4967ff7799c3",
+  "name": "new thing",
+  "tags": ["tag"],
+  "owner": "532311a4-c13b-4061-b991-98dcae7a934e",
+  "credentials": { "secret": "fa88572e-e79f-4c1b-a05b-5a7be919a979" },
+  "created_at": "2023-06-15T11:45:28.857828Z",
+  "updated_at": "0001-01-01T00:00:00Z",
+  "status": "enabled"
+}
 ```
 
 ### Update a thing
 
 ```bash
-curl -isSX PATCH 'http://localhost/things/5b4eb2bd-4b63-4b74-86fd-0ebd411454fc' -H 'Content-Type: application/json' -H 'Accept: application/json' -H 'Authorization: Bearer $USER_TOKEN' -d '{"name": "newname", "metadata": {"name": "Stephenson Rasmussen", "address": "614 Winthrop Street, Saticoy, Virgin Islands, 2106", "latitude": -21.137186, "longitude": 167.43566}}'
+curl -isSX PATCH 'http://localhost/things/604320a4-9e5a-43fd-a8e0-4967ff7799c3' -H 'Content-Type: application/json' -H 'Accept: application/json' -H "Authorization: Bearer $ADMIN_TOKEN" -d '{"name": "newname", "metadata": {"name": "Stephenson Rasmussen", "address": "614 Winthrop Street, Saticoy, Virgin Islands, 2106", "latitude": -21.137186, "longitude": 167.43566}}'
 ```
 
 Response
@@ -345,20 +482,35 @@ Response
 ```bash
 HTTP/1.1 200 OK
 Server: nginx/1.23.3
-Date: Mon, 03 Apr 2023 20:14:23 GMT
+Date: Thu, 15 Jun 2023 11:46:35 GMT
 Content-Type: application/json
-Content-Length: 444
+Content-Length: 496
 Connection: keep-alive
 Access-Control-Expose-Headers: Location
 
-{"id":"5b4eb2bd-4b63-4b74-86fd-0ebd411454fc","name":"newname","tags":["tag"],"owner":"e6f8c485-c993-4518-81bd-d12de1a371e3","credentials":{"secret":"06c1d538-124c-4da5-ad3d-43a05e1fdb41"},"metadata":{"address":"614 Winthrop Street, Saticoy, Virgin Islands, 2106","latitude":-21.137186,"longitude":167.43566,"name":"Stephenson Rasmussen"},"created_at":"2023-04-03T20:12:47.486442Z","updated_at":"2023-04-03T20:14:23.195651Z","status":"enabled"}
-
+{
+  "id": "604320a4-9e5a-43fd-a8e0-4967ff7799c3",
+  "name": "newname",
+  "tags": ["tag"],
+  "owner": "532311a4-c13b-4061-b991-98dcae7a934e",
+  "credentials": { "secret": "fa88572e-e79f-4c1b-a05b-5a7be919a979" },
+  "metadata": {
+    "address": "614 Winthrop Street, Saticoy, Virgin Islands, 2106",
+    "latitude": -21.137186,
+    "longitude": 167.43566,
+    "name": "Stephenson Rasmussen"
+  },
+  "created_at": "2023-06-15T11:45:28.857828Z",
+  "updated_at": "2023-06-15T11:46:35.322466Z",
+  "updated_by": "532311a4-c13b-4061-b991-98dcae7a934e",
+  "status": "enabled"
+}
 ```
 
 ### Disable a thing
 
 ```bash
-curl -isSX POST 'http://localhost/things/5b4eb2bd-4b63-4b74-86fd-0ebd411454fc/disable' -H 'Accept: application/json' -H 'Authorization: Bearer $USER_TOKEN'
+curl -isSX POST 'http://localhost/things/604320a4-9e5a-43fd-a8e0-4967ff7799c3/disable' -H 'Accept: application/json' -H "Authorization: Bearer $ADMIN_TOKEN"
 ```
 
 Response
@@ -366,19 +518,35 @@ Response
 ```bash
 HTTP/1.1 200 OK
 Server: nginx/1.23.3
-Date: Mon, 03 Apr 2023 20:15:01 GMT
+Date: Thu, 15 Jun 2023 11:47:10 GMT
 Content-Type: application/json
-Content-Length: 445
+Content-Length: 497
 Connection: keep-alive
 Access-Control-Expose-Headers: Location
 
-{"id":"5b4eb2bd-4b63-4b74-86fd-0ebd411454fc","name":"newname","tags":["tag"],"owner":"e6f8c485-c993-4518-81bd-d12de1a371e3","credentials":{"secret":"06c1d538-124c-4da5-ad3d-43a05e1fdb41"},"metadata":{"address":"614 Winthrop Street, Saticoy, Virgin Islands, 2106","latitude":-21.137186,"longitude":167.43566,"name":"Stephenson Rasmussen"},"created_at":"2023-04-03T20:12:47.486442Z","updated_at":"2023-04-03T20:14:23.195651Z","status":"disabled"}
+{
+  "id": "604320a4-9e5a-43fd-a8e0-4967ff7799c3",
+  "name": "newname",
+  "tags": ["tag"],
+  "owner": "532311a4-c13b-4061-b991-98dcae7a934e",
+  "credentials": { "secret": "fa88572e-e79f-4c1b-a05b-5a7be919a979" },
+  "metadata": {
+    "address": "614 Winthrop Street, Saticoy, Virgin Islands, 2106",
+    "latitude": -21.137186,
+    "longitude": 167.43566,
+    "name": "Stephenson Rasmussen"
+  },
+  "created_at": "2023-06-15T11:45:28.857828Z",
+  "updated_at": "2023-06-15T11:46:35.322466Z",
+  "updated_by": "532311a4-c13b-4061-b991-98dcae7a934e",
+  "status": "disabled"
+}
 ```
 
 ### Create a channel
 
 ```bash
-curl -isSX POST 'http://localhost/channels' -H 'Content-Type: application/json' -H 'Accept: application/json' -H 'Authorization: Bearer $USER_TOKEN' -d '{"name": "new channel", "description": "new channel description", "metadata": {}, "status": "enabled"}'
+curl -isSX POST 'http://localhost/channels' -H 'Content-Type: application/json' -H 'Accept: application/json' -H "Authorization: Bearer $ADMIN_TOKEN" -d '{"name": "new channel", "description": "new channel description", "metadata": {}, "status": "enabled"}'
 ```
 
 Response
@@ -386,21 +554,28 @@ Response
 ```bash
 HTTP/1.1 201 Created
 Server: nginx/1.23.3
-Date: Mon, 03 Apr 2023 20:17:07 GMT
+Date: Thu, 15 Jun 2023 11:47:50 GMT
 Content-Type: application/json
-Content-Length: 280
+Content-Length: 255
 Connection: keep-alive
-Location: /channels/825b3571-6c39-4482-bceb-a863a4b9af34
+Location: /channels/0bcb5165-398f-4613-8ab9-8a3620213cc9
 Access-Control-Expose-Headers: Location
 
-{"id":"825b3571-6c39-4482-bceb-a863a4b9af34","owner_id":"e6f8c485-c993-4518-81bd-d12de1a371e3","name":"new channel","description":"new channel description","level":0,"path":"","created_at":"2023-04-03T20:17:07.48832Z","updated_at":"2023-04-03T20:17:07.48832Z","status":"enabled"}
-
+{
+  "id": "0bcb5165-398f-4613-8ab9-8a3620213cc9",
+  "owner_id": "532311a4-c13b-4061-b991-98dcae7a934e",
+  "name": "new channel",
+  "description": "new channel description",
+  "created_at": "2023-06-15T11:47:50.155894Z",
+  "updated_at": "0001-01-01T00:00:00Z",
+  "status": "enabled"
+}
 ```
 
 ### Fetch a channel
 
 ```bash
-curl -isSX GET 'http://localhost/channels/825b3571-6c39-4482-bceb-a863a4b9af34' -H 'Accept: application/json' -H 'Authorization: Bearer $USER_TOKEN'
+curl -isSX GET 'http://localhost/channels/0bcb5165-398f-4613-8ab9-8a3620213cc9' -H 'Accept: application/json' -H "Authorization: Bearer $ADMIN_TOKEN"
 ```
 
 Response
@@ -408,20 +583,27 @@ Response
 ```bash
 HTTP/1.1 200 OK
 Server: nginx/1.23.3
-Date: Mon, 03 Apr 2023 20:17:48 GMT
+Date: Thu, 15 Jun 2023 11:48:23 GMT
 Content-Type: application/json
-Content-Length: 280
+Content-Length: 255
 Connection: keep-alive
 Access-Control-Expose-Headers: Location
 
-{"id":"825b3571-6c39-4482-bceb-a863a4b9af34","owner_id":"e6f8c485-c993-4518-81bd-d12de1a371e3","name":"new channel","description":"new channel description","level":0,"path":"","created_at":"2023-04-03T20:17:07.48832Z","updated_at":"2023-04-03T20:17:07.48832Z","status":"enabled"}
-
+{
+  "id": "0bcb5165-398f-4613-8ab9-8a3620213cc9",
+  "owner_id": "532311a4-c13b-4061-b991-98dcae7a934e",
+  "name": "new channel",
+  "description": "new channel description",
+  "created_at": "2023-06-15T11:47:50.155894Z",
+  "updated_at": "0001-01-01T00:00:00Z",
+  "status": "enabled"
+}
 ```
 
 ### Update a channel
 
 ```bash
-curl -isSX PUT 'http://localhost/channels/825b3571-6c39-4482-bceb-a863a4b9af34' -H 'Content-Type: application/json' -H 'Accept: application/json' -H 'Authorization: Bearer $USER_TOKEN' -d '{"name": "new name", "metadata": {"updated": true}, "description": "new description"}'
+curl -isSX PUT 'http://localhost/channels/0bcb5165-398f-4613-8ab9-8a3620213cc9' -H 'Content-Type: application/json' -H 'Accept: application/json' -H "Authorization: Bearer $ADMIN_TOKEN" -d '{"name": "new name", "metadata": {"updated": true}, "description": "new description"}'
 ```
 
 Response
@@ -429,20 +611,29 @@ Response
 ```bash
 HTTP/1.1 200 OK
 Server: nginx/1.23.3
-Date: Mon, 03 Apr 2023 20:18:42 GMT
+Date: Thu, 15 Jun 2023 11:48:49 GMT
 Content-Type: application/json
-Content-Length: 298
+Content-Length: 331
 Connection: keep-alive
 Access-Control-Expose-Headers: Location
 
-{"id":"825b3571-6c39-4482-bceb-a863a4b9af34","owner_id":"e6f8c485-c993-4518-81bd-d12de1a371e3","name":"new name","description":"new description","metadata":{"updated":true},"level":0,"path":"","created_at":"2023-04-03T20:17:07.48832Z","updated_at":"2023-04-03T20:18:42.854229Z","status":"enabled"}
-
+{
+  "id": "0bcb5165-398f-4613-8ab9-8a3620213cc9",
+  "owner_id": "532311a4-c13b-4061-b991-98dcae7a934e",
+  "name": "new name",
+  "description": "new description",
+  "metadata": { "updated": true },
+  "created_at": "2023-06-15T11:47:50.155894Z",
+  "updated_at": "2023-06-15T11:48:49.351445Z",
+  "updated_by": "532311a4-c13b-4061-b991-98dcae7a934e",
+  "status": "enabled"
+}
 ```
 
 ### Disable a channel
 
 ```bash
-curl -isSX POST 'http://localhost/channels/825b3571-6c39-4482-bceb-a863a4b9af34/disable' -H 'Accept: application/json' -H 'Authorization: Bearer $USER_TOKEN'
+curl -isSX POST 'http://localhost/channels/0bcb5165-398f-4613-8ab9-8a3620213cc9/disable' -H 'Accept: application/json' -H "Authorization: Bearer $ADMIN_TOKEN"
 ```
 
 Response
@@ -450,19 +641,29 @@ Response
 ```bash
 HTTP/1.1 200 OK
 Server: nginx/1.23.3
-Date: Mon, 03 Apr 2023 20:19:25 GMT
+Date: Thu, 15 Jun 2023 11:49:36 GMT
 Content-Type: application/json
-Content-Length: 299
+Content-Length: 332
 Connection: keep-alive
 Access-Control-Expose-Headers: Location
 
-{"id":"825b3571-6c39-4482-bceb-a863a4b9af34","owner_id":"e6f8c485-c993-4518-81bd-d12de1a371e3","name":"new name","description":"new description","metadata":{"updated":true},"level":0,"path":"","created_at":"2023-04-03T20:17:07.48832Z","updated_at":"2023-04-03T20:18:42.854229Z","status":"disabled"}
+{
+  "id": "0bcb5165-398f-4613-8ab9-8a3620213cc9",
+  "owner_id": "532311a4-c13b-4061-b991-98dcae7a934e",
+  "name": "new name",
+  "description": "new description",
+  "metadata": { "updated": true },
+  "created_at": "2023-06-15T11:47:50.155894Z",
+  "updated_at": "2023-06-15T11:48:49.351445Z",
+  "updated_by": "532311a4-c13b-4061-b991-98dcae7a934e",
+  "status": "disabled"
+}
 ```
 
 ### Connect thing to a channel
 
 ```bash
-curl -isSX POST 'http://localhost/channels/825b3571-6c39-4482-bceb-a863a4b9af34/things/5b4eb2bd-4b63-4b74-86fd-0ebd411454fc' -H 'Accept: application/json' -H 'Authorization: Bearer $USER_TOKEN'
+curl -isSX POST 'http://localhost/channels/0bcb5165-398f-4613-8ab9-8a3620213cc9/things/604320a4-9e5a-43fd-a8e0-4967ff7799c3' -H 'Accept: application/json' -H "Authorization: Bearer $ADMIN_TOKEN"
 ```
 
 Response
@@ -470,19 +671,31 @@ Response
 ```bash
 HTTP/1.1 201 Created
 Server: nginx/1.23.3
-Date: Mon, 03 Apr 2023 20:20:50 GMT
+Date: Thu, 15 Jun 2023 11:50:32 GMT
 Content-Type: application/json
-Content-Length: 266
+Content-Length: 290
 Connection: keep-alive
 Access-Control-Expose-Headers: Location
 
-{"owner_id":"e6f8c485-c993-4518-81bd-d12de1a371e3","subject":"5b4eb2bd-4b63-4b74-86fd-0ebd411454fc","object":"825b3571-6c39-4482-bceb-a863a4b9af34","actions":["m_write","m_read"],"created_at":"2023-04-03T20:20:50.687803Z","updated_at":"2023-04-03T20:20:50.687803Z"}
+{
+  "policies": [
+    {
+      "owner_id": "532311a4-c13b-4061-b991-98dcae7a934e",
+      "subject": "604320a4-9e5a-43fd-a8e0-4967ff7799c3",
+      "object": "0bcb5165-398f-4613-8ab9-8a3620213cc9",
+      "actions": ["m_write", "m_read"],
+      "created_at": "2023-06-15T11:50:32.603772Z",
+      "updated_at": "0001-01-01T00:00:00Z",
+      "updated_by": ""
+    }
+  ]
+}
 ```
 
 ### Disconnect thing from a channel
 
 ```bash
-curl -isSX DELETE 'http://localhost/channels/825b3571-6c39-4482-bceb-a863a4b9af34/things/5b4eb2bd-4b63-4b74-86fd-0ebd411454fc' -H 'Accept: application/json' -H 'Authorization: Bearer $USER_TOKEN'
+curl -isSX DELETE 'http://localhost/channels/0bcb5165-398f-4613-8ab9-8a3620213cc9/things/604320a4-9e5a-43fd-a8e0-4967ff7799c3' -H 'Accept: application/json' -H "Authorization: Bearer $ADMIN_TOKEN"
 ```
 
 Response
@@ -490,7 +703,7 @@ Response
 ```bash
 HTTP/1.1 204 No Content
 Server: nginx/1.23.3
-Date: Mon, 03 Apr 2023 20:21:35 GMT
+Date: Thu, 15 Jun 2023 11:51:17 GMT
 Content-Type: application/json
 Connection: keep-alive
 Access-Control-Expose-Headers: Location
@@ -499,7 +712,7 @@ Access-Control-Expose-Headers: Location
 ### Fetching members of a channel
 
 ```bash
-curl -isSX GET 'http://localhost/channels/825b3571-6c39-4482-bceb-a863a4b9af34/things' -H 'Accept: application/json' -H 'Authorization: Bearer $USER_TOKEN'
+curl -isSX GET 'http://localhost/channels/0bcb5165-398f-4613-8ab9-8a3620213cc9/things' -H 'Accept: application/json' -H "Authorization: Bearer $ADMIN_TOKEN"
 ```
 
 Response
@@ -507,19 +720,39 @@ Response
 ```bash
 HTTP/1.1 200 OK
 Server: nginx/1.23.3
-Date: Mon, 03 Apr 2023 20:25:52 GMT
+Date: Thu, 15 Jun 2023 11:52:00 GMT
 Content-Type: application/json
 Content-Length: 424
 Connection: keep-alive
 Access-Control-Expose-Headers: Location
 
-{"limit":10,"total":1,"things":[{"id":"5b4eb2bd-4b63-4b74-86fd-0ebd411454fc","name":"newname","tags":["tag"],"credentials":{"secret":"06c1d538-124c-4da5-ad3d-43a05e1fdb41"},"metadata":{"address":"614 Winthrop Street, Saticoy, Virgin Islands, 2106","latitude":-21.137186,"longitude":167.43566,"name":"Stephenson Rasmussen"},"created_at":"2023-04-03T20:12:47.486442Z","updated_at":"0001-01-01T00:00:00Z","status":"enabled"}]}
+{
+  "limit": 10,
+  "total": 1,
+  "things": [
+    {
+      "id": "604320a4-9e5a-43fd-a8e0-4967ff7799c3",
+      "name": "newname",
+      "tags": ["tag"],
+      "credentials": { "secret": "fa88572e-e79f-4c1b-a05b-5a7be919a979" },
+      "metadata": {
+        "address": "614 Winthrop Street, Saticoy, Virgin Islands, 2106",
+        "latitude": -21.137186,
+        "longitude": 167.43566,
+        "name": "Stephenson Rasmussen"
+      },
+      "created_at": "2023-06-15T11:45:28.857828Z",
+      "updated_at": "0001-01-01T00:00:00Z",
+      "status": "enabled"
+    }
+  ]
+}
 ```
 
 ### Fetching memberships of a thing
 
 ```bash
-curl -isSX GET 'http://localhost/things/5b4eb2bd-4b63-4b74-86fd-0ebd411454fc/channels' -H 'Accept: application/json' -H 'Authorization: Bearer $USER_TOKEN'
+curl -isSX GET 'http://localhost/things/604320a4-9e5a-43fd-a8e0-4967ff7799c3/channels' -H 'Accept: application/json' -H "Authorization: Bearer $ADMIN_TOKEN"
 ```
 
 Response
@@ -527,11 +760,26 @@ Response
 ```bash
 HTTP/1.1 200 OK
 Server: nginx/1.23.3
-Date: Mon, 03 Apr 2023 20:25:09 GMT
+Date: Thu, 15 Jun 2023 11:52:26 GMT
 Content-Type: application/json
-Content-Length: 323
+Content-Length: 356
 Connection: keep-alive
 Access-Control-Expose-Headers: Location
 
-{"total":1,"channels":[{"id":"825b3571-6c39-4482-bceb-a863a4b9af34","owner_id":"e6f8c485-c993-4518-81bd-d12de1a371e3","name":"new name","description":"new description","metadata":{"updated":true},"level":0,"path":"","created_at":"2023-04-03T20:17:07.48832Z","updated_at":"2023-04-03T20:18:42.854229Z","status":"enabled"}]}
+{
+  "total": 1,
+  "channels": [
+    {
+      "id": "0bcb5165-398f-4613-8ab9-8a3620213cc9",
+      "owner_id": "532311a4-c13b-4061-b991-98dcae7a934e",
+      "name": "new name",
+      "description": "new description",
+      "metadata": { "updated": true },
+      "created_at": "2023-06-15T11:47:50.155894Z",
+      "updated_at": "2023-06-15T11:48:49.351445Z",
+      "updated_by": "532311a4-c13b-4061-b991-98dcae7a934e",
+      "status": "enabled"
+    }
+  ]
+}
 ```
