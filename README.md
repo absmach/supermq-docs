@@ -5,7 +5,7 @@
 [![chat][gitter-badge]][gitter]
 
 This repo collects the collaborative work on Mainflux documentation.
-Official documentation is hosted at [Mainflux Docs page][docs].
+The official documentation is hosted at [Mainflux Docs page][docs].
 Documentation is auto-generated from Markdown files in this repo.
 
 [MkDocs](https://www.mkdocs.org/) is used to serve the docs locally with different theming.

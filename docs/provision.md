@@ -90,7 +90,7 @@ curl -s -S -i --cacert docker/ssl/certs/ca.crt -X POST -H "Content-Type: applica
 
 Response will contain `Location` header whose value represents path to newly created thing:
 
-```
+```bash
 HTTP/2 201 
 server: nginx/1.23.3
 date: Tue, 04 Apr 2023 09:06:50 GMT
@@ -543,7 +543,6 @@ Provision service provides a way of specifying this `provision layout` and creat
 
 The service is configured using the environment variables presented in the following [table][config]. Note that any unset variables will be replaced with their default values.
 
-
 By default, call to `/mapping` endpoint will create one thing and two channels (`control` and `data`) and connect it as this is typical setup required by [Agent](/edge/#agent). If there is a requirement for different provision layout we can use [config][conftoml] file in addition to environment variables.
 
 For the purposes of running provision as an add-on in docker composition environment variables seems more suitable. Environment variables are set in [.env][env].
@@ -556,6 +555,7 @@ Things Metadata can be whatever suits your needs. Thing that has metadata with `
 Bootstrap configuration can be fetched with [Agent][agent]. For channel's metadata `type` is reserved for `control` and `data` which we use with [Agent][agent].
 
 Example of provision layout below
+
 ```toml
 [bootstrap]
   [bootstrap.content]
@@ -653,12 +653,14 @@ Additionally, users or API token can be passed in Authorization header, this aut
 
 * `username`, `password` - (`MF_PROVISION_USER`, `MF_PROVISION_PASSWORD` in [.env][env], `mf_user`, `mf_pass` in [config.toml][conftoml]
 * API Key - (`MF_PROVISION_API_KEY` in [.env][env] or [config.toml][conftoml]
-* `Authorization: Bearer Token|ApiKey` - request authorization header containing either users token or API key. Check [auth][auth].
+* `Authorization: Bearer Token|ApiKey` - request authorization header containing users token. Check [auth][auth].
 
 ### Running
+
 Provision service can be run as a standalone or in docker composition as addon to the core docker composition.
 
 Standalone:
+
 ```bash
 MF_PROVISION_BS_SVC_URL=http://localhost:9013/things \
 MF_PROVISION_THINGS_LOCATION=http://localhost:9000 \
@@ -668,6 +670,7 @@ build/mainflux-provision
 ```
 
 Docker composition:
+
 ```bash
 docker-compose -f docker/addons/provision/docker-compose.yml up
 ```
@@ -675,11 +678,13 @@ docker-compose -f docker/addons/provision/docker-compose.yml up
 ### Provision
 
 For the case that credentials or API token is passed in configuration file or environment variables, call to `/mapping` endpoint doesn't require `Authentication` header:
+
 ```bash
 curl -s -S  -X POST  http://localhost:9016/mapping  -H 'Content-Type: application/json' -d '{"external_id": "33:52:77:99:43", "external_key": "223334fw2"}'
 ```
 
 In the case that provision service is not deployed with credentials or API key or you want to use user other than one being set in environment (or config file):
+
 ```bash
 curl -s -S  -X POST  http://localhost:9016/mapping -H "Authorization: Bearer <token|api_key>" -H 'Content-Type: application/json' -d '{"external_id": "<external_id>", "external_key": "<external_key>"}'
 ```
@@ -691,6 +696,7 @@ Or if you want to specify a name for thing different than in `config.toml` you c
 ```
 
 Response contains created things, channels and certificates if any:
+
 ```json
 {
   "things": [
@@ -729,11 +735,12 @@ Response contains created things, channels and certificates if any:
 
 Deploy Mainflux UI docker composition as it contains all the required services for provisioning to work ( `certs`, `bootstrap` and Mainflux core)
 
-```
+```bash
 git clone https://github.com/mainflux/ui
 cd ui
 docker-compose -f docker/docker-compose.yml up
 ```
+
 Create user and obtain access token
 
 ```bash
@@ -744,21 +751,22 @@ mainflux-cli -m https://mainflux.com users token john.doe@email.com 12345678
 
 created: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1OTY1ODU3MDUsImlhdCI6MTU5NjU0OTcwNSwiaXNzIjoibWFpbmZsdXguYXV0aG4iLCJzdWIiOiJtaXJrYXNoQGdtYWlsLmNvbSIsInR5cGUiOjB9._vq0zJzFc9tQqc8x74kpn7dXYefUtG9IB0Cb-X2KMK8
 ```
+
 Put a value of token into environment variable
 
-```
+```bash
 TOKEN=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1OTY1ODU3MDUsImlhdCI6MTU5NjU0OTcwNSwiaXNzIjoibWFpbmZsdXguYXV0aG4iLCJzdWIiOiJtaXJrYXNoQGdtYWlsLmNvbSIsInR5cGUiOjB9._vq0zJzFc9tQqc8x74kpn7dXYefUtG9IB0Cb-X2KMK8
 ```
 
 Make a call to provision endpoint
 
-```
+```bash
 curl -s -S  -X POST  http://mainflux.com:9016/mapping -H "Authorization: Bearer $TOKEN" -H 'Content-Type: application/json'   -d '{"name":"edge-gw",  "external_id" : "gateway", "external_key":"external_key" }'
 ```
 
 To check the results you can make a call to bootstrap endpoint
 
-```
+```bash
 curl -s -S -X GET http://mainflux.com:9013/things/bootstrap/gateway -H "Authorization: Thing external_key" -H 'Content-Type: application/json'
 ```
 
@@ -773,40 +781,29 @@ MF_AGENT_BOOTSTRAP_ID=gateway MF_AGENT_BOOTSTRAP_KEY=external_key MF_AGENT_BOOTS
 
 Agent will retrieve connections parameters and connect to Mainflux cloud.
 
-
-[mainflux]: https://github.com/mainflux/mainflux
-[bootstrap]: https://github.com/mainflux/mainflux/tree/master/bootstrap
-[export]: https://github.com/mainflux/export
-[agent]: https://github.com/mainflux/agent
-[mfxui]: https://github.com/mainflux/mainflux/ui
-[config]: https://github.com/mainflux/mainflux/tree/master/provision#configuration
-[env]: https://github.com/mainflux/mainflux/blob/master/.env
-[conftoml]: https://github.com/mainflux/mainflux/blob/master/docker/addons/provision/configs/config.toml
-[users]: https://github.com/mainflux/mainflux/blob/master/users/README.md
-[exp]: https://github.com/mainflux/export
-[cli]: https://github.com/mainflux/mainflux/tree/master/cli
-
 For more information about the Provision service API, please check out the [API documentation](https://github.com/mainflux/mainflux/blob/master/api/provision.yml).
 
 ## Certs Service
+
 Issues certificates for things. `Certs` service can create certificates to be used when `Mainflux` is deployed to support mTLS.  
 `Certs` service will create certificate for valid thing ID if valid user token is passed and user is owner of the provided thing ID.
 
 Certificate service can create certificates in two modes:
+
 1. Development mode - to be used when no PKI is deployed, this works similar to the [make thing_cert](../docker/ssl/Makefile)
 2. PKI mode - certificates issued by PKI, when you deploy `Vault` as PKI certificate management `cert` service will proxy requests to `Vault` previously checking access rights and saving info on successfully created certificate.
 
-
-
 ### Development mode
+
 If `MF_CERTS_VAULT_HOST` is empty than Development mode is on.
 
 To issue a certificate:
+
 ```bash
 
-TOKEN=`curl  -s --insecure -S -X POST http://localhost/tokens -H 'Content-Type: application/json' -d '{"email":"edge@email.com","password":"12345678"}' | jq -r '.token'`
+USERTOKEN=`curl  -s --insecure -S -X POST https://localhost/users/tokens/issue -H "Content-Type: application/json" -d '{"identity":"john.doe@email.com", "secret":"12345678"}' | grep -oP '"access_token":"\K[^"]+'`
 
-curl -s -S  -X POST  http://localhost:9019/certs -H "Authorization: Bearer $TOKEN" -H 'Content-Type: application/json'   -d '{"thing_id":<thing_id>, "rsa_bits":2048, "key_type":"rsa"}'
+curl -s -S  -X POST  http://localhost:9019/certs -H "Authorization: Bearer $USER_TOKEN" -H 'Content-Type: application/json'   -d '{"thing_id":<thing_id>, "rsa_bits":2048, "key_type":"rsa"}'
 ```
 
 ```json
@@ -830,7 +827,7 @@ To setup `Vault` follow steps in [Build Your Own Certificate Authority (CA)](htt
 
 To setup certs service with `Vault` following environment variables must be set:
 
-```
+```bash
 MF_CERTS_VAULT_HOST=vault-domain.com
 MF_CERTS_VAULT_PKI_PATH=<vault_pki_path>
 MF_CERTS_VAULT_ROLE=<vault_role>
@@ -847,3 +844,15 @@ curl -s -S -X DELETE http://localhost:9019/certs/revoke -H "Authorization: Beare
 ```
 
 For more information about the Certification service API, please check out the [API documentation](https://github.com/mainflux/mainflux/blob/master/api/certs.yml).
+
+[mainflux]: https://github.com/mainflux/mainflux
+[bootstrap]: https://github.com/mainflux/mainflux/tree/master/bootstrap
+[agent]: https://github.com/mainflux/agent
+[mfxui]: https://github.com/mainflux/mainflux/ui
+[config]: https://github.com/mainflux/mainflux/tree/master/provision#configuration
+[env]: https://github.com/mainflux/mainflux/blob/master/.env
+[conftoml]: https://github.com/mainflux/mainflux/blob/master/docker/addons/provision/configs/config.toml
+[users]: https://github.com/mainflux/mainflux/blob/master/users/README.md
+[exp]: https://github.com/mainflux/export
+[cli]: https://github.com/mainflux/mainflux/tree/master/cli
+[auth]: authentication.md

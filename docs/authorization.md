@@ -2,7 +2,7 @@
 
 ## Policies
 
-Mainflux uses policies to control permissions on entities: **users**, **things**, and **groups**. Under the hood, Mainflux uses its own fine grained access control list.
+Mainflux uses policies to control permissions on entities: **users**, **things**, **groups** and **channels**. Under the hood, Mainflux uses its own fine grained access control list.
 
 Policies define permissions for the entities. For example, *which user* has *access* to *a specific thing*. Such policies have three main components: **subject**, **object**, and **action**.
 
@@ -14,7 +14,7 @@ To put it briefly:
 
 **Action**: This is the action that the subject wants to do on the object. This is one of the supported actions (read, write, update, delete, list or add)
 
-Above this we have a domain specifier called **entityType**. This either specific group level access or client level acess. With group level access a client can have an action to another client in the same group. While client level access a client has an action to a group i.e direct association.
+Above this we have a domain specifier called **entityType**. This either specific group level access or client level acess. With client entity a client can have an action to another client in the same group. While group entity a client has an action to a group i.e direct association.
 
 All three components create a single policy.
 
@@ -40,7 +40,7 @@ There are three types of policies:
 
 - **m_** Policy for messages i.e read or write action.
 - **g_** Policy for Group rights i.e add, list, update or delete action.
-- **c_** Policy for Clients that are group members i.e add, list, update or delete action.
+- **c_** Policy for Clients that are group members i.e list, update or delete action.
 
 **m_** Policy represents client rights to send and receive messages to a channel. Only channel members with corresponding rights can publish or receive messages to/from the channel.
 
@@ -124,7 +124,7 @@ Mainflux comes with predefined policies.
 
 ### Things service related policies
 
-- There are 3 policies regarding `Things`: `c_add`, `c_update`, `c_list` and `c_delete`.
+- There are 3 policies regarding `Things`: `c_update`, `c_list` and `c_delete`.
 - When a user creates a thing, the user will have `c_update`, `c_list` and `c_delete` policies on the `Thing` since they are the owner.
 - In order to view a thing, you need `c_list` policy on that thing.
 - In order to update and share the thing, you need a `c_update` policy on that thing.
@@ -145,26 +145,21 @@ You can add policies as well through an HTTP endpoint. *Only* admin can use this
 > Must-have: admin_token, object_id, subjects_id and policy_actions
 
 ```bash
-curl -isSX POST 'http://localhost/policies' -H 'Content-Type: application/json' -H 'Authorization: Bearer <admin_token>' -d '{"subject": "<client_id>", "object": "<object_id>", "actions": ["<action_1>", ..., "<action_N>"]}'
+curl -isSX POST 'http://localhost/policies' -H "Content-Type: application/json" -H "Authorization: Bearer <admin_token>" -d '{"subject": "<client_id>", "object": "<object_id>", "actions": ["<action_1>", ..., "<action_N>"]}'
 ```
 
 For example:
 
 ```bash
-curl -isSX POST 'http://localhost/policies' -H 'Content-Type: application/json' -H 'Authorization: Bearer <admin_token>' -d '{"subject": "3ad70dcb-b612-45a4-802a-06b166cd0372", "object": "6f048d29-3eef-4282-a649-f452d7910b53", "actions": ["c_list", "g_list"]}'
+curl -isSX POST 'http://localhost/policies' -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" -d '{"subject": "0b530292-3c1d-4c7d-aff5-b141b5c5d3e9", "object": "0a4a2c33-2d0e-43df-b51c-d905aba99e17", "actions": ["c_list", "g_list"]}'
 
 HTTP/1.1 201 Created
 Server: nginx/1.23.3
-Date: Wed, 05 Apr 2023 08:31:35 GMT
+Date: Wed, 14 Jun 2023 13:40:06 GMT
 Content-Type: application/json
 Content-Length: 0
 Connection: keep-alive
-Strict-Transport-Security: max-age=63072000; includeSubdomains
-X-Frame-Options: DENY
-X-Content-Type-Options: nosniff
-Access-Control-Allow-Origin: *
-Access-Control-Allow-Methods: *
-Access-Control-Allow-Headers: *
+Access-Control-Expose-Headers: Location
 ```
 
 ## Updating Policies
@@ -172,25 +167,20 @@ Access-Control-Allow-Headers: *
 > Must-have: admin_token, object_id, subjects_id and policy_actions
 
 ```bash
-curl -isSX PUT 'http://localhost/policies' -H 'Content-Type: application/json' -H 'Authorization: Bearer <admin_token>' -d '{"subject": "<client_id>", "object": "<object_id>", "actions": ["<action_1>", ..., "<action_N>"]}'
+curl -isSX PUT 'http://localhost/policies' -H "Content-Type: application/json" -H "Authorization: Bearer <admin_token>" -d '{"subject": "<client_id>", "object": "<object_id>", "actions": ["<action_1>", ..., "<action_N>"]}'
 ```
 
 For example:
 
 ```bash
-curl -isSX PUT 'http://localhost/policies' -H 'Content-Type: application/json' -H 'Authorization: Bearer <admin_token>' -d '{"subject": "3ad70dcb-b612-45a4-802a-06b166cd0372", "object": "6f048d29-3eef-4282-a649-f452d7910b53", "actions": ["c_delete"]}'
+curl -isSX PUT 'http://localhost/policies' -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" -d '{"subject": "0b530292-3c1d-4c7d-aff5-b141b5c5d3e9", "object": "0a4a2c33-2d0e-43df-b51c-d905aba99e17", "actions": ["c_delete"]}'
 
 HTTP/1.1 204 No Content
 Server: nginx/1.23.3
-Date: Wed, 05 Apr 2023 08:38:38 GMT
+Date: Wed, 14 Jun 2023 13:41:00 GMT
 Content-Type: application/json
 Connection: keep-alive
-Strict-Transport-Security: max-age=63072000; includeSubdomains
-X-Frame-Options: DENY
-X-Content-Type-Options: nosniff
-Access-Control-Allow-Origin: *
-Access-Control-Allow-Methods: *
-Access-Control-Allow-Headers: *
+Access-Control-Expose-Headers: Location
 ```
 
 ## Lisiting Policies
@@ -198,38 +188,36 @@ Access-Control-Allow-Headers: *
 > Must-have: admin_token
 
 ```bash
-curl -isSX GET 'http://localhost/policies' -H 'Content-Type: application/json' -H 'Authorization: Bearer <admin_token>'
+curl -isSX GET 'http://localhost/policies' -H "Content-Type: application/json" -H "Authorization: Bearer <admin_token>"
 ```
 
 For example:
 
 ```bash
-curl -isSX GET 'http://localhost/policies' -H 'Content-Type: application/json' -H 'Authorization: Bearer <admin_token>'
+curl -isSX GET 'http://localhost/policies' -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN"
 
 HTTP/1.1 200 OK
 Server: nginx/1.23.3
-Date: Wed, 05 Apr 2023 08:38:12 GMT
+Date: Wed, 14 Jun 2023 13:41:32 GMT
 Content-Type: application/json
-Content-Length: 290
+Content-Length: 305
 Connection: keep-alive
-Strict-Transport-Security: max-age=63072000; includeSubdomains
-X-Frame-Options: DENY
-X-Content-Type-Options: nosniff
-Access-Control-Allow-Origin: *
-Access-Control-Allow-Methods: *
-Access-Control-Allow-Headers: *
+Access-Control-Expose-Headers: Location
 
 {
-    "limit": 10,
-    "total": 1,
-    "policies": [{
-        "owner_id": "6ff06698-4dac-4281-866b-af0e500c4509",
-        "subject": "3ad70dcb-b612-45a4-802a-06b166cd0372",
-        "object": "6f048d29-3eef-4282-a649-f452d7910b53",
-        "actions": ["c_delete"],
-        "created_at": "0001-01-01T00:00:00Z",
-        "updated_at": "0001-01-01T00:00:00Z"
-    }]
+  "limit": 10,
+  "offset": 0,
+  "total": 1,
+  "policies": [
+    {
+      "owner_id": "94939159-d129-4f17-9e4e-cc2d615539d7",
+      "subject": "0b530292-3c1d-4c7d-aff5-b141b5c5d3e9",
+      "object": "0a4a2c33-2d0e-43df-b51c-d905aba99e17",
+      "actions": ["c_delete"],
+      "created_at": "2023-06-14T13:40:06.582315Z",
+      "updated_at": "2023-06-14T13:41:00.636733Z"
+    }
+  ]
 }
 ```
 
@@ -240,25 +228,20 @@ The admin can delete policies. Only policies defined on [Predefined Policies sec
 > Must-have: admin_token, object, subjects_ids and policies
 
 ```bash
-curl -isSX DELETE -H "Accept: application/json" -H "Authorization: Bearer <user_token>" http://localhost/policie/<subject_id>/<object_id> -H 'Content-Type: application/json'
+curl -isSX DELETE -H "Accept: application/json" -H "Authorization: Bearer <user_token>" http://localhost/policie/<subject_id>/<object_id> -H "Content-Type: application/json"
 ```
 
 For example:
 
 ```bash
-curl -isSX DELETE -H 'Accept: application/json' -H 'Authorization: Bearer $USER_TOKEN' http://localhost/policies/6f048d29-3eef-4282-a649-f452d7910b53/3ad70dcb-b612-45a4-802a-06b166cd0372
+curl -isSX DELETE -H 'Accept: application/json' -H "Authorization: Bearer $USER_TOKEN" http://localhost/policies/0b530292-3c1d-4c7d-aff5-b141b5c5d3e9/0a4a2c33-2d0e-43df-b51c-d905aba99e17
 
 HTTP/1.1 204 No Content
 Server: nginx/1.23.3
-Date: Wed, 05 Apr 2023 08:40:22 GMT
+Date: Wed, 14 Jun 2023 13:43:46 GMT
 Content-Type: application/json
 Connection: keep-alive
-Strict-Transport-Security: max-age=63072000; includeSubdomains
-X-Frame-Options: DENY
-X-Content-Type-Options: nosniff
-Access-Control-Allow-Origin: *
-Access-Control-Allow-Methods: *
-Access-Control-Allow-Headers: *
+Access-Control-Expose-Headers: Location
 ```
 
 If you delete policies, the policy will be removed from the policy storage. Further authorization checks related to that policy will fail.

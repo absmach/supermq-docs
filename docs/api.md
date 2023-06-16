@@ -22,29 +22,24 @@ curl -s -S -i -X POST -H "Content-Type: application/json" http://localhost/users
 For example:
 
 ```bash
-curl -s -S -i -X POST -H "Content-Type: application/json" http://localhost/users -d '{"credentials": {"identity": "john.doe@email.com", "secret": "12345678"}, "name": "John Doe", "status": "enabled"}'
+curl -s -S -i -X POST -H "Content-Type: application/json" http://localhost/users -d '{"credentials": {"identity": "john.doe@email.com", "secret": "12345678"}, "name": "John Doe"}'
 
 HTTP/1.1 201 Created
 Server: nginx/1.23.3
-Date: Wed, 05 Apr 2023 09:36:36 GMT
+Date: Wed, 14 Jun 2023 13:45:38 GMT
 Content-Type: application/json
-Content-Length: 227
+Content-Length: 223
 Connection: keep-alive
-Location: /users/f7c55a1f-dde8-4880-9796-b3a0cd05745b
-Strict-Transport-Security: max-age=63072000; includeSubdomains
-X-Frame-Options: DENY
-X-Content-Type-Options: nosniff
-Access-Control-Allow-Origin: *
-Access-Control-Allow-Methods: *
-Access-Control-Allow-Headers: *
+Location: /users/4f22fa45-50ca-491b-a7c9-680a2608dc13
+Access-Control-Expose-Headers: Location
 
 {
-    "id": "f7c55a1f-dde8-4880-9796-b3a0cd05745b",
-    "name": "John Doe",
-    "credentials": { "identity": "john.doe@email.com", "secret": "" },
-    "created_at": "2023-04-05T09:36:36.40605Z",
-    "updated_at": "2023-04-05T09:36:36.40605Z",
-    "status": "enabled"
+  "id": "4f22fa45-50ca-491b-a7c9-680a2608dc13",
+  "name": "John Doe",
+  "credentials": { "identity": "john.doe@email.com", "secret": "" },
+  "created_at": "2023-06-14T13:45:38.808423Z",
+  "updated_at": "0001-01-01T00:00:00Z",
+  "status": "enabled"
 }
 ```
 
@@ -55,25 +50,20 @@ curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: Bea
 
 HTTP/1.1 201 Created
 Server: nginx/1.23.3
-Date: Wed, 05 Apr 2023 09:51:30 GMT
+Date: Wed, 14 Jun 2023 13:46:47 GMT
 Content-Type: application/json
-Content-Length: 259
+Content-Length: 252
 Connection: keep-alive
-Location: /users/838dc3bb-fac9-4b39-ba4c-97a051c7c10d
-Strict-Transport-Security: max-age=63072000; includeSubdomains
-X-Frame-Options: DENY
-X-Content-Type-Options: nosniff
-Access-Control-Allow-Origin: *
-Access-Control-Allow-Methods: *
-Access-Control-Allow-Headers: *
+Location: /users/1890c034-7ef9-4cde-83df-d78ea1d4d281
+Access-Control-Expose-Headers: Location
 
 {
-    "id": "838dc3bb-fac9-4b39-ba4c-97a051c7c10d",
-    "owner": "f7c55a1f-dde8-4880-9796-b3a0cd05745b",
-    "credentials": { "identity": "john.doe2@email.com", "secret": "" },
-    "created_at": "2023-04-05T09:51:30.404336Z",
-    "updated_at": "2023-04-05T09:51:30.404336Z",
-    "status": "enabled"
+  "id": "1890c034-7ef9-4cde-83df-d78ea1d4d281",
+  "owner": "94939159-d129-4f17-9e4e-cc2d615539d7",
+  "credentials": { "identity": "john.doe2@email.com", "secret": "" },
+  "created_at": "2023-06-14T13:46:47.322648Z",
+  "updated_at": "0001-01-01T00:00:00Z",
+  "status": "enabled"
 }
 ```
 
@@ -95,21 +85,16 @@ curl -s -S -i -X POST -H "Content-Type: application/json" http://localhost/users
 
 HTTP/1.1 201 Created
 Server: nginx/1.23.3
-Date: Wed, 05 Apr 2023 09:43:04 GMT
+Date: Wed, 14 Jun 2023 13:47:32 GMT
 Content-Type: application/json
 Content-Length: 709
 Connection: keep-alive
-Strict-Transport-Security: max-age=63072000; includeSubdomains
-X-Frame-Options: DENY
-X-Content-Type-Options: nosniff
-Access-Control-Allow-Origin: *
-Access-Control-Allow-Methods: *
-Access-Control-Allow-Headers: *
+Access-Control-Expose-Headers: Location
 
 {
-    "access_token": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODA2ODg2ODQsImlhdCI6MTY4MDY4Nzc4NCwiaWRlbnRpdHkiOiJqb2huLmRvZUBlbWFpbC5jb20iLCJpc3MiOiJjbGllbnRzLmF1dGgiLCJzdWIiOiJmN2M1NWExZi1kZGU4LTQ4ODAtOTc5Ni1iM2EwY2QwNTc0NWIiLCJ0eXBlIjoiYWNjZXNzIn0.IkRNbWm609z3FffXdDn8C0FdfsEtId0woKjRsVu0ZxFXSAWZhczbFpGzWIzj43Pw0NnPaR0qEl-Kckx6vXRreg",
-    "refresh_token": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODA3NzQxODQsImlhdCI6MTY4MDY4Nzc4NCwiaWRlbnRpdHkiOiJqb2huLmRvZUBlbWFpbC5jb20iLCJpc3MiOiJjbGllbnRzLmF1dGgiLCJzdWIiOiJmN2M1NWExZi1kZGU4LTQ4ODAtOTc5Ni1iM2EwY2QwNTc0NWIiLCJ0eXBlIjoicmVmcmVzaCJ9.xRpa1F76PWkHsiD8pzAtzrwDNyKKGkL1j6Vwczhr0uKgbAd1pOwYNUQhh6XVYtzFM9S5MYxRpQYfYOkcubW1UQ",
-    "access_type": "Bearer"
+  "access_token": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODY3NTEzNTIsImlhdCI6MTY4Njc1MDQ1MiwiaWRlbnRpdHkiOiJqb2huLmRvZUBlbWFpbC5jb20iLCJpc3MiOiJjbGllbnRzLmF1dGgiLCJzdWIiOiI5NDkzOTE1OS1kMTI5LTRmMTctOWU0ZS1jYzJkNjE1NTM5ZDciLCJ0eXBlIjoiYWNjZXNzIn0.AND1sm6mN2wgUxVkDhpipCoNa87KPMghGaS5-4dU0iZaqGIUhWScrEJwOahT9ts1TZSd1qEcANTIffJ_y2Pbsg",
+  "refresh_token": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODY4MzY4NTIsImlhdCI6MTY4Njc1MDQ1MiwiaWRlbnRpdHkiOiJqb2huLmRvZUBlbWFpbC5jb20iLCJpc3MiOiJjbGllbnRzLmF1dGgiLCJzdWIiOiI5NDkzOTE1OS1kMTI5LTRmMTctOWU0ZS1jYzJkNjE1NTM5ZDciLCJ0eXBlIjoicmVmcmVzaCJ9.z3OWCHhNHNuvkzBqEAoLKWS6vpFLkIYXhH9cZogSCXd109-BbKVlLvYKmja-hkhaj_XDJKySDN3voiazBr_WTA",
+  "access_type": "Bearer"
 }
 ```
 
@@ -130,21 +115,16 @@ curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: Bea
 
 HTTP/1.1 201 Created
 Server: nginx/1.23.3
-Date: Wed, 05 Apr 2023 10:44:15 GMT
+Date: Wed, 14 Jun 2023 13:49:45 GMT
 Content-Type: application/json
 Content-Length: 709
 Connection: keep-alive
-Strict-Transport-Security: max-age=63072000; includeSubdomains
-X-Frame-Options: DENY
-X-Content-Type-Options: nosniff
-Access-Control-Allow-Origin: *
-Access-Control-Allow-Methods: *
-Access-Control-Allow-Headers: *
+Access-Control-Expose-Headers: Location
 
 {
-    "access_token": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODA2OTIzNTUsImlhdCI6MTY4MDY5MTQ1NSwiaWRlbnRpdHkiOiJqb2huLmRvZUBlbWFpbC5jb20iLCJpc3MiOiJjbGllbnRzLmF1dGgiLCJzdWIiOiJmN2M1NWExZi1kZGU4LTQ4ODAtOTc5Ni1iM2EwY2QwNTc0NWIiLCJ0eXBlIjoiYWNjZXNzIn0.1-YxZd-UhSAyvAN0OkGVZJLl7e2ahDr3AnsSWe_Yhz3w1Ua3Cl1p62NOelZAwm-0qgpZgT-GwI6KG-J7jq_UGQ",
-    "refresh_token": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODA3Nzc4NTUsImlhdCI6MTY4MDY5MTQ1NSwiaWRlbnRpdHkiOiJqb2huLmRvZUBlbWFpbC5jb20iLCJpc3MiOiJjbGllbnRzLmF1dGgiLCJzdWIiOiJmN2M1NWExZi1kZGU4LTQ4ODAtOTc5Ni1iM2EwY2QwNTc0NWIiLCJ0eXBlIjoicmVmcmVzaCJ9.GcTF_g31GYpMDqUHOXbyOiG3WnfMCssKmLvM2ZjsSajBHdcdZ_JKn85vOUCKfF-thcFaWL5VXCTSHN11bKdObw",
-    "access_type": "Bearer"
+  "access_token": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODY3NTE0ODUsImlhdCI6MTY4Njc1MDU4NSwiaWRlbnRpdHkiOiJqb2huLmRvZUBlbWFpbC5jb20iLCJpc3MiOiJjbGllbnRzLmF1dGgiLCJzdWIiOiI5NDkzOTE1OS1kMTI5LTRmMTctOWU0ZS1jYzJkNjE1NTM5ZDciLCJ0eXBlIjoiYWNjZXNzIn0.zZcUH12x7Tlnecrc3AAFnu3xbW4wAOGifWZMnba2EnhosHWDuSN4N7s2S7OxPOrBGAG_daKvkA65mi5n1sxi9A",
+  "refresh_token": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODY4MzY5ODUsImlhdCI6MTY4Njc1MDU4NSwiaWRlbnRpdHkiOiJqb2huLmRvZUBlbWFpbC5jb20iLCJpc3MiOiJjbGllbnRzLmF1dGgiLCJzdWIiOiI5NDkzOTE1OS1kMTI5LTRmMTctOWU0ZS1jYzJkNjE1NTM5ZDciLCJ0eXBlIjoicmVmcmVzaCJ9.AjxJ5xlUUSjW99ECUAU19ONeCs8WlRl52Ost2qGTADxHGYBjPMqctruyoTYJbdORtL5f2RTxZsnLX_1vLKRY2A",
+  "access_type": "Bearer"
 }
 ```
 
@@ -161,31 +141,26 @@ curl -s -S -i -X GET -H "Authorization: Bearer <user_token>" http://localhost/us
 For example:
 
 ```bash
-curl -s -S -i -X GET -H "Authorization: Bearer $USER_TOKEN" http://localhost/users/838dc3bb-fac9-4b39-ba4c-97a051c7c10d
+curl -s -S -i -X GET -H "Authorization: Bearer $USER_TOKEN" http://localhost/users/1890c034-7ef9-4cde-83df-d78ea1d4d281
 
 HTTP/1.1 200 OK
 Server: nginx/1.23.3
-Date: Wed, 05 Apr 2023 09:52:28 GMT
+Date: Wed, 14 Jun 2023 13:51:59 GMT
 Content-Type: application/json
-Content-Length: 319
+Content-Length: 312
 Connection: keep-alive
-Strict-Transport-Security: max-age=63072000; includeSubdomains
-X-Frame-Options: DENY
-X-Content-Type-Options: nosniff
-Access-Control-Allow-Origin: *
-Access-Control-Allow-Methods: *
-Access-Control-Allow-Headers: *
+Access-Control-Expose-Headers: Location
 
 {
-    "id": "838dc3bb-fac9-4b39-ba4c-97a051c7c10d",
-    "owner": "f7c55a1f-dde8-4880-9796-b3a0cd05745b",
-    "credentials": {
-        "identity": "john.doe2@email.com",
-        "secret": "$2a$10$qj7lrJrY8by3r8pRdsTcROlvi3n0rBj5iBTw1aj9FXHUmFqMsntxm"
-    },
-    "created_at": "2023-04-05T09:51:30.404336Z",
-    "updated_at": "2023-04-05T09:51:30.404336Z",
-    "status": "enabled"
+  "id": "1890c034-7ef9-4cde-83df-d78ea1d4d281",
+  "owner": "94939159-d129-4f17-9e4e-cc2d615539d7",
+  "credentials": {
+    "identity": "john.doe2@email.com",
+    "secret": "$2a$10$pgpEKv0K5Xs9ULyBCVzGyeBwWIUleIH5IqXZ4XnLI6/.Aw2CHujr."
+  },
+  "created_at": "2023-06-14T13:46:47.322648Z",
+  "updated_at": "0001-01-01T00:00:00Z",
+  "status": "enabled"
 }
 ```
 
@@ -206,28 +181,25 @@ curl -s -S -i -X GET -H "Authorization: Bearer $USER_TOKEN" http://localhost/use
 
 HTTP/1.1 200 OK
 Server: nginx/1.23.3
-Date: Wed, 05 Apr 2023 09:53:19 GMT
+Date: Wed, 14 Jun 2023 13:52:36 GMT
 Content-Type: application/json
 Content-Length: 285
 Connection: keep-alive
-Strict-Transport-Security: max-age=63072000; includeSubdomains
-X-Frame-Options: DENY
-X-Content-Type-Options: nosniff
-Access-Control-Allow-Origin: *
-Access-Control-Allow-Methods: *
-Access-Control-Allow-Headers: *
+Access-Control-Expose-Headers: Location
 
 {
-    "limit": 10,
-    "total": 1,
-    "users": [{
-        "id": "838dc3bb-fac9-4b39-ba4c-97a051c7c10d",
-        "owner": "f7c55a1f-dde8-4880-9796-b3a0cd05745b",
-        "credentials": { "identity": "john.doe2@email.com", "secret": "" },
-        "created_at": "2023-04-05T09:51:30.404336Z",
-        "updated_at": "0001-01-01T00:00:00Z",
-        "status": "enabled"
-    }]
+  "limit": 10,
+  "total": 1,
+  "users": [
+    {
+      "id": "1890c034-7ef9-4cde-83df-d78ea1d4d281",
+      "owner": "94939159-d129-4f17-9e4e-cc2d615539d7",
+      "credentials": { "identity": "john.doe2@email.com", "secret": "" },
+      "created_at": "2023-06-14T13:46:47.322648Z",
+      "updated_at": "0001-01-01T00:00:00Z",
+      "status": "enabled"
+    }
+  ]
 }
 ```
 
@@ -247,28 +219,25 @@ curl -s -S -i -X GET -H "Authorization: Bearer $USER_TOKEN" http://localhost/use
 
 HTTP/1.1 200 OK
 Server: nginx/1.23.3
-Date: Wed, 05 Apr 2023 09:57:11 GMT
+Date: Wed, 14 Jun 2023 13:53:16 GMT
 Content-Type: application/json
 Content-Length: 284
 Connection: keep-alive
-Strict-Transport-Security: max-age=63072000; includeSubdomains
-X-Frame-Options: DENY
-X-Content-Type-Options: nosniff
-Access-Control-Allow-Origin: *
-Access-Control-Allow-Methods: *
-Access-Control-Allow-Headers: *
+Access-Control-Expose-Headers: Location
 
 {
-    "limit": 5,
-    "total": 1,
-    "users": [{
-        "id": "838dc3bb-fac9-4b39-ba4c-97a051c7c10d",
-        "owner": "f7c55a1f-dde8-4880-9796-b3a0cd05745b",
-        "credentials": { "identity": "john.doe2@email.com", "secret": "" },
-        "created_at": "2023-04-05T09:51:30.404336Z",
-        "updated_at": "0001-01-01T00:00:00Z",
-        "status": "enabled"
-    }]
+  "limit": 5,
+  "total": 1,
+  "users": [
+    {
+      "id": "1890c034-7ef9-4cde-83df-d78ea1d4d281",
+      "owner": "94939159-d129-4f17-9e4e-cc2d615539d7",
+      "credentials": { "identity": "john.doe2@email.com", "secret": "" },
+      "created_at": "2023-06-14T13:46:47.322648Z",
+      "updated_at": "0001-01-01T00:00:00Z",
+      "status": "enabled"
+    }
+  ]
 }
 ```
 
@@ -286,30 +255,26 @@ curl -s -S -i -X PATCH -H "Content-Type: application/json" -H "Authorization: Be
 For example:
 
 ```bash
-curl -s -S -i -X PATCH -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" http://localhost/users/838dc3bb-fac9-4b39-ba4c-97a051c7c10d -d '{"name": "new name", "metadata":{"foo":"bar"}}'
+curl -s -S -i -X PATCH -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" http://localhost/users/1890c034-7ef9-4cde-83df-d78ea1d4d281 -d '{"name": "new name", "metadata":{"foo":"bar"}}'
 
 HTTP/1.1 200 OK
 Server: nginx/1.23.3
-Date: Wed, 05 Apr 2023 10:03:36 GMT
+Date: Wed, 14 Jun 2023 13:54:40 GMT
 Content-Type: application/json
-Content-Length: 302
+Content-Length: 354
 Connection: keep-alive
-Strict-Transport-Security: max-age=63072000; includeSubdomains
-X-Frame-Options: DENY
-X-Content-Type-Options: nosniff
-Access-Control-Allow-Origin: *
-Access-Control-Allow-Methods: *
-Access-Control-Allow-Headers: *
+Access-Control-Expose-Headers: Location
 
 {
-    "id": "838dc3bb-fac9-4b39-ba4c-97a051c7c10d",
-    "name": "new name",
-    "owner": "f7c55a1f-dde8-4880-9796-b3a0cd05745b",
-    "credentials": { "identity": "john.doe2@email.com", "secret": "" },
-    "metadata": { "foo": "bar" },
-    "created_at": "2023-04-05T09:51:30.404336Z",
-    "updated_at": "2023-04-05T10:03:35.996404Z",
-    "status": "enabled"
+  "id": "1890c034-7ef9-4cde-83df-d78ea1d4d281",
+  "name": "new name",
+  "owner": "94939159-d129-4f17-9e4e-cc2d615539d7",
+  "credentials": { "identity": "john.doe2@email.com", "secret": "" },
+  "metadata": { "foo": "bar" },
+  "created_at": "2023-06-14T13:46:47.322648Z",
+  "updated_at": "2023-06-14T13:54:40.208005Z",
+  "updated_by": "94939159-d129-4f17-9e4e-cc2d615539d7",
+  "status": "enabled"
 }
 ```
 
@@ -327,31 +292,27 @@ curl -s -S -i -X PATCH -H "Content-Type: application/json" -H "Authorization: Be
 For example:
 
 ```bash
-curl -s -S -i -X PATCH -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" http://localhost/users/838dc3bb-fac9-4b39-ba4c-97a051c7c10d/tags -d '{"tags":["foo","bar"]}'
+curl -s -S -i -X PATCH -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" http://localhost/users/1890c034-7ef9-4cde-83df-d78ea1d4d281/tags -d '{"tags":["foo","bar"]}'
 
 HTTP/1.1 200 OK
 Server: nginx/1.23.3
-Date: Wed, 05 Apr 2023 10:10:24 GMT
+Date: Wed, 14 Jun 2023 13:55:18 GMT
 Content-Type: application/json
-Content-Length: 323
+Content-Length: 375
 Connection: keep-alive
-Strict-Transport-Security: max-age=63072000; includeSubdomains
-X-Frame-Options: DENY
-X-Content-Type-Options: nosniff
-Access-Control-Allow-Origin: *
-Access-Control-Allow-Methods: *
-Access-Control-Allow-Headers: *
+Access-Control-Expose-Headers: Location
 
 {
-    "id": "838dc3bb-fac9-4b39-ba4c-97a051c7c10d",
-    "name": "new name",
-    "tags": ["foo", "bar"],
-    "owner": "f7c55a1f-dde8-4880-9796-b3a0cd05745b",
-    "credentials": { "identity": "john.doe2@email.com", "secret": "" },
-    "metadata": { "foo": "bar" },
-    "created_at": "2023-04-05T09:51:30.404336Z",
-    "updated_at": "2023-04-05T10:10:24.172941Z",
-    "status": "enabled"
+  "id": "1890c034-7ef9-4cde-83df-d78ea1d4d281",
+  "name": "new name",
+  "tags": ["foo", "bar"],
+  "owner": "94939159-d129-4f17-9e4e-cc2d615539d7",
+  "credentials": { "identity": "john.doe2@email.com", "secret": "" },
+  "metadata": { "foo": "bar" },
+  "created_at": "2023-06-14T13:46:47.322648Z",
+  "updated_at": "2023-06-14T13:55:18.353027Z",
+  "updated_by": "94939159-d129-4f17-9e4e-cc2d615539d7",
+  "status": "enabled"
 }
 ```
 
@@ -369,34 +330,29 @@ curl -s -S -i -X PATCH -H "Content-Type: application/json" -H "Authorization: Be
 For example:
 
 ```bash
-curl -s -S -i -X PATCH -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" http://localhost/users/838dc3bb-fac9-4b39-ba4c-97a051c7c10d/owner -d '{"owner": "b8b2d3c6-7365-4670-af5c-d6fe0ae2c1d3"}'
+curl -s -S -i -X PATCH -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" http://localhost/users/1890c034-7ef9-4cde-83df-d78ea1d4d281/owner -d '{"owner": "532311a4-c13b-4061-b991-98dcae7a934e"}'
 
 HTTP/1.1 200 OK
 Server: nginx/1.23.3
-Date: Wed, 05 Apr 2023 10:12:31 GMT
+Date: Wed, 14 Jun 2023 13:56:32 GMT
 Content-Type: application/json
-Content-Length: 323
+Content-Length: 375
 Connection: keep-alive
-Strict-Transport-Security: max-age=63072000; includeSubdomains
-X-Frame-Options: DENY
-X-Content-Type-Options: nosniff
-Access-Control-Allow-Origin: *
-Access-Control-Allow-Methods: *
-Access-Control-Allow-Headers: *
+Access-Control-Expose-Headers: Location
 
 {
-    "id": "838dc3bb-fac9-4b39-ba4c-97a051c7c10d",
-    "name": "new name",
-    "tags": ["foo", "bar"],
-    "owner": "b8b2d3c6-7365-4670-af5c-d6fe0ae2c1d3",
-    "credentials": { "identity": "john.doe2@email.com", "secret": "" },
-    "metadata": { "foo": "bar" },
-    "created_at": "2023-04-05T09:51:30.404336Z",
-    "updated_at": "2023-04-05T10:12:31.265837Z",
-    "status": "enabled"
+  "id": "1890c034-7ef9-4cde-83df-d78ea1d4d281",
+  "name": "new name",
+  "tags": ["foo", "bar"],
+  "owner": "532311a4-c13b-4061-b991-98dcae7a934e",
+  "credentials": { "identity": "john.doe2@email.com", "secret": "" },
+  "metadata": { "foo": "bar" },
+  "created_at": "2023-06-14T13:46:47.322648Z",
+  "updated_at": "2023-06-14T13:56:32.059484Z",
+  "updated_by": "94939159-d129-4f17-9e4e-cc2d615539d7",
+  "status": "enabled"
 }
 ```
-
 
 ### Update User Identity
 
@@ -412,31 +368,27 @@ curl -s -S -i -X PATCH -H "Content-Type: application/json" -H "Authorization: Be
 For example:
 
 ```bash
-curl -s -S -i -X PATCH -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" http://localhost/users/838dc3bb-fac9-4b39-ba4c-97a051c7c10d/identity -d '{"identity": "updated.john.doe@email.com"}'
+curl -s -S -i -X PATCH -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" http://localhost/users/1890c034-7ef9-4cde-83df-d78ea1d4d281/identity -d '{"identity": "updated.john.doe@email.com"}'
 
 HTTP/1.1 200 OK
 Server: nginx/1.23.3
-Date: Wed, 05 Apr 2023 10:16:55 GMT
+Date: Wed, 14 Jun 2023 13:59:53 GMT
 Content-Type: application/json
-Content-Length: 330
+Content-Length: 382
 Connection: keep-alive
-Strict-Transport-Security: max-age=63072000; includeSubdomains
-X-Frame-Options: DENY
-X-Content-Type-Options: nosniff
-Access-Control-Allow-Origin: *
-Access-Control-Allow-Methods: *
-Access-Control-Allow-Headers: *
+Access-Control-Expose-Headers: Location
 
 {
-    "id": "838dc3bb-fac9-4b39-ba4c-97a051c7c10d",
-    "name": "new name",
-    "tags": ["foo", "bar"],
-    "owner": "f7c55a1f-dde8-4880-9796-b3a0cd05745b",
-    "credentials": { "identity": "updated.john.doe@email.com", "secret": "" },
-    "metadata": { "foo": "bar" },
-    "created_at": "2023-04-05T09:51:30.404336Z",
-    "updated_at": "2023-04-05T10:16:55.924758Z",
-    "status": "enabled"
+  "id": "1890c034-7ef9-4cde-83df-d78ea1d4d281",
+  "name": "new name",
+  "tags": ["foo", "bar"],
+  "owner": "94939159-d129-4f17-9e4e-cc2d615539d7",
+  "credentials": { "identity": "updated.john.doe@email.com", "secret": "" },
+  "metadata": { "foo": "bar" },
+  "created_at": "2023-06-14T13:46:47.322648Z",
+  "updated_at": "2023-06-14T13:59:53.422595Z",
+  "updated_by": "94939159-d129-4f17-9e4e-cc2d615539d7",
+  "status": "enabled"
 }
 ```
 
@@ -455,18 +407,13 @@ For example:
 ```bash
 curl -s -S -i -X PATCH -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" http://localhost/users/secret -d '{"old_secret":"12345678", "new_secret":"12345678a"}'
 
-HTTP/1.1 201 Created
-Server: nginx/1.16.0
-Date: Wed, 10 Mar 2021 15:17:36 GMT
+HTTP/1.1 200 OK
+Server: nginx/1.23.3
+Date: Wed, 14 Jun 2023 14:00:35 GMT
 Content-Type: application/json
-Content-Length: 11
+Content-Length: 281
 Connection: keep-alive
-Strict-Transport-Security: max-age=63072000; includeSubdomains
-X-Frame-Options: DENY
-X-Content-Type-Options: nosniff
-Access-Control-Allow-Origin: *
-Access-Control-Allow-Methods: *
-Access-Control-Allow-Headers: *
+Access-Control-Expose-Headers: Location
 ```
 
 ### Enable User
@@ -482,31 +429,27 @@ curl -s -S -i -X GET -H "Authorization: Bearer <user_token>" http://localhost/us
 For example:
 
 ```bash
-curl -s -S -i -X POST -H "Authorization: Bearer $USER_TOKEN" http://localhost/users/838dc3bb-fac9-4b39-ba4c-97a051c7c10d/enable
+curl -s -S -i -X POST -H "Authorization: Bearer $USER_TOKEN" http://localhost/users/1890c034-7ef9-4cde-83df-d78ea1d4d281/enable
 
 HTTP/1.1 200 OK
 Server: nginx/1.23.3
-Date: Wed, 05 Apr 2023 10:40:54 GMT
+Date: Wed, 14 Jun 2023 14:01:25 GMT
 Content-Type: application/json
-Content-Length: 330
+Content-Length: 382
 Connection: keep-alive
-Strict-Transport-Security: max-age=63072000; includeSubdomains
-X-Frame-Options: DENY
-X-Content-Type-Options: nosniff
-Access-Control-Allow-Origin: *
-Access-Control-Allow-Methods: *
-Access-Control-Allow-Headers: *
+Access-Control-Expose-Headers: Location
 
 {
-    "id": "838dc3bb-fac9-4b39-ba4c-97a051c7c10d",
-    "name": "new name",
-    "tags": ["foo", "bar"],
-    "owner": "f7c55a1f-dde8-4880-9796-b3a0cd05745b",
-    "credentials": { "identity": "updated.john.doe@email.com", "secret": "" },
-    "metadata": { "foo": "bar" },
-    "created_at": "2023-04-05T09:51:30.404336Z",
-    "updated_at": "2023-04-05T10:16:55.924758Z",
-    "status": "enabled"
+  "id": "1890c034-7ef9-4cde-83df-d78ea1d4d281",
+  "name": "new name",
+  "tags": ["foo", "bar"],
+  "owner": "94939159-d129-4f17-9e4e-cc2d615539d7",
+  "credentials": { "identity": "updated.john.doe@email.com", "secret": "" },
+  "metadata": { "foo": "bar" },
+  "created_at": "2023-06-14T13:46:47.322648Z",
+  "updated_at": "2023-06-14T13:59:53.422595Z",
+  "updated_by": "94939159-d129-4f17-9e4e-cc2d615539d7",
+  "status": "enabled"
 }
 ```
 
@@ -523,31 +466,27 @@ curl -s -S -i -X GET -H "Authorization: Bearer <user_token>" http://localhost/us
 For example:
 
 ```bash
-curl -s -S -i -X POST -H "Authorization: Bearer $USER_TOKEN" http://localhost/users/838dc3bb-fac9-4b39-ba4c-97a051c7c10d/disable
+curl -s -S -i -X POST -H "Authorization: Bearer $USER_TOKEN" http://localhost/users/1890c034-7ef9-4cde-83df-d78ea1d4d281/disable
 
 HTTP/1.1 200 OK
 Server: nginx/1.23.3
-Date: Wed, 05 Apr 2023 10:40:29 GMT
+Date: Wed, 14 Jun 2023 14:01:23 GMT
 Content-Type: application/json
-Content-Length: 331
+Content-Length: 383
 Connection: keep-alive
-Strict-Transport-Security: max-age=63072000; includeSubdomains
-X-Frame-Options: DENY
-X-Content-Type-Options: nosniff
-Access-Control-Allow-Origin: *
-Access-Control-Allow-Methods: *
-Access-Control-Allow-Headers: *
+Access-Control-Expose-Headers: Location
 
 {
-    "id": "838dc3bb-fac9-4b39-ba4c-97a051c7c10d",
-    "name": "new name",
-    "tags": ["foo", "bar"],
-    "owner": "f7c55a1f-dde8-4880-9796-b3a0cd05745b",
-    "credentials": { "identity": "updated.john.doe@email.com", "secret": "" },
-    "metadata": { "foo": "bar" },
-    "created_at": "2023-04-05T09:51:30.404336Z",
-    "updated_at": "2023-04-05T10:16:55.924758Z",
-    "status": "disabled"
+  "id": "1890c034-7ef9-4cde-83df-d78ea1d4d281",
+  "name": "new name",
+  "tags": ["foo", "bar"],
+  "owner": "94939159-d129-4f17-9e4e-cc2d615539d7",
+  "credentials": { "identity": "updated.john.doe@email.com", "secret": "" },
+  "metadata": { "foo": "bar" },
+  "created_at": "2023-06-14T13:46:47.322648Z",
+  "updated_at": "2023-06-14T13:59:53.422595Z",
+  "updated_by": "94939159-d129-4f17-9e4e-cc2d615539d7",
+  "status": "disabled"
 }
 ```
 
@@ -565,32 +504,32 @@ curl -s -S -i -X GET -H "Authorization: Bearer <user_token>" http://localhost/us
 For example:
 
 ```bash
-curl -s -S -i -X GET -H "Authorization: Bearer $USER_TOKEN" http://localhost/users/838dc3bb-fac9-4b39-ba4c-97a051c7c10d/memberships
+curl -s -S -i -X GET -H "Authorization: Bearer $USER_TOKEN" http://localhost/users/1890c034-7ef9-4cde-83df-d78ea1d4d281/memberships
 
 HTTP/1.1 200 OK
 Server: nginx/1.23.3
-Date: Wed, 05 Apr 2023 11:55:58 GMT
+Date: Thu, 15 Jun 2023 11:22:18 GMT
 Content-Type: application/json
-Content-Length: 287
+Content-Length: 367
 Connection: keep-alive
-Strict-Transport-Security: max-age=63072000; includeSubdomains
-X-Frame-Options: DENY
-X-Content-Type-Options: nosniff
-Access-Control-Allow-Origin: *
-Access-Control-Allow-Methods: *
-Access-Control-Allow-Headers: *
+Access-Control-Expose-Headers: Location
 
 {
-    "total": 1,
-    "memberships": [{
-        "id": "977bbd33-5b59-4b7a-a9c3-8adda5d98255",
-        "owner_id": "f7c55a1f-dde8-4880-9796-b3a0cd05745b",
-        "name": "testgroup",
-        "description": "test group description",
-        "created_at": "2023-04-05T10:56:45.672778Z",
-        "updated_at": "2023-04-05T10:56:45.672778Z",
-        "status": "enabled"
-    }]
+  "limit": 0,
+  "offset": 0,
+  "memberships": [
+    {
+      "id": "2766ae94-9a08-4418-82ce-3b91cf2ccd3e",
+      "owner_id": "94939159-d129-4f17-9e4e-cc2d615539d7",
+      "name": "new name",
+      "description": "new description",
+      "metadata": { "foo": "bar" },
+      "created_at": "2023-06-15T09:41:42.860481Z",
+      "updated_at": "2023-06-15T10:17:56.475241Z",
+      "updated_by": "94939159-d129-4f17-9e4e-cc2d615539d7",
+      "status": "enabled"
+    }
+  ]
 }
 ```
 
@@ -613,21 +552,21 @@ curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: Bea
 
 HTTP/1.1 201 Created
 Server: nginx/1.23.3
-Date: Wed, 05 Apr 2023 12:21:34 GMT
+Date: Thu, 15 Jun 2023 09:04:04 GMT
 Content-Type: application/json
-Content-Length: 290
+Content-Length: 280
 Connection: keep-alive
-Location: /things/ee6de1d4-aa1d-443a-9848-7857a90d03bd
+Location: /things/48101ecd-1535-40c6-9ed8-5b1d21e371bb
 Access-Control-Expose-Headers: Location
 
 {
-    "id": "ee6de1d4-aa1d-443a-9848-7857a90d03bd",
-    "name": "examplething",
-    "owner": "f7c55a1f-dde8-4880-9796-b3a0cd05745b",
-    "credentials": { "secret": "cae79321-7494-4dc3-bd01-980c2d45cb80" },
-    "created_at": "2023-04-05T12:21:34.111149443Z",
-    "updated_at": "2023-04-05T12:21:34.111149443Z",
-    "status": "enabled"
+  "id": "48101ecd-1535-40c6-9ed8-5b1d21e371bb",
+  "name": "examplething",
+  "owner": "94939159-d129-4f17-9e4e-cc2d615539d7",
+  "credentials": { "secret": "c3f8c096-c60f-4375-8494-bca20a12fca7" },
+  "created_at": "2023-06-15T09:04:04.292602664Z",
+  "updated_at": "0001-01-01T00:00:00Z",
+  "status": "enabled"
 }
 ```
 
@@ -647,25 +586,25 @@ curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: Bea
 For example:
 
 ```bash
-curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" http://localhost/things -d '{"id": "977bbd33-5b59-4b7a-a9c3-8adda5d98255", "name": "examplething"}'
+curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" http://localhost/things -d '{"id": "2766ae94-9a08-4418-82ce-3b91cf2ccd3e", "name": "examplething"}'
 
 HTTP/1.1 201 Created
 Server: nginx/1.23.3
-Date: Wed, 05 Apr 2023 12:22:39 GMT
+Date: Thu, 15 Jun 2023 09:05:06 GMT
 Content-Type: application/json
-Content-Length: 290
+Content-Length: 280
 Connection: keep-alive
-Location: /things/977bbd33-5b59-4b7a-a9c3-8adda5d98255
+Location: /things/2766ae94-9a08-4418-82ce-3b91cf2ccd3e
 Access-Control-Expose-Headers: Location
 
 {
-    "id": "977bbd33-5b59-4b7a-a9c3-8adda5d98255",
-    "name": "examplething",
-    "owner": "f7c55a1f-dde8-4880-9796-b3a0cd05745b",
-    "credentials": { "secret": "a83b9afb-9022-4f9e-ba3d-4354a08c273a" },
-    "created_at": "2023-04-05T12:22:39.420312431Z",
-    "updated_at": "2023-04-05T12:22:39.420312431Z",
-    "status": "enabled"
+  "id": "2766ae94-9a08-4418-82ce-3b91cf2ccd3e",
+  "name": "examplething",
+  "owner": "94939159-d129-4f17-9e4e-cc2d615539d7",
+  "credentials": { "secret": "65ca03bd-eb6b-420b-9d5d-46d459d4f71c" },
+  "created_at": "2023-06-15T09:05:06.538170496Z",
+  "updated_at": "0001-01-01T00:00:00Z",
+  "status": "enabled"
 }
 ```
 
@@ -686,33 +625,34 @@ curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: Bea
 
 HTTP/1.1 200 OK
 Server: nginx/1.23.3
-Date: Wed, 05 Apr 2023 12:23:44 GMT
+Date: Thu, 15 Jun 2023 09:05:45 GMT
 Content-Type: application/json
-Content-Length: 601
+Content-Length: 583
 Connection: keep-alive
 Access-Control-Expose-Headers: Location
 
 {
-    "total": 2,
-    "things": [{
-            "id": "726621ec-853d-452e-83ba-5f7fb2020c03",
-            "name": "thing_name_1",
-            "owner": "f7c55a1f-dde8-4880-9796-b3a0cd05745b",
-            "credentials": { "secret": "b356c070-bdff-4680-b24f-9f664838362b" },
-            "created_at": "2023-04-05T12:23:44.58539963Z",
-            "updated_at": "2023-04-05T12:23:44.58539963Z",
-            "status": "enabled"
-        },
-        {
-            "id": "56cd5ebb-9564-491c-8495-3d34138448d1",
-            "name": "thing_name_2",
-            "owner": "f7c55a1f-dde8-4880-9796-b3a0cd05745b",
-            "credentials": { "secret": "eb2670ba-a2be-4ea4-83cb-78adc6f98269" },
-            "created_at": "2023-04-05T12:23:44.585402736Z",
-            "updated_at": "2023-04-05T12:23:44.585402736Z",
-            "status": "enabled"
-        }
-    ]
+  "total": 2,
+  "things": [
+    {
+      "id": "19f59b2d-1e9c-43db-bc84-5432bd52a83f",
+      "name": "thing_name_1",
+      "owner": "94939159-d129-4f17-9e4e-cc2d615539d7",
+      "credentials": { "secret": "941c380a-3a41-40e9-8b79-3087daa4f3a6" },
+      "created_at": "2023-06-15T09:05:45.719182307Z",
+      "updated_at": "0001-01-01T00:00:00Z",
+      "status": "enabled"
+    },
+    {
+      "id": "3709f2b0-9c73-413f-992e-7f6f9b396b0d",
+      "name": "thing_name_2",
+      "owner": "94939159-d129-4f17-9e4e-cc2d615539d7",
+      "credentials": { "secret": "798ee6be-311b-4640-99e4-0ccb19e0dcb9" },
+      "created_at": "2023-06-15T09:05:45.719186184Z",
+      "updated_at": "0001-01-01T00:00:00Z",
+      "status": "enabled"
+    }
+  ]
 }
 ```
 
@@ -733,33 +673,34 @@ curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: Bea
 
 HTTP/1.1 200 OK
 Server: nginx/1.23.3
-Date: Wed, 05 Apr 2023 12:28:51 GMT
+Date: Thu, 15 Jun 2023 09:06:17 GMT
 Content-Type: application/json
-Content-Length: 601
+Content-Length: 583
 Connection: keep-alive
 Access-Control-Expose-Headers: Location
 
 {
-    "total": 2,
-    "things": [{
-            "id": "eb2670ba-a2be-4ea4-83cb-111111111111",
-            "name": "thing_name_1",
-            "owner": "f7c55a1f-dde8-4880-9796-b3a0cd05745b",
-            "credentials": { "secret": "3a168058-db6a-4ae0-a70a-1c8b43a3a626" },
-            "created_at": "2023-04-05T12:28:51.21101426Z",
-            "updated_at": "2023-04-05T12:28:51.21101426Z",
-            "status": "enabled"
-        },
-        {
-            "id": "eb2670ba-a2be-4ea4-83cb-111111111112",
-            "name": "thing_name_2",
-            "owner": "f7c55a1f-dde8-4880-9796-b3a0cd05745b",
-            "credentials": { "secret": "5f104448-8b6b-4ade-a7b7-a9101865213c" },
-            "created_at": "2023-04-05T12:28:51.211016003Z",
-            "updated_at": "2023-04-05T12:28:51.211016003Z",
-            "status": "enabled"
-        }
-    ]
+  "total": 2,
+  "things": [
+    {
+      "id": "eb2670ba-a2be-4ea4-83cb-111111111111",
+      "name": "thing_name_1",
+      "owner": "94939159-d129-4f17-9e4e-cc2d615539d7",
+      "credentials": { "secret": "325cda17-3a52-465d-89a7-2b63c7d0e3a6" },
+      "created_at": "2023-06-15T09:06:17.967825372Z",
+      "updated_at": "0001-01-01T00:00:00Z",
+      "status": "enabled"
+    },
+    {
+      "id": "eb2670ba-a2be-4ea4-83cb-111111111112",
+      "name": "thing_name_2",
+      "owner": "94939159-d129-4f17-9e4e-cc2d615539d7",
+      "credentials": { "secret": "67b6cbb8-4a9e-4d32-8b9c-d7cd3352aa2b" },
+      "created_at": "2023-06-15T09:06:17.967828689Z",
+      "updated_at": "0001-01-01T00:00:00Z",
+      "status": "enabled"
+    }
+  ]
 }
 ```
 
@@ -776,24 +717,24 @@ curl -s -S -i -X GET -H "Authorization: Bearer <user_token>" http://localhost/th
 For example:
 
 ```bash
-curl -s -S -i -X GET -H "Authorization: Bearer $USER_TOKEN" http://localhost/things/ee6de1d4-aa1d-443a-9848-7857a90d03bd
+curl -s -S -i -X GET -H "Authorization: Bearer $USER_TOKEN" http://localhost/things/48101ecd-1535-40c6-9ed8-5b1d21e371bb
 
 HTTP/1.1 200 OK
 Server: nginx/1.23.3
-Date: Wed, 05 Apr 2023 12:31:28 GMT
+Date: Thu, 15 Jun 2023 09:07:30 GMT
 Content-Type: application/json
-Content-Length: 284
+Content-Length: 277
 Connection: keep-alive
 Access-Control-Expose-Headers: Location
 
 {
-    "id": "ee6de1d4-aa1d-443a-9848-7857a90d03bd",
-    "name": "examplething",
-    "owner": "f7c55a1f-dde8-4880-9796-b3a0cd05745b",
-    "credentials": { "secret": "cae79321-7494-4dc3-bd01-980c2d45cb80" },
-    "created_at": "2023-04-05T12:21:34.111149Z",
-    "updated_at": "2023-04-05T12:21:34.111149Z",
-    "status": "enabled"
+  "id": "48101ecd-1535-40c6-9ed8-5b1d21e371bb",
+  "name": "examplething",
+  "owner": "94939159-d129-4f17-9e4e-cc2d615539d7",
+  "credentials": { "secret": "c3f8c096-c60f-4375-8494-bca20a12fca7" },
+  "created_at": "2023-06-15T09:04:04.292602Z",
+  "updated_at": "0001-01-01T00:00:00Z",
+  "status": "enabled"
 }
 ```
 
@@ -814,70 +755,89 @@ curl -s -S -i -X GET -H "Authorization: Bearer $USER_TOKEN" http://localhost/thi
 
 HTTP/1.1 200 OK
 Server: nginx/1.23.3
-Date: Wed, 05 Apr 2023 12:30:33 GMT
+Date: Thu, 15 Jun 2023 09:07:59 GMT
 Content-Type: application/json
-Content-Length: 1696
+Transfer-Encoding: chunked
 Connection: keep-alive
 Access-Control-Expose-Headers: Location
 
 {
-    "limit": 10,
-    "total": 6,
-    "things": [{
-            "id": "ee6de1d4-aa1d-443a-9848-7857a90d03bd",
-            "name": "examplething",
-            "owner": "f7c55a1f-dde8-4880-9796-b3a0cd05745b",
-            "credentials": { "secret": "cae79321-7494-4dc3-bd01-980c2d45cb80" },
-            "created_at": "2023-04-05T12:21:34.111149Z",
-            "updated_at": "0001-01-01T00:00:00Z",
-            "status": "enabled"
-        },
-        {
-            "id": "977bbd33-5b59-4b7a-a9c3-8adda5d98255",
-            "name": "examplething",
-            "owner": "f7c55a1f-dde8-4880-9796-b3a0cd05745b",
-            "credentials": { "secret": "a83b9afb-9022-4f9e-ba3d-4354a08c273a" },
-            "created_at": "2023-04-05T12:22:39.420312Z",
-            "updated_at": "0001-01-01T00:00:00Z",
-            "status": "enabled"
-        },
-        {
-            "id": "726621ec-853d-452e-83ba-5f7fb2020c03",
-            "name": "thing_name_1",
-            "owner": "f7c55a1f-dde8-4880-9796-b3a0cd05745b",
-            "credentials": { "secret": "b356c070-bdff-4680-b24f-9f664838362b" },
-            "created_at": "2023-04-05T12:23:44.585399Z",
-            "updated_at": "0001-01-01T00:00:00Z",
-            "status": "enabled"
-        },
-        {
-            "id": "56cd5ebb-9564-491c-8495-3d34138448d1",
-            "name": "thing_name_2",
-            "owner": "f7c55a1f-dde8-4880-9796-b3a0cd05745b",
-            "credentials": { "secret": "eb2670ba-a2be-4ea4-83cb-78adc6f98269" },
-            "created_at": "2023-04-05T12:23:44.585402Z",
-            "updated_at": "0001-01-01T00:00:00Z",
-            "status": "enabled"
-        },
-        {
-            "id": "eb2670ba-a2be-4ea4-83cb-111111111111",
-            "name": "thing_name_1",
-            "owner": "f7c55a1f-dde8-4880-9796-b3a0cd05745b",
-            "credentials": { "secret": "3a168058-db6a-4ae0-a70a-1c8b43a3a626" },
-            "created_at": "2023-04-05T12:28:51.211014Z",
-            "updated_at": "0001-01-01T00:00:00Z",
-            "status": "enabled"
-        },
-        {
-            "id": "eb2670ba-a2be-4ea4-83cb-111111111112",
-            "name": "thing_name_2",
-            "owner": "f7c55a1f-dde8-4880-9796-b3a0cd05745b",
-            "credentials": { "secret": "5f104448-8b6b-4ade-a7b7-a9101865213c" },
-            "created_at": "2023-04-05T12:28:51.211016Z",
-            "updated_at": "0001-01-01T00:00:00Z",
-            "status": "enabled"
-        }
-    ]
+  "limit": 10,
+  "total": 8,
+  "things": [
+    {
+      "id": "f3047c10-f2c7-4d53-b3c0-bc56c560c546",
+      "name": "weio",
+      "owner": "94939159-d129-4f17-9e4e-cc2d615539d7",
+      "credentials": { "secret": "6d11a91f-0bd8-41aa-8e1b-4c6338329c9c" },
+      "created_at": "2023-06-14T12:04:12.740098Z",
+      "updated_at": "0001-01-01T00:00:00Z",
+      "status": "enabled"
+    },
+    {
+      "id": "04b0b2d1-fdaf-4b66-96a0-740a3151db4c",
+      "name": "bob",
+      "owner": "94939159-d129-4f17-9e4e-cc2d615539d7",
+      "credentials": { "secret": "a1e5d77f-8903-4cef-87b1-d793a3c28de3" },
+      "created_at": "2023-06-14T12:04:56.245743Z",
+      "updated_at": "0001-01-01T00:00:00Z",
+      "status": "enabled"
+    },
+    {
+      "id": "48101ecd-1535-40c6-9ed8-5b1d21e371bb",
+      "name": "examplething",
+      "owner": "94939159-d129-4f17-9e4e-cc2d615539d7",
+      "credentials": { "secret": "c3f8c096-c60f-4375-8494-bca20a12fca7" },
+      "created_at": "2023-06-15T09:04:04.292602Z",
+      "updated_at": "0001-01-01T00:00:00Z",
+      "status": "enabled"
+    },
+    {
+      "id": "2766ae94-9a08-4418-82ce-3b91cf2ccd3e",
+      "name": "examplething",
+      "owner": "94939159-d129-4f17-9e4e-cc2d615539d7",
+      "credentials": { "secret": "65ca03bd-eb6b-420b-9d5d-46d459d4f71c" },
+      "created_at": "2023-06-15T09:05:06.53817Z",
+      "updated_at": "0001-01-01T00:00:00Z",
+      "status": "enabled"
+    },
+    {
+      "id": "19f59b2d-1e9c-43db-bc84-5432bd52a83f",
+      "name": "thing_name_1",
+      "owner": "94939159-d129-4f17-9e4e-cc2d615539d7",
+      "credentials": { "secret": "941c380a-3a41-40e9-8b79-3087daa4f3a6" },
+      "created_at": "2023-06-15T09:05:45.719182Z",
+      "updated_at": "0001-01-01T00:00:00Z",
+      "status": "enabled"
+    },
+    {
+      "id": "3709f2b0-9c73-413f-992e-7f6f9b396b0d",
+      "name": "thing_name_2",
+      "owner": "94939159-d129-4f17-9e4e-cc2d615539d7",
+      "credentials": { "secret": "798ee6be-311b-4640-99e4-0ccb19e0dcb9" },
+      "created_at": "2023-06-15T09:05:45.719186Z",
+      "updated_at": "0001-01-01T00:00:00Z",
+      "status": "enabled"
+    },
+    {
+      "id": "eb2670ba-a2be-4ea4-83cb-111111111111",
+      "name": "thing_name_1",
+      "owner": "94939159-d129-4f17-9e4e-cc2d615539d7",
+      "credentials": { "secret": "325cda17-3a52-465d-89a7-2b63c7d0e3a6" },
+      "created_at": "2023-06-15T09:06:17.967825Z",
+      "updated_at": "0001-01-01T00:00:00Z",
+      "status": "enabled"
+    },
+    {
+      "id": "eb2670ba-a2be-4ea4-83cb-111111111112",
+      "name": "thing_name_2",
+      "owner": "94939159-d129-4f17-9e4e-cc2d615539d7",
+      "credentials": { "secret": "67b6cbb8-4a9e-4d32-8b9c-d7cd3352aa2b" },
+      "created_at": "2023-06-15T09:06:17.967828Z",
+      "updated_at": "0001-01-01T00:00:00Z",
+      "status": "enabled"
+    }
+  ]
 }
 ```
 
@@ -897,25 +857,27 @@ curl -s -S -i -X GET -H "Authorization: Bearer $USER_TOKEN" http://localhost/thi
 
 HTTP/1.1 200 OK
 Server: nginx/1.23.3
-Date: Wed, 05 Apr 2023 12:34:15 GMT
+Date: Thu, 15 Jun 2023 09:08:39 GMT
 Content-Type: application/json
 Content-Length: 321
 Connection: keep-alive
 Access-Control-Expose-Headers: Location
 
 {
-    "limit": 5,
-    "offset": 1,
-    "total": 2,
-    "things": [{
-        "id": "eb2670ba-a2be-4ea4-83cb-111111111112",
-        "name": "thing_name_2",
-        "owner": "f7c55a1f-dde8-4880-9796-b3a0cd05745b",
-        "credentials": { "secret": "5f104448-8b6b-4ade-a7b7-a9101865213c" },
-        "created_at": "2023-04-05T12:28:51.211016Z",
-        "updated_at": "0001-01-01T00:00:00Z",
-        "status": "enabled"
-    }]
+  "limit": 5,
+  "offset": 1,
+  "total": 2,
+  "things": [
+    {
+      "id": "eb2670ba-a2be-4ea4-83cb-111111111112",
+      "name": "thing_name_2",
+      "owner": "94939159-d129-4f17-9e4e-cc2d615539d7",
+      "credentials": { "secret": "67b6cbb8-4a9e-4d32-8b9c-d7cd3352aa2b" },
+      "created_at": "2023-06-15T09:06:17.967828Z",
+      "updated_at": "0001-01-01T00:00:00Z",
+      "status": "enabled"
+    }
+  ]
 }
 ```
 
@@ -932,24 +894,25 @@ curl -s -S -i -X PUT -H "Content-Type: application/json" -H  "Authorization: Bea
 For example:
 
 ```bash
-curl -s -S -i -X PATCH -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" http://localhost/things/ee6de1d4-aa1d-443a-9848-7857a90d03bd -d '{"name": "new name"}'
+curl -s -S -i -X PATCH -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" http://localhost/things/48101ecd-1535-40c6-9ed8-5b1d21e371bb -d '{"name": "new name"}'
 
 HTTP/1.1 200 OK
 Server: nginx/1.23.3
-Date: Wed, 05 Apr 2023 12:36:15 GMT
+Date: Thu, 15 Jun 2023 09:09:12 GMT
 Content-Type: application/json
-Content-Length: 280
+Content-Length: 332
 Connection: keep-alive
 Access-Control-Expose-Headers: Location
 
 {
-    "id": "ee6de1d4-aa1d-443a-9848-7857a90d03bd",
-    "name": "new name",
-    "owner": "f7c55a1f-dde8-4880-9796-b3a0cd05745b",
-    "credentials": { "secret": "cae79321-7494-4dc3-bd01-980c2d45cb80" },
-    "created_at": "2023-04-05T12:21:34.111149Z",
-    "updated_at": "2023-04-05T12:36:15.721722Z",
-    "status": "enabled"
+  "id": "48101ecd-1535-40c6-9ed8-5b1d21e371bb",
+  "name": "new name",
+  "owner": "94939159-d129-4f17-9e4e-cc2d615539d7",
+  "credentials": { "secret": "c3f8c096-c60f-4375-8494-bca20a12fca7" },
+  "created_at": "2023-06-15T09:04:04.292602Z",
+  "updated_at": "2023-06-15T09:09:12.267074Z",
+  "updated_by": "94939159-d129-4f17-9e4e-cc2d615539d7",
+  "status": "enabled"
 }
 ```
 
@@ -966,25 +929,26 @@ curl -s -S -i -X PUT -H "Content-Type: application/json" -H  "Authorization: Bea
 For example:
 
 ```bash
-curl -s -S -i -X PATCH -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" http://localhost/things/ee6de1d4-aa1d-443a-9848-7857a90d03bd/tags -d '{"tags": ["tag"]}'
+curl -s -S -i -X PATCH -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" http://localhost/things/48101ecd-1535-40c6-9ed8-5b1d21e371bb/tags -d '{"tags": ["tag"]}'
 
 HTTP/1.1 200 OK
 Server: nginx/1.23.3
-Date: Wed, 05 Apr 2023 12:37:47 GMT
+Date: Thu, 15 Jun 2023 09:09:44 GMT
 Content-Type: application/json
-Content-Length: 295
+Content-Length: 347
 Connection: keep-alive
 Access-Control-Expose-Headers: Location
 
 {
-    "id": "ee6de1d4-aa1d-443a-9848-7857a90d03bd",
-    "name": "new name",
-    "tags": ["tag"],
-    "owner": "f7c55a1f-dde8-4880-9796-b3a0cd05745b",
-    "credentials": { "secret": "cae79321-7494-4dc3-bd01-980c2d45cb80" },
-    "created_at": "2023-04-05T12:21:34.111149Z",
-    "updated_at": "2023-04-05T12:37:47.760544Z",
-    "status": "enabled"
+  "id": "48101ecd-1535-40c6-9ed8-5b1d21e371bb",
+  "name": "new name",
+  "tags": ["tag"],
+  "owner": "94939159-d129-4f17-9e4e-cc2d615539d7",
+  "credentials": { "secret": "c3f8c096-c60f-4375-8494-bca20a12fca7" },
+  "created_at": "2023-06-15T09:04:04.292602Z",
+  "updated_at": "2023-06-15T09:09:44.766726Z",
+  "updated_by": "94939159-d129-4f17-9e4e-cc2d615539d7",
+  "status": "enabled"
 }
 ```
 
@@ -1001,25 +965,26 @@ curl -s -S -i -X PUT -H "Content-Type: application/json" -H  "Authorization: Bea
 For example:
 
 ```bash
-curl -s -S -i -X PATCH -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" http://localhost/things/ee6de1d4-aa1d-443a-9848-7857a90d03bd -d '{"owner": "f7c55a1f-dde8-4880-9796-b3a0cd05745b"}'
+curl -s -S -i -X PATCH -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" http://localhost/things/48101ecd-1535-40c6-9ed8-5b1d21e371bb -d '{"owner": "f7c55a1f-dde8-4880-9796-b3a0cd05745b"}'
 
 HTTP/1.1 200 OK
 Server: nginx/1.23.3
-Date: Wed, 05 Apr 2023 15:04:32 GMT
+Date: Thu, 15 Jun 2023 09:09:44 GMT
 Content-Type: application/json
-Content-Length: 294
+Content-Length: 347
 Connection: keep-alive
 Access-Control-Expose-Headers: Location
 
 {
-    "id": "ee6de1d4-aa1d-443a-9848-7857a90d03bd",
-    "name": "new name",
-    "tags": ["tag"],
-    "owner": "f7c55a1f-dde8-4880-9796-b3a0cd05745b",
-    "credentials": { "secret": "cae79321-7494-4dc3-bd01-980c2d45cb80" },
-    "created_at": "2023-04-05T12:21:34.111149Z",
-    "updated_at": "2023-04-05T15:04:32.76775Z",
-    "status": "enabled"
+  "id": "48101ecd-1535-40c6-9ed8-5b1d21e371bb",
+  "name": "new name",
+  "tags": ["tag"],
+  "owner": "f7c55a1f-dde8-4880-9796-b3a0cd05745b",
+  "credentials": { "secret": "c3f8c096-c60f-4375-8494-bca20a12fca7" },
+  "created_at": "2023-06-15T09:04:04.292602Z",
+  "updated_at": "2023-06-15T09:09:44.766726Z",
+  "updated_by": "94939159-d129-4f17-9e4e-cc2d615539d7",
+  "status": "enabled"
 }
 ```
 
@@ -1036,25 +1001,26 @@ curl -s -S -i -X PUT -H "Content-Type: application/json" -H  "Authorization: Bea
 For example:
 
 ```bash
-curl -s -S -i -X PATCH -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" http://localhost/things/ee6de1d4-aa1d-443a-9848-7857a90d03bd/secret -d '{"secret": "secret-key"}'
+curl -s -S -i -X PATCH -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" http://localhost/things/48101ecd-1535-40c6-9ed8-5b1d21e371bb/secret -d '{"secret": "secret-key"}'
 
 HTTP/1.1 200 OK
 Server: nginx/1.23.3
-Date: Wed, 05 Apr 2023 15:05:52 GMT
+Date: Thu, 15 Jun 2023 09:10:52 GMT
 Content-Type: application/json
-Content-Length: 269
+Content-Length: 321
 Connection: keep-alive
 Access-Control-Expose-Headers: Location
 
 {
-    "id": "ee6de1d4-aa1d-443a-9848-7857a90d03bd",
-    "name": "new name",
-    "tags": ["tag"],
-    "owner": "f7c55a1f-dde8-4880-9796-b3a0cd05745b",
-    "credentials": { "secret": "secret-key" },
-    "created_at": "2023-04-05T12:21:34.111149Z",
-    "updated_at": "2023-04-05T15:05:52.755776Z",
-    "status": "enabled"
+  "id": "48101ecd-1535-40c6-9ed8-5b1d21e371bb",
+  "name": "new name",
+  "tags": ["tag"],
+  "owner": "94939159-d129-4f17-9e4e-cc2d615539d7",
+  "credentials": { "secret": "secret-key" },
+  "created_at": "2023-06-15T09:04:04.292602Z",
+  "updated_at": "2023-06-15T09:10:52.051497Z",
+  "updated_by": "94939159-d129-4f17-9e4e-cc2d615539d7",
+  "status": "enabled"
 }
 ```
 
@@ -1071,25 +1037,26 @@ curl -s -S -i -X POST -H "Content-Type: application/json" -H  "Authorization: Be
 For example:
 
 ```bash
-curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" http://localhost/things/ee6de1d4-aa1d-443a-9848-7857a90d03bd/enable
+curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" http://localhost/things/48101ecd-1535-40c6-9ed8-5b1d21e371bb/enable
 
 HTTP/1.1 200 OK
 Server: nginx/1.23.3
-Date: Wed, 05 Apr 2023 15:08:12 GMT
+Date: Thu, 15 Jun 2023 09:11:43 GMT
 Content-Type: application/json
-Content-Length: 269
+Content-Length: 321
 Connection: keep-alive
 Access-Control-Expose-Headers: Location
 
 {
-    "id": "ee6de1d4-aa1d-443a-9848-7857a90d03bd",
-    "name": "new name",
-    "tags": ["tag"],
-    "owner": "f7c55a1f-dde8-4880-9796-b3a0cd05745b",
-    "credentials": { "secret": "secret-key" },
-    "created_at": "2023-04-05T12:21:34.111149Z",
-    "updated_at": "2023-04-05T15:05:52.755776Z",
-    "status": "enabled"
+  "id": "48101ecd-1535-40c6-9ed8-5b1d21e371bb",
+  "name": "new name",
+  "tags": ["tag"],
+  "owner": "94939159-d129-4f17-9e4e-cc2d615539d7",
+  "credentials": { "secret": "secret-key" },
+  "created_at": "2023-06-15T09:04:04.292602Z",
+  "updated_at": "2023-06-15T09:10:52.051497Z",
+  "updated_by": "94939159-d129-4f17-9e4e-cc2d615539d7",
+  "status": "enabled"
 }
 ```
 
@@ -1106,25 +1073,26 @@ curl -s -S -i -X POST -H "Content-Type: application/json" -H  "Authorization: Be
 For example:
 
 ```bash
-curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" http://localhost/things/ee6de1d4-aa1d-443a-9848-7857a90d03bd/disable
+curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" http://localhost/things/48101ecd-1535-40c6-9ed8-5b1d21e371bb/disable
 
 HTTP/1.1 200 OK
 Server: nginx/1.23.3
-Date: Wed, 05 Apr 2023 15:07:24 GMT
+Date: Thu, 15 Jun 2023 09:11:38 GMT
 Content-Type: application/json
-Content-Length: 270
+Content-Length: 322
 Connection: keep-alive
 Access-Control-Expose-Headers: Location
 
 {
-    "id": "ee6de1d4-aa1d-443a-9848-7857a90d03bd",
-    "name": "new name",
-    "tags": ["tag"],
-    "owner": "f7c55a1f-dde8-4880-9796-b3a0cd05745b",
-    "credentials": { "secret": "secret-key" },
-    "created_at": "2023-04-05T12:21:34.111149Z",
-    "updated_at": "2023-04-05T15:05:52.755776Z",
-    "status": "disabled"
+  "id": "48101ecd-1535-40c6-9ed8-5b1d21e371bb",
+  "name": "new name",
+  "tags": ["tag"],
+  "owner": "94939159-d129-4f17-9e4e-cc2d615539d7",
+  "credentials": { "secret": "secret-key" },
+  "created_at": "2023-06-15T09:04:04.292602Z",
+  "updated_at": "2023-06-15T09:10:52.051497Z",
+  "updated_by": "94939159-d129-4f17-9e4e-cc2d615539d7",
+  "status": "disabled"
 }
 ```
 
@@ -1147,20 +1115,20 @@ curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: Bea
 
 HTTP/1.1 201 Created
 Server: nginx/1.23.3
-Date: Wed, 05 Apr 2023 15:14:15 GMT
+Date: Thu, 15 Jun 2023 09:12:51 GMT
 Content-Type: application/json
-Content-Length: 225
+Content-Length: 218
 Connection: keep-alive
-Location: /channels/1365b640-11cc-4d7e-8e7e-3b86e7651045
+Location: /channels/aecf0902-816d-4e38-a5b3-a1ad9a7cf9e8
 Access-Control-Expose-Headers: Location
 
 {
-    "id": "1365b640-11cc-4d7e-8e7e-3b86e7651045",
-    "owner_id": "f7c55a1f-dde8-4880-9796-b3a0cd05745b",
-    "name": "examplechannel",
-    "created_at": "2023-04-05T15:14:15.815801Z",
-    "updated_at": "2023-04-05T15:14:15.815801Z",
-    "status": "enabled"
+  "id": "aecf0902-816d-4e38-a5b3-a1ad9a7cf9e8",
+  "owner_id": "94939159-d129-4f17-9e4e-cc2d615539d7",
+  "name": "examplechannel",
+  "created_at": "2023-06-15T09:12:51.162431Z",
+  "updated_at": "0001-01-01T00:00:00Z",
+  "status": "enabled"
 }
 ```
 
@@ -1179,24 +1147,24 @@ curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: Bea
 For example:
 
 ```bash
-curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" http://localhost/channels -d '{"id": "ee6de1d4-aa1d-443a-9848-7857a90d03bd", "name": "examplechannel2"}'
+curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" http://localhost/channels -d '{"id": "48101ecd-1535-40c6-9ed8-5b1d21e371bb", "name": "examplechannel2"}'
 
 HTTP/1.1 201 Created
 Server: nginx/1.23.3
-Date: Wed, 05 Apr 2023 15:15:57 GMT
+Date: Thu, 15 Jun 2023 09:15:11 GMT
 Content-Type: application/json
-Content-Length: 226
+Content-Length: 219
 Connection: keep-alive
-Location: /channels/ee6de1d4-aa1d-443a-9848-7857a90d03bd
+Location: /channels/48101ecd-1535-40c6-9ed8-5b1d21e371bb
 Access-Control-Expose-Headers: Location
 
 {
-    "id": "ee6de1d4-aa1d-443a-9848-7857a90d03bd",
-    "owner_id": "f7c55a1f-dde8-4880-9796-b3a0cd05745b",
-    "name": "examplechannel2",
-    "created_at": "2023-04-05T15:15:57.911075Z",
-    "updated_at": "2023-04-05T15:15:57.911075Z",
-    "status": "enabled"
+  "id": "48101ecd-1535-40c6-9ed8-5b1d21e371bb",
+  "owner_id": "94939159-d129-4f17-9e4e-cc2d615539d7",
+  "name": "examplechannel2",
+  "created_at": "2023-06-15T09:15:11.477695Z",
+  "updated_at": "0001-01-01T00:00:00Z",
+  "status": "enabled"
 }
 ```
 
@@ -1217,30 +1185,31 @@ curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: Bea
 
 HTTP/1.1 200 OK
 Server: nginx/1.23.3
-Date: Wed, 05 Apr 2023 15:17:09 GMT
+Date: Thu, 15 Jun 2023 09:15:44 GMT
 Content-Type: application/json
-Content-Length: 465
+Content-Length: 450
 Connection: keep-alive
 Access-Control-Expose-Headers: Location
 
 {
-    "channels": [{
-            "id": "830cf52a-4928-4cfb-af44-e82a696c9ac9",
-            "owner_id": "f7c55a1f-dde8-4880-9796-b3a0cd05745b",
-            "name": "channel_name_1",
-            "created_at": "2023-04-05T15:17:09.340468Z",
-            "updated_at": "2023-04-05T15:17:09.340468Z",
-            "status": "enabled"
-        },
-        {
-            "id": "a902ae6e-da9a-46a8-a555-cd2fc87c64a9",
-            "owner_id": "f7c55a1f-dde8-4880-9796-b3a0cd05745b",
-            "name": "channel_name_2",
-            "created_at": "2023-04-05T15:17:09.344149Z",
-            "updated_at": "2023-04-05T15:17:09.344149Z",
-            "status": "enabled"
-        }
-    ]
+  "channels": [
+    {
+      "id": "cb81bbff-850d-471f-bd74-c15d6e1a6c4e",
+      "owner_id": "94939159-d129-4f17-9e4e-cc2d615539d7",
+      "name": "channel_name_1",
+      "created_at": "2023-06-15T09:15:44.154283Z",
+      "updated_at": "0001-01-01T00:00:00Z",
+      "status": "enabled"
+    },
+    {
+      "id": "fc9bf029-b1d3-4408-8d53-fc576247a4b3",
+      "owner_id": "94939159-d129-4f17-9e4e-cc2d615539d7",
+      "name": "channel_name_2",
+      "created_at": "2023-06-15T09:15:44.15721Z",
+      "updated_at": "0001-01-01T00:00:00Z",
+      "status": "enabled"
+    }
+  ]
 }
 ```
 
@@ -1261,28 +1230,28 @@ curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: Bea
 
 HTTP/1.1 200 OK
 Server: nginx/1.23.3
-Date: Wed, 05 Apr 2023 15:19:13 GMT
+Date: Thu, 15 Jun 2023 09:16:16 GMT
 Content-Type: application/json
-Content-Length: 467
+Content-Length: 453
 Connection: keep-alive
 Access-Control-Expose-Headers: Location
 
-{                              
+{
   "channels": [
     {
       "id": "977bbd33-5b59-4b7a-a9c3-111111111111",
-      "owner_id": "f7c55a1f-dde8-4880-9796-b3a0cd05745b",
+      "owner_id": "94939159-d129-4f17-9e4e-cc2d615539d7",
       "name": "channel_name_1a",
-      "created_at": "2023-04-05T15:19:13.151359Z",
-      "updated_at": "2023-04-05T15:19:13.151359Z",
+      "created_at": "2023-06-15T09:16:16.931016Z",
+      "updated_at": "0001-01-01T00:00:00Z",
       "status": "enabled"
     },
     {
       "id": "977bbd33-5b59-4b7a-a9c3-111111111112",
-      "owner_id": "f7c55a1f-dde8-4880-9796-b3a0cd05745b",
+      "owner_id": "94939159-d129-4f17-9e4e-cc2d615539d7",
       "name": "channel_name_2a",
-      "created_at": "2023-04-05T15:19:13.154335Z",
-      "updated_at": "2023-04-05T15:19:13.154335Z",
+      "created_at": "2023-06-15T09:16:16.934486Z",
+      "updated_at": "0001-01-01T00:00:00Z",
       "status": "enabled"
     }
   ]
@@ -1302,23 +1271,23 @@ curl -s -S -i -X GET -H "Authorization: Bearer <user_token>" http://localhost/ch
 For example:
 
 ```bash
-curl -s -S -i -X GET -H "Authorization: Bearer $USER_TOKEN" http://localhost/channels/1365b640-11cc-4d7e-8e7e-3b86e7651045
+curl -s -S -i -X GET -H "Authorization: Bearer $USER_TOKEN" http://localhost/channels/aecf0902-816d-4e38-a5b3-a1ad9a7cf9e8
 
 HTTP/1.1 200 OK
 Server: nginx/1.23.3
-Date: Wed, 05 Apr 2023 15:20:13 GMT
+Date: Thu, 15 Jun 2023 09:17:17 GMT
 Content-Type: application/json
-Content-Length: 225
+Content-Length: 218
 Connection: keep-alive
 Access-Control-Expose-Headers: Location
 
 {
-    "id": "1365b640-11cc-4d7e-8e7e-3b86e7651045",
-    "owner_id": "f7c55a1f-dde8-4880-9796-b3a0cd05745b",
-    "name": "examplechannel",
-    "created_at": "2023-04-05T15:14:15.815801Z",
-    "updated_at": "2023-04-05T15:14:15.815801Z",
-    "status": "enabled"
+  "id": "aecf0902-816d-4e38-a5b3-a1ad9a7cf9e8",
+  "owner_id": "94939159-d129-4f17-9e4e-cc2d615539d7",
+  "name": "examplechannel",
+  "created_at": "2023-06-15T09:12:51.162431Z",
+  "updated_at": "0001-01-01T00:00:00Z",
+  "status": "enabled"
 }
 ```
 
@@ -1339,63 +1308,80 @@ curl -s -S -i -X GET -H "Authorization: Bearer $USER_TOKEN" http://localhost/cha
 
 HTTP/1.1 200 OK
 Server: nginx/1.23.3
-Date: Wed, 05 Apr 2023 15:20:54 GMT
+Date: Thu, 15 Jun 2023 09:17:46 GMT
 Content-Type: application/json
-Content-Length: 1378
+Content-Length: 1754
 Connection: keep-alive
 Access-Control-Expose-Headers: Location
 
 {
-    "total": 6,
-    "channels": [{
-            "id": "1365b640-11cc-4d7e-8e7e-3b86e7651045",
-            "owner_id": "f7c55a1f-dde8-4880-9796-b3a0cd05745b",
-            "name": "examplechannel",
-            "created_at": "2023-04-05T15:14:15.815801Z",
-            "updated_at": "2023-04-05T15:14:15.815801Z",
-            "status": "enabled"
-        },
-        {
-            "id": "ee6de1d4-aa1d-443a-9848-7857a90d03bd",
-            "owner_id": "f7c55a1f-dde8-4880-9796-b3a0cd05745b",
-            "name": "examplechannel2",
-            "created_at": "2023-04-05T15:15:57.911075Z",
-            "updated_at": "2023-04-05T15:15:57.911075Z",
-            "status": "enabled"
-        },
-        {
-            "id": "830cf52a-4928-4cfb-af44-e82a696c9ac9",
-            "owner_id": "f7c55a1f-dde8-4880-9796-b3a0cd05745b",
-            "name": "channel_name_1",
-            "created_at": "2023-04-05T15:17:09.340468Z",
-            "updated_at": "2023-04-05T15:17:09.340468Z",
-            "status": "enabled"
-        },
-        {
-            "id": "a902ae6e-da9a-46a8-a555-cd2fc87c64a9",
-            "owner_id": "f7c55a1f-dde8-4880-9796-b3a0cd05745b",
-            "name": "channel_name_2",
-            "created_at": "2023-04-05T15:17:09.344149Z",
-            "updated_at": "2023-04-05T15:17:09.344149Z",
-            "status": "enabled"
-        },
-        {
-            "id": "977bbd33-5b59-4b7a-a9c3-111111111111",
-            "owner_id": "f7c55a1f-dde8-4880-9796-b3a0cd05745b",
-            "name": "channel_name_1a",
-            "created_at": "2023-04-05T15:19:13.151359Z",
-            "updated_at": "2023-04-05T15:19:13.151359Z",
-            "status": "enabled"
-        },
-        {
-            "id": "977bbd33-5b59-4b7a-a9c3-111111111112",
-            "owner_id": "f7c55a1f-dde8-4880-9796-b3a0cd05745b",
-            "name": "channel_name_2a",
-            "created_at": "2023-04-05T15:19:13.154335Z",
-            "updated_at": "2023-04-05T15:19:13.154335Z",
-            "status": "enabled"
-        }
-    ]
+  "total": 8,
+  "channels": [
+    {
+      "id": "17129934-4f48-4163-bffe-0b7b532edc5c",
+      "owner_id": "94939159-d129-4f17-9e4e-cc2d615539d7",
+      "name": "betty",
+      "created_at": "2023-06-14T12:10:07.950311Z",
+      "updated_at": "0001-01-01T00:00:00Z",
+      "status": "enabled"
+    },
+    {
+      "id": "48101ecd-1535-40c6-9ed8-5b1d21e371bb",
+      "owner_id": "94939159-d129-4f17-9e4e-cc2d615539d7",
+      "name": "examplechannel2",
+      "created_at": "2023-06-15T09:15:11.477695Z",
+      "updated_at": "0001-01-01T00:00:00Z",
+      "status": "enabled"
+    },
+    {
+      "id": "977bbd33-5b59-4b7a-a9c3-111111111111",
+      "owner_id": "94939159-d129-4f17-9e4e-cc2d615539d7",
+      "name": "channel_name_1a",
+      "created_at": "2023-06-15T09:16:16.931016Z",
+      "updated_at": "0001-01-01T00:00:00Z",
+      "status": "enabled"
+    },
+    {
+      "id": "977bbd33-5b59-4b7a-a9c3-111111111112",
+      "owner_id": "94939159-d129-4f17-9e4e-cc2d615539d7",
+      "name": "channel_name_2a",
+      "created_at": "2023-06-15T09:16:16.934486Z",
+      "updated_at": "0001-01-01T00:00:00Z",
+      "status": "enabled"
+    },
+    {
+      "id": "aecf0902-816d-4e38-a5b3-a1ad9a7cf9e8",
+      "owner_id": "94939159-d129-4f17-9e4e-cc2d615539d7",
+      "name": "examplechannel",
+      "created_at": "2023-06-15T09:12:51.162431Z",
+      "updated_at": "0001-01-01T00:00:00Z",
+      "status": "enabled"
+    },
+    {
+      "id": "b3867a52-675d-4f05-8cd0-df5a08a63ff3",
+      "owner_id": "94939159-d129-4f17-9e4e-cc2d615539d7",
+      "name": "mychan",
+      "created_at": "2023-06-14T12:09:34.205894Z",
+      "updated_at": "0001-01-01T00:00:00Z",
+      "status": "enabled"
+    },
+    {
+      "id": "cb81bbff-850d-471f-bd74-c15d6e1a6c4e",
+      "owner_id": "94939159-d129-4f17-9e4e-cc2d615539d7",
+      "name": "channel_name_1",
+      "created_at": "2023-06-15T09:15:44.154283Z",
+      "updated_at": "0001-01-01T00:00:00Z",
+      "status": "enabled"
+    },
+    {
+      "id": "fc9bf029-b1d3-4408-8d53-fc576247a4b3",
+      "owner_id": "94939159-d129-4f17-9e4e-cc2d615539d7",
+      "name": "channel_name_2",
+      "created_at": "2023-06-15T09:15:44.15721Z",
+      "updated_at": "0001-01-01T00:00:00Z",
+      "status": "enabled"
+    }
+  ]
 }
 ```
 
@@ -1412,24 +1398,25 @@ curl -s -S -i -X PUT -H "Content-Type: application/json" -H  "Authorization: Bea
 For example:
 
 ```bash
-curl -s -S -i -X PUT -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" http://localhost/channels/1365b640-11cc-4d7e-8e7e-3b86e7651045 -d '{"name": "new name", "metadata": {"foo": "bar"}}'
+curl -s -S -i -X PUT -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" http://localhost/channels/aecf0902-816d-4e38-a5b3-a1ad9a7cf9e8 -d '{"name": "new name", "metadata": {"foo": "bar"}}'
 
 HTTP/1.1 200 OK
 Server: nginx/1.23.3
-Date: Wed, 05 Apr 2023 15:22:56 GMT
+Date: Thu, 15 Jun 2023 09:18:26 GMT
 Content-Type: application/json
-Content-Length: 244
+Content-Length: 296
 Connection: keep-alive
 Access-Control-Expose-Headers: Location
 
 {
-    "id": "1365b640-11cc-4d7e-8e7e-3b86e7651045",
-    "owner_id": "f7c55a1f-dde8-4880-9796-b3a0cd05745b",
-    "name": "new name",
-    "metadata": { "foo": "bar" },
-    "created_at": "2023-04-05T15:14:15.815801Z",
-    "updated_at": "2023-04-05T15:22:55.995476Z",
-    "status": "enabled"
+  "id": "aecf0902-816d-4e38-a5b3-a1ad9a7cf9e8",
+  "owner_id": "94939159-d129-4f17-9e4e-cc2d615539d7",
+  "name": "new name",
+  "metadata": { "foo": "bar" },
+  "created_at": "2023-06-15T09:12:51.162431Z",
+  "updated_at": "2023-06-15T09:18:26.886913Z",
+  "updated_by": "94939159-d129-4f17-9e4e-cc2d615539d7",
+  "status": "enabled"
 }
 ```
 
@@ -1446,24 +1433,25 @@ curl -s -S -i -X POST -H "Content-Type: application/json" -H  "Authorization: Be
 For example:
 
 ```bash
-curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" http://localhost/channels/1365b640-11cc-4d7e-8e7e-3b86e7651045/enable
+curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" http://localhost/channels/aecf0902-816d-4e38-a5b3-a1ad9a7cf9e8/enable
 
 HTTP/1.1 200 OK
 Server: nginx/1.23.3
-Date: Wed, 05 Apr 2023 15:24:30 GMT
+Date: Thu, 15 Jun 2023 09:19:29 GMT
 Content-Type: application/json
-Content-Length: 244
+Content-Length: 296
 Connection: keep-alive
 Access-Control-Expose-Headers: Location
 
 {
-    "id": "1365b640-11cc-4d7e-8e7e-3b86e7651045",
-    "owner_id": "f7c55a1f-dde8-4880-9796-b3a0cd05745b",
-    "name": "new name",
-    "metadata": { "foo": "bar" },
-    "created_at": "2023-04-05T15:14:15.815801Z",
-    "updated_at": "2023-04-05T15:22:55.995476Z",
-    "status": "enabled"
+  "id": "aecf0902-816d-4e38-a5b3-a1ad9a7cf9e8",
+  "owner_id": "94939159-d129-4f17-9e4e-cc2d615539d7",
+  "name": "new name",
+  "metadata": { "foo": "bar" },
+  "created_at": "2023-06-15T09:12:51.162431Z",
+  "updated_at": "2023-06-15T09:18:26.886913Z",
+  "updated_by": "94939159-d129-4f17-9e4e-cc2d615539d7",
+  "status": "enabled"
 }
 ```
 
@@ -1480,24 +1468,25 @@ curl -s -S -i -X POST -H "Content-Type: application/json" -H  "Authorization: Be
 For example:
 
 ```bash
-curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" http://localhost/channels/1365b640-11cc-4d7e-8e7e-3b86e7651045/disable
+curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" http://localhost/channels/aecf0902-816d-4e38-a5b3-a1ad9a7cf9e8/disable
 
 HTTP/1.1 200 OK
 Server: nginx/1.23.3
-Date: Wed, 05 Apr 2023 15:24:04 GMT
+Date: Thu, 15 Jun 2023 09:19:24 GMT
 Content-Type: application/json
-Content-Length: 245
+Content-Length: 297
 Connection: keep-alive
 Access-Control-Expose-Headers: Location
 
 {
-    "id": "1365b640-11cc-4d7e-8e7e-3b86e7651045",
-    "owner_id": "f7c55a1f-dde8-4880-9796-b3a0cd05745b",
-    "name": "new name",
-    "metadata": { "foo": "bar" },
-    "created_at": "2023-04-05T15:14:15.815801Z",
-    "updated_at": "2023-04-05T15:22:55.995476Z",
-    "status": "disabled"
+  "id": "aecf0902-816d-4e38-a5b3-a1ad9a7cf9e8",
+  "owner_id": "94939159-d129-4f17-9e4e-cc2d615539d7",
+  "name": "new name",
+  "metadata": { "foo": "bar" },
+  "created_at": "2023-06-15T09:12:51.162431Z",
+  "updated_at": "2023-06-15T09:18:26.886913Z",
+  "updated_by": "94939159-d129-4f17-9e4e-cc2d615539d7",
+  "status": "disabled"
 }
 ```
 
@@ -1514,25 +1503,28 @@ curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: Bea
 For example:
 
 ```bash
-curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" http://localhost/connect -d '{"group_ids": ["830cf52a-4928-4cfb-af44-e82a696c9ac9"], "client_ids": ["ee6de1d4-aa1d-443a-9848-7857a90d03bd"]}'
+curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" http://localhost/connect -d '{"group_ids": ["aecf0902-816d-4e38-a5b3-a1ad9a7cf9e8"], "client_ids": ["48101ecd-1535-40c6-9ed8-5b1d21e371bb"]}'
 
 HTTP/1.1 201 Created
 Server: nginx/1.23.3
-Date: Wed, 05 Apr 2023 15:35:29 GMT
+Date: Thu, 15 Jun 2023 09:21:37 GMT
 Content-Type: application/json
-Content-Length: 231
+Content-Length: 247
 Connection: keep-alive
 Access-Control-Expose-Headers: Location
 
 {
-    "policies": [{
-        "owner_id": "",
-        "subject": "ee6de1d4-aa1d-443a-9848-7857a90d03bd",
-        "object": "830cf52a-4928-4cfb-af44-e82a696c9ac9",
-        "actions": ["m_write", "m_read"],
-        "created_at": "0001-01-01T00:00:00Z",
-        "updated_at": "0001-01-01T00:00:00Z"
-    }]
+  "policies": [
+    {
+      "owner_id": "",
+      "subject": "48101ecd-1535-40c6-9ed8-5b1d21e371bb",
+      "object": "aecf0902-816d-4e38-a5b3-a1ad9a7cf9e8",
+      "actions": ["m_write", "m_read"],
+      "created_at": "0001-01-01T00:00:00Z",
+      "updated_at": "0001-01-01T00:00:00Z",
+      "updated_by": ""
+    }
+  ]
 }
 ```
 
@@ -1547,25 +1539,28 @@ curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: Bea
 For example:
 
 ```bash
-curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" http://localhost/channels/830cf52a-4928-4cfb-af44-e82a696c9ac9/things/977bbd33-5b59-4b7a-a9c3-8adda5d98255
+curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" http://localhost/channels/aecf0902-816d-4e38-a5b3-a1ad9a7cf9e8/things/48101ecd-1535-40c6-9ed8-5b1d21e371bb
 
 HTTP/1.1 201 Created
 Server: nginx/1.23.3
-Date: Wed, 05 Apr 2023 15:37:01 GMT
+Date: Thu, 15 Jun 2023 09:23:28 GMT
 Content-Type: application/json
-Content-Length: 281
+Content-Length: 290
 Connection: keep-alive
 Access-Control-Expose-Headers: Location
 
 {
-    "policies": [{
-        "owner_id": "f7c55a1f-dde8-4880-9796-b3a0cd05745b",
-        "subject": "977bbd33-5b59-4b7a-a9c3-8adda5d98255",
-        "object": "830cf52a-4928-4cfb-af44-e82a696c9ac9",
-        "actions": ["m_write", "m_read"],
-        "created_at": "2023-04-05T15:37:01.120301Z",
-        "updated_at": "2023-04-05T15:37:01.120301Z"
-    }]
+  "policies": [
+    {
+      "owner_id": "94939159-d129-4f17-9e4e-cc2d615539d7",
+      "subject": "48101ecd-1535-40c6-9ed8-5b1d21e371bb",
+      "object": "aecf0902-816d-4e38-a5b3-a1ad9a7cf9e8",
+      "actions": ["m_write", "m_read"],
+      "created_at": "2023-06-15T09:23:28.769729Z",
+      "updated_at": "0001-01-01T00:00:00Z",
+      "updated_by": ""
+    }
+  ]
 }
 ```
 
@@ -1582,11 +1577,11 @@ curl -s -S -i -X PUT -H "Content-Type: application/json" -H "Authorization: Bear
 For example:
 
 ```bash
-curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" http://localhost/disconnect -d '{"group_ids": ["830cf52a-4928-4cfb-af44-e82a696c9ac9"], "client_ids": ["ee6de1d4-aa1d-443a-9848-7857a90d03bd"]}'
+curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" http://localhost/disconnect -d '{"group_ids": ["aecf0902-816d-4e38-a5b3-a1ad9a7cf9e8"], "client_ids": ["48101ecd-1535-40c6-9ed8-5b1d21e371bb"]}'
 
 HTTP/1.1 204 No Content
 Server: nginx/1.23.3
-Date: Wed, 05 Apr 2023 15:39:19 GMT
+Date: Thu, 15 Jun 2023 09:23:07 GMT
 Content-Type: application/json
 Connection: keep-alive
 Access-Control-Expose-Headers: Location
@@ -1603,11 +1598,11 @@ curl -s -S -i -X DELETE -H "Content-Type: application/json" -H "Authorization: B
 For example:
 
 ```bash
-curl -s -S -i -X DELETE -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" http://localhost/channels/830cf52a-4928-4cfb-af44-e82a696c9ac9/things/977bbd33-5b59-4b7a-a9c3-8adda5d98255
+curl -s -S -i -X DELETE -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" http://localhost/channels/aecf0902-816d-4e38-a5b3-a1ad9a7cf9e8/things/48101ecd-1535-40c6-9ed8-5b1d21e371bb
 
 HTTP/1.1 204 No Content
 Server: nginx/1.23.3
-Date: Wed, 05 Apr 2023 15:40:58 GMT
+Date: Thu, 15 Jun 2023 09:25:23 GMT
 Content-Type: application/json
 Connection: keep-alive
 Access-Control-Expose-Headers: Location
@@ -1617,46 +1612,20 @@ Access-Control-Expose-Headers: Location
 
 Checks if thing has access to a channel
 
-> Must-have: `channel_id` and `thing_secret`
-
-```bash
-curl -s -S -i -X POST -H "Content-Type: application/json" http://localhost/identify/channels/<channel_id>/access-by-key -d '{"client_id": "<thing_secret>", "action": "m_read" | "m_write", "entity_type": "group"}'
-```
-
-For example:
-
-```bash
-curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" http://localhost/identify/channels/830cf52a-4928-4cfb-af44-e82a696c9ac9/access-by-key -d '{"client_id": "a83b9afb-9022-4f9e-ba3d-4354a08c273a", "action": "m_read", "entity_type": "group"}'
-
-HTTP/1.1 200 OK
-Server: nginx/1.23.3
-Date: Wed, 05 Apr 2023 15:46:43 GMT
-Content-Type: application/json
-Content-Length: 46
-Connection: keep-alive
-Access-Control-Expose-Headers: Location
-
-{"id":"977bbd33-5b59-4b7a-a9c3-8adda5d98255"}
-```
-
-### Access by ID
-
-Checks if thing has access to a channel
-
 > Must-have: `channel_id` and `thing_id`
 
 ```bash
-curl -s -S -i -X POST -H "Content-Type: application/json" http://localhost/identify/channels/<channel_id>/access-by-id -d '{"client_id": "<thing_id>", "action": "m_read" | "m_write", "entity_type": "group"}'
+curl -s -S -i -X POST -H "Content-Type: application/json" http://localhost/channels/<channel_id>/access -d '{"secret": "<thing_id>", "action": "m_read" | "m_write", "entity_type": "group"}'
 ```
 
 For example:
 
 ```bash
-curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" http://localhost/identify/channels/830cf52a-4928-4cfb-af44-e82a696c9ac9/access-by-id -d '{"client_id": "977bbd33-5b59-4b7a-a9c3-8adda5d98255", "action": "m_read", "entity_type": "group"}'
+curl -s -S -i -X POST -H "Content-Type: application/json" http://localhost/channels/aecf0902-816d-4e38-a5b3-a1ad9a7cf9e8/access -d '{"secret": "48101ecd-1535-40c6-9ed8-5b1d21e371bb", "action": "m_read", "entity_type": "group"}'
 
 HTTP/1.1 200 OK
 Server: nginx/1.23.3
-Date: Wed, 05 Apr 2023 15:45:04 GMT
+Date: Thu, 15 Jun 2023 09:39:26 GMT
 Content-Type: application/json
 Content-Length: 0
 Connection: keep-alive
@@ -1670,23 +1639,23 @@ Validates thing's key and returns it's ID if key is valid
 > Must-have: `thing_secret`
 
 ```bash
-curl -s -S -i -X POST -H "Content-Type: application/json" http://localhost/identify -d '{"token": "<thing_secret>"}'
+curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: Thing <thing_secret>" http://localhost/identify
 ```
 
 For example:
 
 ```bash
-curl -s -S -i -X POST -H "Content-Type: application/json" http://localhost/identify -d '{"token": "a83b9afb-9022-4f9e-ba3d-4354a08c273a"}'
+curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: Thing 6d11a91f-0bd8-41aa-8e1b-4c6338329c9c" http://localhost/identify
 
 HTTP/1.1 200 OK
 Server: nginx/1.23.3
-Date: Wed, 05 Apr 2023 15:47:43 GMT
+Date: Thu, 15 Jun 2023 09:28:16 GMT
 Content-Type: application/json
 Content-Length: 46
 Connection: keep-alive
 Access-Control-Expose-Headers: Location
 
-{"id":"977bbd33-5b59-4b7a-a9c3-8adda5d98255"}
+{ "id": "f3047c10-f2c7-4d53-b3c0-bc56c560c546" }
 ```
 
 ## Messages
@@ -1704,11 +1673,11 @@ curl -s -S -i -X POST -H "Content-Type: application/senml+json" -H "Authorizatio
 For example:
 
 ```bash
-curl -s -S -i -X POST -H "Content-Type: application/senml+json" -H "Authorization: Thing a83b9afb-9022-4f9e-ba3d-4354a08c273a" http://localhost/http/channels/830cf52a-4928-4cfb-af44-e82a696c9ac9/messages -d '[{"bn":"some-base-name:","bt":1.276020076001e+09,"bu":"A","bver":5,"n":"voltage","u":"V","v":120.1}, {"n":"current","t":-5,"v":1.2}, {"n":"current","t":-4,"v":1.3}]'
+curl -s -S -i -X POST -H "Content-Type: application/senml+json" -H "Authorization: Thing a83b9afb-9022-4f9e-ba3d-4354a08c273a" http://localhost/http/channels/aecf0902-816d-4e38-a5b3-a1ad9a7cf9e8/messages -d '[{"bn":"some-base-name:","bt":1.276020076001e+09,"bu":"A","bver":5,"n":"voltage","u":"V","v":120.1}, {"n":"current","t":-5,"v":1.2}, {"n":"current","t":-4,"v":1.3}]'
 
 HTTP/1.1 202 Accepted
 Server: nginx/1.23.3
-Date: Wed, 05 Apr 2023 15:58:35 GMT
+Date: Thu, 15 Jun 2023 09:40:44 GMT
 Content-Length: 0
 Connection: keep-alive
 ```
@@ -1726,7 +1695,7 @@ curl -s -S -i -H "Authorization: Thing <thing_secret>" http://localhost:<service
 For example:
 
 ```bash
-curl -s -S -i -H "Authorization: Thing a83b9afb-9022-4f9e-ba3d-4354a08c273a" http://localhost:9009/channels/830cf52a-4928-4cfb-af44-e82a696c9ac9/messages
+curl -s -S -i -H "Authorization: Thing a83b9afb-9022-4f9e-ba3d-4354a08c273a" http://localhost:9009/channels/aecf0902-816d-4e38-a5b3-a1ad9a7cf9e8/messages
 
 HTTP/1.1 200 OK
 Content-Type: application/json
@@ -1739,8 +1708,8 @@ Content-Length: 660
     "format": "messages",
     "total": 3,
     "messages": [{
-            "channel": "830cf52a-4928-4cfb-af44-e82a696c9ac9",
-            "publisher": "977bbd33-5b59-4b7a-a9c3-8adda5d98255",
+            "channel": "aecf0902-816d-4e38-a5b3-a1ad9a7cf9e8",
+            "publisher": "2766ae94-9a08-4418-82ce-3b91cf2ccd3e",
             "protocol": "http",
             "name": "some-base-name:voltage",
             "unit": "V",
@@ -1748,8 +1717,8 @@ Content-Length: 660
             "value": 120.1
         },
         {
-            "channel": "830cf52a-4928-4cfb-af44-e82a696c9ac9",
-            "publisher": "977bbd33-5b59-4b7a-a9c3-8adda5d98255",
+            "channel": "aecf0902-816d-4e38-a5b3-a1ad9a7cf9e8",
+            "publisher": "2766ae94-9a08-4418-82ce-3b91cf2ccd3e",
             "protocol": "http",
             "name": "some-base-name:current",
             "unit": "A",
@@ -1757,8 +1726,8 @@ Content-Length: 660
             "value": 1.3
         },
         {
-            "channel": "830cf52a-4928-4cfb-af44-e82a696c9ac9",
-            "publisher": "977bbd33-5b59-4b7a-a9c3-8adda5d98255",
+            "channel": "aecf0902-816d-4e38-a5b3-a1ad9a7cf9e8",
+            "publisher": "2766ae94-9a08-4418-82ce-3b91cf2ccd3e",
             "protocol": "http",
             "name": "some-base-name:current",
             "unit": "A",
@@ -1790,21 +1759,21 @@ curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: Bea
 
 HTTP/1.1 201 Created
 Server: nginx/1.23.3
-Date: Wed, 05 Apr 2023 10:56:45 GMT
+Date: Thu, 15 Jun 2023 09:41:42 GMT
 Content-Type: application/json
-Content-Length: 259
+Content-Length: 252
 Connection: keep-alive
-Location: /groups/977bbd33-5b59-4b7a-a9c3-8adda5d98255
+Location: /groups/2766ae94-9a08-4418-82ce-3b91cf2ccd3e
 Access-Control-Expose-Headers: Location
 
 {
-    "id": "977bbd33-5b59-4b7a-a9c3-8adda5d98255",
-    "owner_id": "f7c55a1f-dde8-4880-9796-b3a0cd05745b",
-    "name": "testgroup",
-    "description": "test group description",
-    "created_at": "2023-04-05T10:56:45.672778Z",
-    "updated_at": "2023-04-05T10:56:45.672778Z",
-    "status": "enabled"
+  "id": "2766ae94-9a08-4418-82ce-3b91cf2ccd3e",
+  "owner_id": "94939159-d129-4f17-9e4e-cc2d615539d7",
+  "name": "testgroup",
+  "description": "test group description",
+  "created_at": "2023-06-15T09:41:42.860481Z",
+  "updated_at": "0001-01-01T00:00:00Z",
+  "status": "enabled"
 }
 ```
 
@@ -1818,26 +1787,26 @@ For example:
 
 ```bash
 curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" http://localhost/groups -d '{"name": "testgroup2",
-"description": "test group 2 description", "parent_id": "977bbd33-5b59-4b7a-a9c3-8adda5d98255"}'
+"description": "test group 2 description", "parent_id": "2766ae94-9a08-4418-82ce-3b91cf2ccd3e"}'
 
 HTTP/1.1 201 Created
 Server: nginx/1.23.3
-Date: Wed, 05 Apr 2023 10:57:26 GMT
+Date: Thu, 15 Jun 2023 09:42:34 GMT
 Content-Type: application/json
-Content-Length: 313
+Content-Length: 306
 Connection: keep-alive
-Location: /groups/7aeafccb-7c07-4c0e-a321-85ae014a73eb
+Location: /groups/dd2dc8d4-f7cf-42f9-832b-81cae9a8e90a
 Access-Control-Expose-Headers: Location
 
 {
-    "id": "7aeafccb-7c07-4c0e-a321-85ae014a73eb",
-    "owner_id": "f7c55a1f-dde8-4880-9796-b3a0cd05745b",
-    "parent_id": "977bbd33-5b59-4b7a-a9c3-8adda5d98255",
-    "name": "testgroup2",
-    "description": "test group 2 description",
-    "created_at": "2023-04-05T10:57:26.310361Z",
-    "updated_at": "2023-04-05T10:57:26.310361Z",
-    "status": "enabled"
+  "id": "dd2dc8d4-f7cf-42f9-832b-81cae9a8e90a",
+  "owner_id": "94939159-d129-4f17-9e4e-cc2d615539d7",
+  "parent_id": "2766ae94-9a08-4418-82ce-3b91cf2ccd3e",
+  "name": "testgroup2",
+  "description": "test group 2 description",
+  "created_at": "2023-06-15T09:42:34.063997Z",
+  "updated_at": "0001-01-01T00:00:00Z",
+  "status": "enabled"
 }
 ```
 
@@ -1854,25 +1823,24 @@ curl -s -S -i -X GET -H "Content-Type: application/json" -H "Authorization: Bear
 For example:
 
 ```bash
-curl -s -S -i -X GET -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" http://localhost/groups/7aeafccb-7c07-4c0e-a321-85ae014a73eb
+curl -s -S -i -X GET -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" http://localhost/groups/2766ae94-9a08-4418-82ce-3b91cf2ccd3e
 
 HTTP/1.1 200 OK
 Server: nginx/1.23.3
-Date: Wed, 05 Apr 2023 10:58:30 GMT
+Date: Thu, 15 Jun 2023 10:00:52 GMT
 Content-Type: application/json
-Content-Length: 313
+Content-Length: 252
 Connection: keep-alive
 Access-Control-Expose-Headers: Location
 
 {
-    "id": "7aeafccb-7c07-4c0e-a321-85ae014a73eb",
-    "owner_id": "f7c55a1f-dde8-4880-9796-b3a0cd05745b",
-    "parent_id": "977bbd33-5b59-4b7a-a9c3-8adda5d98255",
-    "name": "testgroup2",
-    "description": "test group 2 description",
-    "created_at": "2023-04-05T10:57:26.310361Z",
-    "updated_at": "2023-04-05T10:57:26.310361Z",
-    "status": "enabled"
+  "id": "2766ae94-9a08-4418-82ce-3b91cf2ccd3e",
+  "owner_id": "94939159-d129-4f17-9e4e-cc2d615539d7",
+  "name": "testgroup",
+  "description": "test group description",
+  "created_at": "2023-06-15T09:41:42.860481Z",
+  "updated_at": "0001-01-01T00:00:00Z",
+  "status": "enabled"
 }
 ```
 
@@ -1893,34 +1861,45 @@ curl -s -S -i -X GET -H "Content-Type: application/json" -H "Authorization: Bear
 
 HTTP/1.1 200 OK
 Server: nginx/1.23.3
-Date: Wed, 05 Apr 2023 10:59:23 GMT
+Date: Thu, 15 Jun 2023 10:13:50 GMT
 Content-Type: application/json
-Content-Length: 595
+Content-Length: 807
 Connection: keep-alive
 Access-Control-Expose-Headers: Location
 
 {
-    "total": 2,
-    "groups": [{
-            "id": "977bbd33-5b59-4b7a-a9c3-8adda5d98255",
-            "owner_id": "f7c55a1f-dde8-4880-9796-b3a0cd05745b",
-            "name": "testgroup",
-            "description": "test group description",
-            "created_at": "2023-04-05T10:56:45.672778Z",
-            "updated_at": "2023-04-05T10:56:45.672778Z",
-            "status": "enabled"
-        },
-        {
-            "id": "7aeafccb-7c07-4c0e-a321-85ae014a73eb",
-            "owner_id": "f7c55a1f-dde8-4880-9796-b3a0cd05745b",
-            "parent_id": "977bbd33-5b59-4b7a-a9c3-8adda5d98255",
-            "name": "testgroup2",
-            "description": "test group 2 description",
-            "created_at": "2023-04-05T10:57:26.310361Z",
-            "updated_at": "2023-04-05T10:57:26.310361Z",
-            "status": "enabled"
-        }
-    ]
+  "limit": 0,
+  "offset": 0,
+  "total": 3,
+  "groups": [
+    {
+      "id": "0a4a2c33-2d0e-43df-b51c-d905aba99e17",
+      "owner_id": "94939159-d129-4f17-9e4e-cc2d615539d7",
+      "name": "a",
+      "created_at": "2023-06-14T13:33:52.249784Z",
+      "updated_at": "0001-01-01T00:00:00Z",
+      "status": "enabled"
+    },
+    {
+      "id": "2766ae94-9a08-4418-82ce-3b91cf2ccd3e",
+      "owner_id": "94939159-d129-4f17-9e4e-cc2d615539d7",
+      "name": "testgroup",
+      "description": "test group description",
+      "created_at": "2023-06-15T09:41:42.860481Z",
+      "updated_at": "0001-01-01T00:00:00Z",
+      "status": "enabled"
+    },
+    {
+      "id": "dd2dc8d4-f7cf-42f9-832b-81cae9a8e90a",
+      "owner_id": "94939159-d129-4f17-9e4e-cc2d615539d7",
+      "parent_id": "2766ae94-9a08-4418-82ce-3b91cf2ccd3e",
+      "name": "testgroup2",
+      "description": "test group 2 description",
+      "created_at": "2023-06-15T09:42:34.063997Z",
+      "updated_at": "0001-01-01T00:00:00Z",
+      "status": "enabled"
+    }
+  ]
 }
 ```
 
@@ -1937,40 +1916,44 @@ curl -s -S -i -X GET -H "Content-Type: application/json" -H "Authorization: Bear
 For example:
 
 ```bash
-curl -s -S -i -X GET -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" http://localhost/groups/7aeafccb-7c07-4c0e-a321-85ae014a73eb/parents?tree=true
+curl -s -S -i -X GET -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" http://localhost/groups/dd2dc8d4-f7cf-42f9-832b-81cae9a8e90a/parents?tree=true
 
 HTTP/1.1 200 OK
 Server: nginx/1.23.3
-Date: Wed, 05 Apr 2023 11:39:00 GMT
+Date: Thu, 15 Jun 2023 10:16:03 GMT
 Content-Type: application/json
-Content-Length: 643
+Content-Length: 627
 Connection: keep-alive
 Access-Control-Expose-Headers: Location
 
 {
-    "limit": 10,
-    "total": 2,
-    "groups": [{
-        "id": "977bbd33-5b59-4b7a-a9c3-8adda5d98255",
-        "owner_id": "f7c55a1f-dde8-4880-9796-b3a0cd05745b",
-        "name": "testgroup",
-        "description": "test group description",
-        "children": [{
-            "id": "7aeafccb-7c07-4c0e-a321-85ae014a73eb",
-            "owner_id": "f7c55a1f-dde8-4880-9796-b3a0cd05745b",
-            "parent_id": "977bbd33-5b59-4b7a-a9c3-8adda5d98255",
-            "name": "new name",
-            "description": "new description",
-            "metadata": { "foo": "bar" },
-            "level": 1,
-            "created_at": "2023-04-05T10:57:26.310361Z",
-            "updated_at": "2023-04-05T11:02:08.823858Z",
-            "status": "enabled"
-        }],
-        "created_at": "2023-04-05T10:56:45.672778Z",
-        "updated_at": "2023-04-05T10:56:45.672778Z",
-        "status": "enabled"
-    }]
+  "limit": 10,
+  "offset": 0,
+  "total": 3,
+  "groups": [
+    {
+      "id": "2766ae94-9a08-4418-82ce-3b91cf2ccd3e",
+      "owner_id": "94939159-d129-4f17-9e4e-cc2d615539d7",
+      "name": "testgroup",
+      "description": "test group description",
+      "level": -1,
+      "children": [
+        {
+          "id": "dd2dc8d4-f7cf-42f9-832b-81cae9a8e90a",
+          "owner_id": "94939159-d129-4f17-9e4e-cc2d615539d7",
+          "parent_id": "2766ae94-9a08-4418-82ce-3b91cf2ccd3e",
+          "name": "testgroup2",
+          "description": "test group 2 description",
+          "created_at": "2023-06-15T09:42:34.063997Z",
+          "updated_at": "0001-01-01T00:00:00Z",
+          "status": "enabled"
+        }
+      ],
+      "created_at": "2023-06-15T09:41:42.860481Z",
+      "updated_at": "0001-01-01T00:00:00Z",
+      "status": "enabled"
+    }
+  ]
 }
 ```
 
@@ -1987,43 +1970,46 @@ curl -s -S -i -X GET -H "Content-Type: application/json" -H "Authorization: Bear
 For example:
 
 ```bash
-curl -s -S -i -X GET -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" http://localhost/groups/977bbd33-5b59-4b7a-a9c3-8adda5d98255/children?tree=true
+curl -s -S -i -X GET -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" http://localhost/groups/2766ae94-9a08-4418-82ce-3b91cf2ccd3e/children?tree=true
 
 HTTP/1.1 200 OK
 Server: nginx/1.23.3
-Date: Wed, 05 Apr 2023 11:40:34 GMT
+Date: Thu, 15 Jun 2023 10:17:13 GMT
 Content-Type: application/json
-Content-Length: 782
+Content-Length: 755
 Connection: keep-alive
 Access-Control-Expose-Headers: Location
 
 {
-    "limit": 10,
-    "total": 2,
-    "groups": [{
-        "id": "977bbd33-5b59-4b7a-a9c3-8adda5d98255",
-        "owner_id": "f7c55a1f-dde8-4880-9796-b3a0cd05745b",
-        "name": "testgroup",
-        "description": "test group description",
-        "level": 1,
-        "path": "977bbd33-5b59-4b7a-a9c3-8adda5d98255",
-        "children": [{
-            "id": "7aeafccb-7c07-4c0e-a321-85ae014a73eb",
-            "owner_id": "f7c55a1f-dde8-4880-9796-b3a0cd05745b",
-            "parent_id": "977bbd33-5b59-4b7a-a9c3-8adda5d98255",
-            "name": "new name",
-            "description": "new description",
-            "metadata": { "foo": "bar" },
-            "level": 2,
-            "path": "977bbd33-5b59-4b7a-a9c3-8adda5d98255.7aeafccb-7c07-4c0e-a321-85ae014a73eb",
-            "created_at": "2023-04-05T10:57:26.310361Z",
-            "updated_at": "2023-04-05T11:02:08.823858Z",
-            "status": "enabled"
-        }],
-        "created_at": "2023-04-05T10:56:45.672778Z",
-        "updated_at": "2023-04-05T10:56:45.672778Z",
-        "status": "enabled"
-    }]
+  "limit": 10,
+  "offset": 0,
+  "total": 3,
+  "groups": [
+    {
+      "id": "2766ae94-9a08-4418-82ce-3b91cf2ccd3e",
+      "owner_id": "94939159-d129-4f17-9e4e-cc2d615539d7",
+      "name": "testgroup",
+      "description": "test group description",
+      "path": "2766ae94-9a08-4418-82ce-3b91cf2ccd3e",
+      "children": [
+        {
+          "id": "dd2dc8d4-f7cf-42f9-832b-81cae9a8e90a",
+          "owner_id": "94939159-d129-4f17-9e4e-cc2d615539d7",
+          "parent_id": "2766ae94-9a08-4418-82ce-3b91cf2ccd3e",
+          "name": "testgroup2",
+          "description": "test group 2 description",
+          "level": 1,
+          "path": "2766ae94-9a08-4418-82ce-3b91cf2ccd3e.dd2dc8d4-f7cf-42f9-832b-81cae9a8e90a",
+          "created_at": "2023-06-15T09:42:34.063997Z",
+          "updated_at": "0001-01-01T00:00:00Z",
+          "status": "enabled"
+        }
+      ],
+      "created_at": "2023-06-15T09:41:42.860481Z",
+      "updated_at": "0001-01-01T00:00:00Z",
+      "status": "enabled"
+    }
+  ]
 }
 ```
 
@@ -2040,26 +2026,26 @@ curl -s -S -i -X PUT -H "Content-Type: application/json" -H  "Authorization: Bea
 For example:
 
 ```bash
-curl -s -S -i -X PUT -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" http://localhost/groups/7aeafccb-7c07-4c0e-a321-85ae014a73eb -d '{"name": "new name", "description": "new description", "metadata": {"foo":"bar"}}'
+curl -s -S -i -X PUT -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" http://localhost/groups/2766ae94-9a08-4418-82ce-3b91cf2ccd3e -d '{"name": "new name", "description": "new description", "metadata": {"foo":"bar"}}'
 
 HTTP/1.1 200 OK
 Server: nginx/1.23.3
-Date: Wed, 05 Apr 2023 11:02:08 GMT
+Date: Thu, 15 Jun 2023 10:17:56 GMT
 Content-Type: application/json
-Content-Length: 327
+Content-Length: 328
 Connection: keep-alive
 Access-Control-Expose-Headers: Location
 
 {
-    "id": "7aeafccb-7c07-4c0e-a321-85ae014a73eb",
-    "owner_id": "f7c55a1f-dde8-4880-9796-b3a0cd05745b",
-    "parent_id": "977bbd33-5b59-4b7a-a9c3-8adda5d98255",
-    "name": "new name",
-    "description": "new description",
-    "metadata": { "foo": "bar" },
-    "created_at": "2023-04-05T10:57:26.310361Z",
-    "updated_at": "2023-04-05T11:02:08.823858Z",
-    "status": "enabled"
+  "id": "2766ae94-9a08-4418-82ce-3b91cf2ccd3e",
+  "owner_id": "94939159-d129-4f17-9e4e-cc2d615539d7",
+  "name": "new name",
+  "description": "new description",
+  "metadata": { "foo": "bar" },
+  "created_at": "2023-06-15T09:41:42.860481Z",
+  "updated_at": "2023-06-15T10:17:56.475241Z",
+  "updated_by": "94939159-d129-4f17-9e4e-cc2d615539d7",
+  "status": "enabled"
 }
 ```
 
@@ -2076,26 +2062,26 @@ curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: Bea
 For example:
 
 ```bash
-curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" http://localhost/groups/7aeafccb-7c07-4c0e-a321-85ae014a73eb/disable
+curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" http://localhost/groups/2766ae94-9a08-4418-82ce-3b91cf2ccd3e/disable
 
 HTTP/1.1 200 OK
 Server: nginx/1.23.3
-Date: Wed, 05 Apr 2023 11:03:36 GMT
+Date: Thu, 15 Jun 2023 10:18:28 GMT
 Content-Type: application/json
-Content-Length: 328
+Content-Length: 329
 Connection: keep-alive
 Access-Control-Expose-Headers: Location
 
 {
-    "id": "7aeafccb-7c07-4c0e-a321-85ae014a73eb",
-    "owner_id": "f7c55a1f-dde8-4880-9796-b3a0cd05745b",
-    "parent_id": "977bbd33-5b59-4b7a-a9c3-8adda5d98255",
-    "name": "new name",
-    "description": "new description",
-    "metadata": { "foo": "bar" },
-    "created_at": "2023-04-05T10:57:26.310361Z",
-    "updated_at": "2023-04-05T11:02:08.823858Z",
-    "status": "disabled"
+  "id": "2766ae94-9a08-4418-82ce-3b91cf2ccd3e",
+  "owner_id": "94939159-d129-4f17-9e4e-cc2d615539d7",
+  "name": "new name",
+  "description": "new description",
+  "metadata": { "foo": "bar" },
+  "created_at": "2023-06-15T09:41:42.860481Z",
+  "updated_at": "2023-06-15T10:17:56.475241Z",
+  "updated_by": "94939159-d129-4f17-9e4e-cc2d615539d7",
+  "status": "disabled"
 }
 ```
 
@@ -2112,26 +2098,26 @@ curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: Bea
 For example:
 
 ```bash
-curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" http://localhost/groups/7aeafccb-7c07-4c0e-a321-85ae014a73eb/enable
+curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" http://localhost/groups/2766ae94-9a08-4418-82ce-3b91cf2ccd3e/enable
 
 HTTP/1.1 200 OK
 Server: nginx/1.23.3
-Date: Wed, 05 Apr 2023 11:04:29 GMT
+Date: Thu, 15 Jun 2023 10:18:55 GMT
 Content-Type: application/json
-Content-Length: 327
+Content-Length: 328
 Connection: keep-alive
 Access-Control-Expose-Headers: Location
 
 {
-    "id": "7aeafccb-7c07-4c0e-a321-85ae014a73eb",
-    "owner_id": "f7c55a1f-dde8-4880-9796-b3a0cd05745b",
-    "parent_id": "977bbd33-5b59-4b7a-a9c3-8adda5d98255",
-    "name": "new name",
-    "description": "new description",
-    "metadata": { "foo": "bar" },
-    "created_at": "2023-04-05T10:57:26.310361Z",
-    "updated_at": "2023-04-05T11:02:08.823858Z",
-    "status": "enabled"
+  "id": "2766ae94-9a08-4418-82ce-3b91cf2ccd3e",
+  "owner_id": "94939159-d129-4f17-9e4e-cc2d615539d7",
+  "name": "new name",
+  "description": "new description",
+  "metadata": { "foo": "bar" },
+  "created_at": "2023-06-15T09:41:42.860481Z",
+  "updated_at": "2023-06-15T10:17:56.475241Z",
+  "updated_by": "94939159-d129-4f17-9e4e-cc2d615539d7",
+  "status": "enabled"
 }
 ```
 
@@ -2148,20 +2134,15 @@ curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: Bea
 For example:
 
 ```bash
-curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" http://localhost/policies -d '{"subject": "838dc3bb-fac9-4b39-ba4c-97a051c7c10d", "object": "977bbd33-5b59-4b7a-a9c3-8adda5d98255", "actions":["g_add", "c_list"]}'
+curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" http://localhost/policies -d '{"subject": "1890c034-7ef9-4cde-83df-d78ea1d4d281", "object": "2766ae94-9a08-4418-82ce-3b91cf2ccd3e", "actions":["g_list", "c_list"]}'
 
 HTTP/1.1 201 Created
 Server: nginx/1.23.3
-Date: Wed, 05 Apr 2023 11:48:01 GMT
+Date: Thu, 15 Jun 2023 10:19:59 GMT
 Content-Type: application/json
 Content-Length: 0
 Connection: keep-alive
-Strict-Transport-Security: max-age=63072000; includeSubdomains
-X-Frame-Options: DENY
-X-Content-Type-Options: nosniff
-Access-Control-Allow-Origin: *
-Access-Control-Allow-Methods: *
-Access-Control-Allow-Headers: *
+Access-Control-Expose-Headers: Location
 ```
 
 ### Members
@@ -2172,44 +2153,37 @@ Get list of ID's from group
 > Must take into consideration the user identified by the `user_token` needs to be assigned to the same group with `g_list` action
 
 ```bash
-curl -s -S -i -X GET -H "Content-Type: application/json" -H "Authorization: Bearer <user_token>" http://localhost/groups/<group_id>/members  
+curl -s -S -i -X GET -H "Content-Type: application/json" -H "Authorization: Bearer <user_token>" http://localhost/groups/<group_id>/members
 ```
 
 For example:
 
 ```bash
-curl -s -S -i -X GET -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" http://localhost/groups/977bbd33-5b59-4b7a-a9c3-8adda5d98255/members
+curl -s -S -i -X GET -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" http://localhost/groups/2766ae94-9a08-4418-82ce-3b91cf2ccd3e/members
 
 HTTP/1.1 200 OK
 Server: nginx/1.23.3
-Date: Wed, 05 Apr 2023 11:52:06 GMT
+Date: Thu, 15 Jun 2023 11:21:29 GMT
 Content-Type: application/json
-Content-Length: 532
+Content-Length: 318
 Connection: keep-alive
 Access-Control-Expose-Headers: Location
 
 {
-    "limit": 10,
-    "total": 2,
-    "members": [{
-            "id": "f7c55a1f-dde8-4880-9796-b3a0cd05745b",
-            "name": "John Doe",
-            "credentials": { "identity": "john.doe@email.com", "secret": "" },
-            "created_at": "2023-04-05T09:36:36.40605Z",
-            "updated_at": "0001-01-01T00:00:00Z",
-            "status": "enabled"
-        },
-        {
-            "id": "838dc3bb-fac9-4b39-ba4c-97a051c7c10d",
-            "name": "new name",
-            "tags": ["foo", "bar"],
-            "credentials": { "identity": "updated.john.doe@email.com", "secret": "" },
-            "metadata": { "foo": "bar" },
-            "created_at": "2023-04-05T09:51:30.404336Z",
-            "updated_at": "0001-01-01T00:00:00Z",
-            "status": "enabled"
-        }
-    ]
+  "limit": 10,
+  "total": 1,
+  "members": [
+    {
+      "id": "1890c034-7ef9-4cde-83df-d78ea1d4d281",
+      "name": "new name",
+      "tags": ["foo", "bar"],
+      "credentials": { "identity": "updated.john.doe@email.com", "secret": "" },
+      "metadata": { "foo": "bar" },
+      "created_at": "2023-06-14T13:46:47.322648Z",
+      "updated_at": "2023-06-14T13:59:53.422595Z",
+      "status": "enabled"
+    }
+  ]
 }
 ```
 
@@ -2220,25 +2194,20 @@ Unassign user, thing or channel from group
 > Must-have: `user_token`, `group_id`, `member_id` and `action`
 
 ```bash
-curl -s -S -i -X DELETE -H "Content-Type: application/json" -H "Authorization: Bearer <user_token>" http://localhost/policies/<group_id>/"<user_id>" | "<thing_id_>" | "<channel_id_>" -d '{ "actions":["<client_actions>" | "<group_actions>"]}'
+curl -s -S -i -X DELETE -H "Content-Type: application/json" -H "Authorization: Bearer <user_token>" http://localhost/policies/"<user_id>" | "<thing_id_>" | "<channel_id_>"/<group_id> -d '{ "actions":["<client_actions>" | "<group_actions>"]}'
 ```
 
 For example:
 
 ```bash
-curl -s -S -i -X DELETE -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" http://localhost/policies/977bbd33-5b59-4b7a-a9c3-8adda5d98255/838dc3bb-fac9-4b39-ba4c-97a051c7c10d -d '{"actions":["g_add", "c_list"]}'
+curl -s -S -i -X DELETE -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" http://localhost/policies/1890c034-7ef9-4cde-83df-d78ea1d4d281/2766ae94-9a08-4418-82ce-3b91cf2ccd3e -d '{"actions":["g_add", "c_list"]}'
 
 HTTP/1.1 204 No Content
 Server: nginx/1.23.3
-Date: Wed, 05 Apr 2023 11:59:32 GMT
+Date: Thu, 15 Jun 2023 11:25:27 GMT
 Content-Type: application/json
 Connection: keep-alive
-Strict-Transport-Security: max-age=63072000; includeSubdomains
-X-Frame-Options: DENY
-X-Content-Type-Options: nosniff
-Access-Control-Allow-Origin: *
-Access-Control-Allow-Methods: *
-Access-Control-Allow-Headers: *
+Access-Control-Expose-Headers: Location
 ```
 
 ## Policies
@@ -2256,20 +2225,15 @@ curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: Bea
 For example:
 
 ```bash
-curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" http://localhost/policies -d '{"subject": "838dc3bb-fac9-4b39-ba4c-97a051c7c10d", "object": "977bbd33-5b59-4b7a-a9c3-8adda5d98255", "actions":["g_add", "c_list"]}'
+curl -s -S -i -X POST -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" http://localhost/policies -d '{"subject": "1890c034-7ef9-4cde-83df-d78ea1d4d281", "object": "2766ae94-9a08-4418-82ce-3b91cf2ccd3e", "actions":["g_add", "c_list"]}'
 
 HTTP/1.1 201 Created
 Server: nginx/1.23.3
-Date: Wed, 05 Apr 2023 11:48:01 GMT
+Date: Thu, 15 Jun 2023 11:26:50 GMT
 Content-Type: application/json
 Content-Length: 0
 Connection: keep-alive
-Strict-Transport-Security: max-age=63072000; includeSubdomains
-X-Frame-Options: DENY
-X-Content-Type-Options: nosniff
-Access-Control-Allow-Origin: *
-Access-Control-Allow-Methods: *
-Access-Control-Allow-Headers: *
+Access-Control-Expose-Headers: Location
 ```
 
 ### Update policies
@@ -2285,19 +2249,14 @@ curl -s -S -i -X PUT -H "Content-Type: application/json" -H "Authorization: Bear
 For example:
 
 ```bash
-curl -s -S -i -X PUT -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" http://localhost/policies -d '{"subject": "838dc3bb-fac9-4b39-ba4c-97a051c7c10d", "object": "977bbd33-5b59-4b7a-a9c3-8adda5d98255", "actions":["g_add", "c_list"]}'
+curl -s -S -i -X PUT -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" http://localhost/policies -d '{"subject": "1890c034-7ef9-4cde-83df-d78ea1d4d281", "object": "2766ae94-9a08-4418-82ce-3b91cf2ccd3e", "actions":["g_list", "c_list"]}'
 
 HTTP/1.1 204 No Content
 Server: nginx/1.23.3
-Date: Wed, 05 Apr 2023 12:20:05 GMT
+Date: Thu, 15 Jun 2023 11:27:19 GMT
 Content-Type: application/json
 Connection: keep-alive
-Strict-Transport-Security: max-age=63072000; includeSubdomains
-X-Frame-Options: DENY
-X-Content-Type-Options: nosniff
-Access-Control-Allow-Origin: *
-Access-Control-Allow-Methods: *
-Access-Control-Allow-Headers: *
+Access-Control-Expose-Headers: Location
 ```
 
 ### Delete policies
@@ -2307,23 +2266,18 @@ Only policies defined on [Predefined Policies section](/authorization/#summary-o
 > Must-have: `user_token`, `group_id`, `member_id` and `action`
 
 ```bash
-curl -s -S -i -X DELETE -H "Content-Type: application/json" -H "Authorization: Bearer <user_token>" http://localhost/policies/<group_id>/"<user_id>" | "<thing_id_>" | "<channel_id_>" -d '{ "actions":["<client_actions>" | "<group_actions>"]}'
+curl -s -S -i -X DELETE -H "Content-Type: application/json" -H "Authorization: Bearer <user_token>" http://localhost/policies/"<user_id>" | "<thing_id_>" | "<channel_id_>"/<group_id> -d '{ "actions":["<client_actions>" | "<group_actions>"]}'
 ```
 
 For example:
 
 ```bash
-curl -s -S -i -X DELETE -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" http://localhost/policies/977bbd33-5b59-4b7a-a9c3-8adda5d98255/838dc3bb-fac9-4b39-ba4c-97a051c7c10d -d '{"actions":["g_add", "c_list"]}'
+curl -s -S -i -X DELETE -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" http://localhost/policies/1890c034-7ef9-4cde-83df-d78ea1d4d281/2766ae94-9a08-4418-82ce-3b91cf2ccd3e
 
 HTTP/1.1 204 No Content
 Server: nginx/1.23.3
-Date: Wed, 05 Apr 2023 11:59:32 GMT
+Date: Thu, 15 Jun 2023 11:28:31 GMT
 Content-Type: application/json
 Connection: keep-alive
-Strict-Transport-Security: max-age=63072000; includeSubdomains
-X-Frame-Options: DENY
-X-Content-Type-Options: nosniff
-Access-Control-Allow-Origin: *
-Access-Control-Allow-Methods: *
-Access-Control-Allow-Headers: *
+Access-Control-Expose-Headers: Location
 ```
