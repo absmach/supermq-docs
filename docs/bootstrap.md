@@ -1,7 +1,6 @@
-## Bootstrap
+# Bootstrap
 
-`Bootstrapping` refers to a self-starting process that is supposed to proceed without external input.
-Mainflux platform supports bootstrapping process, but some of the preconditions need to be fulfilled in advance. The device can trigger a bootstrap when:s
+`Bootstrapping` refers to a self-starting process that is supposed to proceed without external input. Mainflux platform supports bootstrapping process, but some of the preconditions need to be fulfilled in advance. The device can trigger a bootstrap when:s
 
 - device contains only bootstrap credentials and no Mainflux credentials
 - device, for any reason, fails to start a communication with the configured Mainflux services (server not responding, authentication failure, etc..).
@@ -11,31 +10,33 @@ Mainflux platform supports bootstrapping process, but some of the preconditions 
 
 Bootstrapping procedure is the following:
 
-![Configure device](img/bootstrap/1.png)
-*1) Configure device with Bootstrap service URL, an external key and external ID*
+![Configure device][image-1]
+_1) Configure device with Bootstrap service URL, an external key and external ID_
 
-> ![Provision Mainflux channels](img/bootstrap/2.png)
-*Optionally create Mainflux channels if they don't exist*
+> ![Provision Mainflux channels][image-2]
+>
+> _Optionally create Mainflux channels if they don't exist_
+>
+> ![Provision Mainflux things][image-3]
+>
+> _Optionally create Mainflux thing if it doesn't exist_
 
-> ![Provision Mainflux things](img/bootstrap/3.png)
-*Optionally create Mainflux thing if it doesn't exist*
+![Upload configuration][image-4]
+_2) Upload configuration for the Mainflux thing_
 
-![Upload configuration](img/bootstrap/4.png)
-*2) Upload configuration for the Mainflux thing*
+![Bootstrap][image-5]
+_3) Bootstrap - send a request for the configuration_
 
-![Bootstrap](img/bootstrap/5.png)
-*3) Bootstrap - send a request for the configuration*
+![Update, enable/disable, remove][image-6]
+_4) Connect/disconnect thing from channels, update or remove configuration_
 
-![Update, enable/disable, remove](img/bootstrap/6.png)
-*4) Connect/disconnect thing from channels, update or remove configuration*
-
-### Configuration
+## Configuration
 
 The configuration of Mainflux thing consists of three major parts:
 
 - The list of Mainflux channels the thing is connected to
 - Custom configuration related to the specific thing
-- Thing key and certificate data related to that thing
+- Thing Secret and certificate data related to that thing
 
 Also, the configuration contains an external ID and external key, which will be explained later.
 In order to enable the thing to start bootstrapping process, the user needs to upload a valid configuration for that specific thing. This can be done using the following HTTP request:
@@ -61,12 +62,12 @@ In this example, `channels` field represents the list of Mainflux channel IDs th
 
 There are two more fields: `external_id` and `external_key`. External ID represents an ID of the device that corresponds to the given thing. For example, this can be a MAC address or the serial number of the device. The external key represents the device key. This is the secret key that's safely stored on the device and it is used to authorize the thing during the bootstrapping process. Please note that external ID and external key and Mainflux ID and Mainflux key are _completely different concepts_. External id and key are only used to authenticate a device that corresponds to the specific Mainflux thing during the bootstrapping procedure. As Configuration optionally contains client certificate and issuing CA, it's possible that device is not able to establish TLS encrypted communication with Mainflux before bootstrapping. For that purpose, Bootstrap service exposes endpoint used for secure bootstrapping which can be used regardless of protocol (HTTP or HTTPS). Both device and Bootstrap service use a secret key to encrypt the content. Encryption is done as follows:
 
-   1) Device uses the secret encryption key to encrypt the value of that exact external key
-   2) Device sends a bootstrap request using the value from 1 as an Authorization header
-   3) Bootstrap service fetches config by its external ID
-   4) Bootstrap service uses the secret encryption key to decrypt Authorization header
-   5) Bootstrap service compares value from 4 with the external key of the config from 3 and proceeds to 6 if they're equal
-   6) Bootstrap service uses the secret encryption key to encrypt the content of the bootstrap response
+1. Device uses the secret encryption key to encrypt the value of that exact external key
+2. Device sends a bootstrap request using the value from 1 as an Authorization header
+3. Bootstrap service fetches config by its external ID
+4. Bootstrap service uses the secret encryption key to decrypt Authorization header
+5. Bootstrap service compares value from 4 with the external key of the config from 3 and proceeds to 6 if they're equal
+6. Bootstrap service uses the secret encryption key to encrypt the content of the bootstrap response
 
 > Please have on mind that secret key is passed to the Bootstrap service as an environment variable. As security measurement, Bootstrap service removes this variable once it reads it on startup. However, depending on your deployment, this variable can still be visible as a part of your configuration or terminal emulator environment.
 
@@ -117,4 +118,12 @@ curl -s -S -i -X PUT -H "Authorization: Bearer <user_token>" -H "Content-Type: a
 
 In order to disconnect, the same request should be sent with the value of `state` set to 0.
 
-For more information about the Bootstrap service API, please check out the [API documentation](https://github.com/mainflux/mainflux/blob/master/api/openapi/bootstrap.yml).
+For more information about the Bootstrap service API, please check out the [API documentation][api-docs].
+
+[image-1]: img/bootstrap/1.png
+[image-2]: img/bootstrap/2.png
+[image-3]: img/bootstrap/3.png
+[image-4]: img/bootstrap/4.png
+[image-5]: img/bootstrap/5.png
+[image-6]: img/bootstrap/6.png
+[api-docs]: https://github.com/mainflux/mainflux/blob/master/api/openapi/bootstrap.yml

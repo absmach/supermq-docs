@@ -1,6 +1,6 @@
 # Provision
 
-Provisioning is a process of configuration of an IoT platform in which system operator creates and sets-up different entities used in the platform - users, channels and things.
+Provisioning is a process of configuration of an IoT platform in which system operator creates and sets-up different entities used in the platform - users, groups, channels and things.
 
 ## Platform management
 
@@ -17,7 +17,7 @@ curl -s -S -i --cacert docker/ssl/certs/ca.crt -X POST -H "Content-Type: applica
 Response should look like this:
 
 ```bash
-HTTP/2 201 
+HTTP/2 201
 server: nginx/1.23.3
 date: Tue, 04 Apr 2023 08:40:39 GMT
 content-type: application/json
@@ -42,9 +42,9 @@ access-control-allow-headers: *
 
 Note that when using official `docker-compose`, all services are behind `nginx` proxy and all traffic is `TLS` encrypted.
 
-#### Obtaining an Authorization Key
+#### Obtaining an Authorization Token
 
-In order for this user to be able to authenticate to the system, you will have to create an authorization token for him:
+In order for this user to be able to authenticate to the system, you will have to create an authorization token for them:
 
 ```bash
 curl -s -S -i --cacert docker/ssl/certs/ca.crt -X POST -H "Content-Type: application/json" https://localhost/users/tokens/issue -d '{"identity":"john.doe@email.com", "secret":"12345678"}'
@@ -53,7 +53,7 @@ curl -s -S -i --cacert docker/ssl/certs/ca.crt -X POST -H "Content-Type: applica
 Response should look like this:
 
 ```bash
-HTTP/2 201 
+HTTP/2 201
 server: nginx/1.23.3
 date: Tue, 04 Apr 2023 08:40:58 GMT
 content-type: application/json
@@ -72,17 +72,21 @@ access-control-allow-headers: *
 }
 ```
 
-For more information about the Users service API, please check out the [API documentation](https://api.mainflux.io/?urls.primaryName=users.ymll).
+For more information about the Users service API, please check out the [API documentation](https://api.mainflux.io/?urls.primaryName=users.yml).
 
 ### System Provisioning
 
-Before proceeding, make sure that you have created a new account and obtained an authorization key.
+Before proceeding, make sure that you have created a new account and obtained an authorization token. You can set your `access_token` in the `USER_TOKEN` environment variable:
+
+```bash
+USER_TOKEN=<access_token>
+```
 
 #### Provisioning Things
 
-> This endpoint will be depreciated in 0.11.0.  It will be replaced with the bulk endpoint currently found at /things/bulk.
+> This endpoint will be depreciated in 1.0.0. It will be replaced with the bulk endpoint currently found at /things/bulk.
 
-Things are created by executing request `POST /things` with a JSON payload. Note that you will also need `user_token` in order to create things that belong to this particular user.
+Things are created by executing request `POST /things` with a JSON payload. Note that you will need `user_token` in order to create things that belong to this particular user.
 
 ```bash
 curl -s -S -i --cacert docker/ssl/certs/ca.crt -X POST -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" https://localhost/things -d '{"name":"weio"}'
@@ -91,7 +95,7 @@ curl -s -S -i --cacert docker/ssl/certs/ca.crt -X POST -H "Content-Type: applica
 Response will contain `Location` header whose value represents path to newly created thing:
 
 ```bash
-HTTP/2 201 
+HTTP/2 201
 server: nginx/1.23.3
 date: Tue, 04 Apr 2023 09:06:50 GMT
 content-type: application/json
@@ -112,7 +116,7 @@ access-control-expose-headers: Location
 
 #### Bulk Provisioning Things
 
-Multiple things can be created by executing a `POST /things/bulk` request with a JSON payload.  The payload should contain a JSON array of the things to be created.  If there is an error any of the things, none of the things will be created.
+Multiple things can be created by executing a `POST /things/bulk` request with a JSON payload. The payload should contain a JSON array of the things to be created. If there is an error any of the things, none of the things will be created.
 
 ```bash
 curl -s -S -i --cacert docker/ssl/certs/ca.crt -X POST -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" https://localhost/things/bulk -d '[{"name":"weio"},{"name":"bob"}]'
@@ -121,7 +125,7 @@ curl -s -S -i --cacert docker/ssl/certs/ca.crt -X POST -H "Content-Type: applica
 The response's body will contain a list of the created things.
 
 ```json
-HTTP/2 200 
+HTTP/2 200
 server: nginx/1.23.3
 date: Tue, 04 Apr 2023 08:42:04 GMT
 content-type: application/json
@@ -154,7 +158,7 @@ access-control-expose-headers: Location
 
 #### Retrieving Provisioned Things
 
-In order to retrieve data of provisioned things that is written in database, you can send following request:
+In order to retrieve data of provisioned things that are written in database, you can send following request:
 
 ```bash
 curl -s -S -i --cacert docker/ssl/certs/ca.crt -H "Authorization: Bearer $USER_TOKEN" https://localhost/things
@@ -163,7 +167,7 @@ curl -s -S -i --cacert docker/ssl/certs/ca.crt -H "Authorization: Bearer $USER_T
 Notice that you will receive only those things that were provisioned by `user_token` owner.
 
 ```json
-HTTP/2 200 
+HTTP/2 200
 server: nginx/1.23.3
 date: Tue, 04 Apr 2023 08:42:27 GMT
 content-type: application/json
@@ -195,20 +199,20 @@ access-control-expose-headers: Location
 }
 ```
 
-You can specify `offset` and `limit` parameters in order to fetch a specific group of things. In that case, your request should look like:
+You can specify `offset` and `limit` parameters in order to fetch a specific subset of things. In that case, your request should look like:
 
 ```bash
 curl -s -S -i --cacert docker/ssl/certs/ca.crt -H "Authorization: Bearer $USER_TOKEN" https://localhost/things?offset=0&limit=5
 ```
 
-You can specify `name` and/or `metadata` parameters in order to fetch specific group of things. When specifying metadata you can specify just a part of the metadata JSON you want to match.
+You can specify `name` and/or `metadata` parameters in order to fetch specific subset of things. When specifying metadata you can specify just a part of the metadata JSON you want to match.
 
 ```bash
 curl -s -S -i --cacert docker/ssl/certs/ca.crt -H "Authorization: Bearer $USER_TOKEN" https://localhost/things?offset=0&limit=5&name="weio"
 ```
 
 ```bash
-HTTP/2 200 
+HTTP/2 200
 server: nginx/1.23.3
 date: Tue, 04 Apr 2023 08:43:09 GMT
 content-type: application/json
@@ -234,14 +238,14 @@ If you don't provide them, default values will be used instead: 0 for `offset` a
 
 #### Disable Things
 
-In order to disable you own thing you can send following request:
+This is a special endpoint that allows you to disable a thing, soft deleting it from the database. In order to disable you own thing you can send following request:
 
 ```bash
 curl -s -S -i --cacert docker/ssl/certs/ca.crt -X POST -H "Authorization: Bearer $USER_TOKEN" https://localhost/things/1b1cd38f-62cd-4f17-b47e-5ff4e97881e8/disable
 ```
 
 ```bash
-HTTP/2 200 
+HTTP/2 200
 server: nginx/1.23.3
 date: Tue, 04 Apr 2023 09:00:40 GMT
 content-type: application/json
@@ -261,7 +265,7 @@ access-control-expose-headers: Location
 
 #### Provisioning Channels
 
-> This endpoint will be depreciated in 0.11.0.  It will be replaced with the bulk endpoint currently found at /channels/bulk.
+> This endpoint will be depreciated in 1.0.0. It will be replaced with the bulk endpoint currently found at /channels/bulk.
 
 Channels are created by executing request `POST /channels`:
 
@@ -272,7 +276,7 @@ curl -s -S -i --cacert docker/ssl/certs/ca.crt -X POST -H "Content-Type: applica
 After sending request you should receive response with `Location` header that contains path to newly created channel:
 
 ```bash
-HTTP/2 201 
+HTTP/2 201
 server: nginx/1.23.3
 date: Tue, 04 Apr 2023 09:18:10 GMT
 content-type: application/json
@@ -292,7 +296,7 @@ access-control-expose-headers: Location
 
 #### Bulk Provisioning Channels
 
-Multiple channels can be created by executing a `POST /things/bulk` request with a JSON payload.  The payload should contain a JSON array of the channels to be created.  If there is an error any of the channels, none of the channels will be created.
+Multiple channels can be created by executing a `POST /things/bulk` request with a JSON payload. The payload should contain a JSON array of the channels to be created. If there is an error any of the channels, none of the channels will be created.
 
 ```bash
 curl -s -S -i --cacert docker/ssl/certs/ca.crt -X POST -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" https://localhost/channels/bulk -d '[{"name":"joe"},{"name":"betty"}]'
@@ -301,7 +305,7 @@ curl -s -S -i --cacert docker/ssl/certs/ca.crt -X POST -H "Content-Type: applica
 The response's body will contain a list of the created channels.
 
 ```json
-HTTP/2 200 
+HTTP/2 200
 server: nginx/1.23.3
 date: Tue, 04 Apr 2023 09:11:16 GMT
 content-type: application/json
@@ -331,16 +335,16 @@ access-control-expose-headers: Location
 
 #### Retrieving Provisioned Channels
 
-To retreve provisioned channels you should send request to `/channels` with authorization token in `Authorization` header:
+In order to retrieve data of provisioned channels that are written in database, you can send following request:
 
 ```bash
 curl -s -S -i --cacert docker/ssl/certs/ca.crt -H "Authorization: Bearer $USER_TOKEN" https://localhost/channels
 ```
 
-Note that you will receive only those channels that were created by authorization token's owner.
+Notice that you will receive only those things that were provisioned by `user_token` owner.
 
 ```json
-HTTP/2 200 
+HTTP/2 200
 server: nginx/1.23.3
 date: Tue, 04 Apr 2023 09:13:48 GMT
 content-type: application/json
@@ -369,7 +373,7 @@ access-control-expose-headers: Location
 }
 ```
 
-You can specify  `offset` and  `limit` parameters in order to fetch specific group of channels. In that case, your request should look like:
+You can specify `offset` and `limit` parameters in order to fetch specific subset of channels. In that case, your request should look like:
 
 ```bash
 curl -s -S -i --cacert docker/ssl/certs/ca.crt -H "Authorization: Bearer $USER_TOKEN" https://localhost/channels?offset=0&limit=5
@@ -379,14 +383,14 @@ If you don't provide them, default values will be used instead: 0 for `offset` a
 
 #### Disabling Channels
 
-In order to disable specific channel you should send following request:
+This is a special endpoint that allows you to disable a channel, soft deleting it from the database. In order to disable you own channel you can send following request:
 
-``` bash
+```bash
 curl -s -S -i --cacert docker/ssl/certs/ca.crt -X POST -H "Authorization: Bearer $USER_TOKEN" https://localhost/channels/5ec1beb9-1b76-47e6-a9ef-baf9e4ae5820/disable
 ```
 
 ```bash
-HTTP/2 200 
+HTTP/2 200
 server: nginx/1.23.3
 date: Tue, 04 Apr 2023 09:16:31 GMT
 content-type: application/json
@@ -405,21 +409,20 @@ access-control-expose-headers: Location
 
 ### Access Control
 
-Channel can be observed as a communication group of things. Only things that are connected to the channel can send and receive messages from other things in this channel.
-Things that are not connected to this channel are not allowed to communicate over it.
+Channel can be observed as a communication group of things. Only things that are connected to the channel can send and receive messages from other things in this channel. Things that are not connected to this channel are not allowed to communicate over it. Users may also be assigned to channels, thus sharing things between users. With the necessary policies in place, users can be granted access to things that are not owned by them.
 
-Only user, who is the owner of a channel and of the things, can connect the things to the channel (which is equivalent of giving permissions to these things to communicate over given communication group).
+A user who is the owner of a channel or a user that has been assigned to the channel with the required policy can connect things to the channel. This is equivalent of giving permissions to these things to communicate over given communication group.
 
 To connect a thing to the channel you should send following request:
 
-> This endpoint will be depreciated in 0.11.0.  It will be replaced with the bulk endpoint found at /connect.
+> This endpoint will be depreciated in 1.0.0. It will be replaced with the bulk endpoint found at /connect.
 
 ```bash
 curl -s -S -i --cacert docker/ssl/certs/ca.crt -X PUT -H "Authorization: Bearer $USER_TOKEN" https://localhost/channels/<channel_id>/things/<thing_id>
 ```
 
 ```bash
-HTTP/2 201 
+HTTP/2 201
 server: nginx/1.23.3
 date: Tue, 04 Apr 2023 09:20:23 GMT
 content-type: application/json
@@ -451,7 +454,7 @@ curl -s -S -i --cacert docker/ssl/certs/ca.crt -H "Authorization: Bearer $USER_T
 Response that you'll get should look like this:
 
 ```json
-HTTP/2 200 
+HTTP/2 200
 server: nginx/1.23.3
 date: Tue, 04 Apr 2023 09:53:21 GMT
 content-type: application/json
@@ -481,7 +484,7 @@ curl -s -S -i --cacert docker/ssl/certs/ca.crt -H "Authorization: Bearer $USER_T
 Response that you'll get should look like this:
 
 ```bash
-HTTP/2 200 
+HTTP/2 200
 server: nginx/1.23.3
 date: Tue, 04 Apr 2023 09:57:10 GMT
 content-type: application/json
@@ -503,6 +506,8 @@ access-control-expose-headers: Location
 
 If you want to disconnect your thing from the channel, send following request:
 
+> This endpoint will be depreciated in 1.0.0. It will be replaced with the bulk endpoint found at /disconnect.
+
 ```bash
 curl -s -S -i --cacert docker/ssl/certs/ca.crt -X DELETE -H "Authorization: Bearer $USER_TOKEN" https://localhost/channels/<channel_id>/things/<thing_id>
 ```
@@ -510,23 +515,19 @@ curl -s -S -i --cacert docker/ssl/certs/ca.crt -X DELETE -H "Authorization: Bear
 Response that you'll get should look like this:
 
 ```bash
-HTTP/2 204 
+HTTP/2 204
 server: nginx/1.23.3
 date: Tue, 04 Apr 2023 09:57:53 GMT
 access-control-expose-headers: Location
 ```
 
-For more information about the Things service API, please check out the [API documentation](https://github.com/mainflux/mainflux/blob/master/api/things.yml).
+For more information about the Things service API, please check out the [API documentation](https://api.mainflux.io/?urls.primaryName=things.yml).
 
 ## Provision Service
 
-Provisioning is a process of configuration of an IoT platform in which system operator creates and sets-up different entities used in the platform - users, channels and things. It is part of process of setting up IoT applications where we connect devices on edge with platform in cloud.
+Provisioning is a process of configuration of an IoT platform in which system operator creates and sets-up different entities used in the platform - users, channels and things. It is part of process of setting up IoT applications where we connect devices on edge with platform in cloud. For provisioning we can use [Mainflux CLI][cli] for creating users and for each node in the edge (eg. gateway) required number of things, channels, connecting them and creating certificates if needed. Provision service is used to set up initial application configuration once user is created. Provision service creates things, channels, connections and certificates. Once user is created we can use provision to create a setup for edge node in one HTTP request instead of issuing several CLI commands.
 
-For provisioning we can use [Mainflux CLI][cli] for creating users and for each node in the edge (eg. gateway) required number of things, channels, connecting them and creating certificates if needed.
-
-Provision service is used to set up initial application configuration once user is created. Provision service creates  things, channels, connections and certificates. Once user is created we can use provision to create a setup for edge node in one HTTP request instead of issuing several CLI commands.
-
-Provision service provides an HTTP API to interact with [Mainflux][mainflux].
+Provision service provides an HTTP API to interact with [Mainflux][provision-api].
 
 For gateways to communicate with [Mainflux][mainflux] configuration is required (MQTT host, thing, channels, certificates...). Gateway will send a request to [Bootstrap][bootstrap] service providing `<external_id>` and `<external_key>` in HTTP request to get the configuration. To make a request to [Bootstrap][bootstrap] service you can use [Agent][agent] service on a gateway.
 
@@ -651,9 +652,9 @@ To provide authentication credentials to the provision service you can pass it i
 
 Additionally, users or API token can be passed in Authorization header, this authentication takes precedence over others.
 
-* `username`, `password` - (`MF_PROVISION_USER`, `MF_PROVISION_PASSWORD` in [.env][env], `mf_user`, `mf_pass` in [config.toml][conftoml]
-* API Key - (`MF_PROVISION_API_KEY` in [.env][env] or [config.toml][conftoml]
-* `Authorization: Bearer Token|ApiKey` - request authorization header containing users token. Check [auth][auth].
+- `username`, `password` - (`MF_PROVISION_USER`, `MF_PROVISION_PASSWORD` in [.env][env], `mf_user`, `mf_pass` in [config.toml][conftoml]
+- API Key - (`MF_PROVISION_API_KEY` in [.env][env] or [config.toml][conftoml]
+- `Authorization: Bearer Token|ApiKey` - request authorization header containing users token. Check [auth][auth].
 
 ### Running
 
@@ -692,7 +693,11 @@ curl -s -S  -X POST  http://localhost:9016/mapping -H "Authorization: Bearer <to
 Or if you want to specify a name for thing different than in `config.toml` you can specify post data as:
 
 ```json
-{"name": "<name>", "external_id": "<external_id>", "external_key": "<external_key>"}
+{
+  "name": "<name>",
+  "external_id": "<external_id>",
+  "external_key": "<external_key>"
+}
 ```
 
 Response contains created things, channels and certificates if any:
@@ -783,68 +788,6 @@ Agent will retrieve connections parameters and connect to Mainflux cloud.
 
 For more information about the Provision service API, please check out the [API documentation](https://github.com/mainflux/mainflux/blob/master/api/provision.yml).
 
-## Certs Service
-
-Issues certificates for things. `Certs` service can create certificates to be used when `Mainflux` is deployed to support mTLS.  
-`Certs` service will create certificate for valid thing ID if valid user token is passed and user is owner of the provided thing ID.
-
-Certificate service can create certificates in two modes:
-
-1. Development mode - to be used when no PKI is deployed, this works similar to the [make thing_cert](../docker/ssl/Makefile)
-2. PKI mode - certificates issued by PKI, when you deploy `Vault` as PKI certificate management `cert` service will proxy requests to `Vault` previously checking access rights and saving info on successfully created certificate.
-
-### Development mode
-
-If `MF_CERTS_VAULT_HOST` is empty than Development mode is on.
-
-To issue a certificate:
-
-```bash
-
-USERTOKEN=`curl  -s --insecure -S -X POST https://localhost/users/tokens/issue -H "Content-Type: application/json" -d '{"identity":"john.doe@email.com", "secret":"12345678"}' | grep -oP '"access_token":"\K[^"]+'`
-
-curl -s -S  -X POST  http://localhost:9019/certs -H "Authorization: Bearer $USER_TOKEN" -H 'Content-Type: application/json'   -d '{"thing_id":<thing_id>, "rsa_bits":2048, "key_type":"rsa"}'
-```
-
-```json
-{
-  "ThingID": "",
-  "ClientCert": "-----BEGIN CERTIFICATE-----\nMIIDmTCCAoGgAwIBAgIRANmkAPbTR1UYeYO0Id/4+8gwDQYJKoZIhvcNAQELBQAw\nVzESMBAGA1UEAwwJbG9jYWxob3N0MREwDwYDVQQKDAhNYWluZmx1eDEMMAoGA1UE\nCwwDSW9UMSAwHgYJKoZIhvcNAQkBFhFpbmZvQG1haW5mbHV4LmNvbTAeFw0yMDA2\nMzAxNDIxMDlaFw0yMDA5MjMyMjIxMDlaMFUxETAPBgNVBAoTCE1haW5mbHV4MREw\nDwYDVQQLEwhtYWluZmx1eDEtMCsGA1UEAxMkYjAwZDBhNzktYjQ2YS00NTk3LTli\nNGYtMjhkZGJhNTBjYTYyMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA\ntgS2fLUWG3CCQz/l6VRQRJfRvWmdxK0mW6zIXGeeOILYZeaLiuiUnohwMJ4RiMqT\nuJbInAIuO/Tt5osfrCFFzPEOLYJ5nZBBaJfTIAxqf84Ou1oeMRll4wpzgeKx0rJO\nXMAARwn1bT9n3uky5QQGSLy4PyyILzSXH/1yCQQctdQB/Ar/UI1TaYoYlGzh7dHT\nWpcxq1HYgCyAtcrQrGD0rEwUn82UBCrnya+bygNqu0oDzIFQwa1G8jxSgXk0mFS1\nWrk7rBipsvp8HQhdnvbEVz4k4AAKcQxesH4DkRx/EXmU2UvN3XysvcJ2bL+UzMNI\njNhAe0pgPbB82F6zkYZ/XQIDAQABo2IwYDAOBgNVHQ8BAf8EBAMCB4AwHQYDVR0l\nBBYwFAYIKwYBBQUHAwIGCCsGAQUFBwMBMA4GA1UdDgQHBAUBAgMEBjAfBgNVHSME\nGDAWgBRs4xR91qEjNRGmw391xS7x6Tc+8jANBgkqhkiG9w0BAQsFAAOCAQEAW/dS\nV4vNLTZwBnPVHUX35pRFxPKvscY+vnnpgyDtITgZHYe0KL+Bs3IHuywtqaezU5x1\nkZo+frE1OcpRvp7HJtDiT06yz+18qOYZMappCWCeAFWtZkMhlvnm3TqTkgui6Xgl\nGj5xnPb15AOlsDE2dkv5S6kEwJGHdVX6AOWfB4ubUq5S9e4ABYzXGUty6Hw/ZUmJ\nhCTRVJ7cQJVTJsl1o7CYT8JBvUUG75LirtoFE4M4JwsfsKZXzrQffTf1ynqI3dN/\nHWySEbvTSWcRcA3MSmOTxGt5/zwCglHDlWPKMrXtjTW7NPuGL5/P9HSB9HGVVeET\nDUMdvYwgj0cUCEu3LA==\n-----END CERTIFICATE-----\n",
-  "IssuingCA": "",
-  "CAChain": null,
-  "ClientKey": "-----BEGIN RSA PRIVATE KEY-----\nMIIEowIBAAKCAQEAtgS2fLUWG3CCQz/l6VRQRJfRvWmdxK0mW6zIXGeeOILYZeaL\niuiUnohwMJ4RiMqTuJbInAIuO/Tt5osfrCFFzPEOLYJ5nZBBaJfTIAxqf84Ou1oe\nMRll4wpzgeKx0rJOXMAARwn1bT9n3uky5QQGSLy4PyyILzSXH/1yCQQctdQB/Ar/\nUI1TaYoYlGzh7dHTWpcxq1HYgCyAtcrQrGD0rEwUn82UBCrnya+bygNqu0oDzIFQ\nwa1G8jxSgXk0mFS1Wrk7rBipsvp8HQhdnvbEVz4k4AAKcQxesH4DkRx/EXmU2UvN\n3XysvcJ2bL+UzMNIjNhAe0pgPbB82F6zkYZ/XQIDAQABAoIBAALoal3tqq+/iWU3\npR2oKiweXMxw3oNg3McEKKNJSH7QoFJob3xFoPIzbc9pBxCvY9LEHepYIpL0o8RW\nHqhqU6olg7t4ZSb+Qf1Ax6+wYxctnJCjrO3N4RHSfevqSjr6fEQBEUARSal4JNmr\n0hNUkCEjWrIvrPFMHsn1C5hXR3okJQpGsad4oCGZDp2eZ/NDyvmLBLci9/5CJdRv\n6roOF5ShWweKcz1+pfy666Q8RiUI7H1zXjPaL4yqkv8eg/WPOO0dYF2Ri2Grk9OY\n1qTM0W1vi9zfncinZ0DpgtwMTFQezGwhUyJHSYHmjVBA4AaYIyOQAI/2dl5fXM+O\n9JfXpOUCgYEA10xAtMc/8KOLbHCprpc4pbtOqfchq/M04qPKxQNAjqvLodrWZZgF\nexa+B3eWWn5MxmQMx18AjBCPwbNDK8Rkd9VqzdWempaSblgZ7y1a0rRNTXzN5DFP\noiuRQV4wszCuj5XSdPn+lxApaI/4+TQ0oweIZCpGW39XKePPoB5WZiMCgYEA2G3W\niJncRpmxWwrRPi1W26E9tWOT5s9wYgXWMc+PAVUd/qdDRuMBHpu861Qoghp/MJog\nBYqt2rQqU0OxvIXlXPrXPHXrCLOFwybRCBVREZrg4BZNnjyDTLOu9C+0M3J9ImCh\n3vniYqb7S0gRmoDM0R3Zu4+ajfP2QOGLXw1qHH8CgYEAl0EQ7HBW8V5UYzi7XNcM\nixKOb0YZt83DR74+hC6GujTjeLBfkzw8DX+qvWA8lxLIKVC80YxivAQemryv4h21\nX6Llx/nd1UkXUsI+ZhP9DK5y6I9XroseIRZuk/fyStFWsbVWB6xiOgq2rKkJBzqw\nCCEQpx40E6/gsqNDiIAHvvUCgYBkkjXc6FJ55DWMLuyozfzMtpKsVYeG++InSrsM\nDn1PizQS/7q9mAMPLCOP312rh5CPDy/OI3FCbfI1GwHerwG0QUP/bnQ3aOTBmKoN\n7YnsemIA/5w16bzBycWE5x3/wjXv4aOWr9vJJ/siMm0rtKp4ijyBcevKBxHpeGWB\nWAR1FQKBgGIqAxGnBpip9E24gH894BaGHHMpQCwAxARev6sHKUy27eFUd6ipoTva\n4Wv36iz3gxU4R5B0gyfnxBNiUab/z90cb5+6+FYO13kqjxRRZWffohk5nHlmFN9K\nea7KQHTfTdRhOLUzW2yVqLi9pzfTfA6Yqf3U1YD3bgnWrp1VQnjo\n-----END RSA PRIVATE KEY-----\n",
-  "PrivateKeyType": "",
-  "Serial": "",
-  "Expire": "0001-01-01T00:00:00Z"
-}
-```
-
-### PKI mode
-
-When `MF_CERTS_VAULT_HOST` is set it is presumed that `Vault` is installed and `certs` service will issue certificates using `Vault` API.
-First you'll need to set up `Vault`.
-To setup `Vault` follow steps in [Build Your Own Certificate Authority (CA)](https://learn.hashicorp.com/tutorials/vault/pki-engine).
-
-To setup certs service with `Vault` following environment variables must be set:
-
-```bash
-MF_CERTS_VAULT_HOST=vault-domain.com
-MF_CERTS_VAULT_PKI_PATH=<vault_pki_path>
-MF_CERTS_VAULT_ROLE=<vault_role>
-MF_CERTS_VAULT_TOKEN=<vault_acces_token>
-```
-
-For lab purposes you can use docker-compose and script for setting up PKI in [https://github.com/mteodor/vault](https://github.com/mteodor/vault)
-
-Issuing certificate is same as in **Development** mode.
-In this mode certificates can also be revoked:
-
-```bash
-curl -s -S -X DELETE http://localhost:9019/certs/revoke -H "Authorization: Bearer $TOKEN" -H 'Content-Type: application/json'   -d '{"thing_id":"c30b8842-507c-4bcd-973c-74008cef3be5"}'
-```
-
-For more information about the Certification service API, please check out the [API documentation](https://github.com/mainflux/mainflux/blob/master/api/certs.yml).
-
 [mainflux]: https://github.com/mainflux/mainflux
 [bootstrap]: https://github.com/mainflux/mainflux/tree/master/bootstrap
 [agent]: https://github.com/mainflux/agent
@@ -856,3 +799,4 @@ For more information about the Certification service API, please check out the [
 [exp]: https://github.com/mainflux/export
 [cli]: https://github.com/mainflux/mainflux/tree/master/cli
 [auth]: authentication.md
+[provision-api]: https://api.mainflux.io/?urls.primaryName=provision.yml

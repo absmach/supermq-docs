@@ -25,21 +25,27 @@ nav:
   - Overview: index.md
   - Architecture: architecture.md
   - Getting Started: getting-started.md
-  - Provision: provision.md
-  - Messaging: messaging.md
-  - Storage: storage.md
-  - LoRa: lora.md
-  - OPC-UA: opcua.md
-  - Edge: edge.md
-  - Security: security.md
+  # Core
+  - Entities: entities.md
+  - API: api.md
+  - CLI: cli.md
   - Authentication: authentication.md
   - Authorization: authorization.md
-  - CLI: cli.md
-  - API: api.md
-  - Entities: entities.md
+  - Security: security.md
+  - Messaging: messaging.md
+  # Edge
+  - Edge: edge.md
+  # Addons
+  - Certs: certs.md
   - Bootstrap: bootstrap.md
+  - LoRa: lora.md
+  - OPC-UA: opcua.md
+  - Provision: provision.md
+  - Storage: storage.md
   - Twins: twins.md
+  # Observability
   - Tracing: tracing.md
+  # Utilities
   - Developer's Guide: dev-guide.md
   - Kubernetes: kubernetes.md
   - Benchmark: benchmark.md

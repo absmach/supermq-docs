@@ -2,7 +2,7 @@
 
 Mainflux CLI makes it easy to manage users, things, channels and messages.
 
-CLI can be downloaded as separate asset from [project realeses](https://github.com/mainflux/mainflux/releases) or it can be built with `GNU Make` tool:
+CLI can be downloaded as separate asset from [project realeses][releases] or it can be built with `GNU Make` tool:
 
 Get the mainflux code
 
@@ -43,12 +43,13 @@ Flags:
   -b, --bootstrap-url string   Bootstrap service URL (default "http://localhost")
   -s, --certs-url string       Certs service URL (default "http://localhost")
   -c, --config string          Config path
+  -C, --contact string         Subscription contact query parameter
   -y, --content-type string    Message content type (default "application/senml+json")
   -e, --email string           User email query parameter
   -h, --help                   help for mainflux-cli
   -p, --http-url string        HTTP adapter URL (default "http://localhost/http")
   -i, --insecure               Do not check for TLS cert
-  -l, --limit uint             Limit query parameter (default 100)
+  -l, --limit uint             Limit query parameter (default 10)
   -m, --metadata string        Metadata query parameter
   -n, --name string            Name query parameter
   -o, --offset uint            Offset query parameter
@@ -56,7 +57,6 @@ Flags:
   -R, --reader-url string      Reader URL (default "http://localhost")
   -z, --state string           Bootstrap state query parameter
   -S, --status string          User status query parameter
-  -t, --things-url string      Things service URL (default "http://localhost")
   -t, --things-url string      Things service URL (default "http://localhost")
   -T, --topic string           Subscription topic query parameter
   -u, --users-url string       Users service URL (default "http://localhost")
@@ -111,12 +111,13 @@ Global Flags:
   -b, --bootstrap-url string   Bootstrap service URL (default "http://localhost")
   -s, --certs-url string       Certs service URL (default "http://localhost")
   -c, --config string          Config path
+  -C, --contact string         Subscription contact query parameter
   -y, --content-type string    Message content type (default "application/senml+json")
   -e, --email string           User email query parameter
   -h, --help                   help for mainflux-cli
   -p, --http-url string        HTTP adapter URL (default "http://localhost/http")
   -i, --insecure               Do not check for TLS cert
-  -l, --limit uint             Limit query parameter (default 100)
+  -l, --limit uint             Limit query parameter (default 10)
   -m, --metadata string        Metadata query parameter
   -n, --name string            Name query parameter
   -o, --offset uint            Offset query parameter
@@ -124,7 +125,6 @@ Global Flags:
   -R, --reader-url string      Reader URL (default "http://localhost")
   -z, --state string           Bootstrap state query parameter
   -S, --status string          User status query parameter
-  -t, --things-url string      Things service URL (default "http://localhost")
   -t, --things-url string      Things service URL (default "http://localhost")
   -T, --topic string           Subscription topic query parameter
   -u, --users-url string       Users service URL (default "http://localhost")
@@ -145,8 +145,8 @@ Response should look like this:
 
 ```json
 {
-  "build_time": "2023-04-04_12:56:15",
-  "commit": "d5d3f8b2c0cccb1b9c5c00c43554f0afb4bc38f9",
+  "build_time": "2023-06-26_13:16:16",
+  "commit": "8589ad58f4ac30a198c101a7b8aa7ac2c54b2d05",
   "description": "things service",
   "status": "pass",
   "version": "0.13.0"
@@ -171,6 +171,12 @@ mainflux-cli users create <user_name> <user_email> <user_password> <user_token>
 mainflux-cli users token <user_email> <user_password>
 ```
 
+#### Get User Token From Refresh Token
+
+```bash
+mainflux-cli users refreshtoken <refresh_token>
+```
+
 #### Get User
 
 ```bash
@@ -187,6 +193,24 @@ mainflux-cli users get all <user_token>
 
 ```bash
 mainflux-cli users update <user_id> '{"name":"value1", "metadata":{"value2": "value3"}}' <user_token>
+```
+
+#### Update User Tags
+
+```bash
+mainflux-cli users update tags <user_id> '["tag1", "tag2"]' <user_token>
+```
+
+#### Update User Identity
+
+```bash
+mainflux-cli users update identity <user_id> <user_email> <user_token>
+```
+
+#### Update User Owner
+
+```bash
+mainflux-cli users update owner <user_id> <owner_id> <user_token>
 ```
 
 #### Update User Password
@@ -207,7 +231,75 @@ mainflux-cli users enable <user_id> <user_token>
 mainflux-cli users disable <user_id> <user_token>
 ```
 
-### System Provisioning
+#### Get Profile of the User identified by the token
+
+```bash
+mainflux-cli users profile <user_token>
+```
+
+### Groups management
+
+#### Create Group
+
+```bash
+mainflux-cli groups create '{"name":"<group_name>","description":"<description>","parentID":"<parent_id>","metadata":"<metadata>"}' <user_token>
+```
+
+#### Get Group
+
+```bash
+mainflux-cli groups get <group_id> <user_token>
+```
+
+#### Get Groups
+
+```bash
+mainflux-cli groups get all <user_token>
+```
+
+#### Update Group
+
+```bash
+mainflux-cli groups update '{"id":"<group_id>","name":"<group_name>","description":"<description>","metadata":"<metadata>"}' <user_token>
+```
+
+#### Get Group Members
+
+```bash
+mainflux-cli groups members <group_id> <user_token>
+```
+
+#### Get Memberships
+
+```bash
+mainflux-cli groups membership <member_id> <user_token>
+```
+
+#### Assign Members to Group
+
+```bash
+mainflux-cli groups assign <member_ids> <member_type> <group_id> <user_token>
+```
+
+#### Unassign Members to Group
+
+```bash
+mainflux-cli groups unassign <member_ids> <group_id>  <user_token>
+```
+
+#### Enable Group
+
+```bash
+mainflux-cli groups enable <group_id> <user_token>
+```
+
+#### Disable Group
+
+```bash
+mainflux-cli groups disable <group_id> <user_token>
+```
+
+### Things management
 
 #### Create Thing
 
@@ -227,8 +319,8 @@ mainflux-cli things create '{"name":"myThing", "metadata": {"key1":"value1"}}' <
 mainflux-cli provision things <file> <user_token>
 ```
 
-* `file` - A CSV or JSON file containing thing names (must have extension `.csv` or `.json`)
-* `user_token` - A valid user auth token for the current system
+- `file` - A CSV or JSON file containing thing names (must have extension `.csv` or `.json`)
+- `user_token` - A valid user auth token for the current system
 
 An example CSV file might be:
 
@@ -243,22 +335,23 @@ in which the first column is thing names.
 A comparable JSON file would be
 
 ```json
-[{
-        "name": "<thing1_name>",
-        "status": "enabled"
-    },
-    {
-        "name": "<thing2_name>",
-        "status": "disabled"
-    }, {
-
-        "name": "<thing3_name>",
-        "status": "enabled",
-        "credentials": {
-            "identity": "<thing3_identity>",
-            "secret": "<thing3_secret>"
-        }
+[
+  {
+    "name": "<thing1_name>",
+    "status": "enabled"
+  },
+  {
+    "name": "<thing2_name>",
+    "status": "disabled"
+  },
+  {
+    "name": "<thing3_name>",
+    "status": "enabled",
+    "credentials": {
+      "identity": "<thing3_identity>",
+      "secret": "<thing3_secret>"
     }
+  }
 ]
 ```
 
@@ -270,10 +363,28 @@ With JSON you can be able to specify more fields of the channels you want to cre
 mainflux-cli things update <thing_id> '{"name":"value1", "metadata":{"key1": "value2"}}' <user_token>
 ```
 
+#### Update Thing Tags
+
+```bash
+mainflux-cli things update tags <thing_id> '["tag1", "tag2"]' <user_token>
+```
+
+#### Update Thing Owner
+
+```bash
+mainflux-cli things update owner <thing_id> <owner_id> <user_token>
+```
+
+#### Update Thing Secret
+
+```bash
+mainflux-cli things update secret <thing_id> <secet> <user_token>
+```
+
 #### Identify Thing
 
 ```bash
-mainflux-cli things identify <thing_key>
+mainflux-cli things identify <thing_secret>
 ```
 
 #### Enable Thing
@@ -306,6 +417,14 @@ mainflux-cli things get all <user_token>
 mainflux-cli things get all --offset=1 --limit=5 <user_token>
 ```
 
+#### Share Thing
+
+```bash
+mainflux-cli things share <channel_id> <user_id> <allowed_actions> <user_token>
+```
+
+### Channels management
+
 #### Create Channel
 
 ```bash
@@ -318,8 +437,8 @@ mainflux-cli channels create '{"name":"myChannel"}' <user_token>
 mainflux-cli provision channels <file> <user_token>
 ```
 
-* `file` - A CSV or JSON file containing channel names (must have extension `.csv` or `.json`)
-* `user_token` - A valid user auth token for the current system
+- `file` - A CSV or JSON file containing channel names (must have extension `.csv` or `.json`)
+- `user_token` - A valid user auth token for the current system
 
 An example CSV file might be:
 
@@ -334,21 +453,22 @@ in which the first column is channel names.
 A comparable JSON file would be
 
 ```json
-[{
-        "name": "<channel1_name>",
-        "description": "<channel1_description>",
-        "status": "enabled"
-    },
-    {
-        "name": "<channel2_name>",
-        "description": "<channel2_description>",
-        "status": "disabled"
-    }, {
-
-        "name": "<channel3_name>",
-        "description": "<channel3_description>",
-        "status": "enabled"
-    }
+[
+  {
+    "name": "<channel1_name>",
+    "description": "<channel1_description>",
+    "status": "enabled"
+  },
+  {
+    "name": "<channel2_name>",
+    "description": "<channel2_description>",
+    "status": "disabled"
+  },
+  {
+    "name": "<channel3_name>",
+    "description": "<channel3_description>",
+    "status": "enabled"
+  }
 ]
 ```
 
@@ -390,8 +510,6 @@ mainflux-cli channels get all <user_token>
 mainflux-cli channels get all --offset=1 --limit=5 <user_token>
 ```
 
-### Access control
-
 #### Connect Thing to Channel
 
 ```bash
@@ -404,8 +522,8 @@ mainflux-cli things connect <thing_id> <channel_id> <user_token>
 mainflux-cli provision connect <file> <user_token>
 ```
 
-* `file` - A CSV or JSON file containing thing and channel ids (must have extension `.csv` or `.json`)
-* `user_token` - A valid user auth token for the current system
+- `file` - A CSV or JSON file containing thing and channel ids (must have extension `.csv` or `.json`)
+- `user_token` - A valid user auth token for the current system
 
 An example CSV file might be
 
@@ -414,20 +532,14 @@ An example CSV file might be
 <thing_id2>,<channel_id2>
 ```
 
-in which the first column is thing IDs and the second column is channel IDs.  A connection will be created for each thing to each channel.  This example would result in 4 connections being created.
+in which the first column is thing IDs and the second column is channel IDs. A connection will be created for each thing to each channel. This example would result in 4 connections being created.
 
 A comparable JSON file would be
 
 ```json
 {
-    "client_ids": [
-        "<thing_id1>",
-        "<thing_id2>"
-    ],
-    "group_ids": [
-        "<channel_id1>",
-        "<channel_id2>"
-    ]
+  "subjects": ["<thing_id1>", "<thing_id2>"],
+  "objects": ["<channel_id1>", "<channel_id2>"]
 }
 ```
 
@@ -495,58 +607,4 @@ mainflux-cli bootstrap remove <thing_id> <user_token> -b <bootstrap-url>
 mainflux-cli bootstrap bootstrap <external_id> <external_key> -b <bootstrap-url>
 ```
 
-### Groups
-
-#### Create Group
-
-```bash
-mainflux-cli groups create '{"name":"<group_name>","description":"<description>","parentID":"<parent_id>","metadata":"<metadata>"}' <user_token>
-```
-
-#### Get Group
-
-```bash
-mainflux-cli groups get <group_id> <user_token>
-```
-
-#### Get Groups
-
-```bash
-mainflux-cli groups get all <user_token>
-```
-
-#### Get Group Members
-
-```bash
-mainflux-cli groups members <group_id> <user_token>
-```
-
-#### Get Memberships
-
-```bash
-mainflux-cli groups membership <member_id> <user_token>
-```
-
-#### Assign Members to Group
-
-```bash
-mainflux-cli groups assign <member_ids> <member_type> <group_id> <user_token>
-```
-
-#### Unassign Members to Group
-
-```bash
-mainflux-cli groups unassign <member_ids> <group_id>  <user_token>
-```
-
-#### Enable Group
-
-```bash
-mainflux-cli groups enable <group_id> <user_token>
-```
-
-#### Disable Group
-
-```bash
-mainflux-cli groups disable <group_id> <user_token>
-```
+[releases]: https://github.com/mainflux/mainflux/releases

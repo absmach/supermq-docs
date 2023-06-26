@@ -25,13 +25,13 @@ To run service in a standalone mode, set `MF_THINGS_STANDALONE_EMAIL` and `MF_TH
 
 ## Client Configuration
 
-If you wish to secure the gRPC connection to `Things` and `Users` services you must define the CAs that you trust.  This does not support mutual certificate authentication.
+If you wish to secure the gRPC connection to `Things` and `Users` services you must define the CAs that you trust. This does not support mutual certificate authentication.
 
 ### Adapter Configuration
 
 `MF_HTTP_ADAPTER_CA_CERTS`, `MF_MQTT_ADAPTER_CA_CERTS`, `MF_WS_ADAPTER_CA_CERTS`, `MF_COAP_ADAPTER_CA_CERTS` - the path to a file that contains the CAs in PEM format. If not set, the default connection will be insecure. If it fails to read the file, the adapter will fail to start up.
 
-### Things
+### Things Configuration
 
 `MF_THINGS_CA_CERTS` - the path to a file that contains the CAs in PEM format. If not set, the default connection will be insecure. If it fails to read the file, the service will fail to start up.
 
@@ -53,6 +53,7 @@ If a secured connection is required, you can select the SSL mode and set paths t
 Supported database connection modes are: `disabled` (default), `required`, `verify-ca` and `verify-full`.
 
 ## Securing gRPC
+
 By default gRPC communication is not secure as Mainflux system is most often run in a private network behind the reverse proxy.
 
 However, TLS can be activated and configured.

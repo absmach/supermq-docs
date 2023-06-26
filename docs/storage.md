@@ -27,7 +27,7 @@ Each writer can filter messages based on subjects list that is set in `config.to
 subjects = ["channels.*.messages.bedroom.temperature","channels.*.messages.bedroom.humidity"]
 ```
 
-Regarding the [Subtopics Section](messaging.md#subtopics) in the messaging page, the example `channels/<channel_id>/messages/bedroom/temperature` can be filtered as `"channels.*.bedroom.temperature"`. The formatting of this filtering list is determined by the default message broker, NATS, format ([Subject-Based Messaging](https://docs.nats.io/nats-concepts/subjects) & [Wildcards](https://docs.nats.io/nats-concepts/subjects#wildcards)).
+Regarding the [Subtopics Section][subtopic] in the messaging page, the example `channels/<channel_id>/messages/bedroom/temperature` can be filtered as `"channels.*.bedroom.temperature"`. The formatting of this filtering list is determined by the default message broker, NATS, format ([Subject-Based Messaging][nats-subject] & [Wildcards][nats-wildcards]).
 
 ### Transformer config
 
@@ -54,23 +54,23 @@ time_fields = [{ field_name = "seconds_key", field_format = "unix",    location 
                { field_name = "nanos_key",   field_format = "unix_ns", location = "UTC"}]
 ```
 
-JSON transformer can be used for any JSON payload. For the messages that contain _JSON array as the root element_, JSON Transformer does normalization of the data: it creates a separate JSON message for each JSON object in the root. In order to be processed and stored properly, JSON messages need to contain message format information. For the sake of simplicity, nested JSON objects are flatten to a single JSON object in InfluxDB, using composite keys separated by the `/` separator. This implies that the separator character (`/`) _is not allowed in the JSON object key_ while using InfluxDB. Apart from InfluxDB, separator character (`/`) usage in the JSON object key is permitted, since other [Writer](storage.md#writers) types do not flat the nested JSON objects. For example, the following JSON object:
+JSON transformer can be used for any JSON payload. For the messages that contain _JSON array as the root element_, JSON Transformer does normalization of the data: it creates a separate JSON message for each JSON object in the root. In order to be processed and stored properly, JSON messages need to contain message format information. For the sake of simplicity, nested JSON objects are flatten to a single JSON object in InfluxDB, using composite keys separated by the `/` separator. This implies that the separator character (`/`) _is not allowed in the JSON object key_ while using InfluxDB. Apart from InfluxDB, separator character (`/`) usage in the JSON object key is permitted, since other [Writer][writers] types do not flat the nested JSON objects. For example, the following JSON object:
 
 ```json
 {
-    "name": "name",
-    "id":8659456789564231564,
-    "in": 3.145,
-    "alarm": true,
-    "ts": 1571259850000,
-    "d": {
-        "tmp": 2.564,
-        "hmd": 87,
-        "loc": {
-            "x": 1,
-            "y": 2
-        }
+  "name": "name",
+  "id": 8659456789564231564,
+  "in": 3.145,
+  "alarm": true,
+  "ts": 1571259850000,
+  "d": {
+    "tmp": 2.564,
+    "hmd": 87,
+    "loc": {
+      "x": 1,
+      "y": 2
     }
+  }
 }
 ```
 
@@ -78,27 +78,27 @@ for InfluxDB will be transformed to:
 
 ```json
 {
-    "name": "name",
-    "id":8659456789564231564,
-    "in": 3.145,
-    "alarm": true,
-    "ts": 1571259850000,
-    "d/tmp": 2.564,
-    "d/hmd": 87,
-    "d/loc/x": 1,
-    "d/loc/y": 2
+  "name": "name",
+  "id": 8659456789564231564,
+  "in": 3.145,
+  "alarm": true,
+  "ts": 1571259850000,
+  "d/tmp": 2.564,
+  "d/hmd": 87,
+  "d/loc/x": 1,
+  "d/loc/y": 2
 }
 ```
 
 while for other Writers it will preserve its original format.
 
-The message format is stored in *the subtopic*. It's the last part of the subtopic. In the example:
+The message format is stored in _the subtopic_. It's the last part of the subtopic. In the example:
 
-```
+```txt
 http://localhost:8008/channels/<channelID>/messages/home/temperature/myFormat
 ```
 
-the message format is `myFormat`. It can be any valid subtopic name, JSON transformer is format-agnostic. The format is used by the JSON message consumers so that they can process the message properly. If the format is not present (i.e. message subtopic is empty), JSON Transformer will report an error.  Message writers will store the message(s) in the table/collection/measurement (depending on the underlying database) with the name of the format (which in the example is `myFormat`). Mainflux writers will try to save any format received (whether it will be successful depends on the writer implementation and the underlying database), but it's recommended that publishers don't send different formats to the same subtopic.
+the message format is `myFormat`. It can be any valid subtopic name, JSON transformer is format-agnostic. The format is used by the JSON message consumers so that they can process the message properly. If the format is not present (i.e. message subtopic is empty), JSON Transformer will report an error. Message writers will store the message(s) in the table/collection/measurement (depending on the underlying database) with the name of the format (which in the example is `myFormat`). Mainflux writers will try to save any format received (whether it will be successful depends on the writer implementation and the underlying database), but it's recommended that publishers don't send different formats to the same subtopic.
 
 ### InfluxDB, InfluxDB Writer
 
@@ -110,7 +110,7 @@ docker-compose -f docker/addons/influxdb-writer/docker-compose.yml up -d
 
 This will install and start:
 
-- [InfluxDB](https://docs.influxdata.com/influxdb) - time series database
+- [InfluxDB][influxdb] - time series database
 - InfluxDB writer - message repository implementation for InfluxDB
 
 Those new services will take some additional ports:
@@ -154,13 +154,11 @@ Timescale default port (5432) is exposed, so you can use various tools for datab
 
 ## Readers
 
-Readers provide an implementation of various `message readers`.
-Message readers are services that consume normalized (in `SenML` format) Mainflux messages from data storage and opens HTTP API for message consumption.
-Installing corresponding writer before reader is implied.
+Readers provide an implementation of various `message readers`. Message readers are services that consume normalized (in `SenML` format) Mainflux messages from data storage and opens HTTP API for message consumption. Installing corresponding writer before reader is implied.
 
-Each of the Reader services exposes the same [HTTP API](https://github.com/mainflux/mainflux/blob/master/api/readers.yml) for fetching messages on its default port.
+Each of the Reader services exposes the same [HTTP API][readers-api] for fetching messages on its default port.
 
-To read sent messages on channel with id `channel_id` you should send `GET` request to `/channels/<channel_id>/messages` with thing access token in `Authorization` header. That thing must be connected to  channel with `channel_id`
+To read sent messages on channel with id `channel_id` you should send `GET` request to `/channels/<channel_id>/messages` with thing access token in `Authorization` header. That thing must be connected to channel with `channel_id`
 
 Response should look like this:
 
@@ -194,17 +192,15 @@ Content-Length: 228
 }
 ```
 
-Note that you will receive only those messages that were sent by authorization token's owner.
-You can specify `offset` and `limit` parameters in order to fetch specific group of messages. An example of HTTP request looks like:
+Note that you will receive only those messages that were sent by authorization token's owner. You can specify `offset` and `limit` parameters in order to fetch specific group of messages. An example of HTTP request looks like:
 
 ```bash
 curl -s -S -i  -H "Authorization: Thing <thing_secret>" http://localhost:<service_port>/channels/<channel_id>/messages?offset=0&limit=5&format=<subtopic>
 ```
 
-If you don't provide `offset` and `limit` parameters, default values will be used instead: 0 for `offset` and 10 for `limit`.
-The `format` parameter indicates the last subtopic of the message. As indicated under the [`Writers`](storage.md#writers) section, the message format is stored in the subtopic as the last part of the subtopic. In the example:
+If you don't provide `offset` and `limit` parameters, default values will be used instead: 0 for `offset` and 10 for `limit`. The `format` parameter indicates the last subtopic of the message. As indicated under the [`Writers`][writers] section, the message format is stored in the subtopic as the last part of the subtopic. In the example:
 
-```
+```txt
 http://localhost:<service_port>/channels/<channelID>/messages/home/temperature/myFormat
 ```
 
@@ -249,3 +245,10 @@ To start Timescale reader, execute the following command:
 ```bash
 docker-compose -f docker/addons/timescale-reader/docker-compose.yml up -d
 ```
+
+[subtopic]: /messaging/#subtopics
+[nats-subject]: https://docs.nats.io/nats-concepts/subjects
+[nats-wildcards]: https://docs.nats.io/nats-concepts/subjects#wildcards
+[writers]: /storage/#writers
+[influxdb]: https://docs.influxdata.com/influxdb
+[readers-api]: https://github.com/mainflux/mainflux/blob/master/api/readers.yml

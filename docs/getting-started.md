@@ -4,8 +4,8 @@
 
 Before proceeding, install the following prerequisites:
 
-- [Docker](https://docs.docker.com/install/) (version 20.10.16)
-- [Docker compose](https://docs.docker.com/compose/install/) (version 1.29.2)
+- [Docker][docker] (version 20.10.16)
+- [Docker compose][docker-compose] (version 1.29.2)
 
 Once everything is installed, execute the following command from project root:
 
@@ -17,18 +17,17 @@ This will start Mainflux docker composition, which will output the logs from the
 
 ## Step 2 - Install the CLI
 
-Open a new terminal from which you can interact with the running Mainflux system. The easiest way to do this is by using the Mainflux CLI,
-which can be downloaded as a tarball from GitHub (here we use release `0.14.0` but be sure to use the [latest CLI release](https://github.com/mainflux/mainflux/releases)):
+Open a new terminal from which you can interact with the running Mainflux system. The easiest way to do this is by using the Mainflux CLI, which can be downloaded as a tarball from GitHub (here we use release `0.14.0` but be sure to use the [latest CLI release][mf-releases]):
 
 ```bash
-wget -O- https://github.com/mainflux/mainflux/releases/download/0.13.0/mainflux-cli_0.14.0_linux-amd64.tar.gz | tar xvz -C $GOBIN
+wget -O- https://github.com/mainflux/mainflux/releases/download/0.14.0/mainflux-cli_0.14.0_linux-amd64.tar.gz | tar xvz -C $GOBIN
 ```
 
 > Make sure that `$GOBIN` is added to your `$PATH` so that `mainflux-cli` command can be accessible system-wide
 
 ### Build mainflux-cli
 
-Build `mainflux-cli` if the pre-built CLI is not compatible with your OS, i.e MacOS. Please see the [CLI](cli.md) for further details.
+Build `mainflux-cli` if the pre-built CLI is not compatible with your OS, i.e MacOS. Please see the [CLI][cli] for further details.
 
 ## Step 3 - Provision the System
 
@@ -41,7 +40,7 @@ mainflux-cli provision test
 This command actually creates a temporary testing user, logs it in, then creates two things and two channels on behalf of this user.
 This quickly provisions a Mainflux system with one simple testing scenario.
 
-You can read more about system provisioning in the dedicated [Provisioning](/provision/#platform-management) chapter
+You can read more about system provisioning in the dedicated [Provisioning][provisioning] chapter
 
 Output of the command follows this pattern:
 
@@ -162,3 +161,9 @@ mainflux-http   | {"level":"info","message":"Method publish to channel a31e16f8-
 ```
 
 This proves that messages have been correctly sent through the system via the protocol adapter (`mainflux-http`).
+
+[docker]: https://docs.docker.com/install/
+[docker-compose]: https://docs.docker.com/compose/install/
+[mf-releases]: https://github.com/mainflux/mainflux/releases
+[cli]: cli.md
+[provisioning]: /provision/#platform-management

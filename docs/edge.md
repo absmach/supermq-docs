@@ -1,45 +1,38 @@
 # Edge
 
-Mainflux IoT platform provides services for supporting management of devices on the edge. Typically, IoT solution includes devices (sensors/actuators) deployed in far edge and connected through some proxy gateway.
-Although most devices could be connected to the Mainflux directly, using gateways decentralizes system, decreases load on the cloud and makes setup less difficult. Also, gateways can provide additional data processing, filtering and storage.
+Mainflux IoT platform provides services for supporting management of devices on the edge. Typically, IoT solution includes devices (sensors/actuators) deployed in far edge and connected through some proxy gateway. Although most devices could be connected to the Mainflux directly, using gateways decentralizes system, decreases load on the cloud and makes setup less difficult. Also, gateways can provide additional data processing, filtering and storage.
 
 Services that can be used on gateway to enable data and control plane for edge:
 
-* [Agent](/edge/#agent)
-* [Export](/edge/#export)
-* [Mainflux](/architecture/)
+- [Agent][agent]
+- [Export][export]
+- [Mainflux][mainflux]
 
-| ![Edge1](img/edge/edge.png) |
-|:-:|
-|<b>Figure 1 - Edge services deployment</b>|
+|       ![Edge1][edge-diagram]        |
+| :---------------------------------: |
+| Figure 1 - Edge services deployment |
 
-
-Figure shows edge gateway that is running Agent, Export and minimal deployment of Mainflux services.
-Mainflux services enable device management and MQTT protocol, NATS being a central message bus as it is the default message broker in Mainflux becomes also central message bus for other services like `Agent` and `Export` as well as for any new custom developed service that can be built to interface with devices with any of hardware supported interfaces on the gateway, those services would publish data to the message broker where `Export` service can pick them up and send to cloud.
+Figure shows edge gateway that is running Agent, Export and minimal deployment of Mainflux services. Mainflux services enable device management and MQTT protocol, NATS being a central message bus as it is the default message broker in Mainflux becomes also central message bus for other services like `Agent` and `Export` as well as for any new custom developed service that can be built to interface with devices with any of hardware supported interfaces on the gateway, those services would publish data to the message broker where `Export` service can pick them up and send to cloud.
 
 Agent can be used to control deployed services as well as to monitor their liveliness through subcribing to `heartbeat` Message Broker subject where services should publish their liveliness status, like `Export` service does.
 
 ## Agent
 
-Agent is service that is used to manage gateways that are connected to Mainflux in cloud. It provides a way to send commands to gateway and receive response via mqtt.
-There are two types of channels used for **Agent** `data` and `control`. Over the `control` we are sending commands and receiving response from commands.
-Data collected from sensors connected to gateway are being sent over `data` channel. Agent is able to configure itself provided that [bootstrap server](/bootstrap/) is running, it will retrieve configuration from bootstrap server provided few arguments - `external_id` and `external_key` see [bootstraping](/bootstrap/#bootstrapping).
+Agent is service that is used to manage gateways that are connected to Mainflux in cloud. It provides a way to send commands to gateway and receive response via mqtt. There are two types of channels used for **Agent** `data` and `control`. Over the `control` we are sending commands and receiving response from commands. Data collected from sensors connected to gateway are being sent over `data` channel. Agent is able to configure itself provided that [bootstrap server][bootstrap] is running, it will retrieve configuration from bootstrap server provided few arguments - `external_id` and `external_key` see [bootstraping][bootstraping].
 
 Agent service has following features:
-* Remote execution of commands
-* Remote terminal, remote session to `bash` managed by `Agent`
-* Heartbeat - listening to  Message Broker topic `heartbeat.>` it can remotely provide info on running services, if services are publishing heartbeat ( like [Export](/edge/#export))
-* Proxying commands to other gateway services
-* Edgex SMA - remotely making requests to EdgeX endpoints and fetching results, if EdgeX is deployed.
 
+- Remote execution of commands
+- Remote terminal, remote session to `bash` managed by `Agent`
+- Heartbeat - listening to Message Broker topic `heartbeat.>` it can remotely provide info on running services, if services are publishing heartbeat ( like [Export](/edge/#export))
+- Proxying commands to other gateway services
+- Edgex SMA - remotely making requests to EdgeX endpoints and fetching results, if EdgeX is deployed.
 
 ### Run Agent
 
-Before running agent we need to provision a thing and DATA and CONTROL channel. Thing that will be used as gateway representation and make bootstrap configuration.
-If using Mainflux UI this is done automatically when adding gateway through UI.
-Gateway can be provisioned with [`provision`](/provision/) service.
+Before running agent we need to provision a thing and DATA and CONTROL channel. Thing that will be used as gateway representation and make bootstrap configuration. If using Mainflux UI this is done automatically when adding gateway through UI. Gateway can be provisioned with [`provision`][provision] service.
 
-When you provisioned gateway as described in [provision](/provision/) you can check results
+When you provisioned gateway as described in [provision][provision] you can check results
 
 ```bash
 curl -s -S -X GET http://mainflux-domain.com:9013/things/bootstrap/<external_id> -H "Authorization: Thing <external_key>" -H 'Content-Type: application/json' |jq
@@ -76,17 +69,15 @@ curl -s -S -X GET http://mainflux-domain.com:9013/things/bootstrap/<external_id>
 }
 ```
 
-
 - `external_id` is usually MAC address, but anything that suits applications requirements can be used
 - `external_key` is key that will be provided to agent process
 - `thing_id` is mainflux thing id
 - `channels` is 2-element array where first channel is CONTROL and second is DATA, both channels should be assigned to thing
 - `content` is used for configuring parameters of agent and export service.
 
-
 Then to start the agent service you can do it like this
 
-```
+```bash
 git clone https://github.com/mainflux/agent
 make
 cd build
@@ -102,8 +93,8 @@ MF_AGENT_BOOTSTRAP_ID=34:e1:2d:e6:cf:03 ./mainflux-agent
 {"level":"info","message":"Subscribed to MQTT broker","ts":"2019-12-05T04:47:25.012930443Z"}
 ```
 
- - `MF_AGENT_BOOTSTRAP_KEY` - is `external_key` in bootstrap configuration.
- - `MF_AGENT_BOOSTRAP_ID` - is `external_id` in bootstrap configuration.
+- `MF_AGENT_BOOTSTRAP_KEY` - is `external_key` in bootstrap configuration.
+- `MF_AGENT_BOOSTRAP_ID` - is `external_id` in bootstrap configuration.
 
 #### Remote execution of commands via Agent
 
@@ -125,13 +116,15 @@ mosquitto_pub -d -u $TH -P $KEY  -t channels/$CH/messages/req -h some-domain-nam
 This can be checked from the UI, click on the details for gateway and below the gateway parameters you will se box with prompt, if `agent` is running and it is properly connected you should be able to execute commands remotely.
 
 #### Heartbeat
+
 If there are services that are running on same gateway as `agent` and they are publishing heartbeat to the Message Broker subject `heartbeat.service_name.service`
 You can get the list of services by sending following mqtt message
 
-```
+```bash
 # View services that are sending heartbeat
 mosquitto_pub -d -u $TH -P $KEY  -t channels/$CH/messages/req -h some-domain-name -p 1883  -m '[{"bn":"1:", "n":"service", "vs":"view"}]'
 ```
+
 Response can be observed on `channels/$CH/messages/res/#`
 
 ### Proxying commands
@@ -148,65 +141,74 @@ when messages is received Agent forwards them to the Message Broker on subject:
 
 Payload is up to the application and service itself.
 
-
 ### EdgeX
 
-[Edgex](https://github.com/edgexfoundry/edgex-go) control messages are sent and received over control channel. MF sends a control SenML of the following form:
-```
+[Edgex][edgex-repo] control messages are sent and received over control channel. MF sends a control SenML of the following form:
+
+```bash
 [{"bn":"<uuid>:", "n":"control", "vs":"<cmd>, <param>, edgexsvc1, edgexsvc2, …, edgexsvcN"}}]
 ```
+
 For example,
-```
+
+```bash
 [{"bn":"1:", "n":"control", "vs":"operation, stop, edgex-support-notifications, edgex-core-data"}]
 ```
+
 Agent, on the other hand, returns a response SenML of the following form:
-```
+
+```bash
 [{"bn":"<uuid>:", "n":"<>", "v":"<RESP>"}]
 ```
+
 ### Remote Commands
-EdgeX defines SMA commands in the following [RAML file](https://github.com/edgexfoundry/edgex-go/blob/master/api/raml/system-agent.raml)
+
+EdgeX defines SMA commands in the following [RAML file][edgex-raml]
 
 Commands are:
 
-* OPERATION
-* CONFIG
-* METRICS
-* PING
+- OPERATION
+- CONFIG
+- METRICS
+- PING
 
-**Operation**
+#### Operation
 
+```bash
+mosquitto_pub -u <thing_id> -P <thing_secret> -t channels/<channel_id>/messages/req -h localhost -m '[{"bn":"1:", "n":"control", "vs":"edgex-operation, start, edgex-support-notifications, edgex-core-data"}]'
 ```
-mosquitto_pub -u <thing_id> -P <thing_key> -t channels/<channel_id>/messages/req -h localhost -m '[{"bn":"1:", "n":"control", "vs":"edgex-operation, start, edgex-support-notifications, edgex-core-data"}]'
+
+#### Config
+
+```bash
+mosquitto_pub -u <thing_id> -P <thing_secret> -t channels/<channel_id>/messages/req -h localhost -m '[{"bn":"1:", "n":"control", "vs":"edgex-config, edgex-support-notifications, edgex-core-data"}]'
 ```
-**Config**
-```
-mosquitto_pub -u <thing_id> -P <thing_key> -t channels/<channel_id>/messages/req -h localhost -m '[{"bn":"1:", "n":"control", "vs":"edgex-config, edgex-support-notifications, edgex-core-data"}]'
-```
-**Metrics**
-```
-mosquitto_pub -u <thing_id> -P <thing_key> -t channels/<channel_id>/messages/req -h localhost -m '[{"bn":"1:", "n":"control", "vs":"edgex-metrics, edgex-support-notifications, edgex-core-data"}]'
+
+#### Metrics
+
+```bash
+mosquitto_pub -u <thing_id> -P <thing_secret> -t channels/<channel_id>/messages/req -h localhost -m '[{"bn":"1:", "n":"control", "vs":"edgex-metrics, edgex-support-notifications, edgex-core-data"}]'
 ```
 
 If you subscribe to
 
+```bash
+mosquitto_sub -u <thing_id> -P <thing_secret> -t channels/<channel_id>/messages/#
 ```
-mosquitto_sub -u <thing_id> -P <thing_key> -t channels/<channel_id>/messages/#
-```
+
 You can observe commands and response from commands executed against edgex
-```
-[{"bn":"1:", "n":"control", "vs":"edgex-metrics, edgex-support-notifications, edgex-core-data"}]                                                                            
+
+```bash
+[{"bn":"1:", "n":"control", "vs":"edgex-metrics, edgex-support-notifications, edgex-core-data"}]
 [{"bn":"1","n":"edgex-metrics","vs":"{\"Metrics\":{\"edgex-core-data\":{\"CpuBusyAvg\":15.568632467698606,\"Memory\":{\"Alloc\":2040136,\"Frees\":876344,\"LiveObjects\":15134,\"Mallocs\":891478,\"Sys\":73332984,\"TotalAlloc\":80657464}},\"edgex-support-notifications\":{\"CpuBusyAvg\":14.65381169745318,\"Memory\":{\"Alloc\":961784,\"Frees\":127430,\"LiveObjects\":6095,\"Mallocs\":133525,\"Sys\":72808696,\"TotalAlloc\":11665416}}}}\n"}]
 ```
 
 ## Export
-Mainflux Export service can send message from one Mainflux cloud to another via MQTT, or it can send messages from edge gateway to Mainflux Cloud.
-Export service is subscribed to local message bus and connected to MQTT broker in the cloud.  
-Messages collected on local message bus are redirected to the cloud.
-When connection is lost, if QoS2 is used, messages from the local bus are stored into file or in memory to be resent upon reconnection.
-Additonaly `Export` service publishes liveliness status to `Agent` via the Message Broker subject `heartbeat.export.service`
 
+Mainflux Export service can send message from one Mainflux cloud to another via MQTT, or it can send messages from edge gateway to Mainflux Cloud. Export service is subscribed to local message bus and connected to MQTT broker in the cloud. Messages collected on local message bus are redirected to the cloud. When connection is lost, if QoS2 is used, messages from the local bus are stored into file or in memory to be resent upon reconnection. Additonaly `Export` service publishes liveliness status to `Agent` via the Message Broker subject `heartbeat.export.service`
 
 ### Install
+
 Get the code:
 
 ```bash
@@ -215,6 +217,7 @@ cd $GOPATH/github.com/mainflux/export
 ```
 
 Make:
+
 ```bash
 make
 ```
@@ -228,7 +231,7 @@ cd build
 
 ### Configuration
 
-By default `Export` service looks for config file at [`../configs/config.toml`][conftoml] if no env vars are specified.  
+By default `Export` service looks for config file at [`../configs/config.toml`][conftoml] if no env vars are specified.
 
 ```toml
 [exp]
@@ -267,18 +270,18 @@ By default `Export` service looks for config file at [`../configs/config.toml`][
 
 ### Environment variables
 
-Service will first look for `MF_EXPORT_CONFIG_FILE` for configuration and if not found it will be configured with env variables and new config file specified with `MF_EXPORT_CONFIG_FILE` (default value will be used if none specified) will be saved with values populated from env vars.  
-The service is configured using the [environment variables](env) as presented in the table. Note that any unset variables will be replaced with their default values.
+Service will first look for `MF_EXPORT_CONFIG_FILE` for configuration and if not found it will be configured with env variables and new config file specified with `MF_EXPORT_CONFIG_FILE` (default value will be used if none specified) will be saved with values populated from env vars. The service is configured using the [environment variables][env] as presented in the table. Note that any unset variables will be replaced with their default values.
 
 For values in environment variables to take effect make sure that there is no `MF_EXPORT_CONFIG_FILE` file.
 
 If you run with environment variables you can create config file:
+
 ```bash
 MF_EXPORT_PORT=8178 \
 MF_EXPORT_LOG_LEVEL=debug \
 MF_EXPORT_MQTT_HOST=tcp://localhost:1883 \
 MF_EXPORT_MQTT_USERNAME=<thing_id> \
-MF_EXPORT_MQTT_PASSWORD=<thing_key> \
+MF_EXPORT_MQTT_PASSWORD=<thing_secret> \
 MF_EXPORT_MQTT_CHANNEL=<channel_id> \
 MF_EXPORT_MQTT_SKIP_TLS=true \
 MF_EXPORT_MQTT_MTLS=false \
@@ -288,11 +291,13 @@ MF_EXPORT_MQTT_CLIENT_PK=thing.key \
 MF_EXPORT_CONFIG_FILE=export.toml \
 ../build/mainflux-export&
 ```
+
 Values from environment variables will be used to populate export.toml
 
 #### Http port
 
 - `port` - HTTP port where status of `Export` service can be fetched.
+
 ```bash
 curl -X GET http://localhost:8170/health
 '{"status": "pass", "version":"0.12.1", "commit":"57cca9677721025da055c47957fc3e869e0325aa" , "description":"export service", "build_time": "2022-01-19_10:13:17"}'
@@ -301,71 +306,70 @@ curl -X GET http://localhost:8170/health
 #### MQTT connection
 
 To establish connection to MQTT broker following settings are needed:
+
 - `username` - Mainflux <thing_id>
-- `password` - Mainflux <thing_key>
+- `password` - Mainflux <thing_secret>
 - `url` - url of MQTT broker
 
-Additionally, you will need MQTT client certificates if you enable mTLS. To obtain certificates `ca.crt`, `thing.crt` and key `thing.key` follow instructions [here](https://mainflux.readthedocs.io/en/latest/authentication/#mutual-tls-authentication-with-x509-certificates) or [here](/provision/#certs-service).
+Additionally, you will need MQTT client certificates if you enable mTLS. To obtain certificates `ca.crt`, `thing.crt` and key `thing.key` follow instructions [here][mutual-tls] or [here][certs-service].
 
 #### MTLS
 
-To setup `MTLS` connection `Export` service requires client certificate and `mtls` in config or `MF_EXPORT_MQTT_MTLS` must be set to `true`.
-Client certificate can be provided in a file, `client_cert_path` and `client_cert_key_path` are used for specifying path to certificate files.
-If MTLS is used and no certificate file paths are specified then `Export` will look in `client_cert` and `client_cert_key` of config file expecting certificate content stored as string.
+To setup `MTLS` connection `Export` service requires client certificate and `mtls` in config or `MF_EXPORT_MQTT_MTLS` must be set to `true`. Client certificate can be provided in a file, `client_cert_path` and `client_cert_key_path` are used for specifying path to certificate files. If MTLS is used and no certificate file paths are specified then `Export` will look in `client_cert` and `client_cert_key` of config file expecting certificate content stored as string.
 
 #### Routes
 
-Routes are being used for specifying which subscriber's topic(subject) goes to which publishing topic.
-Currently only MQTT is supported for publishing.
-To match Mainflux requirements `mqtt_topic` must contain `channel/<channel_id>/messages`, additional subtopics can be appended.
+Routes are being used for specifying which subscriber's topic(subject) goes to which publishing topic. Currently only MQTT is supported for publishing. To match Mainflux requirements `mqtt_topic` must contain `channel/<channel_id>/messages`, additional subtopics can be appended.
 
 - `mqtt_topic` - `channel/<channel_id>/messages/<custom_subtopic>`
 - `nats_topic` - `Export` service will be subscribed to the Message Broker subject `<nats_topic>.>`
 - `subtopic` - messages will be published to MQTT topic `<mqtt_topic>/<subtopic>/<nats_subject>`, where dots in nats_subject are replaced with '/'
 - `workers` - specifies number of workers that will be used for message forwarding.
 - `type` - specifies message transformation:
-    - `default` is for sending messages as they are received on the Message Broker with no transformation (so they should be in SenML or JSON format if we want to persist them in Mainflux in cloud). If you don't want to persist messages in Mainflux or you are not exporting to Mainflux cloud - message format can be anything that suits your application as message passes untransformed.
-    - `mfx` is for messages that are being picked up on internal Mainflux Message Broker bus. When using `Export` along with Mainflux deployed on gateway ([Fig. 1](#edge)) messages coming from MQTT broker that are published to the Message Broker bus are [Mainflux message][protomsg]. Using `mfx` type will extract payload and `export` will publish it to `mqtt_topic`. Extracted payload is SenML or JSON if we want to persist messages. `nats_topic` in this case must be `channels`, or if you want to pick messages from a specific channel in local Mainflux instance to be exported to cloud you can put `channels.<local_mainflux_channel_id>`.
+  - `default` is for sending messages as they are received on the Message Broker with no transformation (so they should be in SenML or JSON format if we want to persist them in Mainflux in cloud). If you don't want to persist messages in Mainflux or you are not exporting to Mainflux cloud - message format can be anything that suits your application as message passes untransformed.
+  - `mfx` is for messages that are being picked up on internal Mainflux Message Broker bus. When using `Export` along with Mainflux deployed on gateway ([Fig. 1][back-to-edge]) messages coming from MQTT broker that are published to the Message Broker bus are [Mainflux message][protomsg]. Using `mfx` type will extract payload and `export` will publish it to `mqtt_topic`. Extracted payload is SenML or JSON if we want to persist messages. `nats_topic` in this case must be `channels`, or if you want to pick messages from a specific channel in local Mainflux instance to be exported to cloud you can put `channels.<local_mainflux_channel_id>`.
 
 Before running `Export` service edit `configs/config.toml` and provide `username`, `password` and `url`
- * `username` - matches `thing_id` in Mainflux cloud instance
- * `password` - matches `thing_key`
- * `channel` - MQTT part of the topic where to publish MQTT data (`channel/<channel_id>/messages` is format of mainflux MQTT topic) and plays a part in authorization.
 
-If Mainflux and Export service are deployed on same gateway `Export` can be configured to send messages from Mainflux internal Message Broker bus to Mainflux in a cloud.
-In order for `Export` service to listen on Mainflux Message Broker deployed on the same machine Message Broker port must be exposed.
-Edit Mainflux [docker-compose.yml][docker-compose]. Default Message Broker, NATS, section must look like below:
-```
-  nats:
-    image: nats:1.3.0
-    container_name: mainflux-nats
-    restart: on-failure
-    networks:
-      - mainflux-base-net
-    ports:
-      - 4222:4222
+- `username` - matches `thing_id` in Mainflux cloud instance
+- `password` - matches `thing_secret`
+- `channel` - MQTT part of the topic where to publish MQTT data (`channel/<channel_id>/messages` is format of mainflux MQTT topic) and plays a part in authorization.
+
+If Mainflux and Export service are deployed on same gateway `Export` can be configured to send messages from Mainflux internal Message Broker bus to Mainflux in a cloud. In order for `Export` service to listen on Mainflux Message Broker deployed on the same machine Message Broker port must be exposed. Edit Mainflux [docker-compose.yml][docker-compose]. Default Message Broker, NATS, section must look like below:
+
+```yaml
+nats:
+  image: nats:2.2.4
+  container_name: mainflux-nats
+  restart: on-failure
+  networks:
+    - mainflux-base-net
+  ports:
+    - 4222:4222
 ```
 
 ### How to save config via agent
 
 Configuration file for `Export` service can be sent over MQTT using [Agent][agent] service.
 
-```
-mosquitto_pub -u <thing_id> -P <thing_key> -t channels/<control_ch_id>/messages/req -h localhost -p 18831  -m  "[{\"bn\":\"1:\", \"n\":\"config\", \"vs\":\"save, export, <config_file_path>, <file_content_base64>\"}]"
+```bash
+mosquitto_pub -u <thing_id> -P <thing_secret> -t channels/<control_ch_id>/messages/req -h localhost -p 18831  -m  "[{\"bn\":\"1:\", \"n\":\"config\", \"vs\":\"save, export, <config_file_path>, <file_content_base64>\"}]"
 ```
 
 `vs="save, export, config_file_path, file_content_base64"` - vs determines where to save file and contains file content in base64 encoding payload:
-```
+
+```go
 b,_ := toml.Marshal(export.Config)
 payload := base64.StdEncoding.EncodeToString(b)
 ```
 
 ### Using configure script
 
-There is a `configuration.sh` script in a `scripts` directory that can be used for automatic configuration and start up of remotely deployed `export`. For this to work it is presumed that `mainflux-export` and `scripts/export_start` are placed in executable path on remote device. Additionally this script requires that remote device is provisioned following the steps described for [provision](provision.md) service.
+There is a `configuration.sh` script in a `scripts` directory that can be used for automatic configuration and start up of remotely deployed `export`. For this to work it is presumed that `mainflux-export` and `scripts/export_start` are placed in executable path on remote device. Additionally this script requires that remote device is provisioned following the steps described for [provision][provision] service.
 
 To run it first edit script to set parameters
-```
+
+```env
 MTLS=false
 EXTERNAL_KEY='raspberry'
 EXTERNAL_ID='pi'
@@ -376,17 +380,14 @@ MAINFLUX_USER_PASSWORD='12345678'
 
 `EXTERNAL_KEY` and `EXTERNAL_ID` are parameters posted to `/mapping` endpoint of `provision` service, `MAINFLUX_HOST` is location of cloud instance of Mainflux that `export` should connect to and `MAINFLUX_USER_EMAIL` and `MAINFLUX_USER_PASSWORD` are users credentials in the cloud.
 
-
 ## Example deployment
 
 ### Edge deployment
 
-The following are steps that are an example usage of Mainflux components to connect edge with cloud.
-We will start Mainflux in the cloud with additional services [Bootstrap](bootstrap) and [Provision](provision).
-Using [Bootstrap](bootstrap) and [Provision](provision) we will create a configuration for use in gateway deployment.
-On the gateway we will start services [Agent](/edge/#agent) and [Export](/edge/#export) using previously created configuration.
+The following are steps that are an example usage of Mainflux components to connect edge with cloud. We will start Mainflux in the cloud with additional services [Bootstrap][bootstrap] and [Provision][provision]. Using [Bootstrap](bootstrap) and [Provision](provision) we will create a configuration for use in gateway deployment. On the gateway we will start services [Agent][agent] and [Export][export] using previously created configuration.
 
 ## Services in the cloud
+
 Start the Mainflux:
 
 ```bash
@@ -406,24 +407,31 @@ docker-compose -f docker/addons/provision/docker-compose.yml up
 ```
 
 Create user:
+
 ```bash
-mainflux-cli -m http://localhost:9002 users create test@email.com 12345678
+mainflux-cli -m http://localhost:9002 users create test test@email.com 12345678
 ```
 
 Obtain user token:
+
 ```bash
 mainflux-cli -m http://localhost:9002 users token test@email.com 12345678
 
-created: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1ODk5MDQ4MDQsImlhdCI6MTU4OTg2ODgwNCwiaXNzIjoibWFpbmZsdXguYXV0aG4iLCJzdWIiOiJ0ZXN0QGVtYWlsLmNvbSIsInR5cGUiOjB9.VSwpGoflOLqrHlCGoVVFPBdnnvsAhv2gc3EomXg9yM0
+{
+  "access_token": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODY3NTEzNTIsImlhdCI6MTY4Njc1MDQ1MiwiaWRlbnRpdHkiOiJqb2huLmRvZUBlbWFpbC5jb20iLCJpc3MiOiJjbGllbnRzLmF1dGgiLCJzdWIiOiI5NDkzOTE1OS1kMTI5LTRmMTctOWU0ZS1jYzJkNjE1NTM5ZDciLCJ0eXBlIjoiYWNjZXNzIn0.AND1sm6mN2wgUxVkDhpipCoNa87KPMghGaS5-4dU0iZaqGIUhWScrEJwOahT9ts1TZSd1qEcANTIffJ_y2Pbsg",
+  "refresh_token": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODY4MzY4NTIsImlhdCI6MTY4Njc1MDQ1MiwiaWRlbnRpdHkiOiJqb2huLmRvZUBlbWFpbC5jb20iLCJpc3MiOiJjbGllbnRzLmF1dGgiLCJzdWIiOiI5NDkzOTE1OS1kMTI5LTRmMTctOWU0ZS1jYzJkNjE1NTM5ZDciLCJ0eXBlIjoicmVmcmVzaCJ9.z3OWCHhNHNuvkzBqEAoLKWS6vpFLkIYXhH9cZogSCXd109-BbKVlLvYKmja-hkhaj_XDJKySDN3voiazBr_WTA",
+  "access_type": "Bearer"
+}
 
-TOK=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1ODk5MDQ4MDQsImlhdCI6MTU4OTg2ODgwNCwiaXNzIjoibWFpbmZsdXguYXV0aG4iLCJzdWIiOiJ0ZXN0QGVtYWlsLmNvbSIsInR5cGUiOjB9.VSwpGoflOLqrHlCGoVVFPBdnnvsAhv2gc3EomXg9yM0
+USER_TOKEN=<access_token>
 ```
 
 Provision a gateway:
 
 ```bash
-curl -s -S  -X POST  http://localhost:9016/mapping -H "Authorization: Bearer $TOKEN" -H 'Content-Type: application/json'   -d '{"name":"testing",  "external_id" : "54:FG:66:DC:43", "external_key":"223334fw2" }' | jq
+curl -s -S  -X POST  http://localhost:9016/mapping -H "Authorization: Bearer $USER_TOKEN" -H 'Content-Type: application/json'   -d '{"name":"testing",  "external_id" : "54:FG:66:DC:43", "external_key":"223334fw2" }' | jq
 ```
+
 ```json
 {
   "things": [
@@ -458,14 +466,14 @@ curl -s -S  -X POST  http://localhost:9016/mapping -H "Authorization: Bearer $TO
 }
 ```
 
-Parameters <external_id> and <external_key> are representing the gateway. `Provision` will use them to create a bootstrap configuration that will make a relation with Mainflux entities used for connection, authentication and authorization `thing` and `channel`.
-These parameters will be used by `Agent` service on the gateway to retrieve that information and establish a connection with the cloud.
+Parameters <external_id> and <external_key> are representing the gateway. `Provision` will use them to create a bootstrap configuration that will make a relation with Mainflux entities used for connection, authentication and authorization `thing` and `channel`. These parameters will be used by `Agent` service on the gateway to retrieve that information and establish a connection with the cloud.
 
 ## Services on the Edge
 
-### Agent
+### Agent service
 
 Start the [NATS][nats] and [Agent][agent] service:
+
 ```bash
 gnatsd
 MF_AGENT_BOOTSTRAP_ID=54:FG:66:DC:43 \
@@ -480,13 +488,15 @@ build/mainflux-agent
 {"level":"info","message":"Agent service started, exposed port 9003","ts":"2020-05-07T15:50:58.128531057Z"}
 ```
 
-### Export
+### Export service
 
-```
+```bash
 git clone https://github.com/mainflux/export
 make
 ```
+
 Edit the `configs/config.toml` setting
+
 - `username` - thing from the results of provision request.
 - `password` - key from the results of provision request.
 - `mqtt_topic` - in routes set to `channels/<channel_data_id>/messages` from results of provision.
@@ -519,7 +529,6 @@ Edit the `configs/config.toml` setting
   workers = 10
 ```
 
-
 ```bash
 cd build
 ./mainflux-export
@@ -529,6 +538,7 @@ cd build
 ```
 
 #### Testing Export
+
 ```bash
 git clone https://github.com/mainflux/agent
 go run ./examples/publish/main.go -s http://localhost:4222 export.test "[{\"bn\":\"test\"}]";
@@ -548,9 +558,20 @@ In Mainflux `mqtt` service:
 mainflux-mqtt   | {"level":"info","message":"Publish - client ID export-88529fb2-6c1e-4b60-b9ab-73b5d89f7404 to the topic: channels/e2adcfa6-96b2-425d-8cd4-ff8cb9c056ce/messages/export/test","ts":"2020-05-08T15:16:02.999684791Z"}
 ```
 
-[conftoml]:https://github.com/mainflux/export/blob/master/configs/config.toml
-[docker-compose]:https://github.com/mainflux/mainflux/docker/docker-compose.yml
-[env]:(https://github.com/mainflux/export#environmet-variables)
-[agent]:(https://github.com/mainflux/agent)
-[protomsg]:https://github.com/mainflux/mainflux/blob/master/pkg/messaging/message.proto
-[dev-guide]: /docs/dev-guide.md/#message-broker
+[agent]: /edge/#agent
+[export]: /edge/#export
+[mainflux]: /architecture/
+[edge-diagram]: img/edge/edge.png
+[bootstrap]: /bootstrap/
+[bootstraping]: /bootstrap/#bootstrapping
+[provision]: /provision/
+[edgex-repo]: https://github.com/edgexfoundry/edgex-go
+[edgex-raml]: https://github.com/edgexfoundry/edgex-go/blob/master/api/raml/system-agent.raml
+[conftoml]: https://github.com/mainflux/export/blob/master/configs/config.toml
+[docker-compose]: https://github.com/mainflux/mainflux/docker/docker-compose.yml
+[env]: https://github.com/mainflux/export#environmet-variables
+[mutual-tls]: /authentication/#mutual-tls-authentication-with-x509-certificates
+[certs-service]: /certs/#certs-service
+[protomsg]: https://github.com/mainflux/mainflux/blob/master/pkg/messaging/message.proto
+[back-to-edge]: /edge/#edge
+[nats]: https://nats.io/
