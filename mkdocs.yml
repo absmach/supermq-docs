@@ -37,7 +37,6 @@ nav:
   - CLI: cli.md
   - API: api.md
   - Entities: entities.md
-  - Groups: groups.md
   - Bootstrap: bootstrap.md
   - Twins: twins.md
   - Tracing: tracing.md
