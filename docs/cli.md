@@ -97,19 +97,12 @@ Usage:
   mainflux-cli channels [command]
 
 Available Commands:
-  bootstrap     Bootstrap management
-  certs         Certificates management
-  channels      Channels management
-  completion    Generate the autocompletion script for the specified shell
-  groups        Groups management
-  health        Health Check
-  help          Help about any command
-  messages      Send or read messages
-  policies      Policies management
-  provision     Provision things and channels from a config file
-  subscription  Subscription management
-  things        Things management
-  users         Users management
+  connections Connections list
+  create      Create channel
+  disable     Change channel status to disabled
+  enable      Change channel status to enabled
+  get         Get channel
+  update      Update channel
 
 Flags:
   -h, --help   help for channels
