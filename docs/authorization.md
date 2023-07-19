@@ -46,6 +46,8 @@ There are three types of policies:
 
 Finally, the **c\_** policy represents the rights the member has over other members of the group/channel. Only group/channel members with correct rights can modify or update other members of the group/channel. **c_list**, **c_update**, **c_share** and **c_delete** are the only supported actions. With **c_list** the client can list the group/channel or other members of the group/channel. With **c_update** the client can update other members of the group/channel. With **c_share** the client can share the group/channel with other clients. With **c_delete** the client can delete other members of the group/channel.
 
+By default, mainflux adds listing action to **c\_** and **g\_** policies. This means that all members of the group/channel can list the group/channel or its members. When adding a new member to a group with **g_add**, **g_update** or **g_delete** action, mainflux will automatically add **g_list** action to the new member's policy. This means that the new member will be able to list the group/channel. When adding a new member to a group/channel with **c_update** or **c_delete** action, mainflux will automatically add **c_list** action to the new member's policy. This means that the new member will be able to list the members of the group/channel.
+
 ## Example
 
 The rules are specified in the **policies** association table. The table looks like this:
