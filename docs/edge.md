@@ -109,12 +109,12 @@ MF_AGENT_BOOTSTRAP_ID=34:e1:2d:e6:cf:03 ./mainflux-agent
 
 ```bash
 # Set connection parameters as environment variables in shell
-CH=`curl -s -S -X GET http://some-domain-name:9013/things/bootstrap/34:e1:2d:e6:cf:03 -H "Authorization: edged" -H 'Content-Type: application/json' | jq -r '.mainflux_channels[0].id'`
-TH=`curl -s  -S -X GET http://some-domain-name:9013/things/bootstrap/34:e1:2d:e6:cf:03 -H "Authorization: edged" -H 'Content-Type: application/json' | jq -r .mainflux_id`
-KEY=`curl -s  -S -X GET http://some-domain-name:9013/things/bootstrap/34:e1:2d:e6:cf:03 -H "Authorization: edged" -H 'Content-Type: application/json' | jq -r .mainflux_key`
+CH=`curl -s -S -X GET http://some-domain-name:9013/things/bootstrap/34:e1:2d:e6:cf:03 -H "Authorization: Thing <BOOTSTRAP_KEY>" -H 'Content-Type: application/json' | jq -r '.mainflux_channels[0].id'`
+TH=`curl -s  -S -X GET http://some-domain-name:9013/things/bootstrap/34:e1:2d:e6:cf:03 -H "Authorization: Thing <BOOTSTRAP_KEY>" -H 'Content-Type: application/json' | jq -r .mainflux_id`
+KEY=`curl -s  -S -X GET http://some-domain-name:9013/things/bootstrap/34:e1:2d:e6:cf:03 -H "Authorization: Thing <BOOTSTRAP_KEY>" -H 'Content-Type: application/json' | jq -r .mainflux_key`
 
 # Subscribe for response
-mosquitto_sub -d -u $TH -P $KEY  -t channels/$CH/messages/res/# -h some-domain-name -p 1883
+mosquitto_sub -d -u $TH -P $KEY  -t "channels/${CH}/messages/res/#" -h some-domain-name -p 1883
 
 # Publish command e.g `ls`
 mosquitto_pub -d -u $TH -P $KEY  -t channels/$CH/messages/req -h some-domain-name -p 1883  -m '[{"bn":"1:", "n":"exec", "vs":"ls, -l"}]'
@@ -376,11 +376,6 @@ MAINFLUX_USER_PASSWORD='12345678'
 
 `EXTERNAL_KEY` and `EXTERNAL_ID` are parameters posted to `/mapping` endpoint of `provision` service, `MAINFLUX_HOST` is location of cloud instance of Mainflux that `export` should connect to and `MAINFLUX_USER_EMAIL` and `MAINFLUX_USER_PASSWORD` are users credentials in the cloud.
 
-[conftoml]:(https://github.com/mainflux/export/blob/master/configs/config.toml)
-[docker-compose]:(https://github.com/mainflux/mainflux/docker/docker-compose.yml)
-[env]:(https://github.com/mainflux/export#environmet-variables)
-[agent]:(https://github.com/mainflux/agent)
-[protomsg]:(https://github.com/mainflux/mainflux/blob/master/pkg/messaging/message.proto)
 
 ## Example deployment
 
@@ -551,3 +546,9 @@ In Mainflux `mqtt` service:
 ```log
 mainflux-mqtt   | {"level":"info","message":"Publish - client ID export-88529fb2-6c1e-4b60-b9ab-73b5d89f7404 to the topic: channels/e2adcfa6-96b2-425d-8cd4-ff8cb9c056ce/messages/export/test","ts":"2020-05-08T15:16:02.999684791Z"}
 ```
+
+[conftoml]:https://github.com/mainflux/export/blob/master/configs/config.toml
+[docker-compose]:https://github.com/mainflux/mainflux/docker/docker-compose.yml
+[env]:(https://github.com/mainflux/export#environmet-variables)
+[agent]:(https://github.com/mainflux/agent)
+[protomsg]:https://github.com/mainflux/mainflux/blob/master/pkg/messaging/message.proto
