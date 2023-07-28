@@ -25,17 +25,19 @@ Usage:
   mainflux-cli [command]
 
 Available Commands:
-  bootstrap   Bootstrap management
-  certs       Certificates management
-  channels    Channels management
-  completion  Generate the autocompletion script for the specified shell
-  groups      Groups management
-  health      Health Check
-  help        Help about any command
-  messages    Send or read messages
-  provision   Provision things and channels from a config file
-  things      Things management
-  users       Users management
+  bootstrap     Bootstrap management
+  certs         Certificates management
+  channels      Channels management
+  completion    Generate the autocompletion script for the specified shell
+  groups        Groups management
+  health        Health Check
+  help          Help about any command
+  messages      Send or read messages
+  policies      Policies management
+  provision     Provision things and channels from a config file
+  subscription  Subscription management
+  things        Things management
+  users         Users management
 
 Flags:
   -b, --bootstrap-url string   Bootstrap service URL (default "http://localhost")
@@ -52,8 +54,11 @@ Flags:
   -o, --offset uint            Offset query parameter
   -r, --raw                    Enables raw output mode for easier parsing of output
   -R, --reader-url string      Reader URL (default "http://localhost")
+  -z, --state string           Bootstrap state query parameter
   -S, --status string          User status query parameter
   -t, --things-url string      Things service URL (default "http://localhost")
+  -t, --things-url string      Things service URL (default "http://localhost")
+  -T, --topic string           Subscription topic query parameter
   -u, --users-url string       Users service URL (default "http://localhost")
 
 Use "mainflux-cli [command] --help" for more information about a command.
@@ -108,6 +113,7 @@ Global Flags:
   -c, --config string          Config path
   -y, --content-type string    Message content type (default "application/senml+json")
   -e, --email string           User email query parameter
+  -h, --help                   help for mainflux-cli
   -p, --http-url string        HTTP adapter URL (default "http://localhost/http")
   -i, --insecure               Do not check for TLS cert
   -l, --limit uint             Limit query parameter (default 100)
@@ -116,9 +122,13 @@ Global Flags:
   -o, --offset uint            Offset query parameter
   -r, --raw                    Enables raw output mode for easier parsing of output
   -R, --reader-url string      Reader URL (default "http://localhost")
+  -z, --state string           Bootstrap state query parameter
   -S, --status string          User status query parameter
   -t, --things-url string      Things service URL (default "http://localhost")
+  -t, --things-url string      Things service URL (default "http://localhost")
+  -T, --topic string           Subscription topic query parameter
   -u, --users-url string       Users service URL (default "http://localhost")
+
 
 Use "mainflux-cli channels [command] --help" for more information about a command.
 ```
