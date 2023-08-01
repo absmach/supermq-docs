@@ -534,7 +534,7 @@ git clone https://github.com/mainflux/agent
 go run ./examples/publish/main.go -s http://localhost:4222 export.test "[{\"bn\":\"test\"}]";
 ```
 
-We have configured route for export, `nats_topic = ">"` means that it will listen to `NATS` subject `export.>` and `mqtt_topic` is configured so that data will be sent to MQTT broker on topic `channels/e2adcfa6-96b2-425d-8cd4-ff8cb9c056ce/messages` with appended `NATS` subject. Depending on the broker used, nats by default, rabbitmq can be used by setting the build tag to `rabbitmq`.
+We have configured route for export, `nats_topic = ">"` means that it will listen to `NATS` subject `export.>` and `mqtt_topic` is configured so that data will be sent to MQTT broker on topic `channels/e2adcfa6-96b2-425d-8cd4-ff8cb9c056ce/messages` with appended `NATS` subject. Other brokers can such as `rabbitmq` can be used, for more detail refer to [dev-guide][dev-guide].
 
 In terminal where export is started you should see following message:
 
@@ -553,3 +553,4 @@ mainflux-mqtt   | {"level":"info","message":"Publish - client ID export-88529fb2
 [env]:(https://github.com/mainflux/export#environmet-variables)
 [agent]:(https://github.com/mainflux/agent)
 [protomsg]:https://github.com/mainflux/mainflux/blob/master/pkg/messaging/message.proto
+[dev-guide]: /docs/dev-guide.md/#message-broker

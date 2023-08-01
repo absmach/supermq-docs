@@ -226,22 +226,28 @@ which will do this copying of the binaries.
 Mainflux depends on several infrastructural services, notably the default message broker, [NATS](https://www.nats.io/) and [PostgreSQL](https://www.postgresql.org/) database.
 
 #### Message Broker
+
 Mainflux uses NATS as it's default central message bus. For development purposes (when not run via Docker), it expects that NATS is installed on the local system.
 
 To do this execute:
 
-```
-go get github.com/nats-io/gnatsd
-```
-
-This will install `gnatsd` binary that can be simply run by executing:
-
-```
-gnatsd
+```bash
+go install github.com/nats-io/nats-server/v2@latest
 ```
 
-If you want to change the default message broker to [RabbitMQ](https://www.rabbitmq.com/download.html), [VerneMQ](https://vernemq.com/downloads/) or [Kafka](https://kafka.apache.org/quickstart) you need to install it on the local system.
+This will install `nats-server` binary that can be simply run by executing:
 
+```bash
+nats-server
+```
+
+If you want to change the default message broker to [RabbitMQ](https://www.rabbitmq.com/download.html) or [VerneMQ](https://vernemq.com/downloads/) you need to install it on the local system.
+To run using a different broker you need to set the `MF_BROKER_TYPE` env variable to `nats`, `rabbitmq` or `vernemq` during make and run process.
+
+```bash
+MF_BROKER_TYPE=<broker-type> make
+MF_BROKER_TYPE=<broker-type> make run
+```
 
 #### PostgreSQL
 Mainflux uses PostgreSQL to store metadata (`users`, `things` and `channels` entities alongside with authorization tokens).
