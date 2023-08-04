@@ -43,14 +43,12 @@ In order to enable the thing to start bootstrapping process, the user needs to u
 ```bash
 curl -s -S -i -X POST -H "Authorization: Bearer <user_token>" -H "Content-Type: application/json" http://localhost:9013/things/configs -d '{
         "external_id":"09:6:0:sb:sa",
-        "thing_id": "1b9b8fae-9035-4969-a240-7fe5bdc0ed28",
+        "thing_id": "7d63b564-3092-4cda-b441-e65fc1f285f0",
         "external_key":"key",
         "name":"some",
         "channels":[
-                "c3642289-501d-4974-82f2-ecccc71b2d83",
-                "cd4ce940-9173-43e3-86f7-f788e055eb14",
-                "ff13ca9c-7322-4c28-a25c-4fe5c7b753fc",
-                "c3642289-501d-4974-82f2-ecccc71b2d82"
+                "78c9b88c-b2c4-4d58-a973-725c32194fb3",
+                "c4d6edb2-4e23-49f2-b6ea-df8bc6769591"
 ],
         "content": "config...",
         "client_cert": "PEM cert",
@@ -86,26 +84,24 @@ The response body should look something like:
 
 ```json
 {
-   "mainflux_id":"7c9df5eb-d06b-4402-8c1a-df476e4394c8",
-   "mainflux_key":"86a4f870-eba4-46a0-bef9-d94db2b64392",
-   "mainflux_channels":[
+   "thing_id":"7d63b564-3092-4cda-b441-e65fc1f285f0",
+   "thing_key":"d0f6ff22-f521-4674-9065-e265a9376a78",
+   "channels":[
       {
-         "id":"ff13ca9c-7322-4c28-a25c-4fe5c7b753fc",
-         "name":"some channel",
-         "metadata":{
-            "operation":"someop",
-            "type":"metadata"
-         }
+         "id":"c4d6edb2-4e23-49f2-b6ea-df8bc6769591",
+         "name":"c1",
+         "metadata":null
       },
       {
-         "id":"925461e6-edfb-4755-9242-8a57199b90a5",
-         "name":"channel1",
-         "metadata":{
-            "type":"control"
-         }
+         "id":"78c9b88c-b2c4-4d58-a973-725c32194fb3",
+         "name":"c0",
+         "metadata":null
       }
    ],
-   "content":"config..."
+   "content":"cofig...",
+   "client_cert":"PEM cert",
+   "client_key":"PEM client cert key",
+   "ca_cert":"PEM CA cert"
 }
 ```
 
