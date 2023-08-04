@@ -47,9 +47,9 @@ curl -s -S -X GET http://mainflux-domain.com:9013/things/bootstrap/<external_id>
 
 ```json
 {
-  "mainflux_id": "e22c383a-d2ab-47c1-89cd-903955da993d",
-  "mainflux_key": "fc987711-1828-461b-aa4b-16d5b2c642fe",
-  "mainflux_channels": [
+  "thing_id": "e22c383a-d2ab-47c1-89cd-903955da993d",
+  "thing_key": "fc987711-1828-461b-aa4b-16d5b2c642fe",
+  "channels": [
     {
       "id": "fa5f9ba8-a1fc-4380-9edb-d0c23eaa24ec",
       "name": "control-channel",
