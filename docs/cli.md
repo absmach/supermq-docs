@@ -29,6 +29,7 @@ Available Commands:
   certs         Certificates management
   channels      Channels management
   completion    Generate the autocompletion script for the specified shell
+  config        Store cli params locally
   groups        Groups management
   health        Health Check
   help          Help about any command
