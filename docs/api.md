@@ -592,7 +592,7 @@ You can get all groups a user is assigned to by calling the get user memberships
 
 If you want to paginate your results then use `offset`, `limit`, `metadata`, `name`, `status`, `parentID`, `ownerID`, `tree` and `dir` as query parameters.
 
-> Must take into consideration the user identified by the `user_token` needs to be assigned to the same group with `c_list` action or is the owner of the user identified by the `user_id`.
+> The user identified by the `user_token` must be assigned to the same group as the user with id `user_id` with `c_list` action. Alternatively, the user identified by the `user_token` must be the owner of the user with id `user_id`.
 
 ```bash
 curl -sSiX GET http://localhost/users/<user_id>/memberships -H "Authorization: Bearer <user_token>"
@@ -724,7 +724,7 @@ Access-Control-Expose-Headers: Location
 
 ### Create Thing with External Secret
 
-It is often the case that the user will want to integrate the existing solutions, e.g. an asset management system, with the Mainflux platform. To simplify the integration between the systems and avoid artificial cross-platform reference, such as special fields in Mainflux Things metadata, it is possible to set Mainflux Thing secret with an existing unique secret while create the Thing. This way, the user can set the existing secret as the Thing secret of a newly created Thing to keep reference between Thing and the asset that Thing represents.
+It is often the case that the user will want to integrate the existing solutions, e.g. an asset management system, with the Mainflux platform. To simplify the integration between the systems and avoid artificial cross-platform reference, such as special fields in Mainflux Things metadata, it is possible to set Mainflux Thing secret with an existing unique secret when creating the Thing. This way, the user can set the existing secret as the Thing secret of a newly created Thing to keep reference between Thing and the asset that Thing represents.
 The limitation is that the existing secret has to be unique in the Mainflux domain.
 
 To create a thing with an external secret, you need to provide the secret together with thing name, and other fields as well as a `user_token`
@@ -2106,8 +2106,8 @@ For example:
 ```bash
 curl -sSiX POST http://localhost/groups -H "Content-Type: application/json" -H "Authorization: Bearer <user_token>" -d @- << EOF
 {
-  "name": "testgroup",
-  "description": "test group description"
+  "name": "Security Engineers",
+  "description": "This group would be responsible for securing the platform."
 }
 EOF
 
@@ -2123,8 +2123,8 @@ Access-Control-Expose-Headers: Location
 {
   "id": "2766ae94-9a08-4418-82ce-3b91cf2ccd3e",
   "owner_id": "94939159-d129-4f17-9e4e-cc2d615539d7",
-  "name": "testgroup",
-  "description": "test group description",
+  "name": "Security Engineers",
+  "description": "This group would be responsible for securing the platform.",
   "created_at": "2023-06-15T09:41:42.860481Z",
   "updated_at": "0001-01-01T00:00:00Z",
   "status": "enabled"
@@ -2138,8 +2138,8 @@ For example:
 ```bash
 curl -sSiX POST http://localhost/groups -H "Content-Type: application/json" -H "Authorization: Bearer <user_token>" -d @- << EOF
 {
-  "name": "testgroup2",
-  "description": "test group 2 description",
+  "name": "Customer Support",
+  "description": "This group would be responsible for providing support to users of the platform.",
   "parent_id": "2766ae94-9a08-4418-82ce-3b91cf2ccd3e"
 }
 EOF
@@ -2157,8 +2157,8 @@ Access-Control-Expose-Headers: Location
   "id": "dd2dc8d4-f7cf-42f9-832b-81cae9a8e90a",
   "owner_id": "94939159-d129-4f17-9e4e-cc2d615539d7",
   "parent_id": "2766ae94-9a08-4418-82ce-3b91cf2ccd3e",
-  "name": "testgroup2",
-  "description": "test group 2 description",
+  "name": "Customer Support",
+  "description": "This group would be responsible for providing support to users of the platform.",
   "created_at": "2023-06-15T09:42:34.063997Z",
   "updated_at": "0001-01-01T00:00:00Z",
   "status": "enabled"
@@ -2189,8 +2189,8 @@ Access-Control-Expose-Headers: Location
 {
   "id": "2766ae94-9a08-4418-82ce-3b91cf2ccd3e",
   "owner_id": "94939159-d129-4f17-9e4e-cc2d615539d7",
-  "name": "testgroup",
-  "description": "test group description",
+  "name": "Security Engineers",
+  "description": "This group would be responsible for securing the platform.",
   "created_at": "2023-06-15T09:41:42.860481Z",
   "updated_at": "0001-01-01T00:00:00Z",
   "status": "enabled"
@@ -2228,7 +2228,7 @@ Access-Control-Expose-Headers: Location
     {
       "id": "0a4a2c33-2d0e-43df-b51c-d905aba99e17",
       "owner_id": "94939159-d129-4f17-9e4e-cc2d615539d7",
-      "name": "a",
+      "name": "Sensor Operators",
       "created_at": "2023-06-14T13:33:52.249784Z",
       "updated_at": "0001-01-01T00:00:00Z",
       "status": "enabled"
@@ -2236,8 +2236,8 @@ Access-Control-Expose-Headers: Location
     {
       "id": "2766ae94-9a08-4418-82ce-3b91cf2ccd3e",
       "owner_id": "94939159-d129-4f17-9e4e-cc2d615539d7",
-      "name": "testgroup",
-      "description": "test group description",
+      "name": "Security Engineers",
+      "description": "This group would be responsible for securing the platform.",
       "created_at": "2023-06-15T09:41:42.860481Z",
       "updated_at": "0001-01-01T00:00:00Z",
       "status": "enabled"
@@ -2246,8 +2246,8 @@ Access-Control-Expose-Headers: Location
       "id": "dd2dc8d4-f7cf-42f9-832b-81cae9a8e90a",
       "owner_id": "94939159-d129-4f17-9e4e-cc2d615539d7",
       "parent_id": "2766ae94-9a08-4418-82ce-3b91cf2ccd3e",
-      "name": "testgroup2",
-      "description": "test group 2 description",
+      "name": "Customer Support",
+      "description": "This group would be responsible for providing support to users of the platform.",
       "created_at": "2023-06-15T09:42:34.063997Z",
       "updated_at": "0001-01-01T00:00:00Z",
       "status": "enabled"
@@ -2287,16 +2287,16 @@ Access-Control-Expose-Headers: Location
     {
       "id": "2766ae94-9a08-4418-82ce-3b91cf2ccd3e",
       "owner_id": "94939159-d129-4f17-9e4e-cc2d615539d7",
-      "name": "testgroup",
-      "description": "test group description",
+      "name": "Security Engineers",
+      "description": "This group would be responsible for securing the platform.",
       "level": -1,
       "children": [
         {
           "id": "dd2dc8d4-f7cf-42f9-832b-81cae9a8e90a",
           "owner_id": "94939159-d129-4f17-9e4e-cc2d615539d7",
           "parent_id": "2766ae94-9a08-4418-82ce-3b91cf2ccd3e",
-          "name": "testgroup2",
-          "description": "test group 2 description",
+          "name": "Customer Support",
+          "description": "This group would be responsible for providing support to users of the platform.",
           "created_at": "2023-06-15T09:42:34.063997Z",
           "updated_at": "0001-01-01T00:00:00Z",
           "status": "enabled"
@@ -2341,16 +2341,16 @@ Access-Control-Expose-Headers: Location
     {
       "id": "2766ae94-9a08-4418-82ce-3b91cf2ccd3e",
       "owner_id": "94939159-d129-4f17-9e4e-cc2d615539d7",
-      "name": "testgroup",
-      "description": "test group description",
+      "name": "Security Engineers",
+      "description": "This group would be responsible for securing the platform.",
       "path": "2766ae94-9a08-4418-82ce-3b91cf2ccd3e",
       "children": [
         {
           "id": "dd2dc8d4-f7cf-42f9-832b-81cae9a8e90a",
           "owner_id": "94939159-d129-4f17-9e4e-cc2d615539d7",
           "parent_id": "2766ae94-9a08-4418-82ce-3b91cf2ccd3e",
-          "name": "testgroup2",
-          "description": "test group 2 description",
+          "name": "Customer Support",
+          "description": "This group would be responsible for providing support to users of the platform.",
           "level": 1,
           "path": "2766ae94-9a08-4418-82ce-3b91cf2ccd3e.dd2dc8d4-f7cf-42f9-832b-81cae9a8e90a",
           "created_at": "2023-06-15T09:42:34.063997Z",
@@ -2388,7 +2388,7 @@ For example:
 ```bash
 curl -sSiX PUT http://localhost/groups/2766ae94-9a08-4418-82ce-3b91cf2ccd3e  -H "Content-Type: application/json" -H "Authorization: Bearer <user_token>" -d @- << EOF
 {
-  "name":"Jane Doe",
+  "name":"Data Analysts",
   "description":"This group would be responsible for analyzing data collected from sensors.",
   "metadata": {
       "location": "london"
@@ -2407,7 +2407,7 @@ Access-Control-Expose-Headers: Location
 {
   "id": "2766ae94-9a08-4418-82ce-3b91cf2ccd3e",
   "owner_id": "94939159-d129-4f17-9e4e-cc2d615539d7",
-  "name": "Jane Doe",
+  "name": "Data Analysts",
   "description": "This group would be responsible for analyzing data collected from sensors.",
   "metadata": { "location": "london" },
   "created_at": "2023-06-15T09:41:42.860481Z",
@@ -2441,7 +2441,7 @@ Access-Control-Expose-Headers: Location
 {
   "id": "2766ae94-9a08-4418-82ce-3b91cf2ccd3e",
   "owner_id": "94939159-d129-4f17-9e4e-cc2d615539d7",
-  "name": "Jane Doe",
+  "name": "Data Analysts",
   "description": "This group would be responsible for analyzing data collected from sensors.",
   "metadata": { "location": "london" },
   "created_at": "2023-06-15T09:41:42.860481Z",
@@ -2475,7 +2475,7 @@ Access-Control-Expose-Headers: Location
 {
   "id": "2766ae94-9a08-4418-82ce-3b91cf2ccd3e",
   "owner_id": "94939159-d129-4f17-9e4e-cc2d615539d7",
-  "name": "Jane Doe",
+  "name": "Data Analysts",
   "description": "This group would be responsible for analyzing data collected from sensors.",
   "metadata": { "location": "london" },
   "created_at": "2023-06-15T09:41:42.860481Z",
@@ -2525,7 +2525,7 @@ You can get all users assigned to a group.
 
 If you want to paginate your results then use `offset`, `limit`, `metadata`, `name`, `status`, `identity`, and `tag` as query parameters.
 
-> Must take into consideration the user identified by the `user_token` needs to be assigned to the same group with `g_list` action or be the owner of the group.
+> Must take into consideration the user identified by the `user_token` needs to be assigned to the same group identified by `group_id` with `g_list` action or be the owner of the group identified by `group_id`.
 
 ```bash
 curl -sSiX GET http://localhost/groups/<group_id>/members -H "Content-Type: application/json" -H "Authorization: Bearer <user_token>"
@@ -2594,7 +2594,7 @@ curl -sSiX POST http://localhost/users/policies -H "Content-Type: application/js
 {
   "subject": "<user_id>",
   "object": "<group_id>",
-  "actions": ["<actions>"]
+  "actions": ["<actions>", "[actions]"]
 }
 EOF
 ```
@@ -2604,7 +2604,7 @@ curl -sSiX POST http://localhost/things/policies -H "Content-Type: application/j
 {
   "subject": "<thing_id>",
   "object": "<channel_id>",
-  "actions": ["<actions>"]
+  "actions": ["<actions>", "[actions]"]
 }
 EOF
 ```
@@ -2614,7 +2614,7 @@ curl -sSiX POST http://localhost/things/policies -H "Content-Type: application/j
 {
   "subject": "<user_id>",
   "object": "<channel_id>",
-  "actions": ["<actions>"]
+  "actions": ["<actions>", "[actions]"]
   "external": true
 }
 EOF
@@ -2649,7 +2649,7 @@ curl -sSiX PUT http://localhost/users/policies -H "Content-Type: application/jso
 {
   "subject": "<user_id>",
   "object": "<group_id>",
-  "actions": ["<actions>"]
+  "actions": ["<actions>", "[actions]"]
 }
 EOF
 ```
@@ -2659,7 +2659,7 @@ curl -sSiX PUT http://localhost/things/policies -H "Content-Type: application/js
 {
   "subject": "<thing_id> | <user_id>",
   "object": "<channel_id>",
-  "actions": ["<actions>"]
+  "actions": ["<actions>", "[actions]"]
 }
 EOF
 ```
