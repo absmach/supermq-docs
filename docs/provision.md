@@ -33,7 +33,7 @@ access-control-allow-headers: *
 {
     "id": "71db4bb0-591e-4f76-b766-b39ced9fc6b8",
     "name": "John Doe",
-    "credentials": { "identity": "john.doe@email.com", "secret": "" },
+    "credentials": { "identity": "john.doe@email.com" },
     "created_at": "2023-04-04T08:40:39.319602Z",
     "updated_at": "2023-04-04T08:40:39.319602Z",
     "status": "enabled"

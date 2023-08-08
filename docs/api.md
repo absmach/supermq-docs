@@ -56,7 +56,7 @@ Access-Control-Expose-Headers: Location
 {
   "id": "4f22fa45-50ca-491b-a7c9-680a2608dc13",
   "name": "John Doe",
-  "credentials": { "identity": "john.doe@email.com", "secret": "" },
+  "credentials": { "identity": "john.doe@email.com" },
   "created_at": "2023-06-14T13:45:38.808423Z",
   "updated_at": "0001-01-01T00:00:00Z",
   "status": "enabled"
@@ -88,7 +88,7 @@ Access-Control-Expose-Headers: Location
 {
   "id": "1890c034-7ef9-4cde-83df-d78ea1d4d281",
   "owner": "94939159-d129-4f17-9e4e-cc2d615539d7",
-  "credentials": { "identity": "jane.doe@email.com", "secret": "" },
+  "credentials": { "identity": "jane.doe@email.com" },
   "created_at": "2023-06-14T13:46:47.322648Z",
   "updated_at": "0001-01-01T00:00:00Z",
   "status": "enabled"
@@ -186,8 +186,7 @@ Access-Control-Expose-Headers: Location
   "id": "1890c034-7ef9-4cde-83df-d78ea1d4d281",
   "owner": "94939159-d129-4f17-9e4e-cc2d615539d7",
   "credentials": {
-    "identity": "jane.doe@email.com",
-    "secret": "$2a$10$pgpEKv0K5Xs9ULyBCVzGyeBwWIUleIH5IqXZ4XnLI6/.Aw2CHujr."
+    "identity": "jane.doe@email.com"
   },
   "created_at": "2023-06-14T13:46:47.322648Z",
   "updated_at": "0001-01-01T00:00:00Z",
@@ -220,8 +219,7 @@ Access-Control-Expose-Headers: Location
   "id": "1890c034-7ef9-4cde-83df-d78ea1d4d281",
   "owner": "94939159-d129-4f17-9e4e-cc2d615539d7",
   "credentials": {
-    "identity": "jane.doe@email.com",
-    "secret": "$2a$10$pgpEKv0K5Xs9ULyBCVzGyeBwWIUleIH5IqXZ4XnLI6/.Aw2CHujr."
+    "identity": "jane.doe@email.com"
   },
   "created_at": "2023-06-14T13:46:47.322648Z",
   "updated_at": "0001-01-01T00:00:00Z",
@@ -257,7 +255,7 @@ Access-Control-Expose-Headers: Location
     {
       "id": "1890c034-7ef9-4cde-83df-d78ea1d4d281",
       "owner": "94939159-d129-4f17-9e4e-cc2d615539d7",
-      "credentials": { "identity": "jane.doe@email.com", "secret": "" },
+      "credentials": { "identity": "jane.doe@email.com" },
       "created_at": "2023-06-14T13:46:47.322648Z",
       "updated_at": "0001-01-01T00:00:00Z",
       "status": "enabled"
@@ -292,7 +290,7 @@ Access-Control-Expose-Headers: Location
     {
       "id": "1890c034-7ef9-4cde-83df-d78ea1d4d281",
       "owner": "94939159-d129-4f17-9e4e-cc2d615539d7",
-      "credentials": { "identity": "jane.doe@email.com", "secret": "" },
+      "credentials": { "identity": "jane.doe@email.com" },
       "created_at": "2023-06-14T13:46:47.322648Z",
       "updated_at": "0001-01-01T00:00:00Z",
       "status": "enabled"
@@ -340,7 +338,7 @@ Access-Control-Expose-Headers: Location
   "id": "1890c034-7ef9-4cde-83df-d78ea1d4d281",
   "name": "Jane Doe",
   "owner": "94939159-d129-4f17-9e4e-cc2d615539d7",
-  "credentials": { "identity": "jane.doe@email.com", "secret": "" },
+  "credentials": { "identity": "jane.doe@email.com" },
   "metadata": { "location": "london" },
   "created_at": "2023-06-14T13:46:47.322648Z",
   "updated_at": "2023-06-14T13:54:40.208005Z",
@@ -387,7 +385,7 @@ Access-Control-Expose-Headers: Location
   "name": "Jane Doe",
   "tags": ["male", "developer"],
   "owner": "94939159-d129-4f17-9e4e-cc2d615539d7",
-  "credentials": { "identity": "jane.doe@email.com", "secret": "" },
+  "credentials": { "identity": "jane.doe@email.com" },
   "metadata": { "location": "london" },
   "created_at": "2023-06-14T13:46:47.322648Z",
   "updated_at": "2023-06-14T13:55:18.353027Z",
@@ -430,7 +428,7 @@ Access-Control-Expose-Headers: Location
   "name": "Jane Doe",
   "tags": ["male", "developer"],
   "owner": "532311a4-c13b-4061-b991-98dcae7a934e",
-  "credentials": { "identity": "jane.doe@email.com", "secret": "" },
+  "credentials": { "identity": "jane.doe@email.com" },
   "metadata": { "location": "london" },
   "created_at": "2023-06-14T13:46:47.322648Z",
   "updated_at": "2023-06-14T13:56:32.059484Z",
@@ -473,7 +471,7 @@ Access-Control-Expose-Headers: Location
   "name": "Jane Doe",
   "tags": ["male", "developer"],
   "owner": "94939159-d129-4f17-9e4e-cc2d615539d7",
-  "credentials": { "identity": "updated.jane.doe@gmail.com", "secret": "" },
+  "credentials": { "identity": "updated.jane.doe@gmail.com" },
   "metadata": { "location": "london" },
   "created_at": "2023-06-14T13:46:47.322648Z",
   "updated_at": "2023-06-14T13:59:53.422595Z",
@@ -542,7 +540,7 @@ Access-Control-Expose-Headers: Location
   "name": "Jane Doe",
   "tags": ["male", "developer"],
   "owner": "94939159-d129-4f17-9e4e-cc2d615539d7",
-  "credentials": { "identity": "updated.jane.doe@gmail.com", "secret": "" },
+  "credentials": { "identity": "updated.jane.doe@gmail.com" },
   "metadata": { "location": "london" },
   "created_at": "2023-06-14T13:46:47.322648Z",
   "updated_at": "2023-06-14T13:59:53.422595Z",
@@ -577,7 +575,7 @@ Access-Control-Expose-Headers: Location
   "name": "Jane Doe",
   "tags": ["male", "developer"],
   "owner": "94939159-d129-4f17-9e4e-cc2d615539d7",
-  "credentials": { "identity": "updated.jane.doe@gmail.com", "secret": "" },
+  "credentials": { "identity": "updated.jane.doe@gmail.com" },
   "metadata": { "location": "london" },
   "created_at": "2023-06-14T13:46:47.322648Z",
   "updated_at": "2023-06-14T13:59:53.422595Z",
@@ -2552,7 +2550,7 @@ Access-Control-Expose-Headers: Location
       "id": "1890c034-7ef9-4cde-83df-d78ea1d4d281",
       "name": "Jane Doe",
       "tags": ["male", "developer"],
-      "credentials": { "identity": "updated.jane.doe@gmail.com", "secret": "" },
+      "credentials": { "identity": "updated.jane.doe@gmail.com" },
       "metadata": { "location": "london" },
       "created_at": "2023-06-14T13:46:47.322648Z",
       "updated_at": "2023-06-14T13:59:53.422595Z",
