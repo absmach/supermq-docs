@@ -40,7 +40,7 @@ curl -sSiX POST http://localhost/users -H "Content-Type: application/json" -d @-
   "credentials": {
     "identity": "john.doe@email.com",
     "secret": "12345678"
-  },
+  }
 }
 EOF
 
@@ -63,10 +63,10 @@ Access-Control-Expose-Headers: Location
 }
 ```
 
-You can also use `[user_token]` so that the owner of the new user is the one identified by the `[user_token]` for example:
+You can also use `<user_token>` so that the owner of the new user is the one identified by the `<user_token>` for example:
 
 ```bash
-curl -sSiX POST http://localhost/users -H "Content-Type: application/json" -H "Authorization: Bearer [user_token]" -d @- << EOF
+curl -sSiX POST http://localhost/users -H "Content-Type: application/json" -H "Authorization: Bearer <user_token>" -d @- << EOF
 {
   "name": "John Doe",
   "credentials": {
@@ -163,7 +163,7 @@ Access-Control-Expose-Headers: Location
 
 ### Get User Profile
 
-You can always check the user profile that is logged in by using the `user_token`.
+You can always check the user profile that is logged-in by using the `user_token`.
 
 ```bash
 curl -sSiX GET http://localhost/users/profile -H "Authorization: Bearer <user_token>"
@@ -231,7 +231,7 @@ Access-Control-Expose-Headers: Location
 
 ### Get Users
 
-You can get all users in the database by querying this endpoint.
+You can get all users in the database by querying `/users` endpoint.
 
 ```bash
 curl -sSiX GET http://localhost/users -H "Authorization: Bearer <user_token>"
@@ -266,9 +266,7 @@ Access-Control-Expose-Headers: Location
 }
 ```
 
-If you want to paginate your results then use this
-
-> Additional parameters: `offset`, `limit`, `metadata`, `name`, `identity`, `tag`, `status` and `visbility`
+If you want to paginate your results then use `offset`, `limit`, `metadata`, `name`, `identity`, `tag`, `status` and `visbility` as query parameters.
 
 ```bash
 curl -sSiX GET http://localhost/users?offset=[offset]&limit=[limit]&identity=[identity] -H "Authorization: Bearer <user_token>"
@@ -592,7 +590,7 @@ Access-Control-Expose-Headers: Location
 
 You can get all groups a user is assigned to by calling the get user memberships function.
 
-If you want to paginate your results then use this `offset`, `limit`, `metadata`, `name`, `status`, `parentID`, `ownerID`, `tree` and `dir` query parameters.
+If you want to paginate your results then use `offset`, `limit`, `metadata`, `name`, `status`, `parentID`, `ownerID`, `tree` and `dir` as query parameters.
 
 > Must take into consideration the user identified by the `user_token` needs to be assigned to the same group with `c_list` action or is the owner of the user identified by the `user_id`.
 
@@ -692,7 +690,7 @@ It is often the case that the user will want to integrate the existing solutions
 
 The limitation is that the existing ID has to be unique in the Mainflux domain.
 
-To create a thing with an external ID, you need provide the ID together with thing name, and other fields as well as a `user_token`
+To create a thing with an external ID, you need to provide the ID together with thing name, and other fields as well as a `user_token`
 
 For example:
 
@@ -729,7 +727,7 @@ Access-Control-Expose-Headers: Location
 It is often the case that the user will want to integrate the existing solutions, e.g. an asset management system, with the Mainflux platform. To simplify the integration between the systems and avoid artificial cross-platform reference, such as special fields in Mainflux Things metadata, it is possible to set Mainflux Thing secret with an existing unique secret while create the Thing. This way, the user can set the existing secret as the Thing secret of a newly created Thing to keep reference between Thing and the asset that Thing represents.
 The limitation is that the existing secret has to be unique in the Mainflux domain.
 
-To create a thing with an external secret, you need provide the secret together with thing name, and other fields as well as a `user_token`
+To create a thing with an external secret, you need to provide the secret together with thing name, and other fields as well as a `user_token`
 
 For example:
 
@@ -936,7 +934,7 @@ Access-Control-Expose-Headers: Location
 
 ### Get Things
 
-You can get all things in the database by querying this endpoint.
+You can get all things in the database by querying `/things` endpoint.
 
 ```bash
 curl -sSiX GET http://localhost/things -H "Authorization: Bearer <user_token>"
@@ -1035,9 +1033,7 @@ Access-Control-Expose-Headers: Location
 }
 ```
 
-If you want to paginate your results then use this
-
-> Additional parameters: `offset`, `limit`, `metadata`, `name`, `status`, `tags` and `visibility`
+If you want to paginate your results then use `offset`, `limit`, `metadata`, `name`, `status`, `tags` and `visibility` as query parameters.
 
 ```bash
 curl -sSiX GET http://localhost/things?offset=[offset]&limit=[limit]&name=[name] -H "Authorization: Bearer <user_token>"
@@ -1367,7 +1363,7 @@ Access-Control-Expose-Headers: Location
 
 Channel is a group of things that could represent a special category in existing systems, e.g. a building level channel could represent the level of a smarting building system. For helping to keep the reference, it is possible to set an existing ID while creating the Mainflux channel. There are two limitations - the existing ID has to be in UUID V4 format and it has to be unique in the Mainflux domain.
 
-To create a channel with external ID, the user needs provide a UUID v4 format unique ID, and a `user_token`
+To create a channel with external ID, the user needs to provide a UUID v4 format unique ID, and a `user_token`
 
 For example:
 
@@ -1527,7 +1523,7 @@ Access-Control-Expose-Headers: Location
 
 ### Get Channel
 
-Get a channel entity for a logged in user
+Get a channel entity for a logged-in user
 
 ```bash
 curl -sSiX GET http://localhost/channels/<channel_id> -H "Authorization: Bearer <user_token>"
@@ -1558,9 +1554,9 @@ Access-Control-Expose-Headers: Location
 
 ### Get Channels
 
-You can get all channels for a logged in user.
+You can get all channels for a logged-in user.
 
-If you want to paginate your results then use this `offset`, `limit`, `metadata`, `name`, `status`, `parentID`, `ownerID`, `tree` and `dir` query parameters.
+If you want to paginate your results then use `offset`, `limit`, `metadata`, `name`, `status`, `parentID`, `ownerID`, `tree` and `dir` as query parameters.
 
 ```bash
 curl -sSiX GET http://localhost/channels -H "Authorization: Bearer <user_token>"
@@ -1816,7 +1812,7 @@ Access-Control-Expose-Headers: Location
 
 Connect thing to channel
 
-> `actions` is optional, if not provided, the default action is `m_read` and `m_write`.
+> `actions` is optional, if not provided, the default actions are `m_read` and `m_write`.
 
 ```bash
 curl -sSiX POST http://localhost/things/policies -H "Content-Type: application/json" -H "Authorization: Bearer <user_token>" -d @- << EOF
@@ -1979,23 +1975,18 @@ Sends message via HTTP protocol
 curl -sSiX POST http://localhost/http/channels/<channel_id>/messages -H "Content-Type: application/senml+json" -H "Authorization: Thing <thing_secret>" -d @- << EOF
 [
   {
-    "bn": "some-base-name:",
-    "bt": 1.276020076001e+09,
-    "bu": "A",
-    "bver": 5,
-    "n": "voltage",
-    "u": "V",
-    "v": 120.1
+    "bn": "<base_name>",
+    "bt": "[base_time]",
+    "bu": "[base_unit]",
+    "bver": [base_version],
+    "n": "<measurement_name>",
+    "u": "<measurement_unit>",
+    "v": <measurement_value>,
   },
   {
-    "n": "current",
-    "t": -5,
-    "v": 1.2
-  },
-  {
-    "n": "current",
-    "t": -4,
-    "v": 1.3
+    "n": "[measurement_name]",
+    "t": <measurement_time>,
+    "v": <measurement_value>,
   }
 ]
 EOF
@@ -2176,7 +2167,7 @@ Access-Control-Expose-Headers: Location
 
 ### Get group
 
-Get a group entity for a logged in user
+Get a group entity for a logged-in user
 
 ```bash
 curl -sSiX GET http://localhost/groups/<group_id> -H "Content-Type: application/json" -H "Authorization: Bearer <user_token>"
@@ -2208,9 +2199,9 @@ Access-Control-Expose-Headers: Location
 
 ### Get groups
 
-You can get all groups for a logged in user.
+You can get all groups for a logged-in user.
 
-If you want to paginate your results then use this `offset`, `limit`, `metadata`, `name`, `status`, `parentID`, `ownerID`, `tree` and `dir` query parameters.
+If you want to paginate your results then use `offset`, `limit`, `metadata`, `name`, `status`, `parentID`, `ownerID`, `tree` and `dir` as query parameters.
 
 ```bash
 curl -sSiX GET http://localhost/groups -H "Content-Type: application/json" -H "Authorization: Bearer <user_token>"
@@ -2267,9 +2258,9 @@ Access-Control-Expose-Headers: Location
 
 ### Get Group Parents
 
-You can get all groups that are parents of a group for a logged in user.
+You can get all groups that are parents of a group for a logged-in user.
 
-If you want to paginate your results then use this `offset`, `limit`, `metadata`, `name`, `status`, `parentID`, `ownerID`, `tree` and `dir` query parameters.
+If you want to paginate your results then use `offset`, `limit`, `metadata`, `name`, `status`, `parentID`, `ownerID`, `tree` and `dir` as query parameters.
 
 ```bash
 curl -sSiX GET http://localhost/groups/<group_id>/parents -H "Content-Type: application/json" -H "Authorization: Bearer <user_token>"
@@ -2321,9 +2312,9 @@ Access-Control-Expose-Headers: Location
 
 ### Get Group Children
 
-You can get all groups that are children of a group for a logged in user.
+You can get all groups that are children of a group for a logged-in user.
 
-If you want to paginate your results then use this `offset`, `limit`, `metadata`, `name`, `status`, `parentID`, `ownerID`, `tree` and `dir` query parameters.
+If you want to paginate your results then use `offset`, `limit`, `metadata`, `name`, `status`, `parentID`, `ownerID`, `tree` and `dir` as query parameters.
 
 ```bash
 curl -sSiX GET http://localhost/groups/<group_id>/children -H "Content-Type: application/json" -H "Authorization: Bearer <user_token>"
@@ -2532,7 +2523,7 @@ Access-Control-Expose-Headers: Location
 
 You can get all users assigned to a group.
 
-If you want to paginate your results then use this `offset`, `limit`, `metadata`, `name`, `status`, `identity`, and `tag` query parameters.
+If you want to paginate your results then use `offset`, `limit`, `metadata`, `name`, `status`, `identity`, and `tag` as query parameters.
 
 > Must take into consideration the user identified by the `user_token` needs to be assigned to the same group with `g_list` action or be the owner of the group.
 
