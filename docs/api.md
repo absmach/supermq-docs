@@ -70,7 +70,7 @@ curl -sSiX POST http://localhost/users -H "Content-Type: application/json" -H "A
 {
   "name": "John Doe",
   "credentials": {
-    "identity": "john.doe2@email.com",
+    "identity": "jane.doe@email.com",
     "secret": "12345678"
   },
 }
@@ -88,7 +88,7 @@ Access-Control-Expose-Headers: Location
 {
   "id": "1890c034-7ef9-4cde-83df-d78ea1d4d281",
   "owner": "94939159-d129-4f17-9e4e-cc2d615539d7",
-  "credentials": { "identity": "john.doe2@email.com", "secret": "" },
+  "credentials": { "identity": "jane.doe@email.com", "secret": "" },
   "created_at": "2023-06-14T13:46:47.322648Z",
   "updated_at": "0001-01-01T00:00:00Z",
   "status": "enabled"
@@ -186,7 +186,7 @@ Access-Control-Expose-Headers: Location
   "id": "1890c034-7ef9-4cde-83df-d78ea1d4d281",
   "owner": "94939159-d129-4f17-9e4e-cc2d615539d7",
   "credentials": {
-    "identity": "john.doe2@email.com",
+    "identity": "jane.doe@email.com",
     "secret": "$2a$10$pgpEKv0K5Xs9ULyBCVzGyeBwWIUleIH5IqXZ4XnLI6/.Aw2CHujr."
   },
   "created_at": "2023-06-14T13:46:47.322648Z",
@@ -220,7 +220,7 @@ Access-Control-Expose-Headers: Location
   "id": "1890c034-7ef9-4cde-83df-d78ea1d4d281",
   "owner": "94939159-d129-4f17-9e4e-cc2d615539d7",
   "credentials": {
-    "identity": "john.doe2@email.com",
+    "identity": "jane.doe@email.com",
     "secret": "$2a$10$pgpEKv0K5Xs9ULyBCVzGyeBwWIUleIH5IqXZ4XnLI6/.Aw2CHujr."
   },
   "created_at": "2023-06-14T13:46:47.322648Z",
@@ -257,7 +257,7 @@ Access-Control-Expose-Headers: Location
     {
       "id": "1890c034-7ef9-4cde-83df-d78ea1d4d281",
       "owner": "94939159-d129-4f17-9e4e-cc2d615539d7",
-      "credentials": { "identity": "john.doe2@email.com", "secret": "" },
+      "credentials": { "identity": "jane.doe@email.com", "secret": "" },
       "created_at": "2023-06-14T13:46:47.322648Z",
       "updated_at": "0001-01-01T00:00:00Z",
       "status": "enabled"
@@ -275,7 +275,7 @@ curl -sSiX GET http://localhost/users?offset=[offset]&limit=[limit]&identity=[id
 For example:
 
 ```bash
-curl -sSiX GET http://localhost/users?offset=0&limit=5&identity=john.doe2@email.com -H "Authorization: Bearer <user_token>"
+curl -sSiX GET http://localhost/users?offset=0&limit=5&identity=jane.doe@email.com -H "Authorization: Bearer <user_token>"
 
 HTTP/1.1 200 OK
 Server: nginx/1.23.3
@@ -292,7 +292,7 @@ Access-Control-Expose-Headers: Location
     {
       "id": "1890c034-7ef9-4cde-83df-d78ea1d4d281",
       "owner": "94939159-d129-4f17-9e4e-cc2d615539d7",
-      "credentials": { "identity": "john.doe2@email.com", "secret": "" },
+      "credentials": { "identity": "jane.doe@email.com", "secret": "" },
       "created_at": "2023-06-14T13:46:47.322648Z",
       "updated_at": "0001-01-01T00:00:00Z",
       "status": "enabled"
@@ -321,9 +321,9 @@ For example:
 ```bash
 curl -sSiX PATCH http://localhost/users/1890c034-7ef9-4cde-83df-d78ea1d4d281 -H "Content-Type: application/json" -H "Authorization: Bearer <user_token>" -d @- << EOF
 {
-  "name": "new name",
+  "name": "Jane Doe",
   "metadata": {
-    "department": "iot",
+    "location": "london",
   }
 }
 EOF
@@ -338,10 +338,10 @@ Access-Control-Expose-Headers: Location
 
 {
   "id": "1890c034-7ef9-4cde-83df-d78ea1d4d281",
-  "name": "new name",
+  "name": "Jane Doe",
   "owner": "94939159-d129-4f17-9e4e-cc2d615539d7",
-  "credentials": { "identity": "john.doe2@email.com", "secret": "" },
-  "metadata": { "department": "iot" },
+  "credentials": { "identity": "jane.doe@email.com", "secret": "" },
+  "metadata": { "location": "london" },
   "created_at": "2023-06-14T13:46:47.322648Z",
   "updated_at": "2023-06-14T13:54:40.208005Z",
   "updated_by": "94939159-d129-4f17-9e4e-cc2d615539d7",
@@ -370,7 +370,7 @@ For example:
 ```bash
 curl -sSiX PATCH http://localhost/users/1890c034-7ef9-4cde-83df-d78ea1d4d281/tags -H "Content-Type: application/json" -H "Authorization: Bearer <user_token>" -d @- << EOF
 {
-  "tags": ["manager", "developer"]
+  "tags": ["male", "developer"]
 }
 EOF
 
@@ -384,11 +384,11 @@ Access-Control-Expose-Headers: Location
 
 {
   "id": "1890c034-7ef9-4cde-83df-d78ea1d4d281",
-  "name": "new name",
-  "tags": ["manager", "developer"],
+  "name": "Jane Doe",
+  "tags": ["male", "developer"],
   "owner": "94939159-d129-4f17-9e4e-cc2d615539d7",
-  "credentials": { "identity": "john.doe2@email.com", "secret": "" },
-  "metadata": { "department": "iot" },
+  "credentials": { "identity": "jane.doe@email.com", "secret": "" },
+  "metadata": { "location": "london" },
   "created_at": "2023-06-14T13:46:47.322648Z",
   "updated_at": "2023-06-14T13:55:18.353027Z",
   "updated_by": "94939159-d129-4f17-9e4e-cc2d615539d7",
@@ -427,11 +427,11 @@ Access-Control-Expose-Headers: Location
 
 {
   "id": "1890c034-7ef9-4cde-83df-d78ea1d4d281",
-  "name": "new name",
-  "tags": ["manager", "developer"],
+  "name": "Jane Doe",
+  "tags": ["male", "developer"],
   "owner": "532311a4-c13b-4061-b991-98dcae7a934e",
-  "credentials": { "identity": "john.doe2@email.com", "secret": "" },
-  "metadata": { "department": "iot" },
+  "credentials": { "identity": "jane.doe@email.com", "secret": "" },
+  "metadata": { "location": "london" },
   "created_at": "2023-06-14T13:46:47.322648Z",
   "updated_at": "2023-06-14T13:56:32.059484Z",
   "updated_by": "94939159-d129-4f17-9e4e-cc2d615539d7",
@@ -456,7 +456,7 @@ For example:
 ```bash
 curl -sSiX PATCH http://localhost/users/1890c034-7ef9-4cde-83df-d78ea1d4d281/identity -H "Content-Type: application/json" -H "Authorization: Bearer <user_token>" -d @- << EOF
 {
-  "identity": "updated.john.doe@email.com"
+  "identity": "updated.jane.doe@gmail.com"
 }
 EOF
 
@@ -470,11 +470,11 @@ Access-Control-Expose-Headers: Location
 
 {
   "id": "1890c034-7ef9-4cde-83df-d78ea1d4d281",
-  "name": "new name",
-  "tags": ["manager", "developer"],
+  "name": "Jane Doe",
+  "tags": ["male", "developer"],
   "owner": "94939159-d129-4f17-9e4e-cc2d615539d7",
-  "credentials": { "identity": "updated.john.doe@email.com", "secret": "" },
-  "metadata": { "department": "iot" },
+  "credentials": { "identity": "updated.jane.doe@gmail.com", "secret": "" },
+  "metadata": { "location": "london" },
   "created_at": "2023-06-14T13:46:47.322648Z",
   "updated_at": "2023-06-14T13:59:53.422595Z",
   "updated_by": "94939159-d129-4f17-9e4e-cc2d615539d7",
@@ -539,11 +539,11 @@ Access-Control-Expose-Headers: Location
 
 {
   "id": "1890c034-7ef9-4cde-83df-d78ea1d4d281",
-  "name": "new name",
-  "tags": ["manager", "developer"],
+  "name": "Jane Doe",
+  "tags": ["male", "developer"],
   "owner": "94939159-d129-4f17-9e4e-cc2d615539d7",
-  "credentials": { "identity": "updated.john.doe@email.com", "secret": "" },
-  "metadata": { "department": "iot" },
+  "credentials": { "identity": "updated.jane.doe@gmail.com", "secret": "" },
+  "metadata": { "location": "london" },
   "created_at": "2023-06-14T13:46:47.322648Z",
   "updated_at": "2023-06-14T13:59:53.422595Z",
   "updated_by": "94939159-d129-4f17-9e4e-cc2d615539d7",
@@ -574,11 +574,11 @@ Access-Control-Expose-Headers: Location
 
 {
   "id": "1890c034-7ef9-4cde-83df-d78ea1d4d281",
-  "name": "new name",
-  "tags": ["manager", "developer"],
+  "name": "Jane Doe",
+  "tags": ["male", "developer"],
   "owner": "94939159-d129-4f17-9e4e-cc2d615539d7",
-  "credentials": { "identity": "updated.john.doe@email.com", "secret": "" },
-  "metadata": { "department": "iot" },
+  "credentials": { "identity": "updated.jane.doe@gmail.com", "secret": "" },
+  "metadata": { "location": "london" },
   "created_at": "2023-06-14T13:46:47.322648Z",
   "updated_at": "2023-06-14T13:59:53.422595Z",
   "updated_by": "94939159-d129-4f17-9e4e-cc2d615539d7",
@@ -618,9 +618,9 @@ Access-Control-Expose-Headers: Location
     {
       "id": "2766ae94-9a08-4418-82ce-3b91cf2ccd3e",
       "owner_id": "94939159-d129-4f17-9e4e-cc2d615539d7",
-      "name": "new name",
-      "description": "new description",
-      "metadata": { "department": "iot" },
+      "name": "Data analysts",
+      "description": "This group would be responsible for analyzing data collected from sensors.",
+      "metadata": { "location": "london" },
       "created_at": "2023-06-15T09:41:42.860481Z",
       "updated_at": "2023-06-15T10:17:56.475241Z",
       "updated_by": "94939159-d129-4f17-9e4e-cc2d615539d7",
@@ -660,7 +660,7 @@ For example:
 ```bash
 curl -sSiX POST http://localhost/things -H "Content-Type: application/json" -H "Authorization: Bearer <user_token>" -d @- << EOF
 {
-  "name":"examplething"
+  "name":"Temperature Sensor"
 }
 EOF
 
@@ -675,7 +675,7 @@ Access-Control-Expose-Headers: Location
 
 {
   "id": "48101ecd-1535-40c6-9ed8-5b1d21e371bb",
-  "name": "examplething",
+  "name": "Temperature Sensor",
   "owner": "94939159-d129-4f17-9e4e-cc2d615539d7",
   "credentials": { "secret": "c3f8c096-c60f-4375-8494-bca20a12fca7" },
   "created_at": "2023-06-15T09:04:04.292602664Z",
@@ -698,7 +698,7 @@ For example:
 curl -sSiX POST http://localhost/things -H "Content-Type: application/json" -H "Authorization: Bearer <user_token>" -d @- << EOF
 {
   "id": "2766ae94-9a08-4418-82ce-3b91cf2ccd3e",
-  "name":"examplething"
+  "name":"Temperature Sensor"
 }
 EOF
 
@@ -713,7 +713,7 @@ Access-Control-Expose-Headers: Location
 
 {
   "id": "2766ae94-9a08-4418-82ce-3b91cf2ccd3e",
-  "name": "examplething",
+  "name": "Temperature Sensor",
   "owner": "94939159-d129-4f17-9e4e-cc2d615539d7",
   "credentials": { "secret": "65ca03bd-eb6b-420b-9d5d-46d459d4f71c" },
   "created_at": "2023-06-15T09:05:06.538170496Z",
@@ -734,9 +734,9 @@ For example:
 ```bash
 curl -sSiX POST http://localhost/things -H "Content-Type: application/json" -H "Authorization: Bearer <user_token>" -d @- << EOF
 {
-  "name":"examplething"
+  "name":"Temperature Sensor"
   "credentials": {
-    "secret": "secret"
+    "secret": "94939159-9a08-4f17-9e4e-3b91cf2ccd3e"
   }
 }
 EOF
@@ -752,9 +752,9 @@ Access-Control-Expose-Headers: Location
 
 {
   "id": "2766ae94-9a08-4418-82ce-3b91cf2ccd3e",
-  "name": "examplething",
+  "name": "Temperature Sensor",
   "owner": "94939159-d129-4f17-9e4e-cc2d615539d7",
-  "credentials": { "secret": "secret" },
+  "credentials": { "secret": "94939159-9a08-4f17-9e4e-3b91cf2ccd3e" },
   "created_at": "2023-06-15T09:05:06.538170496Z",
   "updated_at": "0001-01-01T00:00:00Z",
   "status": "enabled"
@@ -806,10 +806,10 @@ For example:
 curl -sSiX POST http://localhost/things/bulk -H "Content-Type: application/json" -H "Authorization: Bearer <user_token>" -d @- << EOF
 [
   {
-    "name":"thing_name_1"
+    "name":"Motion Sensor"
   },
   {
-    "name":"thing_name_2"
+    "name":"Light Sensor"
   }
 ]
 EOF
@@ -827,7 +827,7 @@ Access-Control-Expose-Headers: Location
   "things": [
     {
       "id": "19f59b2d-1e9c-43db-bc84-5432bd52a83f",
-      "name": "thing_name_1",
+      "name": "Motion Sensor",
       "owner": "94939159-d129-4f17-9e4e-cc2d615539d7",
       "credentials": { "secret": "941c380a-3a41-40e9-8b79-3087daa4f3a6" },
       "created_at": "2023-06-15T09:05:45.719182307Z",
@@ -836,7 +836,7 @@ Access-Control-Expose-Headers: Location
     },
     {
       "id": "3709f2b0-9c73-413f-992e-7f6f9b396b0d",
-      "name": "thing_name_2",
+      "name": "Light Sensor",
       "owner": "94939159-d129-4f17-9e4e-cc2d615539d7",
       "credentials": { "secret": "798ee6be-311b-4640-99e4-0ccb19e0dcb9" },
       "created_at": "2023-06-15T09:05:45.719186184Z",
@@ -858,11 +858,11 @@ curl -sSiX POST http://localhost/things/bulk -H "Content-Type: application/json"
 [
   {
     "id": "eb2670ba-a2be-4ea4-83cb-111111111111",
-    "name":"thing_name_1"
+    "name":"Motion Sensor"
   },
   {
     "id": "eb2670ba-a2be-4ea4-83cb-111111111112",
-    "name":"thing_name_2"
+    "name":"Light Sensor"
   }
 ]
 EOF
@@ -880,7 +880,7 @@ Access-Control-Expose-Headers: Location
   "things": [
     {
       "id": "eb2670ba-a2be-4ea4-83cb-111111111111",
-      "name": "thing_name_1",
+      "name": "Motion Sensor",
       "owner": "94939159-d129-4f17-9e4e-cc2d615539d7",
       "credentials": { "secret": "325cda17-3a52-465d-89a7-2b63c7d0e3a6" },
       "created_at": "2023-06-15T09:06:17.967825372Z",
@@ -889,7 +889,7 @@ Access-Control-Expose-Headers: Location
     },
     {
       "id": "eb2670ba-a2be-4ea4-83cb-111111111112",
-      "name": "thing_name_2",
+      "name": "Light Sensor",
       "owner": "94939159-d129-4f17-9e4e-cc2d615539d7",
       "credentials": { "secret": "67b6cbb8-4a9e-4d32-8b9c-d7cd3352aa2b" },
       "created_at": "2023-06-15T09:06:17.967828689Z",
@@ -923,7 +923,7 @@ Access-Control-Expose-Headers: Location
 
 {
   "id": "48101ecd-1535-40c6-9ed8-5b1d21e371bb",
-  "name": "examplething",
+  "name": "Temperature Sensor",
   "owner": "94939159-d129-4f17-9e4e-cc2d615539d7",
   "credentials": { "secret": "c3f8c096-c60f-4375-8494-bca20a12fca7" },
   "created_at": "2023-06-15T09:04:04.292602Z",
@@ -959,7 +959,7 @@ Access-Control-Expose-Headers: Location
   "things": [
     {
       "id": "f3047c10-f2c7-4d53-b3c0-bc56c560c546",
-      "name": "weio",
+      "name": "Humidity Sensor",
       "owner": "94939159-d129-4f17-9e4e-cc2d615539d7",
       "credentials": { "secret": "6d11a91f-0bd8-41aa-8e1b-4c6338329c9c" },
       "created_at": "2023-06-14T12:04:12.740098Z",
@@ -968,7 +968,7 @@ Access-Control-Expose-Headers: Location
     },
     {
       "id": "04b0b2d1-fdaf-4b66-96a0-740a3151db4c",
-      "name": "bob",
+      "name": "UV Sensor",
       "owner": "94939159-d129-4f17-9e4e-cc2d615539d7",
       "credentials": { "secret": "a1e5d77f-8903-4cef-87b1-d793a3c28de3" },
       "created_at": "2023-06-14T12:04:56.245743Z",
@@ -977,7 +977,7 @@ Access-Control-Expose-Headers: Location
     },
     {
       "id": "48101ecd-1535-40c6-9ed8-5b1d21e371bb",
-      "name": "examplething",
+      "name": "Temperature Sensor",
       "owner": "94939159-d129-4f17-9e4e-cc2d615539d7",
       "credentials": { "secret": "c3f8c096-c60f-4375-8494-bca20a12fca7" },
       "created_at": "2023-06-15T09:04:04.292602Z",
@@ -986,7 +986,7 @@ Access-Control-Expose-Headers: Location
     },
     {
       "id": "2766ae94-9a08-4418-82ce-3b91cf2ccd3e",
-      "name": "examplething",
+      "name": "Temperature Sensor",
       "owner": "94939159-d129-4f17-9e4e-cc2d615539d7",
       "credentials": { "secret": "65ca03bd-eb6b-420b-9d5d-46d459d4f71c" },
       "created_at": "2023-06-15T09:05:06.53817Z",
@@ -995,7 +995,7 @@ Access-Control-Expose-Headers: Location
     },
     {
       "id": "19f59b2d-1e9c-43db-bc84-5432bd52a83f",
-      "name": "thing_name_1",
+      "name": "Motion Sensor",
       "owner": "94939159-d129-4f17-9e4e-cc2d615539d7",
       "credentials": { "secret": "941c380a-3a41-40e9-8b79-3087daa4f3a6" },
       "created_at": "2023-06-15T09:05:45.719182Z",
@@ -1004,7 +1004,7 @@ Access-Control-Expose-Headers: Location
     },
     {
       "id": "3709f2b0-9c73-413f-992e-7f6f9b396b0d",
-      "name": "thing_name_2",
+      "name": "Light Sensor",
       "owner": "94939159-d129-4f17-9e4e-cc2d615539d7",
       "credentials": { "secret": "798ee6be-311b-4640-99e4-0ccb19e0dcb9" },
       "created_at": "2023-06-15T09:05:45.719186Z",
@@ -1013,7 +1013,7 @@ Access-Control-Expose-Headers: Location
     },
     {
       "id": "eb2670ba-a2be-4ea4-83cb-111111111111",
-      "name": "thing_name_1",
+      "name": "Motion Sensor",
       "owner": "94939159-d129-4f17-9e4e-cc2d615539d7",
       "credentials": { "secret": "325cda17-3a52-465d-89a7-2b63c7d0e3a6" },
       "created_at": "2023-06-15T09:06:17.967825Z",
@@ -1022,7 +1022,7 @@ Access-Control-Expose-Headers: Location
     },
     {
       "id": "eb2670ba-a2be-4ea4-83cb-111111111112",
-      "name": "thing_name_2",
+      "name": "Light Sensor",
       "owner": "94939159-d129-4f17-9e4e-cc2d615539d7",
       "credentials": { "secret": "67b6cbb8-4a9e-4d32-8b9c-d7cd3352aa2b" },
       "created_at": "2023-06-15T09:06:17.967828Z",
@@ -1042,7 +1042,7 @@ curl -sSiX GET http://localhost/things?offset=[offset]&limit=[limit]&name=[name]
 For example:
 
 ```bash
-curl -sSiX GET http://localhost/things?offset=1&limit=5&name=thing_name_2 -H "Authorization: Bearer <user_token>"
+curl -sSiX GET http://localhost/things?offset=1&limit=5&name=Light Sensor -H "Authorization: Bearer <user_token>"
 
 HTTP/1.1 200 OK
 Server: nginx/1.23.3
@@ -1059,7 +1059,7 @@ Access-Control-Expose-Headers: Location
   "things": [
     {
       "id": "eb2670ba-a2be-4ea4-83cb-111111111112",
-      "name": "thing_name_2",
+      "name": "Light Sensor",
       "owner": "94939159-d129-4f17-9e4e-cc2d615539d7",
       "credentials": { "secret": "67b6cbb8-4a9e-4d32-8b9c-d7cd3352aa2b" },
       "created_at": "2023-06-15T09:06:17.967828Z",
@@ -1091,7 +1091,7 @@ For example:
 ```bash
 curl -sSiX PATCH http://localhost/things/48101ecd-1535-40c6-9ed8-5b1d21e371bb -H "Content-Type: application/json" -H "Authorization: Bearer <user_token>" -d @- << EOF
 {
-  "name":"new name"
+  "name":"Pressure Sensor"
 }
 EOF
 
@@ -1105,7 +1105,7 @@ Access-Control-Expose-Headers: Location
 
 {
   "id": "48101ecd-1535-40c6-9ed8-5b1d21e371bb",
-  "name": "new name",
+  "name": "Pressure Sensor",
   "owner": "94939159-d129-4f17-9e4e-cc2d615539d7",
   "credentials": { "secret": "c3f8c096-c60f-4375-8494-bca20a12fca7" },
   "created_at": "2023-06-15T09:04:04.292602Z",
@@ -1132,7 +1132,7 @@ For example:
 ```bash
 curl -sSiX PATCH http://localhost/things/48101ecd-1535-40c6-9ed8-5b1d21e371bb/tags -H "Content-Type: application/json" -H "Authorization: Bearer <user_token>" -d @- << EOF
 {
-  "tags": ["tag"]
+  "tags": ["sensor", "smart"]
 }
 EOF
 
@@ -1146,8 +1146,8 @@ Access-Control-Expose-Headers: Location
 
 {
   "id": "48101ecd-1535-40c6-9ed8-5b1d21e371bb",
-  "name": "new name",
-  "tags": ["tag"],
+  "name": "Pressure Sensor",
+  "tags": ["sensor", "smart"],
   "owner": "94939159-d129-4f17-9e4e-cc2d615539d7",
   "credentials": { "secret": "c3f8c096-c60f-4375-8494-bca20a12fca7" },
   "created_at": "2023-06-15T09:04:04.292602Z",
@@ -1188,8 +1188,8 @@ Access-Control-Expose-Headers: Location
 
 {
   "id": "48101ecd-1535-40c6-9ed8-5b1d21e371bb",
-  "name": "new name",
-  "tags": ["tag"],
+  "name": "Pressure Sensor",
+  "tags": ["sensor", "smart"],
   "owner": "f7c55a1f-dde8-4880-9796-b3a0cd05745b",
   "credentials": { "secret": "c3f8c096-c60f-4375-8494-bca20a12fca7" },
   "created_at": "2023-06-15T09:04:04.292602Z",
@@ -1216,7 +1216,7 @@ For example:
 ```bash
 curl -sSiX PATCH http://localhost/things/48101ecd-1535-40c6-9ed8-5b1d21e371bb/secret -H "Content-Type: application/json" -H "Authorization: Bearer <user_token>" -d @- << EOF
 {
-  "secret": "secret-key"
+  "secret": "94939159-9a08-4f17-9e4e-3b91cf2ccd3e"
 }
 EOF
 
@@ -1230,10 +1230,10 @@ Access-Control-Expose-Headers: Location
 
 {
   "id": "48101ecd-1535-40c6-9ed8-5b1d21e371bb",
-  "name": "new name",
-  "tags": ["tag"],
+  "name": "Pressure Sensor",
+  "tags": ["sensor", "smart"],
   "owner": "94939159-d129-4f17-9e4e-cc2d615539d7",
-  "credentials": { "secret": "secret-key" },
+  "credentials": { "secret": "94939159-9a08-4f17-9e4e-3b91cf2ccd3e" },
   "created_at": "2023-06-15T09:04:04.292602Z",
   "updated_at": "2023-06-15T09:10:52.051497Z",
   "updated_by": "94939159-d129-4f17-9e4e-cc2d615539d7",
@@ -1264,10 +1264,10 @@ Access-Control-Expose-Headers: Location
 
 {
   "id": "48101ecd-1535-40c6-9ed8-5b1d21e371bb",
-  "name": "new name",
-  "tags": ["tag"],
+  "name": "Pressure Sensor",
+  "tags": ["sensor", "smart"],
   "owner": "94939159-d129-4f17-9e4e-cc2d615539d7",
-  "credentials": { "secret": "secret-key" },
+  "credentials": { "secret": "94939159-9a08-4f17-9e4e-3b91cf2ccd3e" },
   "created_at": "2023-06-15T09:04:04.292602Z",
   "updated_at": "2023-06-15T09:10:52.051497Z",
   "updated_by": "94939159-d129-4f17-9e4e-cc2d615539d7",
@@ -1298,10 +1298,10 @@ Access-Control-Expose-Headers: Location
 
 {
   "id": "48101ecd-1535-40c6-9ed8-5b1d21e371bb",
-  "name": "new name",
-  "tags": ["tag"],
+  "name": "Pressure Sensor",
+  "tags": ["sensor", "smart"],
   "owner": "94939159-d129-4f17-9e4e-cc2d615539d7",
-  "credentials": { "secret": "secret-key" },
+  "credentials": { "secret": "94939159-9a08-4f17-9e4e-3b91cf2ccd3e" },
   "created_at": "2023-06-15T09:04:04.292602Z",
   "updated_at": "2023-06-15T09:10:52.051497Z",
   "updated_by": "94939159-d129-4f17-9e4e-cc2d615539d7",
@@ -1336,7 +1336,7 @@ For example:
 ```bash
 curl -sSiX POST http://localhost/channels -H "Content-Type: application/json" -H "Authorization: Bearer <user_token>" -d @- << EOF
 {
-  "name": "examplechannel"
+  "name": "Temperature Data"
 }
 EOF
 
@@ -1352,7 +1352,7 @@ Access-Control-Expose-Headers: Location
 {
   "id": "aecf0902-816d-4e38-a5b3-a1ad9a7cf9e8",
   "owner_id": "94939159-d129-4f17-9e4e-cc2d615539d7",
-  "name": "examplechannel",
+  "name": "Temperature Data",
   "created_at": "2023-06-15T09:12:51.162431Z",
   "updated_at": "0001-01-01T00:00:00Z",
   "status": "enabled"
@@ -1371,7 +1371,7 @@ For example:
 curl -sSiX POST http://localhost/channels -H "Content-Type: application/json" -H "Authorization: Bearer <user_token>" -d @- << EOF
 {
   "id": "48101ecd-1535-40c6-9ed8-5b1d21e371bb",
-  "name": "examplechannel2"
+  "name": "Humidity Data"
 }
 EOF
 
@@ -1387,7 +1387,7 @@ Access-Control-Expose-Headers: Location
 {
   "id": "48101ecd-1535-40c6-9ed8-5b1d21e371bb",
   "owner_id": "94939159-d129-4f17-9e4e-cc2d615539d7",
-  "name": "examplechannel2",
+  "name": "Humidity Data",
   "created_at": "2023-06-15T09:15:11.477695Z",
   "updated_at": "0001-01-01T00:00:00Z",
   "status": "enabled"
@@ -1433,10 +1433,10 @@ For example:
 curl -sSiX POST http://localhost/channels/bulk -H "Content-Type: application/json" -H "Authorization: Bearer <user_token>" -d @- << EOF
 [
   {
-    "name":"channel_name_1"
+    "name":"Light Data"
   },
   {
-    "name":"channel_name_2"
+    "name":"Pressure Data"
   }
 ]
 EOF
@@ -1454,7 +1454,7 @@ Access-Control-Expose-Headers: Location
     {
       "id": "cb81bbff-850d-471f-bd74-c15d6e1a6c4e",
       "owner_id": "94939159-d129-4f17-9e4e-cc2d615539d7",
-      "name": "channel_name_1",
+      "name": "Light Data",
       "created_at": "2023-06-15T09:15:44.154283Z",
       "updated_at": "0001-01-01T00:00:00Z",
       "status": "enabled"
@@ -1462,7 +1462,7 @@ Access-Control-Expose-Headers: Location
     {
       "id": "fc9bf029-b1d3-4408-8d53-fc576247a4b3",
       "owner_id": "94939159-d129-4f17-9e4e-cc2d615539d7",
-      "name": "channel_name_2",
+      "name": "Pressure Data",
       "created_at": "2023-06-15T09:15:44.15721Z",
       "updated_at": "0001-01-01T00:00:00Z",
       "status": "enabled"
@@ -1482,11 +1482,11 @@ curl -sSiX POST http://localhost/channels/bulk -H "Content-Type: application/jso
 [
   {
     "id": "977bbd33-5b59-4b7a-a9c3-111111111111",
-    "name":"channel_name_1a"
+    "name":"Light Data"
   },
   {
     "id": "977bbd33-5b59-4b7a-a9c3-111111111112",
-    "name":"channel_name_2a"
+    "name":"Pressure Data"
   }
 ]
 EOF
@@ -1504,7 +1504,7 @@ Access-Control-Expose-Headers: Location
     {
       "id": "977bbd33-5b59-4b7a-a9c3-111111111111",
       "owner_id": "94939159-d129-4f17-9e4e-cc2d615539d7",
-      "name": "channel_name_1a",
+      "name": "Light Data",
       "created_at": "2023-06-15T09:16:16.931016Z",
       "updated_at": "0001-01-01T00:00:00Z",
       "status": "enabled"
@@ -1512,7 +1512,7 @@ Access-Control-Expose-Headers: Location
     {
       "id": "977bbd33-5b59-4b7a-a9c3-111111111112",
       "owner_id": "94939159-d129-4f17-9e4e-cc2d615539d7",
-      "name": "channel_name_2a",
+      "name": "Pressure Data",
       "created_at": "2023-06-15T09:16:16.934486Z",
       "updated_at": "0001-01-01T00:00:00Z",
       "status": "enabled"
@@ -1545,7 +1545,7 @@ Access-Control-Expose-Headers: Location
 {
   "id": "aecf0902-816d-4e38-a5b3-a1ad9a7cf9e8",
   "owner_id": "94939159-d129-4f17-9e4e-cc2d615539d7",
-  "name": "examplechannel",
+  "name": "Temperature Data",
   "created_at": "2023-06-15T09:12:51.162431Z",
   "updated_at": "0001-01-01T00:00:00Z",
   "status": "enabled"
@@ -1581,7 +1581,7 @@ Access-Control-Expose-Headers: Location
     {
       "id": "17129934-4f48-4163-bffe-0b7b532edc5c",
       "owner_id": "94939159-d129-4f17-9e4e-cc2d615539d7",
-      "name": "betty",
+      "name": "Tokyo",
       "created_at": "2023-06-14T12:10:07.950311Z",
       "updated_at": "0001-01-01T00:00:00Z",
       "status": "enabled"
@@ -1589,7 +1589,7 @@ Access-Control-Expose-Headers: Location
     {
       "id": "48101ecd-1535-40c6-9ed8-5b1d21e371bb",
       "owner_id": "94939159-d129-4f17-9e4e-cc2d615539d7",
-      "name": "examplechannel2",
+      "name": "Humidity Data",
       "created_at": "2023-06-15T09:15:11.477695Z",
       "updated_at": "0001-01-01T00:00:00Z",
       "status": "enabled"
@@ -1597,7 +1597,7 @@ Access-Control-Expose-Headers: Location
     {
       "id": "977bbd33-5b59-4b7a-a9c3-111111111111",
       "owner_id": "94939159-d129-4f17-9e4e-cc2d615539d7",
-      "name": "channel_name_1a",
+      "name": "Light Data",
       "created_at": "2023-06-15T09:16:16.931016Z",
       "updated_at": "0001-01-01T00:00:00Z",
       "status": "enabled"
@@ -1605,7 +1605,7 @@ Access-Control-Expose-Headers: Location
     {
       "id": "977bbd33-5b59-4b7a-a9c3-111111111112",
       "owner_id": "94939159-d129-4f17-9e4e-cc2d615539d7",
-      "name": "channel_name_2a",
+      "name": "Pressure Data",
       "created_at": "2023-06-15T09:16:16.934486Z",
       "updated_at": "0001-01-01T00:00:00Z",
       "status": "enabled"
@@ -1613,7 +1613,7 @@ Access-Control-Expose-Headers: Location
     {
       "id": "aecf0902-816d-4e38-a5b3-a1ad9a7cf9e8",
       "owner_id": "94939159-d129-4f17-9e4e-cc2d615539d7",
-      "name": "examplechannel",
+      "name": "Temperature Data",
       "created_at": "2023-06-15T09:12:51.162431Z",
       "updated_at": "0001-01-01T00:00:00Z",
       "status": "enabled"
@@ -1621,7 +1621,7 @@ Access-Control-Expose-Headers: Location
     {
       "id": "b3867a52-675d-4f05-8cd0-df5a08a63ff3",
       "owner_id": "94939159-d129-4f17-9e4e-cc2d615539d7",
-      "name": "mychan",
+      "name": "London",
       "created_at": "2023-06-14T12:09:34.205894Z",
       "updated_at": "0001-01-01T00:00:00Z",
       "status": "enabled"
@@ -1629,7 +1629,7 @@ Access-Control-Expose-Headers: Location
     {
       "id": "cb81bbff-850d-471f-bd74-c15d6e1a6c4e",
       "owner_id": "94939159-d129-4f17-9e4e-cc2d615539d7",
-      "name": "channel_name_1",
+      "name": "Light Data",
       "created_at": "2023-06-15T09:15:44.154283Z",
       "updated_at": "0001-01-01T00:00:00Z",
       "status": "enabled"
@@ -1637,7 +1637,7 @@ Access-Control-Expose-Headers: Location
     {
       "id": "fc9bf029-b1d3-4408-8d53-fc576247a4b3",
       "owner_id": "94939159-d129-4f17-9e4e-cc2d615539d7",
-      "name": "channel_name_2",
+      "name": "Pressure Data",
       "created_at": "2023-06-15T09:15:44.15721Z",
       "updated_at": "0001-01-01T00:00:00Z",
       "status": "enabled"
@@ -1668,9 +1668,9 @@ For example:
 ```bash
 curl -sSiX PUT http://localhost/channels/aecf0902-816d-4e38-a5b3-a1ad9a7cf9e8 -H "Content-Type: application/json" -H "Authorization: Bearer <user_token>" -d @- << EOF
 {
-  "name":"new name",
+  "name":"Jane Doe",
   "metadata": {
-      "department": "iot"
+      "location": "london"
   }
 }
 EOF
@@ -1686,8 +1686,8 @@ Access-Control-Expose-Headers: Location
 {
   "id": "aecf0902-816d-4e38-a5b3-a1ad9a7cf9e8",
   "owner_id": "94939159-d129-4f17-9e4e-cc2d615539d7",
-  "name": "new name",
-  "metadata": { "department": "iot" },
+  "name": "Jane Doe",
+  "metadata": { "location": "london" },
   "created_at": "2023-06-15T09:12:51.162431Z",
   "updated_at": "2023-06-15T09:18:26.886913Z",
   "updated_by": "94939159-d129-4f17-9e4e-cc2d615539d7",
@@ -1719,8 +1719,8 @@ Access-Control-Expose-Headers: Location
 {
   "id": "aecf0902-816d-4e38-a5b3-a1ad9a7cf9e8",
   "owner_id": "94939159-d129-4f17-9e4e-cc2d615539d7",
-  "name": "new name",
-  "metadata": { "department": "iot" },
+  "name": "Jane Doe",
+  "metadata": { "location": "london" },
   "created_at": "2023-06-15T09:12:51.162431Z",
   "updated_at": "2023-06-15T09:18:26.886913Z",
   "updated_by": "94939159-d129-4f17-9e4e-cc2d615539d7",
@@ -1752,8 +1752,8 @@ Access-Control-Expose-Headers: Location
 {
   "id": "aecf0902-816d-4e38-a5b3-a1ad9a7cf9e8",
   "owner_id": "94939159-d129-4f17-9e4e-cc2d615539d7",
-  "name": "new name",
-  "metadata": { "department": "iot" },
+  "name": "Jane Doe",
+  "metadata": { "location": "london" },
   "created_at": "2023-06-15T09:12:51.162431Z",
   "updated_at": "2023-06-15T09:18:26.886913Z",
   "updated_by": "94939159-d129-4f17-9e4e-cc2d615539d7",
@@ -1819,7 +1819,7 @@ curl -sSiX POST http://localhost/things/policies -H "Content-Type: application/j
 {
   "subject": "<thing_id>",
   "object": "<channel_id>",
-  "actions": ["[action]"]
+  "actions": ["<action>", "[action]"]]
 }
 EOF
 ```
@@ -1864,8 +1864,8 @@ Disconnect things from channels specified by lists of IDs.
 ```bash
 curl -sSiX POST http://localhost/disconnect -H "Content-Type: application/json" -H "Authorization: Bearer <user_token>" -d @- << EOF
 {
-  "subjects": ["<thing_id_1>", "<thing_id_2>"],
-  "objects": ["<channel_id_1>", "<channel_id_2>"]
+  "subjects": ["<thing_id_1>", "[thing_id_2]"],
+  "objects": ["<channel_id_1>", "[channel_id_2]"]
 }
 EOF
 ```
@@ -2388,10 +2388,10 @@ For example:
 ```bash
 curl -sSiX PUT http://localhost/groups/2766ae94-9a08-4418-82ce-3b91cf2ccd3e  -H "Content-Type: application/json" -H "Authorization: Bearer <user_token>" -d @- << EOF
 {
-  "name":"new name",
-  "description":"new description",
+  "name":"Jane Doe",
+  "description":"This group would be responsible for analyzing data collected from sensors.",
   "metadata": {
-      "department": "iot"
+      "location": "london"
   }
 }
 EOF
@@ -2407,9 +2407,9 @@ Access-Control-Expose-Headers: Location
 {
   "id": "2766ae94-9a08-4418-82ce-3b91cf2ccd3e",
   "owner_id": "94939159-d129-4f17-9e4e-cc2d615539d7",
-  "name": "new name",
-  "description": "new description",
-  "metadata": { "department": "iot" },
+  "name": "Jane Doe",
+  "description": "This group would be responsible for analyzing data collected from sensors.",
+  "metadata": { "location": "london" },
   "created_at": "2023-06-15T09:41:42.860481Z",
   "updated_at": "2023-06-15T10:17:56.475241Z",
   "updated_by": "94939159-d129-4f17-9e4e-cc2d615539d7",
@@ -2441,9 +2441,9 @@ Access-Control-Expose-Headers: Location
 {
   "id": "2766ae94-9a08-4418-82ce-3b91cf2ccd3e",
   "owner_id": "94939159-d129-4f17-9e4e-cc2d615539d7",
-  "name": "new name",
-  "description": "new description",
-  "metadata": { "department": "iot" },
+  "name": "Jane Doe",
+  "description": "This group would be responsible for analyzing data collected from sensors.",
+  "metadata": { "location": "london" },
   "created_at": "2023-06-15T09:41:42.860481Z",
   "updated_at": "2023-06-15T10:17:56.475241Z",
   "updated_by": "94939159-d129-4f17-9e4e-cc2d615539d7",
@@ -2475,9 +2475,9 @@ Access-Control-Expose-Headers: Location
 {
   "id": "2766ae94-9a08-4418-82ce-3b91cf2ccd3e",
   "owner_id": "94939159-d129-4f17-9e4e-cc2d615539d7",
-  "name": "new name",
-  "description": "new description",
-  "metadata": { "department": "iot" },
+  "name": "Jane Doe",
+  "description": "This group would be responsible for analyzing data collected from sensors.",
+  "metadata": { "location": "london" },
   "created_at": "2023-06-15T09:41:42.860481Z",
   "updated_at": "2023-06-15T10:17:56.475241Z",
   "updated_by": "94939159-d129-4f17-9e4e-cc2d615539d7",
@@ -2550,10 +2550,10 @@ Access-Control-Expose-Headers: Location
   "members": [
     {
       "id": "1890c034-7ef9-4cde-83df-d78ea1d4d281",
-      "name": "new name",
-      "tags": ["manager", "developer"],
-      "credentials": { "identity": "updated.john.doe@email.com", "secret": "" },
-      "metadata": { "department": "iot" },
+      "name": "Jane Doe",
+      "tags": ["male", "developer"],
+      "credentials": { "identity": "updated.jane.doe@gmail.com", "secret": "" },
+      "metadata": { "location": "london" },
       "created_at": "2023-06-14T13:46:47.322648Z",
       "updated_at": "2023-06-14T13:59:53.422595Z",
       "status": "enabled"
