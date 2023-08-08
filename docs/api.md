@@ -484,7 +484,7 @@ Access-Control-Expose-Headers: Location
 
 ### Change Secret
 
-Changing the user secret can be done by calling the update secret function
+Changing the user secret can be done by calling the update secret method
 
 ```bash
 curl -sSiX PATCH http://localhost/users/secret -H "Content-Type: application/json" -H "Authorization: Bearer <user_token>" -d @- << EOF
@@ -516,7 +516,7 @@ Access-Control-Expose-Headers: Location
 
 ### Enable User
 
-Changing the user status to enabled can be done by calling the enable user function
+Changing the user status to enabled can be done by calling the enable user method
 
 > Must-have: `user_id` and `user_token`
 
@@ -553,7 +553,7 @@ Access-Control-Expose-Headers: Location
 
 ### Disable User
 
-Changing the user status to disabled can be done by calling the disable user function
+Changing the user status to disabled can be done by calling the disable user method
 
 ```bash
 curl -sSiX POST http://localhost/users/<user_id>/disable -H "Authorization: Bearer <user_token>"
@@ -588,7 +588,7 @@ Access-Control-Expose-Headers: Location
 
 ### Get User Memberships
 
-You can get all groups a user is assigned to by calling the get user memberships function.
+You can get all groups a user is assigned to by calling the get user memberships method.
 
 If you want to paginate your results then use `offset`, `limit`, `metadata`, `name`, `status`, `parentID`, `ownerID`, `tree` and `dir` as query parameters.
 
