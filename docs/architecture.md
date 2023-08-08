@@ -8,12 +8,12 @@ Mainflux IoT platform is comprised of the following services:
 | :----------------------------- | :-------------------------------------------------------------------------------------- |
 | [users][users-service]         | Manages platform's users and auth concerns in regards to users and groups               |
 | [things][things-service]       | Manages platform's things, channels and auth concerns in regards to things and channels |
-| [http-adapter][http-adapter]   | Provides an HTTP interface for accessing communication channels                         |
-| [mqtt-adapter][mqtt-adapter]   | Provides an MQTT and MQTT over WS interface for accessing communication channels        |
-| [ws-adapter][ws-adapter]       | Provides a WebSocket interface for accessing communication channels                     |
-| [coap-adapter][coap-adapter]   | Provides a CoAP interface for accessing communication channels                          |
-| [opcua-adapter][opcua-adapter] | Provides an OPC-UA interface for accessing communication channels                       |
-| [lora-adapter][lora-adapter]   | Provides a LoRa Server forwarder for accessing communication channels                   |
+| [http-adapter][http-adapter]   | Provides an HTTP interface for sending messages via HTTP                                |
+| [mqtt-adapter][mqtt-adapter]   | Provides an MQTT and MQTT over WS interface for sending and receiving messages via MQTT |
+| [ws-adapter][ws-adapter]       | Provides a WebSocket interface for sending and receiving messages via WS                |
+| [coap-adapter][coap-adapter]   | Provides a CoAP interface for sending and receiving messages via CoAP                   |
+| [opcua-adapter][opcua-adapter] | Provides an OPC-UA interface for sending and receiving messages via OPC-UA              |
+| [lora-adapter][lora-adapter]   | Provides a LoRa Server forwarder for sending and receiving messages via LoRa            |
 | [mainflux-cli][mainflux-cli]   | Command line interface                                                                  |
 
 ![arch][architecture]
@@ -22,13 +22,13 @@ Mainflux IoT platform is comprised of the following services:
 
 The platform is built around 2 main entities: **users** and **things**.
 
-`User` represents the real (human) user of the system. They are represented via their identity, email address, and secret, password, which they use as platform access credentials in order to obtain an access token. Once logged into the system, a user can manage their resources (i.e. groups, things and channels) in CRUD fashion and define access control policies by connecting them.
+`User` represents the real (human) user of the system. Users are represented via their email address used as their identity, and password used as their secret, which they use as platform access credentials in order to obtain an access token. Once logged into the system, a user can manage their resources (i.e. groups, things and channels) in CRUD fashion and define access control policies by connecting them.
 
-`Group` represents a logical group of users. It is used to simplify access control management by allowing users to be grouped together. A user is grouped by assigning them to a group with specified policies. This way, a user can be assigned to multiple groups, and each group can have multiple users assigned to it. Users in one group have access to other users in the same group so long as they have the required policy. A group can also be assigned to another group, thus creating a group hierarchy.
+`Group` represents a logical groupping of users. It is used to simplify access control management by allowing users to be grouped together. When assigning a user to a group, we create a policy that defines what that user can do with the resources of the group. This way, a user can be assigned to multiple groups, and each group can have multiple users assigned to it. Users in one group have access to other users in the same group as long as they have the required policy. A group can also be assigned to another group, thus creating a group hierarchy. When assigning a user to a group we create a policy that defines what that user can do with the group and other users in the group.
 
 `Thing` represents devices (or applications) connected to Mainflux that uses the platform for message exchange with other "things".
 
-`Channel` represents a communication channel. It serves as message topic that can be consumed by all of the things connected to it. It also servers a grouping mechanism for things. A thing can be connected to multiple channels, and a channel can have multiple things connected to it. A user can be connected to a channel as well, thus allowing them to have access to the messages published to that channel and also things connected to that channel with the required policy. A channel can also be assigned to another channel, thus creating a channel hierarchy.
+`Channel` represents a communication channel. It serves as a message topic that can be consumed by all of the things connected to it. It also servers as grouping mechanism for things. A thing can be connected to multiple channels, and a channel can have multiple things connected to it. A user can be connected to a channel as well, thus allowing them to have an access to the messages published to that channel and also things connected to that channel with the required policy. A channel can also be assigned to another channel, thus creating a channel hierarchy. Both things and users can be assigned to a channel. When assigning a thing to a channel, we create a policy that defines what that thing can do to the channel, for example reading or writing messages to it. When assigning a user to a channel, we create a policy that defines what that user can do with the channel and things connected to it, hereby enabling the sharing of things between users.
 
 ## Messaging
 
