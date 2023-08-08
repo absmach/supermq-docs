@@ -575,3 +575,4 @@ mainflux-mqtt   | {"level":"info","message":"Publish - client ID export-88529fb2
 [protomsg]: https://github.com/mainflux/mainflux/blob/master/pkg/messaging/message.proto
 [back-to-edge]: /edge/#edge
 [nats]: https://nats.io/
+[dev-guide]: /dev-guide

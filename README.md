@@ -15,7 +15,8 @@ Documentation is auto-generated from Markdown files in this repo.
 ## Prerequisites
 
 Install [MkDocs](https://www.mkdocs.org/#installation)
-```
+
+```bash
 pip install mkdocs
 ```
 
@@ -42,8 +43,8 @@ Then just point the browser to `http://127.0.0.1:8000`.
 Thank you for your interest in Mainflux and the desire to contribute!
 
 1. Take a look at our [open issues](https://github.com/mainflux/docs/issues). The [good-first-issue](https://github.com/mainflux/docs/labels/good-first-issue) label is specifically for issues that are great for getting started.
-2. Checkout the [contribution guide](CONTRIBUTING.md) to learn more about our style and conventions.
-3. Make your changes compatible to our workflow.
+2. Check out the [contribution guide](CONTRIBUTING.md) to learn more about our style and conventions.
+3. Make your changes compatible with our workflow.
 
 ## Community
 
