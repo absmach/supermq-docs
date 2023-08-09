@@ -13,7 +13,7 @@ To start working with the Mainflux system, you need to create a user account.
 > Identity, which can be email-address (this must be unique as it identifies the user) and secret (password must contain at least 8 characters).
 
 ```bash
-curl -sSiX POST http://localhost/users -H "Content-Type: application/json" -H "Authorization: Bearer [user_token]" -d @- << EOF
+curl -sSiX POST http://localhost/users -H "Content-Type: application/json" [-H "Authorization: Bearer <user_token>"] -d @- << EOF
 {
   "name": "[name]",
   "tags": ["[tag1]", "[tag2]"],
@@ -267,7 +267,7 @@ Access-Control-Expose-Headers: Location
 If you want to paginate your results then use `offset`, `limit`, `metadata`, `name`, `identity`, `tag`, `status` and `visbility` as query parameters.
 
 ```bash
-curl -sSiX GET http://localhost/users?offset=[offset]&limit=[limit]&identity=[identity] -H "Authorization: Bearer <user_token>"
+curl -sSiX GET http://localhost/users?[offset=<offset>]&[limit=<limit>]&[identity=<identity>]&[name=<name>]&[tag=<tag>]&[status=<status>]&[visibility=<visibility>] -H "Authorization: Bearer <user_token>"
 ```
 
 For example:
@@ -515,8 +515,6 @@ Access-Control-Expose-Headers: Location
 ### Enable User
 
 Changing the user status to enabled can be done by calling the enable user method
-
-> Must-have: `user_id` and `user_token`
 
 ```bash
 curl -sSiX POST http://localhost/users/<user_id>/enable -H "Authorization: Bearer <user_token>"
@@ -1034,7 +1032,7 @@ Access-Control-Expose-Headers: Location
 If you want to paginate your results then use `offset`, `limit`, `metadata`, `name`, `status`, `tags` and `visibility` as query parameters.
 
 ```bash
-curl -sSiX GET http://localhost/things?offset=[offset]&limit=[limit]&name=[name] -H "Authorization: Bearer <user_token>"
+curl -sSiX GET http://localhost/things?[offset=<offset>]&[limit=<limit>]&name=[name]&[status=<status>] -H "Authorization: Bearer <user_token>"
 ```
 
 For example:
@@ -2028,7 +2026,7 @@ Connection: keep-alive
 Reads messages from database for a given channel
 
 ```bash
-curl -sSiX GET http://localhost:<service_port>/channels/<channel_id>/messages?offset=0&limit=5 -H "Authorization: Thing <thing_secret>"
+curl -sSiX GET http://localhost:<service_port>/channels/<channel_id>/messages?[offset=<offset>]&[limit=<limit>] -H "Authorization: Thing <thing_secret>"
 ```
 
 For example:
