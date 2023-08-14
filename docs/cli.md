@@ -608,6 +608,7 @@ mainflux-cli bootstrap bootstrap <external_id> <external_key> -b <bootstrap-url>
 ```
 
 ## Config
+Mainflux CLI tool supports configuration files that contain some of the basic settings so you don't have to specify them through flags. Once you set the settings, they remain stored locally.
 
 ```bash
 mainflux-cli config <parameter> <value>
@@ -619,7 +620,7 @@ Response should look like this:
   ok 
 ```
 
-This command is used to set the flags to be used by CLI in a local TOML file. The default location of the TOML file is near the binaries. To change the location of the TOML file you can run the command:
+This command is used to set the flags to be used by CLI in a local TOML file. The default location of the TOML file is in the same directory as the CLI binary. To change the location of the TOML file you can run the command:
 
 ```
   mainflux-cli config <parameter> <value> -c "cli/file_name.toml"
