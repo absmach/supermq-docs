@@ -630,24 +630,24 @@ This command is used to set the flags to be used by CLI in a local TOML file. Th
 The possible parameters that can be set using the config command are:
 
 ```
-  - bootstrap_url     
-  - certs_url         
-  - http_adapter_url  
-  - msg_content_type 
-  - reader_url        
-  - things_url           
-  - tls_verification    
-  - users_url         
-  - state
-  - status
-  - topic
-  - contact
-  - email
-  - limit
-  - metadata
-  - name
-  - offset
-  - raw_output
+  -bootstrap_url     
+  -certs_url         
+  -http_adapter_url  
+  -msg_content_type 
+  -reader_url        
+  -things_url           
+  -tls_verification    
+  -users_url         
+  -state
+  -status
+  -topic
+  -contact
+  -email
+  -limit
+  -metadata
+  -name
+  -offset
+  -raw_output
 ```
 
 [releases]: https://github.com/mainflux/mainflux/releases
