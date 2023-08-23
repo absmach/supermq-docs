@@ -629,25 +629,25 @@ This command is used to set the flags to be used by CLI in a local TOML file. Th
 
 The possible parameters that can be set using the config command are:
 
-```
-  -bootstrap_url        Bootstrap service URL (default "http://localhost:9013")
-  -certs_url            Certs service URL (default "http://localhost:9019")
-  -http_adapter_url     HTTP adapter URL (default "http://localhost/http")
-  -msg_content_type     Message content type (default "application/senml+json")
-  -reader_url           Reader URL (default "http://localhost")
-  -things_url           Things service URL (default "http://localhost:9000")
-  -tls_verification     Do not check for TLS cert
-  -users_url            Users service URL (default "http://localhost:9002")
-  -state                Bootstrap state query parameter
-  -status               User status query parameter
-  -topic                Subscription topic query parameter
-  -contact              Subscription contact query parameter
-  -email                User email query parameter
-  -limit                Limit query parameter (default 10)
-  -metadata             Metadata query parameter
-  -name                 Name query parameter
-  -offset               Offset query parameter
-  -raw_output           Enables raw output mode for easier parsing of output
-```
+| Flag                | Description                                         | Default                                |
+|---------------------|-----------------------------------------------------|----------------------------------------|
+| bootstrap_url       | Bootstrap service URL                              | "http://localhost:9013"                |
+| certs_url           | Certs service URL                                  | "http://localhost:9019"                |
+| http_adapter_url    | HTTP adapter URL                                   | "http://localhost/http"                |
+| msg_content_type    | Message content type                               | "application/senml+json"              |
+| reader_url          | Reader URL                                         | "http://localhost"                     |
+| things_url          | Things service URL                                | "http://localhost:9000"                |
+| tls_verification    | Do not check for TLS cert                         |                                        |
+| users_url           | Users service URL                                 | "http://localhost:9002"                |
+| state               | Bootstrap state query parameter                   |                                        |
+| status              | User status query parameter                       |                                        |
+| topic               | Subscription topic query parameter                 |                                        |
+| contact             | Subscription contact query parameter               |                                        |
+| email               | User email query parameter                        |                                        |
+| limit               | Limit query parameter                              | 10                                     |
+| metadata            | Metadata query parameter                           |                                        |
+| name                | Name query parameter                               |                                        |
+| offset              | Offset query parameter                             |                                        |
+| raw_output          | Enables raw output mode for easier parsing of output |                                        |
 
 [releases]: https://github.com/mainflux/mainflux/releases
