@@ -1146,9 +1146,9 @@ Whenever configuration is created, `bootstrap` service will generate and publish
     7) "channels"
     8) "[8d77099e-4911-4140-8555-7d3be65a1694]"
     9) "client_cert"
-    10) "clientCert"
+    10) "-----BEGIN ENCRYPTED PRIVATE KEY-----MIIFHDBOBgkqhkiG9w0BBQ0wQTApBgkqhkiG9w0BBQwwHAQIc+VAU9JPnIkCAggAMAwGCCqGSIb3DQIJBQAwFAYIKoZIhvcNAwcECImSB+9qZ8dmBIIEyBW/rZlECWnEcMuTXhfJFe+3HP4rV+TXEEuigwCbtVPHWXoZj7KqGiOFgFaDL5Ne/GRwVD6geaTeQVl3aoHzo8mY0yuX2L36Ho2yHF/Bw89WT3hgP0lZ1lVO7O7n8DwybOaoJ+1S3akyb6OPbqcxJou1IGzKV1kz77R8V8nOFSd1BOepNbanGxVG8Jkgc37dQnICXwwaYkTx9PQBtSux1j3KgX0p+VAUNoUFi7N6b0MeO8iEuLU1dUiVwlH/jtitg0W3AvSV+5gezTT2VQW3CVlz6IBTPI1Rfl/3ss18Tao0NiPUmXMIgreBCamXvb0aJm8JxVbhoFYqWVNVocBD+n1+NwhCRlZM5Kgaes5S2JuFnjTAqEYytlQqEySbaN57XYCDNVmQz2iViz/+npuR9SCGwnNvV/TNsKRwav+0NC0pbf3LNk/KL9/X5ccmPhB5Rl7IS/v1BBLYX/jYWVN0dJiSA7fVIr9Acr7IbxWEQ2Y2qh1wdhayi4FBUHY3weivYSU3uGZizsSGJP/N6DutBgS1aXd5X/CqfF7VzRaKF4cfLO4XxTYUEjOztUNMN2XmW0o+ULjQmbouRPs/PIFmh6rc+h42m6p4SkjcsIKOy+mPTeJqhOVmYoMzO8+7mmXDOjFwvi/w97sdmbjII8Zn2iR/N8GuY23vv5h6LQ3tQ5kTA4IuPbYCVLeggd4iMM6TgpuJn0aG7yo4tDFqMeadCVhP2Bp3JQa8r3B2IJstTTF1OtZCrInjSus9ViOiM02Iz3ZmyglsMonJDlWeJL5jKBgqPbLR82IDhIY4IO6SqoVsWu4iWuLW5/TM3fdfYG3Wdvu7Suz7/anLAaMQEzKhObwgDdKmv4PkF75frex969CB1pQqSVnXmz4GrtxVUzWtlflaTSdSegpUXWLhG+jUNKTu+ptxDNM/JBxRNLSzdvsGbkI0qycOCliVpKkkvuiBGtiDWNax6KhV4/oRjkEkTRks9Xeko+q3uY4B//AGxsotsVhF5vhUDTOl5IX7a7wCPtbTGiaR79eprRzGnP9yP38djVrvXprJFU8P7GUr/f2qJt2jDYuCkaqAMsfjdu6YHitjj3ty4vrASgxJ0vsroWhjgiCwgASqM7GnweHSHy5/OZK8jCZX+g+B63Mu4ec+/nNnjvuLqBBZN/FSzXU5fVmYznfPaqW+1Xep+Aj1yGk3L3tvnKLc3sZ1HAJQEjud5dbME6e0JGxh5xOCnzWUR+YL/96KJAcgkxDJ1DxxHv0Uu/5kO5InOsPjs4YKuzqD4nUmGsFsJzTxG626wdGXJMO4YCRKkKtnNeWqMaslM3paN19/tTWyEbaDqc5mVzYLIb3Mzju+OV4GniDeVIvSIsXK5aFGj1PEhfCprQCqUzdNhFU8hF4kUVhn9dp0ExveT7btHSMlEZAWHRkDuLqaImpQkjYmwt90cxtdZwQvjTDtsFmQrvcSp8n1K3P5PwZpVtIw2UHpx+NjE8ZYwOozpXl/oOMzVTB8mi1dQGFkpac9cwnzCZof0ub4iutBeKc4WeEOytvY+CY7hc+/ncCprZ08nlkQarQV7jhfJj658GfBMLGzJtYkCrHwi/AoseIXa5W7eX+lz7O92H2M5QnEkPStQ9lsz2VkYA==-----END ENCRYPTED PRIVATE KEY-----"
     11) "ca_cert"
-    12) "CACert"
+    12) "-----BEGIN ENCRYPTED PRIVATE KEY-----MIIFHDBOBgkqhkiG9w0BBQ0wQTApBgkqhkiG9w0BBQwwHAQIc+VAU9JPnIkCAggAMAwGCCqGSIb3DQIJBQAwFAYIKoZIhvcNAwcECImSB+9qZ8dmBIIEyBW/rZlECWnEcMuTXhfJFe+3HP4rV+TXEEuigwCbtVPHWXoZj7KqGiOFgFaDL5Ne/GRwVD6geaTeQVl3aoHzo8mY0yuX2L36Ho2yHF/Bw89WT3hgP0lZ1lVO7O7n8DwybOaoJ+1S3akyb6OPbqcxJou1IGzKV1kz77R8V8nOFSd1BOepNbanGxVG8Jkgc37dQnICXwwaYkTx9PQBtSux1j3KgX0p+VAUNoUFi7N6b0MeO8iEuLU1dUiVwlH/jtitg0W3AvSV+5gezTT2VQW3CVlz6IBTPI1Rfl/3ss18Tao0NiPUmXMIgreBCamXvb0aJm8JxVbhoFYqWVNVocBD+n1+NwhCRlZM5Kgaes5S2JuFnjTAqEYytlQqEySbaN57XYCDNVmQz2iViz/+npuR9SCGwnNvV/TNsKRwav+0NC0pbf3LNk/KL9/X5ccmPhB5Rl7IS/v1BBLYX/jYWVN0dJiSA7fVIr9Acr7IbxWEQ2Y2qh1wdhayi4FBUHY3weivYSU3uGZizsSGJP/N6DutBgS1aXd5X/CqfF7VzRaKF4cfLO4XxTYUEjOztUNMN2XmW0o+ULjQmbouRPs/PIFmh6rc+h42m6p4SkjcsIKOy+mPTeJqhOVmYoMzO8+7mmXDOjFwvi/w97sdmbjII8Zn2iR/N8GuY23vv5h6LQ3tQ5kTA4IuPbYCVLeggd4iMM6TgpuJn0aG7yo4tDFqMeadCVhP2Bp3JQa8r3B2IJstTTF1OtZCrInjSus9ViOiM02Iz3ZmyglsMonJDlWeJL5jKBgqPbLR82IDhIY4IO6SqoVsWu4iWuLW5/TM3fdfYG3Wdvu7Suz7/anLAaMQEzKhObwgDdKmv4PkF75frex969CB1pQqSVnXmz4GrtxVUzWtlflaTSdSegpUXWLhG+jUNKTu+ptxDNM/JBxRNLSzdvsGbkI0qycOCliVpKkkvuiBGtiDWNax6KhV4/oRjkEkTRks9Xeko+q3uY4B//AGxsotsVhF5vhUDTOl5IX7a7wCPtbTGiaR79eprRzGnP9yP38djVrvXprJFU8P7GUr/f2qJt2jDYuCkaqAMsfjdu6YHitjj3ty4vrASgxJ0vsroWhjgiCwgASqM7GnweHSHy5/OZK8jCZX+g+B63Mu4ec+/nNnjvuLqBBZN/FSzXU5fVmYznfPaqW+1Xep+Aj1yGk3L3tvnKLc3sZ1HAJQEjud5dbME6e0JGxh5xOCnzWUR+YL/96KJAcgkxDJ1DxxHv0Uu/5kO5InOsPjs4YKuzqD4nUmGsFsJzTxG626wdGXJMO4YCRKkKtnNeWqMaslM3paN19/tTWyEbaDqc5mVzYLIb3Mzju+OV4GniDeVIvSIsXK5aFGj1PEhfCprQCqUzdNhFU8hF4kUVhn9dp0ExveT7btHSMlEZAWHRkDuLqaImpQkjYmwt90cxtdZwQvjTDtsFmQrvcSp8n1K3P5PwZpVtIw2UHpx+NjE8ZYwOozpXl/oOMzVTB8mi1dQGFkpac9cwnzCZof0ub4iutBeKc4WeEOytvY+CY7hc+/ncCprZ08nlkQarQV7jhfJj658GfBMLGzJtYkCrHwi/AoseIXa5W7eX+lz7O92H2M5QnEkPStQ9lsz2VkYA==-----END ENCRYPTED PRIVATE KEY-----"
     13) "occurred_at"
     14) "1693313286544243035"
     15) "thing_id"
@@ -1160,7 +1160,7 @@ Whenever configuration is created, `bootstrap` service will generate and publish
     21) "external_id"
     22) "209327A2FA2D47E3B05F118D769DC521"
     23) "client_key"
-    24) "clientKey"
+    24) "-----BEGIN ENCRYPTED PRIVATE KEY-----MIIFHDBOBgkqhkiG9w0BBQ0wQTApBgkqhkiG9w0BBQwwHAQIc+VAU9JPnIkCAggAMAwGCCqGSIb3DQIJBQAwFAYIKoZIhvcNAwcECImSB+9qZ8dmBIIEyBW/rZlECWnEcMuTXhfJFe+3HP4rV+TXEEuigwCbtVPHWXoZj7KqGiOFgFaDL5Ne/GRwVD6geaTeQVl3aoHzo8mY0yuX2L36Ho2yHF/Bw89WT3hgP0lZ1lVO7O7n8DwybOaoJ+1S3akyb6OPbqcxJou1IGzKV1kz77R8V8nOFSd1BOepNbanGxVG8Jkgc37dQnICXwwaYkTx9PQBtSux1j3KgX0p+VAUNoUFi7N6b0MeO8iEuLU1dUiVwlH/jtitg0W3AvSV+5gezTT2VQW3CVlz6IBTPI1Rfl/3ss18Tao0NiPUmXMIgreBCamXvb0aJm8JxVbhoFYqWVNVocBD+n1+NwhCRlZM5Kgaes5S2JuFnjTAqEYytlQqEySbaN57XYCDNVmQz2iViz/+npuR9SCGwnNvV/TNsKRwav+0NC0pbf3LNk/KL9/X5ccmPhB5Rl7IS/v1BBLYX/jYWVN0dJiSA7fVIr9Acr7IbxWEQ2Y2qh1wdhayi4FBUHY3weivYSU3uGZizsSGJP/N6DutBgS1aXd5X/CqfF7VzRaKF4cfLO4XxTYUEjOztUNMN2XmW0o+ULjQmbouRPs/PIFmh6rc+h42m6p4SkjcsIKOy+mPTeJqhOVmYoMzO8+7mmXDOjFwvi/w97sdmbjII8Zn2iR/N8GuY23vv5h6LQ3tQ5kTA4IuPbYCVLeggd4iMM6TgpuJn0aG7yo4tDFqMeadCVhP2Bp3JQa8r3B2IJstTTF1OtZCrInjSus9ViOiM02Iz3ZmyglsMonJDlWeJL5jKBgqPbLR82IDhIY4IO6SqoVsWu4iWuLW5/TM3fdfYG3Wdvu7Suz7/anLAaMQEzKhObwgDdKmv4PkF75frex969CB1pQqSVnXmz4GrtxVUzWtlflaTSdSegpUXWLhG+jUNKTu+ptxDNM/JBxRNLSzdvsGbkI0qycOCliVpKkkvuiBGtiDWNax6KhV4/oRjkEkTRks9Xeko+q3uY4B//AGxsotsVhF5vhUDTOl5IX7a7wCPtbTGiaR79eprRzGnP9yP38djVrvXprJFU8P7GUr/f2qJt2jDYuCkaqAMsfjdu6YHitjj3ty4vrASgxJ0vsroWhjgiCwgASqM7GnweHSHy5/OZK8jCZX+g+B63Mu4ec+/nNnjvuLqBBZN/FSzXU5fVmYznfPaqW+1Xep+Aj1yGk3L3tvnKLc3sZ1HAJQEjud5dbME6e0JGxh5xOCnzWUR+YL/96KJAcgkxDJ1DxxHv0Uu/5kO5InOsPjs4YKuzqD4nUmGsFsJzTxG626wdGXJMO4YCRKkKtnNeWqMaslM3paN19/tTWyEbaDqc5mVzYLIb3Mzju+OV4GniDeVIvSIsXK5aFGj1PEhfCprQCqUzdNhFU8hF4kUVhn9dp0ExveT7btHSMlEZAWHRkDuLqaImpQkjYmwt90cxtdZwQvjTDtsFmQrvcSp8n1K3P5PwZpVtIw2UHpx+NjE8ZYwOozpXl/oOMzVTB8mi1dQGFkpac9cwnzCZof0ub4iutBeKc4WeEOytvY+CY7hc+/ncCprZ08nlkQarQV7jhfJj658GfBMLGzJtYkCrHwi/AoseIXa5W7eX+lz7O92H2M5QnEkPStQ9lsz2VkYA==-----END ENCRYPTED PRIVATE KEY-----"
 ```
 
 ### Configuration update event
@@ -1192,11 +1192,11 @@ Whenever certificate is updated, `bootstrap` service will generate and publish n
 2)  1) "thing_key"
     2) "dc82d6bf-973b-4582-9806-0230cee11c20"
     3) "client_cert"
-    4) ""
+    4) "-----BEGIN ENCRYPTED PRIVATE KEY-----MIIFHDBOBgkqhkiG9w0BBQ0wQTApBgkqhkiG9w0BBQwwHAQIc+VAU9JPnIkCAggAMAwGCCqGSIb3DQIJBQAwFAYIKoZIhvcNAwcECImSB+9qZ8dmBIIEyBW/rZlECWnEcMuTXhfJFe+3HP4rV+TXEEuigwCbtVPHWXoZj7KqGiOFgFaDL5Ne/GRwVD6geaTeQVl3aoHzo8mY0yuX2L36Ho2yHF/Bw89WT3hgP0lZ1lVO7O7n8DwybOaoJ+1S3akyb6OPbqcxJou1IGzKV1kz77R8V8nOFSd1BOepNbanGxVG8Jkgc37dQnICXwwaYkTx9PQBtSux1j3KgX0p+VAUNoUFi7N6b0MeO8iEuLU1dUiVwlH/jtitg0W3AvSV+5gezTT2VQW3CVlz6IBTPI1Rfl/3ss18Tao0NiPUmXMIgreBCamXvb0aJm8JxVbhoFYqWVNVocBD+n1+NwhCRlZM5Kgaes5S2JuFnjTAqEYytlQqEySbaN57XYCDNVmQz2iViz/+npuR9SCGwnNvV/TNsKRwav+0NC0pbf3LNk/KL9/X5ccmPhB5Rl7IS/v1BBLYX/jYWVN0dJiSA7fVIr9Acr7IbxWEQ2Y2qh1wdhayi4FBUHY3weivYSU3uGZizsSGJP/N6DutBgS1aXd5X/CqfF7VzRaKF4cfLO4XxTYUEjOztUNMN2XmW0o+ULjQmbouRPs/PIFmh6rc+h42m6p4SkjcsIKOy+mPTeJqhOVmYoMzO8+7mmXDOjFwvi/w97sdmbjII8Zn2iR/N8GuY23vv5h6LQ3tQ5kTA4IuPbYCVLeggd4iMM6TgpuJn0aG7yo4tDFqMeadCVhP2Bp3JQa8r3B2IJstTTF1OtZCrInjSus9ViOiM02Iz3ZmyglsMonJDlWeJL5jKBgqPbLR82IDhIY4IO6SqoVsWu4iWuLW5/TM3fdfYG3Wdvu7Suz7/anLAaMQEzKhObwgDdKmv4PkF75frex969CB1pQqSVnXmz4GrtxVUzWtlflaTSdSegpUXWLhG+jUNKTu+ptxDNM/JBxRNLSzdvsGbkI0qycOCliVpKkkvuiBGtiDWNax6KhV4/oRjkEkTRks9Xeko+q3uY4B//AGxsotsVhF5vhUDTOl5IX7a7wCPtbTGiaR79eprRzGnP9yP38djVrvXprJFU8P7GUr/f2qJt2jDYuCkaqAMsfjdu6YHitjj3ty4vrASgxJ0vsroWhjgiCwgASqM7GnweHSHy5/OZK8jCZX+g+B63Mu4ec+/nNnjvuLqBBZN/FSzXU5fVmYznfPaqW+1Xep+Aj1yGk3L3tvnKLc3sZ1HAJQEjud5dbME6e0JGxh5xOCnzWUR+YL/96KJAcgkxDJ1DxxHv0Uu/5kO5InOsPjs4YKuzqD4nUmGsFsJzTxG626wdGXJMO4YCRKkKtnNeWqMaslM3paN19/tTWyEbaDqc5mVzYLIb3Mzju+OV4GniDeVIvSIsXK5aFGj1PEhfCprQCqUzdNhFU8hF4kUVhn9dp0ExveT7btHSMlEZAWHRkDuLqaImpQkjYmwt90cxtdZwQvjTDtsFmQrvcSp8n1K3P5PwZpVtIw2UHpx+NjE8ZYwOozpXl/oOMzVTB8mi1dQGFkpac9cwnzCZof0ub4iutBeKc4WeEOytvY+CY7hc+/ncCprZ08nlkQarQV7jhfJj658GfBMLGzJtYkCrHwi/AoseIXa5W7eX+lz7O92H2M5QnEkPStQ9lsz2VkYA==-----END ENCRYPTED PRIVATE KEY-----"
     5) "client_key"
     6) "-----BEGIN ENCRYPTED PRIVATE KEY-----MIIFHDBOBgkqhkiG9w0BBQ0wQTApBgkqhkiG9w0BBQwwHAQIc+VAU9JPnIkCAggAMAwGCCqGSIb3DQIJBQAwFAYIKoZIhvcNAwcECImSB+9qZ8dmBIIEyBW/rZlECWnEcMuTXhfJFe+3HP4rV+TXEEuigwCbtVPHWXoZj7KqGiOFgFaDL5Ne/GRwVD6geaTeQVl3aoHzo8mY0yuX2L36Ho2yHF/Bw89WT3hgP0lZ1lVO7O7n8DwybOaoJ+1S3akyb6OPbqcxJou1IGzKV1kz77R8V8nOFSd1BOepNbanGxVG8Jkgc37dQnICXwwaYkTx9PQBtSux1j3KgX0p+VAUNoUFi7N6b0MeO8iEuLU1dUiVwlH/jtitg0W3AvSV+5gezTT2VQW3CVlz6IBTPI1Rfl/3ss18Tao0NiPUmXMIgreBCamXvb0aJm8JxVbhoFYqWVNVocBD+n1+NwhCRlZM5Kgaes5S2JuFnjTAqEYytlQqEySbaN57XYCDNVmQz2iViz/+npuR9SCGwnNvV/TNsKRwav+0NC0pbf3LNk/KL9/X5ccmPhB5Rl7IS/v1BBLYX/jYWVN0dJiSA7fVIr9Acr7IbxWEQ2Y2qh1wdhayi4FBUHY3weivYSU3uGZizsSGJP/N6DutBgS1aXd5X/CqfF7VzRaKF4cfLO4XxTYUEjOztUNMN2XmW0o+ULjQmbouRPs/PIFmh6rc+h42m6p4SkjcsIKOy+mPTeJqhOVmYoMzO8+7mmXDOjFwvi/w97sdmbjII8Zn2iR/N8GuY23vv5h6LQ3tQ5kTA4IuPbYCVLeggd4iMM6TgpuJn0aG7yo4tDFqMeadCVhP2Bp3JQa8r3B2IJstTTF1OtZCrInjSus9ViOiM02Iz3ZmyglsMonJDlWeJL5jKBgqPbLR82IDhIY4IO6SqoVsWu4iWuLW5/TM3fdfYG3Wdvu7Suz7/anLAaMQEzKhObwgDdKmv4PkF75frex969CB1pQqSVnXmz4GrtxVUzWtlflaTSdSegpUXWLhG+jUNKTu+ptxDNM/JBxRNLSzdvsGbkI0qycOCliVpKkkvuiBGtiDWNax6KhV4/oRjkEkTRks9Xeko+q3uY4B//AGxsotsVhF5vhUDTOl5IX7a7wCPtbTGiaR79eprRzGnP9yP38djVrvXprJFU8P7GUr/f2qJt2jDYuCkaqAMsfjdu6YHitjj3ty4vrASgxJ0vsroWhjgiCwgASqM7GnweHSHy5/OZK8jCZX+g+B63Mu4ec+/nNnjvuLqBBZN/FSzXU5fVmYznfPaqW+1Xep+Aj1yGk3L3tvnKLc3sZ1HAJQEjud5dbME6e0JGxh5xOCnzWUR+YL/96KJAcgkxDJ1DxxHv0Uu/5kO5InOsPjs4YKuzqD4nUmGsFsJzTxG626wdGXJMO4YCRKkKtnNeWqMaslM3paN19/tTWyEbaDqc5mVzYLIb3Mzju+OV4GniDeVIvSIsXK5aFGj1PEhfCprQCqUzdNhFU8hF4kUVhn9dp0ExveT7btHSMlEZAWHRkDuLqaImpQkjYmwt90cxtdZwQvjTDtsFmQrvcSp8n1K3P5PwZpVtIw2UHpx+NjE8ZYwOozpXl/oOMzVTB8mi1dQGFkpac9cwnzCZof0ub4iutBeKc4WeEOytvY+CY7hc+/ncCprZ08nlkQarQV7jhfJj658GfBMLGzJtYkCrHwi/AoseIXa5W7eX+lz7O92H2M5QnEkPStQ9lsz2VkYA==-----END ENCRYPTED PRIVATE KEY-----"
     7) "ca_cert"
-    8) ""
+    8) "-----BEGIN ENCRYPTED PRIVATE KEY-----MIIFHDBOBgkqhkiG9w0BBQ0wQTApBgkqhkiG9w0BBQwwHAQIc+VAU9JPnIkCAggAMAwGCCqGSIb3DQIJBQAwFAYIKoZIhvcNAwcECImSB+9qZ8dmBIIEyBW/rZlECWnEcMuTXhfJFe+3HP4rV+TXEEuigwCbtVPHWXoZj7KqGiOFgFaDL5Ne/GRwVD6geaTeQVl3aoHzo8mY0yuX2L36Ho2yHF/Bw89WT3hgP0lZ1lVO7O7n8DwybOaoJ+1S3akyb6OPbqcxJou1IGzKV1kz77R8V8nOFSd1BOepNbanGxVG8Jkgc37dQnICXwwaYkTx9PQBtSux1j3KgX0p+VAUNoUFi7N6b0MeO8iEuLU1dUiVwlH/jtitg0W3AvSV+5gezTT2VQW3CVlz6IBTPI1Rfl/3ss18Tao0NiPUmXMIgreBCamXvb0aJm8JxVbhoFYqWVNVocBD+n1+NwhCRlZM5Kgaes5S2JuFnjTAqEYytlQqEySbaN57XYCDNVmQz2iViz/+npuR9SCGwnNvV/TNsKRwav+0NC0pbf3LNk/KL9/X5ccmPhB5Rl7IS/v1BBLYX/jYWVN0dJiSA7fVIr9Acr7IbxWEQ2Y2qh1wdhayi4FBUHY3weivYSU3uGZizsSGJP/N6DutBgS1aXd5X/CqfF7VzRaKF4cfLO4XxTYUEjOztUNMN2XmW0o+ULjQmbouRPs/PIFmh6rc+h42m6p4SkjcsIKOy+mPTeJqhOVmYoMzO8+7mmXDOjFwvi/w97sdmbjII8Zn2iR/N8GuY23vv5h6LQ3tQ5kTA4IuPbYCVLeggd4iMM6TgpuJn0aG7yo4tDFqMeadCVhP2Bp3JQa8r3B2IJstTTF1OtZCrInjSus9ViOiM02Iz3ZmyglsMonJDlWeJL5jKBgqPbLR82IDhIY4IO6SqoVsWu4iWuLW5/TM3fdfYG3Wdvu7Suz7/anLAaMQEzKhObwgDdKmv4PkF75frex969CB1pQqSVnXmz4GrtxVUzWtlflaTSdSegpUXWLhG+jUNKTu+ptxDNM/JBxRNLSzdvsGbkI0qycOCliVpKkkvuiBGtiDWNax6KhV4/oRjkEkTRks9Xeko+q3uY4B//AGxsotsVhF5vhUDTOl5IX7a7wCPtbTGiaR79eprRzGnP9yP38djVrvXprJFU8P7GUr/f2qJt2jDYuCkaqAMsfjdu6YHitjj3ty4vrASgxJ0vsroWhjgiCwgASqM7GnweHSHy5/OZK8jCZX+g+B63Mu4ec+/nNnjvuLqBBZN/FSzXU5fVmYznfPaqW+1Xep+Aj1yGk3L3tvnKLc3sZ1HAJQEjud5dbME6e0JGxh5xOCnzWUR+YL/96KJAcgkxDJ1DxxHv0Uu/5kO5InOsPjs4YKuzqD4nUmGsFsJzTxG626wdGXJMO4YCRKkKtnNeWqMaslM3paN19/tTWyEbaDqc5mVzYLIb3Mzju+OV4GniDeVIvSIsXK5aFGj1PEhfCprQCqUzdNhFU8hF4kUVhn9dp0ExveT7btHSMlEZAWHRkDuLqaImpQkjYmwt90cxtdZwQvjTDtsFmQrvcSp8n1K3P5PwZpVtIw2UHpx+NjE8ZYwOozpXl/oOMzVTB8mi1dQGFkpac9cwnzCZof0ub4iutBeKc4WeEOytvY+CY7hc+/ncCprZ08nlkQarQV7jhfJj658GfBMLGzJtYkCrHwi/AoseIXa5W7eX+lz7O92H2M5QnEkPStQ9lsz2VkYA==-----END ENCRYPTED PRIVATE KEY-----"
     9) "operation"
     10) "cert.update"
     11) "occurred_at"
@@ -1208,15 +1208,43 @@ Whenever certificate is updated, `bootstrap` service will generate and publish n
 Whenever configuration list is fetched, `bootstrap` service will generate new `list` event. This event will have the following format:
 
 ```redis
-1) "1693313831585-0"
-2) 1) "operation"
-    2) "config.list"
-    3) "occurred_at"
-    4) "1693313831584949878"
-    5) "offset"
-    6) "0"
-    7) "limit"
-    8) "100"
+1) "1693339274766-0"
+2) 1) "occurred_at"
+    2) "1693339274766130265"
+    3) "offset"
+    4) "0"
+    5) "limit"
+    6) "10"
+    7) "operation"
+    8) "config.list"
+```
+
+### Configuration view event
+
+Whenever configuration is viewed, `bootstrap` service will generate new `view` event. This event will have the following format:
+
+```redis
+1) 1) "1693339152105-0"
+2)  1) "thing_id"
+    2) "74f00d13-d370-42c0-b528-04fff995275c"
+    3) "name"
+    4) "demo"
+    5) "external_id"
+    6) "FF-41-EF-BC-90-BC"
+    7) "channels"
+    8) "[90aae157-d47f-4d71-9a68-b000c0025ae8]"
+    9) "client_cert"
+    10) "-----BEGIN PRIVATE KEY-----MIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDVYaZsyd76aSWZexY/OyX8hVdE+ruT3OZrE6gFSjDiaAA2Uf5/eHT1BJdR4LviooXix8vfc/g5CAN/z98zmUmAzx9lk5T4sRhJfqYQ2yDEt1tVDwD3RzL9RHXRWiZu4thk253jOpT15VFvOf5wE6mhVozFl9OetVJb4eqKbHx9RY0rMXwiBiCC2LcUtcp6rVjp4pK6VGjehA8siVX9bnRsIY776jDb/pm2n+y5G+bd1CifSdgTrr7QLKFlx0//5lyslmfUbf76kg9bZ8Qe2NdFKvcpEZ4ENxtwMrqW2i1pTExVHNpka8rhA5936qpDKu1ce+kccIbFsPRAHU5PyXfNAgMBAAECggEAAtBt4c4WcGuwlkHxp4B/3hZix0Md9DOb9QTmWLjYxN5QRRHMbyFHPEVaOuHhjc9M6r0YgD2cTsw/QjvwmqfxOI9YFP6JnsS0faD7pF9EzbNes1QmVByOnJkpi0r1aiL4baQZL0+sz+1n/IqMQ4LO4D+ETcV/LKmsM2VbCDD+wfwsVkTmgaqKtXIFQ3bOU5LjRcxCZFs81z3mYDyP4hfnlmTWOOXcf8yLqx5LGH8erCGXgrhZiN5/mhkzUpkF75Eo4qt3jVZEt+d48RnPsk0TO0rqs4j5F3d/6Dboi3UpRlHZ4vEM7MeDGoMuXTh59MzbV1e/03sY2jTtB2NVQ51pFQKBgQD0kjYorDqu5e82Orp5rRkS58nUDgq3vaxNKJq+32LuuTuNjRrM57XoyBAVnBlfTP5IOQaxjYPNxHkZhYdYREyZKx96g6FZUWLQxKO+vP+E25MXSsnP8FMkQNfgSvMCxfIyFO3aVbDUme6bIScPNCTzKVWSWTj5Zyyig9VQpoRJ5wKBgQDfWlF7krUefQEvdJFxd9IGBvlkWkGi942Hh0H6vJCzhMQO8DeHZjO4oiiCEpRmBdkLDlZs81mykmyFEpjcmv4JD23HQ9IPi0/4Bsuu3SDXF4HC5/QYldaG0behBmMmDYuaQ0NHY5rpCnpZBteYT6V6lcBm/AIKwvz+N8fY2fDCKwKBgQDfBCjQw+SrMc8FI16Br7+KhsR7UuahEBt7LIiXfvom98//TuleafhuMWjBW9ujFIFXeHDLHWFQFFXdWO7HJVi33yPQQxGxcc5q0rUCLDPQga1Kcw8+R0Z5a4uu4olgQQKOepk+HB+obkmvOfb1HTaIaWu3jRawDk4cT50H8x/0hwKBgB63eB9LhNclj+Ur3djCBsNHcELp2r8D1pX99wf5qNjXeHMpfCmF17UbsAB7d6c0RK4tkZs4OGzDkGMYtKcaNbefRJSz8g6rNRtCK/7ncF3EYNciOUKsUK2H5/4gN8CC+mEDwRvvSd2k0ECwHTRYN8TNFYHURJ+gQ1Te7QAYsPCzAoGBAMZnbAY1Q/gK11JaPE2orFb1IltDRKB2IXh5Ton0ZCqhmOhMLQ+4t7DLPUKdXlsBZa/IIm5XehBg6VajbG0zulKLzO4YHuWEduwYON+4DNQxLWhBCBauOZ7+dcGUvYkeKoySYs6hznV9mlMHe1TuhCO8zHjpvBXOrlAR8VX5BXKz-----END PRIVATE KEY-----"
+    11) "state"
+    12) "0"
+    13) "operation"
+    14) "config.view"
+    15) "content"
+    16) "{\"device_id\": \"12345\",\"secure_connection\": true,\"sensor_config\": {\"temperature\": true,\"humidity\": true,\"pressure\": false}}"
+    17) "owner"
+    18) "b2972472-c93c-408f-9b77-0f8a81ee47af"
+    19) "occurred_at"
+    20) "1693339152105496336"
 ```
 
 ### Configuration remove event
@@ -1224,13 +1252,27 @@ Whenever configuration list is fetched, `bootstrap` service will generate new `l
 Whenever configuration is removed, `bootstrap` service will generate and publish new `remove` event. This event will have the following format:
 
 ```redis
-1) "1555405464328-0"
-2) 1) "thing_id"
-   2) "63a110d4-2b77-48d2-aa46-2582681eeb82"
-   3) "timestamp"
-   4) "1555405464"
-   5) "operation"
-   6) "config.remove"
+1) "1693339203771-0"
+2) 1) "occurred_at"
+    2) "1693339203771705590"
+    3) "thing_id"
+    4) "853f37b9-513a-41a2-a575-bbaa746961a6"
+    5) "operation"
+    6) "config.remove"
+```
+
+### Configuration remove handler
+
+Whenever a thing is removed, `bootstrap` service will generate and publish new `config.remove_handler` event. This event will have the following format:
+
+```redis
+1) 1) "1693337955655-0"
+2) 1) "config_id"
+    2) "0198b458-573e-415a-aa05-052ddab9709d"
+    3) "operation"
+    4) "config.remove_handler"
+    5) "occurred_at"
+    6) "1693337955654969489"
 ```
 
 ### Thing bootstrap event
@@ -1238,15 +1280,28 @@ Whenever configuration is removed, `bootstrap` service will generate and publish
 Whenever thing is bootstrapped, `bootstrap` service will generate and publish new `bootstrap` event. This event will have the following format:
 
 ```redis
-1) "1555405173785-0"
-2) 1) "externalID"
-   2) "9c:b6:d:eb:9f:fd"
-   3) "success"
-   4) "1"
-   5) "timestamp"
-   6) "1555405173"
-   7) "operation"
-   8) "thing.bootstrap"
+1) 1) "1693339161600-0"
+2)  1) "occurred_at"
+    2) "1693339161600369325"
+    3) "external_id"
+    4) "FF-41-EF-BC-90-BC"
+    5) "success"
+    6) "1"
+    7) "operation"
+    8) "thing.bootstrap"
+    9) "thing_id"
+    10) "74f00d13-d370-42c0-b528-04fff995275c"
+    11) "content"
+    12) "{\"device_id\": \"12345\",\"secure_connection\": true,\"sensor_config\": {\"temperature\": true,\"humidity\": true,\"pressure\": false}}"
+    13) "owner"
+    14) "b2972472-c93c-408f-9b77-0f8a81ee47af"
+    15) "name"
+    16) "demo"
+    17) "channels"
+    18) "[90aae157-d47f-4d71-9a68-b000c0025ae8]"
+    19) "ca_cert"
+    20) "-----BEGIN PRIVATE KEY-----MIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDVYaZsyd76aSWZexY/OyX8hVdE+ruT3OZrE6gFSjDiaAA2Uf5/eHT1BJdR4LviooXix8vfc/g5CAN/z98zmUmAzx9lk5T4sRhJfqYQ2yDEt1tVDwD3RzL9RHXRWiZu4thk253jOpT15VFvOf5wE6mhVozFl9OetVJb4eqKbHx9RY0rMXwiBiCC2LcUtcp6rVjp4pK6VGjehA8siVX9bnRsIY776jDb/pm2n+y5G+bd1CifSdgTrr7QLKFlx0//5lyslmfUbf76kg9bZ8Qe2NdFKvcpEZ4ENxtwMrqW2i1pTExVHNpka8rhA5936qpDKu1ce+kccIbFsPRAHU5PyXfNAgMBAAECggEAAtBt4c4WcGuwlkHxp4B/3hZix0Md9DOb9QTmWLjYxN5QRRHMbyFHPEVaOuHhjc9M6r0YgD2cTsw/QjvwmqfxOI9YFP6JnsS0faD7pF9EzbNes1QmVByOnJkpi0r1aiL4baQZL0+sz+1n/IqMQ4LO4D+ETcV/LKmsM2VbCDD+wfwsVkTmgaqKtXIFQ3bOU5LjRcxCZFs81z3mYDyP4hfnlmTWOOXcf8yLqx5LGH8erCGXgrhZiN5/mhkzUpkF75Eo4qt3jVZEt+d48RnPsk0TO0rqs4j5F3d/6Dboi3UpRlHZ4vEM7MeDGoMuXTh59MzbV1e/03sY2jTtB2NVQ51pFQKBgQD0kjYorDqu5e82Orp5rRkS58nUDgq3vaxNKJq+32LuuTuNjRrM57XoyBAVnBlfTP5IOQaxjYPNxHkZhYdYREyZKx96g6FZUWLQxKO+vP+E25MXSsnP8FMkQNfgSvMCxfIyFO3aVbDUme6bIScPNCTzKVWSWTj5Zyyig9VQpoRJ5wKBgQDfWlF7krUefQEvdJFxd9IGBvlkWkGi942Hh0H6vJCzhMQO8DeHZjO4oiiCEpRmBdkLDlZs81mykmyFEpjcmv4JD23HQ9IPi0/4Bsuu3SDXF4HC5/QYldaG0behBmMmDYuaQ0NHY5rpCnpZBteYT6V6lcBm/AIKwvz+N8fY2fDCKwKBgQDfBCjQw+SrMc8FI16Br7+KhsR7UuahEBt7LIiXfvom98//TuleafhuMWjBW9ujFIFXeHDLHWFQFFXdWO7HJVi33yPQQxGxcc5q0rUCLDPQga1Kcw8+R0Z5a4uu4olgQQKOepk+HB+obkmvOfb1HTaIaWu3jRawDk4cT50H8x/0hwKBgB63eB9LhNclj+Ur3djCBsNHcELp2r8D1pX99wf5qNjXeHMpfCmF17UbsAB7d6c0RK4tkZs4OGzDkGMYtKcaNbefRJSz8g6rNRtCK/7ncF3EYNciOUKsUK2H5/4gN8CC+mEDwRvvSd2k0ECwHTRYN8TNFYHURJ+gQ1Te7QAYsPCzAoGBAMZnbAY1Q/gK11JaPE2orFb1IltDRKB2IXh5Ton0ZCqhmOhMLQ+4t7DLPUKdXlsBZa/IIm5XehBg6VajbG0zulKLzO4YHuWEduwYON+4DNQxLWhBCBauOZ7+dcGUvYkeKoySYs6hznV9mlMHe1TuhCO8zHjpvBXOrlAR8VX5BXKz-----END PRIVATE KEY-----"
+
 ```
 
 ### Thing change state event
@@ -1281,18 +1336,36 @@ Whenever thing's list of connections is updated, `bootstrap` service will genera
    8) "1555405373"
 ```
 
+### Channel update handler event
+
+Whenever channel is updated, `bootstrap` service will generate and publish new `update handler` event. This event will have the following format:
+
+```redis
+1) "1693339403536-0"
+2)  1) "operation"
+    2) "channel.update_handler"
+    3) "channel_id"
+    4) "0e602731-36ba-4a29-adba-e5761f356158"
+    5) "name"
+    6) "dry-sky"
+    7) "metadata"
+    8) "{\"log\":\"info\"}"
+    9) "occurred_at"
+    10) "1693339403536636387"
+```
+
 ### Channel remove handler event
 
 Whenever channel is removed, `bootstrap` service will generate and publish new `remove handler` event. This event will have the following format:
 
 ```redis
-1) "1693314240718-0"
+1) "1693339468719-0"
 2) 1) "config_id"
-    2) "8d77099e-4911-4140-8555-7d3be65a1694"
+    2) "0198b458-573e-415a-aa05-052ddab9709d"
     3) "operation"
-    4) "channel.remove_handler"
+    4) "config.remove_handler"
     5) "occurred_at"
-    6) "1693314240718179594"
+    6) "1693339468719177463"
 ```
 
 ## MQTT Adapter
