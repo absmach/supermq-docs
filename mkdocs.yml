@@ -33,6 +33,7 @@ nav:
   - Authorization: authorization.md
   - Security: security.md
   - Messaging: messaging.md
+  - Events: events.md
   # Edge
   - Edge: edge.md
   # Addons
