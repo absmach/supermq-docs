@@ -276,6 +276,39 @@ Mainflux supports MQTT protocol for message exchange. MQTT is extremely simple a
 
 Mainflux supports [MQTT version 3.1.1][mqtt-v3.1.1]. The MQTT adapter is based on [Eclipse Paho][paho] MQTT client library. The adapter is configured to use [nats][nats-mqtt] as the default MQTT broker, but you can use [vernemq][vernemq] too.
 
+### Configuration
+
+On dev environment docker profiles is preferred when handling different MQTT and message brokers supported by Mainflux.
+
+Mainflux uses two types of brokers:
+
+1. `MQTT_BROKER`: Handles MQTT communication between MQTT adapters and message broker.
+2. `MESSAGE_BROKER`: Manages communication between adapters and Mainflux writer services.
+
+`MQTT_BROKER` can be either `vernemq` or `nats`.
+`MESSAGE_BROKER` can be either `nats` or `rabbitmq`.
+
+Each broker has a unique profile for configuration. The available profiles are:
+
+- `vernemq_nats`: Uses `vernemq` as MQTT_BROKER and `nats` as MESSAGE_BROKER.
+- `vernemq_rabbitmq`: Uses `vernemq` as MQTT_BROKER and `rabbitmq` as MESSAGE_BROKER.
+- `nats_nats`: Uses `nats` as both MQTT_BROKER and MESSAGE_BROKER.
+- `nats_rabbitmq`: Uses `nats` as MQTT_BROKER and `rabbitmq` as MESSAGE_BROKER.
+
+The following command will run VerneMQ as an MQTT broker and Nats as a message broker:
+
+```bash
+MF_MQTT_BROKER_TYPE=vernemq MF_BROKER_TYPE=nats make run
+```
+
+The following command will run NATS as an MQTT broker and RabbitMQ as a message broker:
+
+```bash
+MF_MQTT_BROKER_TYPE=nats MF_BROKER_TYPE=rabbitmq make run
+```
+
+By default NATS is used as MQTT broker and RabbitMQ as message broker.
+
 ### Nats MQTT Broker
 
 NATS support for MQTT and it is designed to empower users to leverage their existing IoT deployments. NATS offers significant advantages in terms of security and observability when used end-to-end. NATS server as a drop-in replacement for MQTT is compelling. This approach allows you to retain your existing IoT investments while benefiting from NATS' secure, resilient, and scalable access to your streams and services.
