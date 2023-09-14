@@ -348,6 +348,42 @@ VerneMQ is designed from the ground up to work as a distributed message broker, 
 
 VerneMQ uses a masterless clustering technology, which means there are no special nodes like masters or slaves to consider when adding or removing nodes, making cluster operation safe and simple. This allows MQTT clients to connect to any cluster node and receive messages from any other node. However, it acknowledges the challenges of fulfilling MQTT specification guarantees in a distributed environment, particularly during network partitions.
 
+## Message Broker
+
+Mainflux supports multiple message brokers for message exchange. Message brokers are used to distribute messages to and from clients connected to the different protocols adapters and writers. Writers, which are responsible for storing messages in the database, are connected to the message broker using wildcard subscriptions. This means that writers will receive all messages published to the message broker. Clients can subscribe to the message broker using topic and subtopic combinations. The message broker will then forward all messages published to the topic and subtopic combination to the client.
+
+Mainflux supports [NATS][nats], [RabbitMQ][rabbitmq] and [Kafka][kafka] as message brokers.
+
+### NATS JetStream
+
+Since mainfux supports configurable message broker, you can use Nats with Jestream enabled as a message broker. To do so, you need to set `MF_BROKER_TYPE` to `nats` and set `MF_NATS_URL` to the url of your nats instance. When using `make` command to start mainflux `MF_BROKER_URL` is automatically set to `MF_NATS_URL`.
+
+Since mainflux is using `nats:2.9.21-alpine` docker image with the following configuration:
+
+```conf
+max_payload: 1MB
+max_connections: 1M
+port: $MF_NATS_PORT
+http_port: $MF_NATS_HTTP_PORT
+trace: true
+
+jetstream {
+    store_dir: "/data"
+    cipher: "aes"
+    key: $MF_NATS_JETSTREAM_KEY
+    max_mem: 1G
+}
+```
+
+These are the default values but you can change them by editing the configuration file. For more information about nats configuration checkout [official nats documentation][nats-jestream]. The healthcheck endpoint is exposed on `MF_NATS_HTTP_PORT` and it's `/healthz` path.
+
+### Architecture
+
+The main reason of using nats with Jestream enabled is to have a distributed system with high availability and minimal dependencies. Nats is configure to run as the default message broker, but you can use any other message broker supported by mainflux. Nats is configured to use Jestream, which is a distributed streaming platform built on top of nats. Jestream is used to store messages and to provide high availability. This makes nats to be used as the default event store, but you can use any other event store supported by mainflux. Nats with jestream enabled is also used as a key value store for caching purposes. This makes nats to be used as the default cache store, but you can use any other cache store supported by mainflux.
+
+This versatile architecture allows you to use nats alone for MQTT broker, message broker, event store and cache store. This is the default configuration, but you can use any other MQTT broker, message broker, event store and cache store supported by mainflux.
+
+[nats-jestream]: https://docs.nats.io/nats-concepts/jetstream
 [http-api]: https://github.com/mainflux/mainflux/blob/master/api/openapi/http.yml
 [mosquitto]: https://mosquitto.org
 [paho]: https://www.eclipse.org/paho/
