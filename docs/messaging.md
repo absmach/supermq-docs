@@ -406,6 +406,24 @@ When Unsubscribing from a channel, the queue is unbound from the exchange and de
 
 For more information and examples checkout [official nats.io documentation][nats], [official rabbitmq documentation][rabbitmq], [official vernemq documentation][vernemq] and [official kafka documentation][kafka].
 
+### Kafka
+
+Since Mainflux uses a configurable message broker, you can use Kafka as a message broker. To do so, you need to set `MF_BROKER_TYPE` to `kafka` and set `MF_KAFKA_URL` to the url of your Kafka instance. When using `make` command to start Mainflux `MF_BROKER_URL` is automatically set to `MF_KAFKA_URL`.
+
+Mainflux utilizes `spotify/kafka:latest` docker image. The image also exposes `kafka:9092` and `zookeeper:2181` ports. This is used for development purposes only. For production, it is assumed that you have your own Kafka cluster.
+
+##### Architecture
+
+The publisher implementation is based on the `segmentio/kafka-go` library. Publishing messages is well supported by the library, but subscribing to topics is not. The library does not provide a way to subscribe to all topics, but only to a specific topic. This is a problem because the Mainflux platform uses a topic per channel, and the number of channels is not known in advance. The solution is to use the Zookeeper library to get a list of all topics and then subscribe to each of them. The list of topics is obtained by connecting to the Zookeeper server and reading the list of topics from the `/brokers/topics` node. The first message published from the topic can be lost if subscription happens closely followed by publishing. After the subscription, we guarantee that all messages will be received.
+
+Mainflux publishes messages to Kafka using the `channels.<channel_id>.<optional_subtopic>` topic. A few valid topic examples: `channels.318BC587-A68B-40D3-9026-3356FA4E702C`, `channels.318BC587-A68B-40D3-9026-3356FA4E702C.bedroom.temperature`. All topics have a single partition and replication factor of 1. On publishing messages a topic is created and a writer is created for that topic. The writer is not closed after publishing a message. The writer is closed when the application is closed. The `batchSize` is set to 1, which means that messages are written to Kafka as soon as they are published. The `requiredAcks` is set to `RequireAll` which means that the server will wait for the leader to receive the message and wait for the full set of in-sync replicas to receive the message.
+
+On subscribing to messages from a channel, a reader is configured with the topic `channels.<channel_id>.<optional_subtopic>`. The reader is not closed after reading a message. The reader is closed when the application is closed. The `maxWait` is set to 1 second, which means that the reader will wait for 1 second for new data to come when fetching batches of messages from kafka. The `heartbeatInterval` is set to 1 second, which means that the reader will send the consumer group heartbeat update every 1 second. The `partitionWatchInterval` is set to 1 second, which means that the reader will check for partition changes every 1 second. The `sessionTimeout` is set to 1 second, which means that the coordinator will consider the consumer dead and initiate a rebalance if no heartbeat is received for 1 second. For wildcard topics since kafka does not support wildcards, Mainflux subscribes to all topics and filter the messages received.
+
+When Unsubscribing from a channel, the reader is closed.
+
+For more information and examples checkout [official nats.io documentation][nats], [official rabbitmq documentation][rabbitmq], [official vernemq documentation][vernemq] and [official kafka documentation][kafka].
+
 [nats-jestream]: https://docs.nats.io/nats-concepts/jetstream
 [http-api]: https://github.com/mainflux/mainflux/blob/master/api/openapi/http.yml
 [mosquitto]: https://mosquitto.org
