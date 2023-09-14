@@ -278,7 +278,7 @@ Mainflux supports [MQTT version 3.1.1][mqtt-v3.1.1]. The MQTT adapter is based o
 
 ### Configuration
 
-On dev environment, docker profiles is preferred when handling different MQTT and message brokers supported by Mainflux.
+In the dev environment, docker profiles are preferred when handling different MQTT and message brokers supported by Mainflux.
 
 Mainflux uses two types of brokers:
 
@@ -307,7 +307,7 @@ The following command will run NATS as an MQTT broker and RabbitMQ as a message 
 MF_MQTT_BROKER_TYPE=nats MF_BROKER_TYPE=rabbitmq make run
 ```
 
-By default, NATS is used as MQTT broker and RabbitMQ as message broker.
+By default, NATS is used as an MQTT broker and RabbitMQ as a message broker.
 
 ### Nats MQTT Broker
 
@@ -356,9 +356,9 @@ Mainflux supports [NATS][nats], [RabbitMQ][rabbitmq] and [Kafka][kafka] as messa
 
 ### NATS JetStream
 
-Since mainfux supports configurable message broker, you can use Nats with Jestream enabled as a message broker. To do so, you need to set `MF_BROKER_TYPE` to `nats` and set `MF_NATS_URL` to the url of your nats instance. When using `make` command to start mainflux `MF_BROKER_URL` is automatically set to `MF_NATS_URL`.
+Since Mainflux supports configurable message brokers, you can use Nats with JetStream enabled as a message broker. To do so, you need to set `MF_BROKER_TYPE` to `nats` and set `MF_NATS_URL` to the url of your nats instance. When using `make` command to start Mainflux `MF_BROKER_URL` is automatically set to `MF_NATS_URL`.
 
-Since mainflux is using `nats:2.9.21-alpine` docker image with the following configuration:
+Since Mainflux is using `nats:2.9.21-alpine` docker image with the following configuration:
 
 ```conf
 max_payload: 1MB
@@ -375,13 +375,13 @@ jetstream {
 }
 ```
 
-These are the default values but you can change them by editing the configuration file. For more information about nats configuration checkout [official nats documentation][nats-jestream]. The healthcheck endpoint is exposed on `MF_NATS_HTTP_PORT` and it's `/healthz` path.
+These are the default values but you can change them by editing the configuration file. For more information about nats configuration checkout [official nats documentation][nats-jestream]. The health check endpoint is exposed on `MF_NATS_HTTP_PORT` and its `/healthz` path.
 
 ### Architecture
 
-The main reason of using nats with Jestream enabled is to have a distributed system with high availability and minimal dependencies. Nats is configure to run as the default message broker, but you can use any other message broker supported by mainflux. Nats is configured to use Jestream, which is a distributed streaming platform built on top of nats. Jestream is used to store messages and to provide high availability. This makes nats to be used as the default event store, but you can use any other event store supported by mainflux. Nats with jestream enabled is also used as a key value store for caching purposes. This makes nats to be used as the default cache store, but you can use any other cache store supported by mainflux.
+The main reason for using Nats with JetStream enabled is to have a distributed system with high availability and minimal dependencies. Nats is configure to run as the default message broker, but you can use any other message broker supported by Mainflux. Nats is configured to use JetStream, which is a distributed streaming platform built on top of nats. JetStream is used to store messages and to provide high availability. This makes nats to be used as the default event store, but you can use any other event store supported by Mainflux. Nats with JetStream enabled is also used as a key-value store for caching purposes. This makes nats to be used as the default cache store, but you can use any other cache store supported by Mainflux.
 
-This versatile architecture allows you to use nats alone for MQTT broker, message broker, event store and cache store. This is the default configuration, but you can use any other MQTT broker, message broker, event store and cache store supported by mainflux.
+This versatile architecture allows you to use nats alone for the MQTT broker, message broker, event store and cache store. This is the default configuration, but you can use any other MQTT broker, message broker, event store and cache store supported by Mainflux.
 
 [nats-jestream]: https://docs.nats.io/nats-concepts/jetstream
 [http-api]: https://github.com/mainflux/mainflux/blob/master/api/openapi/http.yml
