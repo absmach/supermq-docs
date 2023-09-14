@@ -26,9 +26,7 @@ MF_CERTS_VAULT_ROLE=<vault_role>
 MF_CERTS_VAULT_TOKEN=<vault_acces_token>
 ```
 
-For lab purposes you can use docker-compose and script for setting up PKI in [https://github.com/mteodor/vault][meodor-vault].
-
-Issuing certificate is same as in **Development** mode. In this mode certificates can also be revoked:
+For lab purposes you can use docker-compose and script for setting up PKI in [meodor-vault][meodor-vault].
 
 Make sure you have an already running instance of `Mainflux` , `Vault` and `Certs` service.
 
@@ -68,6 +66,18 @@ Provision a thing:
 
 ```bash
 mainflux-cli provision test
+```
+
+To stop certs service run:
+
+```bash
+make run_addons certs down
+```
+
+To stop vault service run:
+
+```bash
+make run_addons vault down
 ```
 
 This step can be skipped if you already have a thing ID.
