@@ -268,31 +268,6 @@ it's subtopics.
 
 **Note:** When using MQTT, it's recommended that you use standard MQTT wildcards `+` and `#`.
 
-## RabbitMQ
-
-Since mainfux uses a configurable message broker, you can use RabbitMQ as a message broker. To do so, you need to set `MF_BROKER_TYPE` to `rabbitmq` and set `MF_RABBITMQ_URL` to the url of your RabbitMQ instance. When using `make` command to start mainflux `MF_BROKER_URL` is automatically set to `MF_RABBITMQ_URL`.
-
-Since mainflux is using `rabbitmq:3.9.20-management-alpine` docker image, the management console is available at port `MF_RABBITMQ_HTTP_PORT`
-
-### Architecture
-
-Mainflux has one exchange for the entire platform called `mainflux`. This exchange is of type `topic`. The exchange is `durable` i.e it will survive broker restarts and remain declared when there are no remaining bindings. The exchange does not `auto-delete` when all queues have finished using it. When declaring the exchange `no_wait` is set to `false` which means that the broker will wait for a confirmation from the server that the exchange was successfully declared. The exchange is not `internal` i.e. it can be published to by other exchanges.
-
-Mainflux uses topic based routing to route messages to the appropriate queues. The routing key is in the format `channels.<channel_id>.<optional_subtopic>`. A few valid routing key examples: `channels.318BC587-A68B-40D3-9026-3356FA4E702C`, `channels.318BC587-A68B-40D3-9026-3356FA4E702C.bedroom.temperature`.
-
-The amqp published message doesn't contain any headers. The message body is the payload of the message.
-
-When subscribing to messages from a channel, a queue is created with the name `channels.<channel_id>.<optional_subtopic>`. The queue is `durable` i.e. it will survive broker restarts and remain declared when there are no remaining consumers or bindings. The queue does not `auto-delete` when all consumers have finished using it. The queue is not `exclusive` i.e. it can be accessed in other connections. When declaring the queue we set `no_wait` to `false` which means that the broker waits for a confirmation from the server that the queue was successfully declared. The queue is not passive i.e. the server creates the queue if it does not exist.
-
-The queue is then bound to the exchange with the routing key `channels.<channel_id>.<optional_subtopic>`. The binding is not no-wait i.e. the broker waits for a confirmation from the server that the binding was successfully created.
-
-Once this is done, the consumer can start consuming messages from the queue with a specific client ID. The consumer is not `no-local` i.e. the server will not send messages to the connection that published them. The consumer is not `exclusive` i.e. the queue can be accessed in other connections. The consumer is `no-ack` i.e. the server acknowledges
-deliveries to this consumer prior to writing the delivery to the network.
-
-When Unsubscribing from a channel, the queue is unbound from the exchange and deleted.
-
-For more information and examples checkout [official nats.io documentation][nats], [official rabbitmq documentation][rabbitmq], [official vernemq documentation][vernemq] and [official kafka documentation][kafka].
-
 ## MQTT Broker
 
 Mainflux supports the MQTT protocol for message exchange. MQTT is a lightweight Publish/Subscribe messaging protocol used to connect restricted devices in low bandwidth, high-latency or unreliable networks. The publish-subscribe messaging pattern requires a message broker. The broker is responsible for distributing messages to and from clients connected to the MQTT adapter.
@@ -400,11 +375,36 @@ jetstream {
 
 These are the default values but you can change them by editing the configuration file. For more information about nats configuration checkout [official nats documentation][nats-jestream]. The health check endpoint is exposed on `MF_NATS_HTTP_PORT` and its `/healthz` path.
 
-### Architecture
+#### Architecture
 
 The main reason for using Nats with JetStream enabled is to have a distributed system with high availability and minimal dependencies. Nats is configure to run as the default message broker, but you can use any other message broker supported by Mainflux. Nats is configured to use JetStream, which is a distributed streaming platform built on top of nats. JetStream is used to store messages and to provide high availability. This makes nats to be used as the default event store, but you can use any other event store supported by Mainflux. Nats with JetStream enabled is also used as a key-value store for caching purposes. This makes nats to be used as the default cache store, but you can use any other cache store supported by Mainflux.
 
 This versatile architecture allows you to use nats alone for the MQTT broker, message broker, event store and cache store. This is the default configuration, but you can use any other MQTT broker, message broker, event store and cache store supported by Mainflux.
+
+### RabbitMQ
+
+Since mainfux uses a configurable message broker, you can use RabbitMQ as a message broker. To do so, you need to set `MF_BROKER_TYPE` to `rabbitmq` and set `MF_RABBITMQ_URL` to the url of your RabbitMQ instance. When using `make` command to start mainflux `MF_BROKER_URL` is automatically set to `MF_RABBITMQ_URL`.
+
+Since mainflux is using `rabbitmq:3.9.20-management-alpine` docker image, the management console is available at port `MF_RABBITMQ_HTTP_PORT`
+
+#### Architecture
+
+Mainflux has one exchange for the entire platform called `mainflux`. This exchange is of type `topic`. The exchange is `durable` i.e it will survive broker restarts and remain declared when there are no remaining bindings. The exchange does not `auto-delete` when all queues have finished using it. When declaring the exchange `no_wait` is set to `false` which means that the broker will wait for a confirmation from the server that the exchange was successfully declared. The exchange is not `internal` i.e. it can be published to by other exchanges.
+
+Mainflux uses topic based routing to route messages to the appropriate queues. The routing key is in the format `channels.<channel_id>.<optional_subtopic>`. A few valid routing key examples: `channels.318BC587-A68B-40D3-9026-3356FA4E702C`, `channels.318BC587-A68B-40D3-9026-3356FA4E702C.bedroom.temperature`.
+
+The amqp published message doesn't contain any headers. The message body is the payload of the message.
+
+When subscribing to messages from a channel, a queue is created with the name `channels.<channel_id>.<optional_subtopic>`. The queue is `durable` i.e. it will survive broker restarts and remain declared when there are no remaining consumers or bindings. The queue does not `auto-delete` when all consumers have finished using it. The queue is not `exclusive` i.e. it can be accessed in other connections. When declaring the queue we set `no_wait` to `false` which means that the broker waits for a confirmation from the server that the queue was successfully declared. The queue is not passive i.e. the server creates the queue if it does not exist.
+
+The queue is then bound to the exchange with the routing key `channels.<channel_id>.<optional_subtopic>`. The binding is not no-wait i.e. the broker waits for a confirmation from the server that the binding was successfully created.
+
+Once this is done, the consumer can start consuming messages from the queue with a specific client ID. The consumer is not `no-local` i.e. the server will not send messages to the connection that published them. The consumer is not `exclusive` i.e. the queue can be accessed in other connections. The consumer is `no-ack` i.e. the server acknowledges
+deliveries to this consumer prior to writing the delivery to the network.
+
+When Unsubscribing from a channel, the queue is unbound from the exchange and deleted.
+
+For more information and examples checkout [official nats.io documentation][nats], [official rabbitmq documentation][rabbitmq], [official vernemq documentation][vernemq] and [official kafka documentation][kafka].
 
 [nats-jestream]: https://docs.nats.io/nats-concepts/jetstream
 [http-api]: https://github.com/mainflux/mainflux/blob/master/api/openapi/http.yml
