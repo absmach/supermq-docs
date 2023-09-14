@@ -7,40 +7,11 @@ Provisioning is a process of configuration of an IoT platform in which system op
 Issues certificates for things. `Certs` service can create certificates to be used when `Mainflux` is deployed to support mTLS.  
 `Certs` service will create certificate for valid thing ID if valid user token is passed and user is owner of the provided thing ID.
 
-Certificate service can create certificates in two modes:
-
-1. Development mode - to be used when no PKI is deployed, this works similar to the [make thing_cert](../docker/ssl/Makefile)
-2. PKI mode - certificates issued by PKI, when you deploy `Vault` as PKI certificate management `cert` service will proxy requests to `Vault` previously checking access rights and saving info on successfully created certificate.
-
-### Development mode
-
-If `MF_CERTS_VAULT_HOST` is empty than Development mode is on.
-
-To issue a certificate:
-
-```bash
-
-USER_TOKEN=`curl  -s --insecure -S -X POST https://localhost/users/tokens/issue -H "Content-Type: application/json" -d '{"identity":"john.doe@email.com", "secret":"12345678"}' | grep -oP '"access_token":"\K[^"]+'`
-
-curl -s -S  -X POST  http://localhost:9019/certs -H "Authorization: Bearer $USER_TOKEN" -H 'Content-Type: application/json'   -d '{"thing_id":<thing_id>, "rsa_bits":2048, "key_type":"rsa"}'
-```
-
-```json
-{
-  "ThingID": "",
-  "ClientCert": "-----BEGIN CERTIFICATE-----\nMIIDmTCCAoGgAwIBAgIRANmkAPbTR1UYeYO0Id/4+8gwDQYJKoZIhvcNAQELBQAw\nVzESMBAGA1UEAwwJbG9jYWxob3N0MREwDwYDVQQKDAhNYWluZmx1eDEMMAoGA1UE\nCwwDSW9UMSAwHgYJKoZIhvcNAQkBFhFpbmZvQG1haW5mbHV4LmNvbTAeFw0yMDA2\nMzAxNDIxMDlaFw0yMDA5MjMyMjIxMDlaMFUxETAPBgNVBAoTCE1haW5mbHV4MREw\nDwYDVQQLEwhtYWluZmx1eDEtMCsGA1UEAxMkYjAwZDBhNzktYjQ2YS00NTk3LTli\nNGYtMjhkZGJhNTBjYTYyMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA\ntgS2fLUWG3CCQz/l6VRQRJfRvWmdxK0mW6zIXGeeOILYZeaLiuiUnohwMJ4RiMqT\nuJbInAIuO/Tt5osfrCFFzPEOLYJ5nZBBaJfTIAxqf84Ou1oeMRll4wpzgeKx0rJO\nXMAARwn1bT9n3uky5QQGSLy4PyyILzSXH/1yCQQctdQB/Ar/UI1TaYoYlGzh7dHT\nWpcxq1HYgCyAtcrQrGD0rEwUn82UBCrnya+bygNqu0oDzIFQwa1G8jxSgXk0mFS1\nWrk7rBipsvp8HQhdnvbEVz4k4AAKcQxesH4DkRx/EXmU2UvN3XysvcJ2bL+UzMNI\njNhAe0pgPbB82F6zkYZ/XQIDAQABo2IwYDAOBgNVHQ8BAf8EBAMCB4AwHQYDVR0l\nBBYwFAYIKwYBBQUHAwIGCCsGAQUFBwMBMA4GA1UdDgQHBAUBAgMEBjAfBgNVHSME\nGDAWgBRs4xR91qEjNRGmw391xS7x6Tc+8jANBgkqhkiG9w0BAQsFAAOCAQEAW/dS\nV4vNLTZwBnPVHUX35pRFxPKvscY+vnnpgyDtITgZHYe0KL+Bs3IHuywtqaezU5x1\nkZo+frE1OcpRvp7HJtDiT06yz+18qOYZMappCWCeAFWtZkMhlvnm3TqTkgui6Xgl\nGj5xnPb15AOlsDE2dkv5S6kEwJGHdVX6AOWfB4ubUq5S9e4ABYzXGUty6Hw/ZUmJ\nhCTRVJ7cQJVTJsl1o7CYT8JBvUUG75LirtoFE4M4JwsfsKZXzrQffTf1ynqI3dN/\nHWySEbvTSWcRcA3MSmOTxGt5/zwCglHDlWPKMrXtjTW7NPuGL5/P9HSB9HGVVeET\nDUMdvYwgj0cUCEu3LA==\n-----END CERTIFICATE-----\n",
-  "IssuingCA": "",
-  "CAChain": null,
-  "ClientKey": "-----BEGIN RSA PRIVATE KEY-----\nMIIEowIBAAKCAQEAtgS2fLUWG3CCQz/l6VRQRJfRvWmdxK0mW6zIXGeeOILYZeaL\niuiUnohwMJ4RiMqTuJbInAIuO/Tt5osfrCFFzPEOLYJ5nZBBaJfTIAxqf84Ou1oe\nMRll4wpzgeKx0rJOXMAARwn1bT9n3uky5QQGSLy4PyyILzSXH/1yCQQctdQB/Ar/\nUI1TaYoYlGzh7dHTWpcxq1HYgCyAtcrQrGD0rEwUn82UBCrnya+bygNqu0oDzIFQ\nwa1G8jxSgXk0mFS1Wrk7rBipsvp8HQhdnvbEVz4k4AAKcQxesH4DkRx/EXmU2UvN\n3XysvcJ2bL+UzMNIjNhAe0pgPbB82F6zkYZ/XQIDAQABAoIBAALoal3tqq+/iWU3\npR2oKiweXMxw3oNg3McEKKNJSH7QoFJob3xFoPIzbc9pBxCvY9LEHepYIpL0o8RW\nHqhqU6olg7t4ZSb+Qf1Ax6+wYxctnJCjrO3N4RHSfevqSjr6fEQBEUARSal4JNmr\n0hNUkCEjWrIvrPFMHsn1C5hXR3okJQpGsad4oCGZDp2eZ/NDyvmLBLci9/5CJdRv\n6roOF5ShWweKcz1+pfy666Q8RiUI7H1zXjPaL4yqkv8eg/WPOO0dYF2Ri2Grk9OY\n1qTM0W1vi9zfncinZ0DpgtwMTFQezGwhUyJHSYHmjVBA4AaYIyOQAI/2dl5fXM+O\n9JfXpOUCgYEA10xAtMc/8KOLbHCprpc4pbtOqfchq/M04qPKxQNAjqvLodrWZZgF\nexa+B3eWWn5MxmQMx18AjBCPwbNDK8Rkd9VqzdWempaSblgZ7y1a0rRNTXzN5DFP\noiuRQV4wszCuj5XSdPn+lxApaI/4+TQ0oweIZCpGW39XKePPoB5WZiMCgYEA2G3W\niJncRpmxWwrRPi1W26E9tWOT5s9wYgXWMc+PAVUd/qdDRuMBHpu861Qoghp/MJog\nBYqt2rQqU0OxvIXlXPrXPHXrCLOFwybRCBVREZrg4BZNnjyDTLOu9C+0M3J9ImCh\n3vniYqb7S0gRmoDM0R3Zu4+ajfP2QOGLXw1qHH8CgYEAl0EQ7HBW8V5UYzi7XNcM\nixKOb0YZt83DR74+hC6GujTjeLBfkzw8DX+qvWA8lxLIKVC80YxivAQemryv4h21\nX6Llx/nd1UkXUsI+ZhP9DK5y6I9XroseIRZuk/fyStFWsbVWB6xiOgq2rKkJBzqw\nCCEQpx40E6/gsqNDiIAHvvUCgYBkkjXc6FJ55DWMLuyozfzMtpKsVYeG++InSrsM\nDn1PizQS/7q9mAMPLCOP312rh5CPDy/OI3FCbfI1GwHerwG0QUP/bnQ3aOTBmKoN\n7YnsemIA/5w16bzBycWE5x3/wjXv4aOWr9vJJ/siMm0rtKp4ijyBcevKBxHpeGWB\nWAR1FQKBgGIqAxGnBpip9E24gH894BaGHHMpQCwAxARev6sHKUy27eFUd6ipoTva\n4Wv36iz3gxU4R5B0gyfnxBNiUab/z90cb5+6+FYO13kqjxRRZWffohk5nHlmFN9K\nea7KQHTfTdRhOLUzW2yVqLi9pzfTfA6Yqf3U1YD3bgnWrp1VQnjo\n-----END RSA PRIVATE KEY-----\n",
-  "PrivateKeyType": "",
-  "Serial": "",
-  "Expire": "0001-01-01T00:00:00Z"
-}
-```
+Certificate service can create certificates in PKI mode - where certificates issued by PKI, when you deploy `Vault` as PKI certificate management `cert` service will proxy requests to `Vault` previously checking access rights and saving info on successfully created certificate.
 
 ### PKI mode
 
-When `MF_CERTS_VAULT_HOST` is set it is presumed that `Vault` is installed and `certs` service will issue certificates using `Vault` API.
+When `MF_CERTS_VAULT_HOST` is set, it is presumed that `Vault` is installed and `certs` service will issue certificates using `Vault` API.
 
 First you'll need to set up `Vault`.
 
@@ -59,8 +30,113 @@ For lab purposes you can use docker-compose and script for setting up PKI in [ht
 
 Issuing certificate is same as in **Development** mode. In this mode certificates can also be revoked:
 
+Make sure you have an already running instance of `Mainflux` , `Vault` and `Certs` service.
+
+To start mainflux run:
+
 ```bash
-curl -s -S -X DELETE http://localhost:9019/certs/revoke -H "Authorization: Bearer $TOKEN" -H 'Content-Type: application/json'   -d '{"thing_id":"c30b8842-507c-4bcd-973c-74008cef3be5"}'
+make run up args="-d"
+```
+
+To start vault run:
+
+```bash
+make run_addons vault up args="-d"
+```
+
+When vault service is up and running some initializations steps must be done to setup things for `Certs` service. For more information about this steps please check [mainflux-vault][mainflux-vault]
+
+```bash
+bash docker/addons/vault/vault-init.sh
+bash docker/addons/vault/vault-unseal.sh
+bash docker/addons/vault/vault-set-pki.sh
+```
+
+`vault-init.sh` initializes Vault, generates unseal keys and root tokens, and updates corresponding environment variables in the `.env` file. It's important to securely store these keys as they are required to unseal Vault.
+
+`vault-unseal.sh` is used to unseal Vault after initialization, but it's typically not needed since Vault can unseal itself when starting the container.
+
+`vault-set-pki.sh` generates certificates for Vault, including root and intermediate certificates, and copies them to the `docker/ssl/certs` folder. The CA parameters are sourced from environment variables in the `.env` file.
+
+To start certs service run:
+
+```bash
+make run_addons certs up args="-d"
+```
+
+Provision a thing:
+
+```bash
+mainflux-cli provision test
+```
+
+This step can be skipped if you already have a thing ID.
+
+#### 1. Issue a certificate
+
+```bash
+mainflux-cli certs issue <thing_id> <user_auth_token> [--ttl=8760h]
+```
+
+For example:
+
+```bash
+mainflux-cli certs issue f13f0f30-f923-4504-8a7a-6aa45bcb4866 $USER_TOKEN
+
+{
+  "cert_serial": "6f:35:d5:9d:47:9d:23:50:08:f7:31:13:82:22:e4:c8:e6:cf:2c:c1",
+  "client_cert": "-----BEGIN CERTIFICATE-----\nMIIEATCCAumgAwIBAgIUbzXVnUedI1AI9zETgiLkyObPLMEwDQYJKoZIhvcNAQEL\nBQAwLjEsMCoGA1UEAxMjbWFpbmZsdXguY29tIEludGVybWVkaWF0ZSBBdXRob3Jp\ndHkwHhcNMjMwOTE0MTEwOTI5WhcNMjMxMDE0MTEwOTU4WjAvMS0wKwYDVQQDEyRi\nYTFmMmIxNi01MjA3LTQ2MDgtYTRkZS01ZmFiZmI4NjI3YzIwggEiMA0GCSqGSIb3\nDQEBAQUAA4IBDwAwggEKAoIBAQC9RxcHaTzn18vBdWWZf37K8Grc5dLW/m8vhwOJ\n8oe3iPUiE7xFijIXKw236R1NBh8fLT6/2lia/p4acZtls3yFRphooDwP7S2OiJRI\ngGb/r0SYmSnQKjHbdbixauNECGk1TDNSGvmpNSzvAZvYSJAvd5ZpYf/8Db9IBW0N\nvbI7TfIJHay8vC/0rn1BsmC3x+3nEm0W+Z5udC/UT4+pQn7QWrBsxjVT4r5WY0SQ\nkVhA9Wo+Wpzmy1CMC4X6yLmiIHmfRFlktDxKgPpyy/3zhAE2CkBpT7JEQ723Mv+m\n37oM2EJog+tgIZMExxDbw3Epqgo07B9DWpSZSBHCISeN/TzdAgMBAAGjggEUMIIB\nEDAOBgNVHQ8BAf8EBAMCA6gwHQYDVR0lBBYwFAYIKwYBBQUHAwEGCCsGAQUFBwMC\nMB0GA1UdDgQWBBTAoqWVu8ctNmw5CKUBxsUKVDX+PDAfBgNVHSMEGDAWgBS7dmaT\nr5vJJPtV5dReawbYKhxzYzA7BggrBgEFBQcBAQQvMC0wKwYIKwYBBQUHMAKGH2h0\ndHA6Ly92YXVsdDo4MjAwL3YxL3BraV9pbnQvY2EwLwYDVR0RBCgwJoIkYmExZjJi\nMTYtNTIwNy00NjA4LWE0ZGUtNWZhYmZiODYyN2MyMDEGA1UdHwQqMCgwJqAkoCKG\nIGh0dHA6Ly92YXVsdDo4MjAwL3YxL3BraV9pbnQvY3JsMA0GCSqGSIb3DQEBCwUA\nA4IBAQCKMmDzyWWmuSJPh3O9hppRJ6mkX9gut4jP2rwowNv7haj3iu+hR8+GnTix\nu5oy3bZdmRryhhW0XyJsbCKO/z+wsY/RfVgMxF/c1cbmEzki804+AB4a4yNhQD6g\noEEQBD58b6mFi/vPCRiGZmmo5TqMlA37jBRSVnKO/CoH1CAvjqmfWdSoO4IC4uD4\nJev+QNr9wlOimYcA/usmo7rmqz7IB9R/Laxcdkq9iZelKly/jhftEbKgGf2NR/d7\nEKVONjCEp6fL2iBaQSA/899oJJ7QPqE5X821HhBlXKvNmZnYRyUmAS2h1jnxtovp\nsNGcLFRgIAFdaGl1172C7mBZF4C3\n-----END CERTIFICATE-----",
+  "client_key": "-----BEGIN RSA PRIVATE KEY-----\nMIIEowIBAAKCAQEAvUcXB2k859fLwXVlmX9+yvBq3OXS1v5vL4cDifKHt4j1IhO8\nRYoyFysNt+kdTQYfHy0+v9pYmv6eGnGbZbN8hUaYaKA8D+0tjoiUSIBm/69EmJkp\n0Cox23W4sWrjRAhpNUwzUhr5qTUs7wGb2EiQL3eWaWH//A2/SAVtDb2yO03yCR2s\nvLwv9K59QbJgt8ft5xJtFvmebnQv1E+PqUJ+0FqwbMY1U+K+VmNEkJFYQPVqPlqc\n5stQjAuF+si5oiB5n0RZZLQ8SoD6csv984QBNgpAaU+yREO9tzL/pt+6DNhCaIPr\nYCGTBMcQ28NxKaoKNOwfQ1qUmUgRwiEnjf083QIDAQABAoIBADKd7kSnGgiOJwkn\nUfJIrCmtPYaxVz7zb9xv6LxdRXoJgDSKvpCCMn8LnnGOP623c18tBFjeFU/tw24i\n74G1DBnAFUX1g9pmfQZe8/injePWhSuh2hK3FfowcyHPCdPJxAjixd6xJA7iD5Aj\nCABA934aJvkrof9P1dV2zgEct6sv6GPwUgSZxTYVNyU93T/pmvodvpNTYd3uk71A\nLCC5Ojv2gEOkHUWHhMntz7bl6wcH/atk//uYoYxcjZ811tL7/7xwUbyRxFD/b6kP\niptdoXBv27eWWKOtFMgF9iNkhefSKkmHZZWIL1J5CFE8fUdddeLoOa0e7a9vhYS9\n5TMzC2kCgYEA+TJf60QP3rjEgm6bJw1h48ffkPkZTsdp083GoJB77yXUH7m9Wt9g\nlYSALN+67fnkXPEe/C9SInMDRMp9VoswOHeJCFbCNdx5Klv8KKuMZMk0yCZifhx6\nBl7IsVlmlzq3EhK1ZjOVWMxvwS7MlMpPAcsc8DGhwhv9sXW3k2nMevsCgYEAwnHx\nheuaYgE/HrE/GEcPNAwy/uyBb8wxoKavl8OKEyPH+LK8powo9xss8zi+yEYHfSQP\nnJ45Rdz/HGl5QIwD4CjA3Vrm0sTMh094DPp9KhxcOwIhK/IvUJ0deKwHRWek/+c8\nwbD6HfX2Vtu5RU9z2KS7VtazjU5TkIbKP29LoAcCgYAUKAv0JrQ16rISbsnj9cQm\nPYOK4Ws3oQ+hTzKyyB0OMfwfeNGlKQ5R6b7IYmxnVWAwWFyOP3GgUbdA+DP9LRMA\nbkLKRuI8oxG16GzUCVQ4zsGTMu+ijcEdBMus9LNEpj4qmxLLKn75CMg9UwC/REHx\nvjEgCJOx9LungAMSTGt6wwKBgQCXvSGUt6pvhreCNSGeyX1EyaxWIaxU2U11J/7p\neQ/cJdUc8Cal9cTWKV/nokXHtlaLwsNoHlVlfrOasXiM9XbkzAjN9O0iV6+gfFSc\nFDHu1djnt565U7K2vxVLoTu/XsV1ajeQk5JsJRCK8cbgHsOxscP8XWobAJ/XrkhQ\nPoMOqwKBgD8goECBKj+SofUfqKCnGf3E2MWF3kTZMfPaBcuV8TaGMWRRljMmK8YT\npew6IIkAFrsIaXxQsym2JQ+j/L2AoxQkzlf2VF4SaBfUUByT3NijSBpD/d3xRlWA\n7UUO0d72YFnPTqY98Ch/fbKnaCRL/Usv8c9nCt5IdmnihYnuvxYT\n-----END RSA PRIVATE KEY-----",
+  "expiration": "2023-10-14T11:09:58Z",
+  "thing_id": "f13f0f30-f923-4504-8a7a-6aa45bcb4866"
+}
+```
+
+#### 2. Retrieve a certificate
+
+```bash
+mainflux-cli certs get [<cert_serial> | thing <thing_id>] <user_auth_token>
+```
+
+For example:
+
+```bash
+mainflux-cli certs get 6f:35:d5:9d:47:9d:23:50:08:f7:31:13:82:22:e4:c8:e6:cf:2c:c1 $USER_TOKEN
+{
+  "cert_serial": "6f:35:d5:9d:47:9d:23:50:08:f7:31:13:82:22:e4:c8:e6:cf:2c:c1",
+  "client_cert": "-----BEGIN CERTIFICATE-----\nMIIEATCCAumgAwIBAgIUbzXVnUedI1AI9zETgiLkyObPLMEwDQYJKoZIhvcNAQEL\nBQAwLjEsMCoGA1UEAxMjbWFpbmZsdXguY29tIEludGVybWVkaWF0ZSBBdXRob3Jp\ndHkwHhcNMjMwOTE0MTEwOTI5WhcNMjMxMDE0MTEwOTU4WjAvMS0wKwYDVQQDEyRi\nYTFmMmIxNi01MjA3LTQ2MDgtYTRkZS01ZmFiZmI4NjI3YzIwggEiMA0GCSqGSIb3\nDQEBAQUAA4IBDwAwggEKAoIBAQC9RxcHaTzn18vBdWWZf37K8Grc5dLW/m8vhwOJ\n8oe3iPUiE7xFijIXKw236R1NBh8fLT6/2lia/p4acZtls3yFRphooDwP7S2OiJRI\ngGb/r0SYmSnQKjHbdbixauNECGk1TDNSGvmpNSzvAZvYSJAvd5ZpYf/8Db9IBW0N\nvbI7TfIJHay8vC/0rn1BsmC3x+3nEm0W+Z5udC/UT4+pQn7QWrBsxjVT4r5WY0SQ\nkVhA9Wo+Wpzmy1CMC4X6yLmiIHmfRFlktDxKgPpyy/3zhAE2CkBpT7JEQ723Mv+m\n37oM2EJog+tgIZMExxDbw3Epqgo07B9DWpSZSBHCISeN/TzdAgMBAAGjggEUMIIB\nEDAOBgNVHQ8BAf8EBAMCA6gwHQYDVR0lBBYwFAYIKwYBBQUHAwEGCCsGAQUFBwMC\nMB0GA1UdDgQWBBTAoqWVu8ctNmw5CKUBxsUKVDX+PDAfBgNVHSMEGDAWgBS7dmaT\nr5vJJPtV5dReawbYKhxzYzA7BggrBgEFBQcBAQQvMC0wKwYIKwYBBQUHMAKGH2h0\ndHA6Ly92YXVsdDo4MjAwL3YxL3BraV9pbnQvY2EwLwYDVR0RBCgwJoIkYmExZjJi\nMTYtNTIwNy00NjA4LWE0ZGUtNWZhYmZiODYyN2MyMDEGA1UdHwQqMCgwJqAkoCKG\nIGh0dHA6Ly92YXVsdDo4MjAwL3YxL3BraV9pbnQvY3JsMA0GCSqGSIb3DQEBCwUA\nA4IBAQCKMmDzyWWmuSJPh3O9hppRJ6mkX9gut4jP2rwowNv7haj3iu+hR8+GnTix\nu5oy3bZdmRryhhW0XyJsbCKO/z+wsY/RfVgMxF/c1cbmEzki804+AB4a4yNhQD6g\noEEQBD58b6mFi/vPCRiGZmmo5TqMlA37jBRSVnKO/CoH1CAvjqmfWdSoO4IC4uD4\nJev+QNr9wlOimYcA/usmo7rmqz7IB9R/Laxcdkq9iZelKly/jhftEbKgGf2NR/d7\nEKVONjCEp6fL2iBaQSA/899oJJ7QPqE5X821HhBlXKvNmZnYRyUmAS2h1jnxtovp\nsNGcLFRgIAFdaGl1172C7mBZF4C3\n-----END CERTIFICATE-----",
+  "expiration": "2023-10-14T11:09:58Z",
+  "thing_id": "f13f0f30-f923-4504-8a7a-6aa45bcb4866"
+}
+```
+
+```bash
+mainflux-cli certs get thing f13f0f30-f923-4504-8a7a-6aa45bcb4866 $USER_TOKEN
+{
+  "certs": [
+    {
+      "cert_serial": "6f:35:d5:9d:47:9d:23:50:08:f7:31:13:82:22:e4:c8:e6:cf:2c:c1",
+      "expiration": "0001-01-01T00:00:00Z"
+    }
+  ],
+  "limit": 10,
+  "offset": 0,
+  "total": 1
+}
+```
+
+#### 3. Revoke a certificate
+
+```bash
+mainflux-cli certs revoke <thing_id> <user_auth_token>
+```
+
+For example:
+
+```bash
+mainflux-cli certs revoke f13f0f30-f923-4504-8a7a-6aa45bcb4866 $USER_TOKEN
+
+revoked: 2023-09-14 11:21:44 +0000 UTC
 ```
 
 For more information about the Certification service API, please check out the [API documentation][api-docs].
@@ -68,3 +144,4 @@ For more information about the Certification service API, please check out the [
 [vault-pki-engine]: https://learn.hashicorp.com/tutorials/vault/pki-engine
 [meodor-vault]: https://github.com/mteodor/vault
 [api-docs]: https://github.com/mainflux/mainflux/blob/master/api/certs.yml
+[mainflux-vault]: https://github.com/mainflux/mainflux/blob/master/docker/addons/vault/README.md#setup
