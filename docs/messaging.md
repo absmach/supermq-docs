@@ -383,17 +383,17 @@ This versatile architecture allows you to use nats alone for the MQTT broker, me
 
 ### RabbitMQ
 
-Since mainfux uses a configurable message broker, you can use RabbitMQ as a message broker. To do so, you need to set `MF_BROKER_TYPE` to `rabbitmq` and set `MF_RABBITMQ_URL` to the url of your RabbitMQ instance. When using `make` command to start mainflux `MF_BROKER_URL` is automatically set to `MF_RABBITMQ_URL`.
+Since Mainflux uses a configurable message broker, you can use RabbitMQ as a message broker. To do so, you need to set `MF_BROKER_TYPE` to `rabbitmq` and set `MF_RABBITMQ_URL` to the url of your RabbitMQ instance. When using `make` command to start Mainflux `MF_BROKER_URL` is automatically set to `MF_RABBITMQ_URL`.
 
-Since mainflux is using `rabbitmq:3.9.20-management-alpine` docker image, the management console is available at port `MF_RABBITMQ_HTTP_PORT`
+Since Mainflux is using `rabbitmq:3.9.20-management-alpine` docker image, the management console is available at port `MF_RABBITMQ_HTTP_PORT`
 
 #### Architecture
 
-Mainflux has one exchange for the entire platform called `mainflux`. This exchange is of type `topic`. The exchange is `durable` i.e it will survive broker restarts and remain declared when there are no remaining bindings. The exchange does not `auto-delete` when all queues have finished using it. When declaring the exchange `no_wait` is set to `false` which means that the broker will wait for a confirmation from the server that the exchange was successfully declared. The exchange is not `internal` i.e. it can be published to by other exchanges.
+Mainflux has one exchange for the entire platform called `messages`. This exchange is of type `topic`. The exchange is `durable` i.e. it will survive broker restarts and remain declared when there are no remaining bindings. The exchange does not `auto-delete` when all queues have finished using it. When declaring the exchange `no_wait` is set to `false` which means that the broker will wait for a confirmation from the server that the exchange was successfully declared. The exchange is not `internal` i.e. other exchanges can publish messages to it.
 
-Mainflux uses topic based routing to route messages to the appropriate queues. The routing key is in the format `channels.<channel_id>.<optional_subtopic>`. A few valid routing key examples: `channels.318BC587-A68B-40D3-9026-3356FA4E702C`, `channels.318BC587-A68B-40D3-9026-3356FA4E702C.bedroom.temperature`.
+Mainflux uses topic-based routing to route messages to the appropriate queues. The routing key is in the format `channels.<channel_id>.<optional_subtopic>`. A few valid routing key examples: `channels.318BC587-A68B-40D3-9026-3356FA4E702C`, `channels.318BC587-A68B-40D3-9026-3356FA4E702C.bedroom.temperature`.
 
-The amqp published message doesn't contain any headers. The message body is the payload of the message.
+The AMQP published message doesn't contain any headers. The message body is the payload of the message.
 
 When subscribing to messages from a channel, a queue is created with the name `channels.<channel_id>.<optional_subtopic>`. The queue is `durable` i.e. it will survive broker restarts and remain declared when there are no remaining consumers or bindings. The queue does not `auto-delete` when all consumers have finished using it. The queue is not `exclusive` i.e. it can be accessed in other connections. When declaring the queue we set `no_wait` to `false` which means that the broker waits for a confirmation from the server that the queue was successfully declared. The queue is not passive i.e. the server creates the queue if it does not exist.
 
