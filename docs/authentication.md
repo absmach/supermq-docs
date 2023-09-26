@@ -16,6 +16,28 @@ The following actions are supported:
 - create (all key types)
 - verify (all key types)
 
+## Federated authentication
+
+Federated authentication is a process of authenticating users using external identity providers. Mainflux supports federated authentication using [OpenID Connect][oidc] protocol. Mainflux is a resource provider and it uses [Google Identity Platform][google-identity-platform] as an identity provider. In order to use federated authentication, you need to create a project in Google Cloud Platform and enable Google Identity Platform API. After that, you need to create OAuth 2.0 credentials and configure the consent screen. This can be done by following google's [documentation][google-identity-platform-docs]. Once you have created OAuth 2.0 credentials, you need to set the following environment variables:
+
+```bash
+MF_USERS_GOOGLE_CLIENT_ID=985229335584-m2mft8lqbgfn5gfw9ftrm3r2sgu4tsrw.apps.googleusercontent.com
+MF_USERS_GOOGLE_CLIENT_SECRET=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YUIpw
+MF_UI_GOOGLE_REDIRECT_URL=http://localhost/google-callback
+MF_USERS_GOOGLE_STATE=pGXVNhEeKfycuBzk5InlSfMlEU9UrhlkTUOSqhsgDzXP2Y4RsN
+MF_USERS_UI_REDIRECT_URL=http://localhost:9090
+```
+
+1. `MF_USERS_GOOGLE_CLIENT_ID` - Google OAuth 2.0 client ID
+2. `MF_USERS_GOOGLE_CLIENT_SECRET` - Google OAuth 2.0 client secret
+3. `MF_UI_GOOGLE_REDIRECT_URL` - Google OAuth 2.0 redirect URL to handle callback after successful authentication. This URL must be registered in Google Cloud Platform.
+4. `MF_USERS_GOOGLE_STATE` - Random string used to protect against cross-site request forgery attacks.
+5. `MF_USERS_UI_REDIRECT_URL` - URL to redirect user after successful authentication. This can be your mainflux UI URL.
+
+Mainflux handles the authentication callback at `<MF_BASE_URL>/google-callback` endpoint, where `<MF_BASE_URL>` is the base URL of your Mainflux instance. This endpoint needs to be registered in Google Cloud Platform and it must match the value of `MF_UI_GOOGLE_REDIRECT_URL` environment variable. Once the user is authenticated, Mainflux will set the `id_token` to a HTTP only cookie with the name `token`. This cookie will be used to authenticate the user in the subsequent requests for the UI. After that, mainflux creates a local copy of the user with an ID provided by Google, the name and email address provided by Google and the password is left empty as the user is authenticated using Google, i.e. external user. The user can be created only once, so if the user already exists, the error on user creation is ignored. Finally, the user is redirected to the URL provided in `MF_USERS_UI_REDIRECT_URL` environment variable. This should be the base URL of your UI. The `MF_USERS_GOOGLE_CLIENT_ID`, `MF_USERS_GOOGLE_CLIENT_SECRET`, `MF_UI_GOOGLE_REDIRECT_URL` and `MF_USERS_GOOGLE_STATE` environment variables should be the same for the UI and users service. The `MF_USERS_UI_REDIRECT_URL` environment variable should be the URL of your UI which is used to redirect the user after successful authentication.
+
+Mainflux users the `access_token` provided by Google only to fetch user information which includes user id, name, given name, family name, picture and locale. The `access_token` is not stored in the database and it's not used for any other purpose. The `id_token` is stored in the HTTP only cookie and it's used to authenticate the user in the subsequent requests. The `id_token` is not stored in the database and it's not used for any other purpose.
+
 ## Authentication with Mainflux keys
 
 By default, Mainflux uses Mainflux Thing secret for authentication. The Thing secret is a secret key that's generated at the Thing creation. In order to authenticate, the Thing needs to send its secret with the message. The way the secret is passed depends on the protocol used to send a message and differs from adapter to adapter. For more details on how this secret is passed around, please check out [messaging section][messaging]. This is the default Mainflux authentication mechanism and this method is used if the composition is started using the following command:
@@ -124,3 +146,6 @@ mosquitto_sub -u <thing_id> -P <thing_secret> --cafile docker/ssl/certs/ca.crt -
 [provision]: /provision/#platform-management
 [openssl]: https://www.openssl.org/
 [vault]: https://www.vaultproject.io/
+[oidc]: https://openid.net/connect/
+[google-identity-platform]: https://cloud.google.com/identity-platform/docs/
+[google-identity-platform-docs]: https://support.google.com/cloud/answer/6158849?hl=en
