@@ -185,16 +185,25 @@ Whenever user reset token is generated, `users` service will generate new `gener
 
 Whenever user token is issued, `users` service will generate new `issue_token` event. This event will have the following format:
 
-```redis
-1) "1693307171987-0"
-2) 1) "operation"
-    2) "user.issue_token"
-    3) "identity"
-    4) "-small-flower@email.com"
-    5) "occurred_at"
-    6) "1693307171987023095"
-```
+1. In Redis Streams
 
+    ```redis
+    1) "1693307171987-0"
+    2) 1) "operation"
+        2) "user.issue_token"
+        3) "identity"
+        4) "-small-flower@email.com"
+        5) "occurred_at"
+        6) "1693307171987023095"
+    ```
+
+2. In Nats JetStreams
+
+    ```nats
+    Subject: events.mainflux.users Received: 2023-10-05T14:59:02+03:00
+
+    {"identity":"admin@example.com","occurred_at":1696507142218064965,"operation":"user.issue_token"}
+    ```
 ### User refresh token event
 
 Whenever user token is refreshed, `users` service will generate new `refresh_token` event. This event will have the following format:
