@@ -37,97 +37,135 @@ By fetching and processing these events you can reconstruct `users` service stat
 
 Whenever user is created, `users` service will generate new `create` event. This event will have the following format:
 
-```redis
-1) "1693307171926-0"
-2)  1) "occurred_at"
-    2) "1693307171925834295"
-    3) "operation"
-    4) "user.create"
-    5) "id"
-    6) "e1b982d8-a332-4bc2-aaff-4bbaa86880fc"
-    7) "status"
-    8) "enabled"
-    9) "created_at"
-    10) "2023-08-29T11:06:11.914074Z"
-    11) "name"
-    12) "-dry-sun"
-    13) "metadata"
-    14) "{}"
-    15) "identity"
-    16) "-small-flower@email.com"
-```
+1. In Redis Streams 
+
+    ```redis
+    1) "1693307171926-0"
+    2)  1) "occurred_at"
+        2) "1693307171925834295"
+        3) "operation"
+        4) "user.create"
+        5) "id"
+        6) "e1b982d8-a332-4bc2-aaff-4bbaa86880fc"
+        7) "status"
+        8) "enabled"
+        9) "created_at"
+        10) "2023-08-29T11:06:11.914074Z"
+        11) "name"
+        12) "-dry-sun"
+        13) "metadata"
+        14) "{}"
+        15) "identity"
+        16) "-small-flower@email.com"
+    ```
 
 As you can see from this example, every odd field represents field name while every even field represents field value. This is standard event format for Redis Streams. If you want to extract `metadata` field from this event, you'll have to read it as string first and then you can deserialize it to some structured format.
 
+2. In Nats Stream
+
+    ```nats
+    Subject: events.mainflux.users Received: 2023-10-05T15:41:04+03:00
+
+    {"created_at":"2023-10-05T12:41:04.743529Z","id":"0a5f2e21-1a8b-460e-bfa9-732e570df095","identity":"wizardly_hopper@email.com","metadata":"e30=","name":"wizardly_hopper","occurred_at":1696509664755440542,"operation":"user.create","status":"enabled"}
+    ```
 ### User view event
 
 Whenever user is viewed, `users` service will generate new `view` event. This event will have the following format:
 
-```redis
-1) "1693307172248-0"
-2)  1) "name"
-    2) "-holy-pond"
-    3) "owner"
-    4) "e1b982d8-a332-4bc2-aaff-4bbaa86880fc"
-    5) "created_at"
-    6) "2023-08-29T11:06:12.032254Z"
-    7) "status"
-    8) "enabled"
-    9) "operation"
-    10) "user.view"
-    11) "id"
-    12) "56d2a797-dcb9-4fab-baf9-7c75e707b2c0"
-    13) "identity"
-    14) "-snowy-wave@email.com"
-    15) "metadata"
-    16) "{}"
-    17) "occurred_at"
-    18) "1693307172247989798"
-```
+1. In Redis Streams
+
+    ```redis
+    1) "1693307172248-0"
+    2)  1) "name"
+        2) "-holy-pond"
+        3) "owner"
+        4) "e1b982d8-a332-4bc2-aaff-4bbaa86880fc"
+        5) "created_at"
+        6) "2023-08-29T11:06:12.032254Z"
+        7) "status"
+        8) "enabled"
+        9) "operation"
+        10) "user.view"
+        11) "id"
+        12) "56d2a797-dcb9-4fab-baf9-7c75e707b2c0"
+        13) "identity"
+        14) "-snowy-wave@email.com"
+        15) "metadata"
+        16) "{}"
+        17) "occurred_at"
+        18) "1693307172247989798"
+    ```
+2. In Nats Stream
+
+    ```nats
+    Subject: events.mainflux.users Received: 2023-10-05T18:38:40+03:00
+
+    {"created_at":"2023-10-05T15:38:40.219889Z","id":"d4baecb8-adfa-4c7c-8257-deea5d7f9dba","identity":"-Hilling-Karole@email.com","metadata":"e30=","name":"-Doud-Varley","occurred_at":1696520320355145103,"operation":"user.view","owner":"3264e965-3fe5-4d4e-a857-48de43551d2e","status":"enabled"}
+    ```
 
 ### User view profile event
 
 Whenever user profile is viewed, `users` service will generate new `view_profile` event. This event will have the following format:
 
-```redis
-1) "1693308867001-0"
-2)  1) "id"
-    2) "64fd20bf-e8fb-46bf-9b64-2a6572eda21b"
-    3) "name"
-    4) "admin"
-    5) "identity"
-    6) "admin@example.com"
-    7) "metadata"
-    8) "{\"role\":\"admin\"}"
-    9) "created_at"
-    10) "2023-08-29T10:55:23.048948Z"
-    11) "status"
-    12) "enabled"
-    13) "occurred_at"
-    14) "1693308867001792403"
-    15) "operation"
-    16) "user.view_profile"
-```
+1. In Redis
+
+    ```redis
+    1) "1693308867001-0"
+    2)  1) "id"
+        2) "64fd20bf-e8fb-46bf-9b64-2a6572eda21b"
+        3) "name"
+        4) "admin"
+        5) "identity"
+        6) "admin@example.com"
+        7) "metadata"
+        8) "{\"role\":\"admin\"}"
+        9) "created_at"
+        10) "2023-08-29T10:55:23.048948Z"
+        11) "status"
+        12) "enabled"
+        13) "occurred_at"
+        14) "1693308867001792403"
+        15) "operation"
+        16) "user.view_profile"
+    ```
+
+2. In JetStreams
+
+    ```nats
+    Subject: events.mainflux.users Received: 2023-10-05T19:41:01+03:00
+
+    {"created_at":"2023-10-05T11:59:02.029606Z","id":"97466511-6317-4c98-8d58-7bd78bcaf587","identity":"admin@example.com","metadata":"eyJyb2xlIjoiYWRtaW4ifQ==","name":"admin","occurred_at":1696524061363472648,"operation":"user.view_profile","status":"enabled"}
+    ```
 
 ### User list event
 
 Whenever user list is fetched, `users` service will generate new `list` event. This event will have the following format:
 
-```redis
-1) "1693307172254-0"
-2)  1) "status"
-    2) "enabled"
-    3) "occurred_at"
-    4) "1693307172254687479"
-    5) "operation"
-    6) "user.list"
-    7) "total"
-    8) "0"
-    9) "offset"
-    10) "0"
-    11) "limit"
-    12) "10"
-```
+1. In Redis Streams 
+
+    ```redis
+    1) "1693307172254-0"
+    2)  1) "status"
+        2) "enabled"
+        3) "occurred_at"
+        4) "1693307172254687479"
+        5) "operation"
+        6) "user.list"
+        7) "total"
+        8) "0"
+        9) "offset"
+        10) "0"
+        11) "limit"
+        12) "10"
+    ```
+
+2. In Nats JetStreams
+
+    ```nats
+    Subject: events.mainflux.users Received: 2023-10-05T18:38:40+03:00
+
+    {"limit":10,"occurred_at":1696520320382884278,"offset":0,"operation":"user.list","status":"enabled","total":0}
+    ```
 
 ### User list by group event
 
@@ -155,15 +193,25 @@ Whenever user list by group is fetched, `users` service will generate new `list_
 
 Whenever user is identified, `users` service will generate new `identify` event. This event will have the following format:
 
-```redis
-1) "1693307172168-0"
-2) 1) "operation"
-    2) "user.identify"
-    3) "user_id"
-    4) "e1b982d8-a332-4bc2-aaff-4bbaa86880fc"
-    5) "occurred_at"
-    6) "1693307172167980303"
-```
+1. In Redis Streams 
+
+    ```redis
+    1) "1693307172168-0"
+    2) 1) "operation"
+        2) "user.identify"
+        3) "user_id"
+        4) "e1b982d8-a332-4bc2-aaff-4bbaa86880fc"
+        5) "occurred_at"
+        6) "1693307172167980303"
+    ```
+
+2. In Nats JetStreams
+
+    ```nats
+    Subject: events.mainflux.users Received: 2023-10-05T15:11:22+03:00
+
+    {"occurred_at":1696507882455392181,"operation":"user.identify","user_id":"733005f5-7a69-4da3-adac-1ac3bd6fdedf"}
+    ```
 
 ### User generate reset token event
 
@@ -248,315 +296,437 @@ Whenever user secret is reset, `users` service will generate new `reset_secret` 
 
 Whenever user instance is updated, `users` service will generate new `update` event. This event will have the following format:
 
-```redis
-1) "1693307172308-0"
-2)  1) "operation"
-    2) "user.update"
-    3) "updated_by"
-    4) "e1b982d8-a332-4bc2-aaff-4bbaa86880fc"
-    5) "id"
-    6) "56d2a797-dcb9-4fab-baf9-7c75e707b2c0"
-    7) "metadata"
-    8) "{\"Update\":\"rough-leaf\"}"
-    9) "updated_at"
-    10) "2023-08-29T11:06:12.294444Z"
-    11) "name"
-    12) "fragrant-voice"
-    13) "identity"
-    14) "-snowy-wave@email.com"
-    15) "created_at"
-    16) "2023-08-29T11:06:12.032254Z"
-    17) "status"
-    18) "enabled"
-    19) "occurred_at"
-    20) "1693307172308305030"
-```
+1. In Redis
 
+    ```redis
+    1) "1693307172308-0"
+    2)  1) "operation"
+        2) "user.update"
+        3) "updated_by"
+        4) "e1b982d8-a332-4bc2-aaff-4bbaa86880fc"
+        5) "id"
+        6) "56d2a797-dcb9-4fab-baf9-7c75e707b2c0"
+        7) "metadata"
+        8) "{\"Update\":\"rough-leaf\"}"
+        9) "updated_at"
+        10) "2023-08-29T11:06:12.294444Z"
+        11) "name"
+        12) "fragrant-voice"
+        13) "identity"
+        14) "-snowy-wave@email.com"
+        15) "created_at"
+        16) "2023-08-29T11:06:12.032254Z"
+        17) "status"
+        18) "enabled"
+        19) "occurred_at"
+        20) "1693307172308305030"
+    ```
+
+2. In Nats JetStreams
+
+    ```nats
+    Subject: events.mainflux.users Received: 2023-10-05T18:38:40+03:00
+
+    {"created_at":"2023-10-05T15:38:40.219889Z","id":"d4baecb8-adfa-4c7c-8257-deea5d7f9dba","identity":"-Hilling-Karole@email.com","metadata":"eyJVcGRhdGUiOiJBbGVncmlhLVdvbGwifQ==","name":"Rhude-Parrillo","occurred_at":1696520320510448519,"operation":"user.update","status":"enabled","updated_at":"2023-10-05T15:38:40.500637Z","updated_by":"3264e965-3fe5-4d4e-a857-48de43551d2e"}
+    ```
 ### User update identity event
 
 Whenever user identity is updated, `users` service will generate new `update_identity` event. This event will have the following format:
 
-```redis
-1) "1693307172321-0"
-2)  1) "metadata"
-    2) "{\"Update\":\"rough-leaf\"}"
-    3) "created_at"
-    4) "2023-08-29T11:06:12.032254Z"
-    5) "status"
-    6) "enabled"
-    7) "updated_at"
-    8) "2023-08-29T11:06:12.310276Z"
-    9) "updated_by"
-    10) "e1b982d8-a332-4bc2-aaff-4bbaa86880fc"
-    11) "id"
-    12) "56d2a797-dcb9-4fab-baf9-7c75e707b2c0"
-    13) "name"
-    14) "fragrant-voice"
-    15) "operation"
-    16) "user.update_identity"
-    17) "identity"
-    18) "wandering-brook"
-    19) "occurred_at"
-    20) "1693307172320906479"
-```
+1. In Redis
+
+    ```redis
+    1) "1693307172321-0"
+    2)  1) "metadata"
+        2) "{\"Update\":\"rough-leaf\"}"
+        3) "created_at"
+        4) "2023-08-29T11:06:12.032254Z"
+        5) "status"
+        6) "enabled"
+        7) "updated_at"
+        8) "2023-08-29T11:06:12.310276Z"
+        9) "updated_by"
+        10) "e1b982d8-a332-4bc2-aaff-4bbaa86880fc"
+        11) "id"
+        12) "56d2a797-dcb9-4fab-baf9-7c75e707b2c0"
+        13) "name"
+        14) "fragrant-voice"
+        15) "operation"
+        16) "user.update_identity"
+        17) "identity"
+        18) "wandering-brook"
+        19) "occurred_at"
+        20) "1693307172320906479"
+    ```
+
+2. In Nats JetStream
+
+    ```nats
+    Subject: events.mainflux.users Received: 2023-10-05T18:38:40+03:00
+
+    {"created_at":"2023-10-05T15:38:40.219889Z","id":"d4baecb8-adfa-4c7c-8257-deea5d7f9dba","identity":"Andes-Bahgat","metadata":"eyJVcGRhdGUiOiJBbGVncmlhLVdvbGwifQ==","name":"Rhude-Parrillo","occurred_at":1696520320527730565,"operation":"user.update_identity","status":"enabled","updated_at":"2023-10-05T15:38:40.518477Z","updated_by":"3264e965-3fe5-4d4e-a857-48de43551d2e"}
+    ```
 
 ### User update tags event
 
 Whenever user tags are updated, `users` service will generate new `update_tags` event. This event will have the following format:
 
-```redis
-1) "1693307172332-0"
-2)  1) "name"
-    2) "fragrant-voice"
-    3) "identity"
-    4) "wandering-brook"
-    5) "metadata"
-    6) "{\"Update\":\"rough-leaf\"}"
-    7) "status"
-    8) "enabled"
-    9) "updated_at"
-    10) "2023-08-29T11:06:12.323039Z"
-    11) "updated_by"
-    12) "e1b982d8-a332-4bc2-aaff-4bbaa86880fc"
-    13) "id"
-    14) "56d2a797-dcb9-4fab-baf9-7c75e707b2c0"
-    15) "occurred_at"
-    16) "1693307172332766275"
-    17) "operation"
-    18) "user.update_tags"
-    19) "tags"
-    20) "[patient-thunder]"
-    21) "created_at"
-    22) "2023-08-29T11:06:12.032254Z"
+1. In Redis
+
+    ```redis
+    1) "1693307172332-0"
+    2)  1) "name"
+        2) "fragrant-voice"
+        3) "identity"
+        4) "wandering-brook"
+        5) "metadata"
+        6) "{\"Update\":\"rough-leaf\"}"
+        7) "status"
+        8) "enabled"
+        9) "updated_at"
+        10) "2023-08-29T11:06:12.323039Z"
+        11) "updated_by"
+        12) "e1b982d8-a332-4bc2-aaff-4bbaa86880fc"
+        13) "id"
+        14) "56d2a797-dcb9-4fab-baf9-7c75e707b2c0"
+        15) "occurred_at"
+        16) "1693307172332766275"
+        17) "operation"
+        18) "user.update_tags"
+        19) "tags"
+        20) "[patient-thunder]"
+        21) "created_at"
+        22) "2023-08-29T11:06:12.032254Z"
+    ```
+
+2. In Nats JetStreams
+
+```nats
+Subject: events.mainflux.users Received: 2023-10-05T18:38:40+03:00
+
+{"created_at":"2023-10-05T15:38:40.219889Z","id":"d4baecb8-adfa-4c7c-8257-deea5d7f9dba","identity":"Andes-Bahgat","metadata":"eyJVcGRhdGUiOiJBbGVncmlhLVdvbGwifQ==","name":"Rhude-Parrillo","occurred_at":1696520320537588492,"operation":"user.update_tags","status":"enabled","tags":"[Tischler-Persechino]","updated_at":"2023-10-05T15:38:40.533159Z","updated_by":"3264e965-3fe5-4d4e-a857-48de43551d2e"}
 ```
 
 ### User remove event
 
 Whenever user instance changes state in the system, `users` service will generate and publish new `remove` event. This event will have the following format:
 
-```redis
-1) "1693307172345-0"
-2)  1) "operation"
-    2) "user.remove"
-    3) "id"
-    4) "56d2a797-dcb9-4fab-baf9-7c75e707b2c0"
-    5) "status"
-    6) "disabled"
-    7) "updated_at"
-    8) "2023-08-29T11:06:12.323039Z"
-    9) "updated_by"
-    10) "e1b982d8-a332-4bc2-aaff-4bbaa86880fc"
-    11) "occurred_at"
-    12) "1693307172345419824"
+1. In Redis Streams
 
-1) "1693307172359-0"
-2)  1) "id"
-    2) "56d2a797-dcb9-4fab-baf9-7c75e707b2c0"
-    3) "status"
-    4) "enabled"
-    5) "updated_at"
-    6) "2023-08-29T11:06:12.323039Z"
-    7) "updated_by"
-    8) "e1b982d8-a332-4bc2-aaff-4bbaa86880fc"
-    9) "occurred_at"
-    10) "1693307172359445655"
-    11) "operation"
-    12) "user.remove"
-```
+    ```redis
+    1) "1693307172345-0"
+    2)  1) "operation"
+        2) "user.remove"
+        3) "id"
+        4) "56d2a797-dcb9-4fab-baf9-7c75e707b2c0"
+        5) "status"
+        6) "disabled"
+        7) "updated_at"
+        8) "2023-08-29T11:06:12.323039Z"
+        9) "updated_by"
+        10) "e1b982d8-a332-4bc2-aaff-4bbaa86880fc"
+        11) "occurred_at"
+        12) "1693307172345419824"
 
+    1) "1693307172359-0"
+    2)  1) "id"
+        2) "56d2a797-dcb9-4fab-baf9-7c75e707b2c0"
+        3) "status"
+        4) "enabled"
+        5) "updated_at"
+        6) "2023-08-29T11:06:12.323039Z"
+        7) "updated_by"
+        8) "e1b982d8-a332-4bc2-aaff-4bbaa86880fc"
+        9) "occurred_at"
+        10) "1693307172359445655"
+        11) "operation"
+        12) "user.remove"
+    ```
+
+2. In Nats Stream
+
+    ```nats
+    Subject: events.mainflux.users Received: 2023-10-05T17:59:29+03:00
+
+    {"id":"0a5f2e21-1a8b-460e-bfa9-732e570df095","occurred_at":1696517969187562377,"operation":"user.remove","status":"disabled","updated_at":"0001-01-01T00:00:00Z","updated_by":""}
+    ```
 ### Group create event
 
 Whenever group is created, `users` service will generate new `create` event. This event will have the following format:
 
-```redis
-1) "1693307172153-0"
-2)  1) "name"
-    2) "-fragrant-resonance"
-    3) "metadata"
-    4) "{}"
-    5) "occurred_at"
-    6) "1693307172152850138"
-    7) "operation"
-    8) "group.create"
-    9) "id"
-    10) "bc7fb023-70d5-41aa-bf73-3eab1cf001c9"
-    11) "status"
-    12) "enabled"
-    13) "created_at"
-    14) "2023-08-29T11:06:12.129484Z"
-    15) "owner"
-    16) "e1b982d8-a332-4bc2-aaff-4bbaa86880fc"
-```
+1. In Redis Streams
+
+    ```redis
+    1) "1693307172153-0"
+    2)  1) "name"
+        2) "-fragrant-resonance"
+        3) "metadata"
+        4) "{}"
+        5) "occurred_at"
+        6) "1693307172152850138"
+        7) "operation"
+        8) "group.create"
+        9) "id"
+        10) "bc7fb023-70d5-41aa-bf73-3eab1cf001c9"
+        11) "status"
+        12) "enabled"
+        13) "created_at"
+        14) "2023-08-29T11:06:12.129484Z"
+        15) "owner"
+        16) "e1b982d8-a332-4bc2-aaff-4bbaa86880fc"
+    ```
 
 As you can see from this example, every odd field represents field name while every even field represents field value. This is standard event format for Redis Streams. If you want to extract `metadata` field from this event, you'll have to read it as string first and then you can deserialize it to some structured format.
+
+2. In Nats Stream
+
+    ```nats
+    Subject: events.mainflux.users Received: 2023-10-05T16:12:00+03:00
+
+    {"created_at":"2023-10-05T13:12:00.88713Z","id":"f565885c-826d-4c4c-9277-a3c8537aadff","metadata":"e30=","name":"cyclopes","occurred_at":1696511520897093737,"operation":"group.create","owner":"97466511-6317-4c98-8d58-7bd78bcaf587","status":"enabled"}
+    ```
 
 ### Group update event
 
 Whenever group instance is updated, `users` service will generate new `update` event. This event will have the following format:
 
-```redis
-1) "1693307172445-0"
-2)  1) "operation"
-    2) "group.update"
-    3) "owner"
-    4) "e1b982d8-a332-4bc2-aaff-4bbaa86880fc"
-    5) "name"
-    6) "young-paper"
-    7) "occurred_at"
-    8) "1693307172445370750"
-    9) "updated_at"
-    10) "2023-08-29T11:06:12.429555Z"
-    11) "updated_by"
-    12) "e1b982d8-a332-4bc2-aaff-4bbaa86880fc"
-    13) "id"
-    14) "bc7fb023-70d5-41aa-bf73-3eab1cf001c9"
-    15) "metadata"
-    16) "{\"Update\":\"spring-wood\"}"
-    17) "created_at"
-    18) "2023-08-29T11:06:12.129484Z"
-    19) "status"
-    20) "enabled"
+1. In Redis
+
+    ```redis
+    1) "1693307172445-0"
+    2)  1) "operation"
+        2) "group.update"
+        3) "owner"
+        4) "e1b982d8-a332-4bc2-aaff-4bbaa86880fc"
+        5) "name"
+        6) "young-paper"
+        7) "occurred_at"
+        8) "1693307172445370750"
+        9) "updated_at"
+        10) "2023-08-29T11:06:12.429555Z"
+        11) "updated_by"
+        12) "e1b982d8-a332-4bc2-aaff-4bbaa86880fc"
+        13) "id"
+        14) "bc7fb023-70d5-41aa-bf73-3eab1cf001c9"
+        15) "metadata"
+        16) "{\"Update\":\"spring-wood\"}"
+        17) "created_at"
+        18) "2023-08-29T11:06:12.129484Z"
+        19) "status"
+        20) "enabled"
+    ```
+
+In JetStreams
+
+```nats
+Subject: events.mainflux.users Received: 2023-10-05T18:38:40+03:00
+
+{"created_at":"2023-10-05T15:38:40.22859Z","id":"cabccc8d-937b-4d92-832b-48d7a466e19e","metadata":"eyJVcGRhdGUiOiJSZWdvLVJlZHdheSJ9","name":"Reiger-Cheal","occurred_at":1696520320573615888,"operation":"group.update","owner":"3264e965-3fe5-4d4e-a857-48de43551d2e","status":"enabled","updated_at":"2023-10-05T15:38:40.56848Z","updated_by":"3264e965-3fe5-4d4e-a857-48de43551d2e"}
 ```
 
 ### Group view event
 
 Whenever group is viewed, `users` service will generate new `view` event. This event will have the following format:
 
-```redis
-1) "1693307172257-0"
-2)  1) "occurred_at"
-    2) "1693307172257041358"
-    3) "operation"
-    4) "group.view"
-    5) "id"
-    6) "bc7fb023-70d5-41aa-bf73-3eab1cf001c9"
-    7) "owner"
-    8) "e1b982d8-a332-4bc2-aaff-4bbaa86880fc"
-    9) "name"
-    10) "-fragrant-resonance"
-    11) "metadata"
-    12) "{}"
-    13) "created_at"
-    14) "2023-08-29T11:06:12.129484Z"
-    15) "status"
-    16) "enabled"
-```
+1. In Redis Streams
+
+    ```redis
+    1) "1693307172257-0"
+    2)  1) "occurred_at"
+        2) "1693307172257041358"
+        3) "operation"
+        4) "group.view"
+        5) "id"
+        6) "bc7fb023-70d5-41aa-bf73-3eab1cf001c9"
+        7) "owner"
+        8) "e1b982d8-a332-4bc2-aaff-4bbaa86880fc"
+        9) "name"
+        10) "-fragrant-resonance"
+        11) "metadata"
+        12) "{}"
+        13) "created_at"
+        14) "2023-08-29T11:06:12.129484Z"
+        15) "status"
+        16) "enabled"
+    ```
+
+2. In Nats JetStream
+
+    ```nats
+    Subject: events.mainflux.users Received: 2023-10-05T18:38:40+03:00
+
+    {"created_at":"2023-10-05T15:38:40.22859Z","id":"cabccc8d-937b-4d92-832b-48d7a466e19e","metadata":"e30=","name":"-Conneely-Chiang","occurred_at":1696520320392002702,"operation":"group.view","owner":"3264e965-3fe5-4d4e-a857-48de43551d2e","status":"enabled"}
+    ```
 
 ### Group list event
 
 Whenever group list is fetched, `users` service will generate new `list` event. This event will have the following format:
 
-```redis
-1) "1693307172264-0"
-2)  1) "occurred_at"
-    2) "1693307172264183217"
-    3) "operation"
-    4) "group.list"
-    5) "total"
-    6) "0"
-    7) "offset"
-    8) "0"
-    9) "limit"
-    10) "10"
-    11) "status"
-    12) "enabled"
-```
+1. In Redis
+
+    ```redis
+    1) "1693307172264-0"
+    2)  1) "occurred_at"
+        2) "1693307172264183217"
+        3) "operation"
+        4) "group.list"
+        5) "total"
+        6) "0"
+        7) "offset"
+        8) "0"
+        9) "limit"
+        10) "10"
+        11) "status"
+        12) "enabled"
+    ```
+
+2. In Nats JetStreams
+
+    ```nats
+    Subject: events.mainflux.users Received: 2023-10-05T19:41:01+03:00
+
+    {"limit":100,"occurred_at":1696524061330756963,"offset":0,"operation":"group.list","status":"all","total":0}
+    ```
 
 ### Group list by user event
 
 Whenever group list by user is fetched, `users` service will generate new `list_by_user` event. This event will have the following format:
 
-```redis
-1) "1693308937283-0"
-2)  1) "limit"
-    2) "10"
-    3) "channel_id"
-    4) "bb1a7b38-cd79-410d-aca7-e744decd7b8e"
-    5) "status"
-    6) "enabled"
-    7) "occurred_at"
-    8) "1693308937282933017"
-    9) "operation"
-    10) "group.list_by_user"
-    11) "total"
-    12) "0"
-    13) "offset"
-    14) "0"
-```
+1. In Redis
+
+    ```redis
+    1) "1693308937283-0"
+    2)  1) "limit"
+        2) "10"
+        3) "channel_id"
+        4) "bb1a7b38-cd79-410d-aca7-e744decd7b8e"
+        5) "status"
+        6) "enabled"
+        7) "occurred_at"
+        8) "1693308937282933017"
+        9) "operation"
+        10) "group.list_by_user"
+        11) "total"
+        12) "0"
+        13) "offset"
+        14) "0"
+    ```
+
+2. In Nats JetStreams
+
+    ```nats
+    Subject: events.mainflux.users Received: 2023-10-05T19:41:01+03:00
+
+    {"limit":100,"occurred_at":1696524061330756963,"offset":0,"operation":"group.list","status":"all","total":0}
+    ```
 
 ### Group remove event
 
 Whenever group instance changes state in the system, `users` service will generate and publish new `remove` event. This event will have the following format:
 
-```redis
-1) "1693307172460-0"
-2)  1) "updated_by"
-    2) "e1b982d8-a332-4bc2-aaff-4bbaa86880fc"
-    3) "occurred_at"
-    4) "1693307172459828786"
-    5) "operation"
-    6) "group.remove"
-    7) "id"
-    8) "bc7fb023-70d5-41aa-bf73-3eab1cf001c9"
-    9) "status"
-    10) "disabled"
-    11) "updated_at"
-    12) "2023-08-29T11:06:12.429555Z"
+1. In Redis
 
-1) "1693307172473-0"
-2)  1) "id"
-    2) "bc7fb023-70d5-41aa-bf73-3eab1cf001c9"
-    3) "status"
-    4) "enabled"
-    5) "updated_at"
-    6) "2023-08-29T11:06:12.429555Z"
-    7) "updated_by"
-    8) "e1b982d8-a332-4bc2-aaff-4bbaa86880fc"
-    9) "occurred_at"
-    10) "1693307172473661564"
-    11) "operation"
-    12) "group.remove"
-```
+    ```redis
+    1) "1693307172460-0"
+    2)  1) "updated_by"
+        2) "e1b982d8-a332-4bc2-aaff-4bbaa86880fc"
+        3) "occurred_at"
+        4) "1693307172459828786"
+        5) "operation"
+        6) "group.remove"
+        7) "id"
+        8) "bc7fb023-70d5-41aa-bf73-3eab1cf001c9"
+        9) "status"
+        10) "disabled"
+        11) "updated_at"
+        12) "2023-08-29T11:06:12.429555Z"
+    
+    1) "1693307172473-0"
+    2)  1) "id"
+        2) "bc7fb023-70d5-41aa-bf73-3eab1cf001c9"
+        3) "status"
+        4) "enabled"
+        5) "updated_at"
+        6) "2023-08-29T11:06:12.429555Z"
+        7) "updated_by"
+        8) "e1b982d8-a332-4bc2-aaff-4bbaa86880fc"
+        9) "occurred_at"
+        10) "1693307172473661564"
+        11) "operation"
+        12) "group.remove"
+    ```
+
+2. In Nats JetStreams
+
+    ```nats
+    Subject: events.mainflux.users Received: 2023-10-05T18:38:40+03:00
+
+    {"id":"cabccc8d-937b-4d92-832b-48d7a466e19e","occurred_at":1696520320583695115,"operation":"group.remove","status":"disabled","updated_at":"2023-10-05T15:38:40.56848Z","updated_by":"3264e965-3fe5-4d4e-a857-48de43551d2e"}
+
+    Subject: events.mainflux.users Received: 2023-10-05T18:38:40+03:00
+
+    {"id":"cabccc8d-937b-4d92-832b-48d7a466e19e","occurred_at":1696520320592509139,"operation":"group.remove","status":"enabled","updated_at":"2023-10-05T15:38:40.56848Z","updated_by":"3264e965-3fe5-4d4e-a857-48de43551d2e"}
+    ```
 
 ### Policy authorize event
 
 Whenever policy is authorized, `users` service will generate new `authorize` event. This event will have the following format:
 
-```redis
-1) "1693311470724-0"
-2)  1) "entity_type"
-    2) "thing"
-    3) "object"
-    4) "8a85e2d5-e783-43ee-8bea-d6d0f8039e78"
-    5) "actions"
-    6) "c_list"
-    7) "occurred_at"
-    8) "1693311470724174126"
-    9) "operation"
-    10) "policies.authorize"
-```
+1. In Redis Streams
+
+    ```redis
+    1) "1693311470724-0"
+    2)  1) "entity_type"
+        2) "thing"
+        3) "object"
+        4) "8a85e2d5-e783-43ee-8bea-d6d0f8039e78"
+        5) "actions"
+        6) "c_list"
+        7) "occurred_at"
+        8) "1693311470724174126"
+        9) "operation"
+        10) "policies.authorize"
+    ```
+
+2. In Nats Stream
+
+    ```nats
+    Subject: events.mainflux.users Received: 2023-10-05T15:12:07+03:00
+
+    {"action":"c_list","entity_type":"client","object":"things","occurred_at":1696507927648459930,"operation":"policies.authorize"}
+    ```
 
 ### Policy add event
 
 Whenever policy is added, `users` service will generate new `add` event. This event will have the following format:
 
-```redis
-1) "1693311470721-0"
-2)  1) "operation"
-    2) "policies.add"
-    3) "owner_id"
-    4) "fe2e5de0-9900-4ac5-b364-eae0c35777fb"
-    5) "subject"
-    6) "12510af8-b6a7-410d-944c-9feded199d6d"
-    7) "object"
-    8) "8a85e2d5-e783-43ee-8bea-d6d0f8039e78"
-    9) "actions"
-    10) "[g_add,c_list]"
-    11) "created_at"
-    12) "2023-08-29T12:17:50.715541Z"
-    13) "occurred_at"
-    14) "1693311470721394773"
-```
+1. In Redis Streams
+
+    ```redis
+    1) "1693311470721-0"
+    2)  1) "operation"
+        2) "policies.add"
+        3) "owner_id"
+        4) "fe2e5de0-9900-4ac5-b364-eae0c35777fb"
+        5) "subject"
+        6) "12510af8-b6a7-410d-944c-9feded199d6d"
+        7) "object"
+        8) "8a85e2d5-e783-43ee-8bea-d6d0f8039e78"
+        9) "actions"
+        10) "[g_add,c_list]"
+        11) "created_at"
+        12) "2023-08-29T12:17:50.715541Z"
+        13) "occurred_at"
+        14) "1693311470721394773"
+    ```
+
+2. In Nats Stream
+
+    ```nats
+    Subject: events.mainflux.users Received: 2023-10-05T16:13:21+03:00
+
+    {"actions":"[m_read]","object":"f565885c-826d-4c4c-9277-a3c8537aadff","occurred_at":1696511601827118557,"operation":"policies.add","subject":"0a5f2e21-1a8b-460e-bfa9-732e570df095"}
+    ```
 
 ### Policy update event
 
@@ -647,191 +817,263 @@ By fetching and processing these events you can reconstruct `things` service sta
 
 Whenever thing is created, `things` service will generate new `create` event. This event will have the following format:
 
-```redis
-1) 1) "1693311470576-0"
-2)  1) "operation"
-    2) "thing.create"
-    3) "id"
-    4) "12510af8-b6a7-410d-944c-9feded199d6d"
-    5) "status"
-    6) "enabled"
-    7) "created_at"
-    8) "2023-08-29T12:17:50.566453Z"
-    9) "name"
-    10) "-broken-cloud"
-    11) "owner"
-    12) "fe2e5de0-9900-4ac5-b364-eae0c35777fb"
-    13) "metadata"
-    14) "{}"
-    15) "occurred_at"
-    16) "1693311470576589894"
-```
+1. In Redis Streams
+
+    ```redis
+    1) 1) "1693311470576-0"
+    2)  1) "operation"
+        2) "thing.create"
+        3) "id"
+        4) "12510af8-b6a7-410d-944c-9feded199d6d"
+        5) "status"
+        6) "enabled"
+        7) "created_at"
+        8) "2023-08-29T12:17:50.566453Z"
+        9) "name"
+        10) "-broken-cloud"
+        11) "owner"
+        12) "fe2e5de0-9900-4ac5-b364-eae0c35777fb"
+        13) "metadata"
+        14) "{}"
+        15) "occurred_at"
+        16) "1693311470576589894"
+    ```
 
 As you can see from this example, every odd field represents field name while every even field represents field value. This is standard event format for Redis Streams. If you want to extract `metadata` field from this event, you'll have to read it as string first and then you can deserialize it to some structured format.
 
+2. In Nats Stream
+
+    ```nats
+    Subject: events.mainflux.things Received: 2023-10-05T15:41:04+03:00
+
+    {"created_at":"2023-10-05T12:41:04.833207Z","id":"9745f2ea-f776-46b1-9b44-1cfd1ad4c6f1","metadata":"e30=","name":"d0","occurred_at":1696509664860397827,"operation":"thing.create","owner":"0a5f2e21-1a8b-460e-bfa9-732e570df095","status":"enabled"}
+    ```
 ### Thing update event
 
 Whenever thing instance is updated, `things` service will generate new `update` event. This event will have the following format:
 
-```redis
-1) "1693311470669-0"
-2)  1) "operation"
-    2) "thing.update"
-    3) "updated_at"
-    4) "2023-08-29T12:17:50.665752Z"
-    5) "updated_by"
-    6) "fe2e5de0-9900-4ac5-b364-eae0c35777fb"
-    7) "owner"
-    8) "fe2e5de0-9900-4ac5-b364-eae0c35777fb"
-    9) "created_at"
-    10) "2023-08-29T12:17:50.566453Z"
-    11) "status"
-    12) "enabled"
-    13) "id"
-    14) "12510af8-b6a7-410d-944c-9feded199d6d"
-    15) "name"
-    16) "lingering-sea"
-    17) "metadata"
-    18) "{\"Update\":\"nameless-glitter\"}"
-    19) "occurred_at"
-    20) "1693311470669567023"
-```
+1. In Redis
+
+    ```redis
+    1) "1693311470669-0"
+    2)  1) "operation"
+        2) "thing.update"
+        3) "updated_at"
+        4) "2023-08-29T12:17:50.665752Z"
+        5) "updated_by"
+        6) "fe2e5de0-9900-4ac5-b364-eae0c35777fb"
+        7) "owner"
+        8) "fe2e5de0-9900-4ac5-b364-eae0c35777fb"
+        9) "created_at"
+        10) "2023-08-29T12:17:50.566453Z"
+        11) "status"
+        12) "enabled"
+        13) "id"
+        14) "12510af8-b6a7-410d-944c-9feded199d6d"
+        15) "name"
+        16) "lingering-sea"
+        17) "metadata"
+        18) "{\"Update\":\"nameless-glitter\"}"
+        19) "occurred_at"
+        20) "1693311470669567023"
+    ```
+
+2. In Nats JetStreams
+
+    ```nats
+    Subject: events.mainflux.things Received: 2023-10-05T18:38:40+03:00
+
+    {"created_at":"2023-10-05T15:38:40.264564Z","id":"47540f84-029b-436f-89b5-3c10f87e302b","metadata":"eyJVcGRhdGUiOiJCZXJuYXJkLUJyaWNrZXkifQ==","name":"Bence-Jefferson","occurred_at":1696520320614766498,"operation":"thing.update","owner":"3264e965-3fe5-4d4e-a857-48de43551d2e","status":"enabled","updated_at":"2023-10-05T15:38:40.606662Z","updated_by":"3264e965-3fe5-4d4e-a857-48de43551d2e"}
+    ```
 
 ### Thing update secret event
 
 Whenever thing secret is updated, `things` service will generate new `update_secret` event. This event will have the following format:
 
-```redis
-1) "1693311470676-0"
-2)  1) "id"
-    2) "12510af8-b6a7-410d-944c-9feded199d6d"
-    3) "name"
-    4) "lingering-sea"
-    5) "metadata"
-    6) "{\"Update\":\"nameless-glitter\"}"
-    7) "status"
-    8) "enabled"
-    9) "occurred_at"
-    10) "1693311470676563107"
-    11) "operation"
-    12) "thing.update_secret"
-    13) "updated_at"
-    14) "2023-08-29T12:17:50.672865Z"
-    15) "updated_by"
-    16) "fe2e5de0-9900-4ac5-b364-eae0c35777fb"
-    17) "owner"
-    18) "fe2e5de0-9900-4ac5-b364-eae0c35777fb"
-    19) "created_at"
-    20) "2023-08-29T12:17:50.566453Z"
-```
+1. In Redis 
 
+    ```redis
+    1) "1693311470676-0"
+    2)  1) "id"
+        2) "12510af8-b6a7-410d-944c-9feded199d6d"
+        3) "name"
+        4) "lingering-sea"
+        5) "metadata"
+        6) "{\"Update\":\"nameless-glitter\"}"
+        7) "status"
+        8) "enabled"
+        9) "occurred_at"
+        10) "1693311470676563107"
+        11) "operation"
+        12) "thing.update_secret"
+        13) "updated_at"
+        14) "2023-08-29T12:17:50.672865Z"
+        15) "updated_by"
+        16) "fe2e5de0-9900-4ac5-b364-eae0c35777fb"
+        17) "owner"
+        18) "fe2e5de0-9900-4ac5-b364-eae0c35777fb"
+        19) "created_at"
+        20) "2023-08-29T12:17:50.566453Z"
+    ```
+
+2. In Nats JetStream
+
+    ```nats
+    Subject: events.mainflux.things Received: 2023-10-05T18:38:40+03:00
+
+    {"created_at":"2023-10-05T15:38:40.264564Z","id":"47540f84-029b-436f-89b5-3c10f87e302b","metadata":"eyJVcGRhdGUiOiJCZXJuYXJkLUJyaWNrZXkifQ==","name":"Bence-Jefferson","occurred_at":1696520320633637049,"operation":"thing.update_secret","owner":"3264e965-3fe5-4d4e-a857-48de43551d2e","status":"enabled","updated_at":"2023-10-05T15:38:40.625663Z","updated_by":"3264e965-3fe5-4d4e-a857-48de43551d2e"}
+    ```
 ### Thing update tags event
 
 Whenever thing tags are updated, `things` service will generate new `update_tags` event. This event will have the following format:
 
-```redis
-1) "1693311470682-0"
-2)  1) "operation"
-    2) "thing.update_tags"
-    3) "owner"
-    4) "fe2e5de0-9900-4ac5-b364-eae0c35777fb"
-    5) "metadata"
-    6) "{\"Update\":\"nameless-glitter\"}"
-    7) "status"
-    8) "enabled"
-    9) "occurred_at"
-    10) "1693311470682522926"
-    11) "updated_at"
-    12) "2023-08-29T12:17:50.679301Z"
-    13) "updated_by"
-    14) "fe2e5de0-9900-4ac5-b364-eae0c35777fb"
-    15) "id"
-    16) "12510af8-b6a7-410d-944c-9feded199d6d"
-    17) "name"
-    18) "lingering-sea"
-    19) "tags"
-    20) "[morning-pine]"
-    21) "created_at"
-    22) "2023-08-29T12:17:50.566453Z"
-```
+1. In Redis
+
+    ```redis
+    1) "1693311470682-0"
+    2)  1) "operation"
+        2) "thing.update_tags"
+        3) "owner"
+        4) "fe2e5de0-9900-4ac5-b364-eae0c35777fb"
+        5) "metadata"
+        6) "{\"Update\":\"nameless-glitter\"}"
+        7) "status"
+        8) "enabled"
+        9) "occurred_at"
+        10) "1693311470682522926"
+        11) "updated_at"
+        12) "2023-08-29T12:17:50.679301Z"
+        13) "updated_by"
+        14) "fe2e5de0-9900-4ac5-b364-eae0c35777fb"
+        15) "id"
+        16) "12510af8-b6a7-410d-944c-9feded199d6d"
+        17) "name"
+        18) "lingering-sea"
+        19) "tags"
+        20) "[morning-pine]"
+        21) "created_at"
+        22) "2023-08-29T12:17:50.566453Z"
+    ```
+
+2. In Nats JetStream
+
+    ```nats
+    Subject: events.mainflux.things Received: 2023-10-05T18:38:40+03:00
+
+    {"created_at":"2023-10-05T15:38:40.264564Z","id":"47540f84-029b-436f-89b5-3c10f87e302b","metadata":"eyJVcGRhdGUiOiJCZXJuYXJkLUJyaWNrZXkifQ==","name":"Bence-Jefferson","occurred_at":1696520320651750298,"operation":"thing.update_tags","owner":"3264e965-3fe5-4d4e-a857-48de43551d2e","status":"enabled","tags":"[Kac-Kimma]","updated_at":"2023-10-05T15:38:40.643285Z","updated_by":"3264e965-3fe5-4d4e-a857-48de43551d2e"}
+    ```
 
 ### Thing remove event
 
 Whenever thing instance is removed from the system, `things` service will generate and publish new `remove` event. This event will have the following format:
 
-```redis
-1) "1693311470689-0"
-2)  1) "updated_by"
-    2) "fe2e5de0-9900-4ac5-b364-eae0c35777fb"
-    3) "occurred_at"
-    4) "1693311470688911826"
-    5) "operation"
-    6) "thing.remove"
-    7) "id"
-    8) "12510af8-b6a7-410d-944c-9feded199d6d"
-    9) "status"
-    10) "disabled"
-    11) "updated_at"
-    12) "2023-08-29T12:17:50.679301Z"
+1. In Redis
 
-1) "1693311470695-0"
-2)  1) "operation"
-    2) "thing.remove"
-    3) "id"
-    4) "12510af8-b6a7-410d-944c-9feded199d6d"
-    5) "status"
-    6) "enabled"
-    7) "updated_at"
-    8) "2023-08-29T12:17:50.679301Z"
-    9) "updated_by"
-    10) "fe2e5de0-9900-4ac5-b364-eae0c35777fb"
-    11) "occurred_at"
-    12) "1693311470695446948"
-```
+    ```redis
+    1) "1693311470689-0"
+    2)  1) "updated_by"
+        2) "fe2e5de0-9900-4ac5-b364-eae0c35777fb"
+        3) "occurred_at"
+        4) "1693311470688911826"
+        5) "operation"
+        6) "thing.remove"
+        7) "id"
+        8) "12510af8-b6a7-410d-944c-9feded199d6d"
+        9) "status"
+        10) "disabled"
+        11) "updated_at"
+        12) "2023-08-29T12:17:50.679301Z"
+
+    1) "1693311470695-0"
+    2)  1) "operation"
+        2) "thing.remove"
+        3) "id"
+        4) "12510af8-b6a7-410d-944c-9feded199d6d"
+        5) "status"
+        6) "enabled"
+        7) "updated_at"
+        8) "2023-08-29T12:17:50.679301Z"
+        9) "updated_by"
+        10) "fe2e5de0-9900-4ac5-b364-eae0c35777fb"
+        11) "occurred_at"
+        12) "1693311470695446948"
+    ```
+
+2. In Nats JetsStream
+
+    ```nats
+    Subject: events.mainflux.things Received: 2023-10-05T18:38:40+03:00
+
+    {"id":"47540f84-029b-436f-89b5-3c10f87e302b","occurred_at":1696520320674227458,"operation":"thing.remove","status":"disabled","updated_at":"2023-10-05T15:38:40.643285Z","updated_by":"3264e965-3fe5-4d4e-a857-48de43551d2e"}
+
+    Subject: events.mainflux.things Received: 2023-10-05T18:38:40+03:00
+
+    {"id":"47540f84-029b-436f-89b5-3c10f87e302b","occurred_at":1696520320692289306,"operation":"thing.remove","status":"enabled","updated_at":"2023-10-05T15:38:40.643285Z","updated_by":"3264e965-3fe5-4d4e-a857-48de43551d2e"}
+    ```
 
 ### Thing view event
 
 Whenever thing is viewed, `things` service will generate new `view` event. This event will have the following format:
 
-```redis
-1) "1693311470608-0"
-2)  1) "operation"
-    2) "thing.view"
-    3) "id"
-    4) "12510af8-b6a7-410d-944c-9feded199d6d"
-    5) "name"
-    6) "-broken-cloud"
-    7) "owner"
-    8) "fe2e5de0-9900-4ac5-b364-eae0c35777fb"
-    9) "metadata"
-    10) "{}"
-    11) "created_at"
-    12) "2023-08-29T12:17:50.566453Z"
-    13) "status"
-    14) "enabled"
-    15) "occurred_at"
-    16) "1693311470608701504"
-```
+1. In Redis Streams
+
+    ```redis
+    1) "1693311470608-0"
+    2)  1) "operation"
+        2) "thing.view"
+        3) "id"
+        4) "12510af8-b6a7-410d-944c-9feded199d6d"
+        5) "name"
+        6) "-broken-cloud"
+        7) "owner"
+        8) "fe2e5de0-9900-4ac5-b364-eae0c35777fb"
+        9) "metadata"
+        10) "{}"
+        11) "created_at"
+        12) "2023-08-29T12:17:50.566453Z"
+        13) "status"
+        14) "enabled"
+        15) "occurred_at"
+        16) "1693311470608701504"
+    ```
+
+2. In Nats Stream
+
+    ```nats
+    Subject: events.mainflux.things Received: 2023-10-05T15:42:00+03:00
+
+    {"created_at":"2023-10-05T12:41:04.833207Z","id":"9745f2ea-f776-46b1-9b44-1cfd1ad4c6f1","metadata":"e30=","name":"d0","occurred_at":1696509720925490970,"operation":"thing.view","owner":"0a5f2e21-1a8b-460e-bfa9-732e570df095","status":"enabled"}
+    ```
 
 ### Thing list event
 
 Whenever thing list is fetched, `things` service will generate new `list` event. This event will have the following format:
 
-```redis
-1) "1693311470613-0"
-2)  1) "occurred_at"
-    2) "1693311470613173088"
-    3) "operation"
-    4) "thing.list"
-    5) "total"
-    6) "0"
-    7) "offset"
-    8) "0"
-    9) "limit"
-    10) "10"
-    11) "status"
-    12) "enabled"
-```
+1. In Redis
+
+    ```redis
+    1) "1693311470613-0"
+    2)  1) "occurred_at"
+        2) "1693311470613173088"
+        3) "operation"
+        4) "thing.list"
+        5) "total"
+        6) "0"
+        7) "offset"
+        8) "0"
+        9) "limit"
+        10) "10"
+        11) "status"
+        12) "enabled"
+    ```
+
+2. In Nats JetStream
+
+    ```nats
+    Subject: events.mainflux.things Received: 2023-10-05T18:38:40+03:00
+
+    {"limit":10,"occurred_at":1696520320459999484,"offset":0,"operation":"thing.list","status":"enabled","total":0}
+    ```
 
 ### Thing list by channel event
 
@@ -859,67 +1101,95 @@ Whenever thing list by channel is fetched, `things` service will generate new `l
 
 Whenever thing is identified, `things` service will generate new `identify` event. This event will have the following format:
 
-```redis
-1) "1693312391155-0"
-2) 1) "operation"
-    2) "thing.identify"
-    3) "thing_id"
-    4) "dc82d6bf-973b-4582-9806-0230cee11c20"
-    5) "occurred_at"
-    6) "1693312391155123548"
-```
+1. In Redis
 
+    ```redis
+    1) "1693312391155-0"
+    2) 1) "operation"
+        2) "thing.identify"
+        3) "thing_id"
+        4) "dc82d6bf-973b-4582-9806-0230cee11c20"
+        5) "occurred_at"
+        6) "1693312391155123548"
+    ```
+
+2. In Nats JetStream
+
+    ```nats
+    Subject: events.mainflux.things Received: 2023-10-05T18:38:40+03:00
+
+    {"occurred_at":1696520320934964056,"operation":"thing.identify","thing_id":"47540f84-029b-436f-89b5-3c10f87e302b"}
+    ```
 ### Channel create event
 
 Whenever channel instance is created, `things` service will generate and publish new `create` event. This event will have the following format:
 
-```redis
-1)  1) "1693311470584-0"
-2)  1) "owner"
-    2) "fe2e5de0-9900-4ac5-b364-eae0c35777fb"
-    3) "name"
-    4) "-frosty-moon"
-    5) "metadata"
-    6) "{}"
-    7) "occurred_at"
-    8) "1693311470584416323"
-    9) "operation"
-    10) "channel.create"
-    11) "id"
-    12) "8a85e2d5-e783-43ee-8bea-d6d0f8039e78"
-    13) "status"
-    14) "enabled"
-    15) "created_at"
-    16) "2023-08-29T12:17:50.57866Z"
-```
+1. In Redis Streams
+
+    ```redis
+    1)  1) "1693311470584-0"
+    2)  1) "owner"
+        2) "fe2e5de0-9900-4ac5-b364-eae0c35777fb"
+        3) "name"
+        4) "-frosty-moon"
+        5) "metadata"
+        6) "{}"
+        7) "occurred_at"
+        8) "1693311470584416323"
+        9) "operation"
+        10) "channel.create"
+        11) "id"
+        12) "8a85e2d5-e783-43ee-8bea-d6d0f8039e78"
+        13) "status"
+        14) "enabled"
+        15) "created_at"
+        16) "2023-08-29T12:17:50.57866Z"
+    ```
+2. In Nats Stream
+
+    ```nats
+    Subject: events.mainflux.things Received: 2023-10-05T15:55:39+03:00
+    
+    {"created_at":"2023-10-05T12:55:39.175568Z","id":"45eb9f35-1360-4051-81e2-9582433a6607","metadata":"e30=","name":"hephaestus","occurred_at":1696510539182201160,"operation":"channel.create","owner":"97466511-6317-4c98-8d58-7bd78bcaf587","status":"enabled"}
+    ```
 
 ### Channel update event
 
 Whenever channel instance is updated, `things` service will generate and publish new `update` event. This event will have the following format:
 
-```redis
-1) "1693311470701-0"
-2)  1) "updated_by"
-    2) "fe2e5de0-9900-4ac5-b364-eae0c35777fb"
-    3) "owner"
-    4) "fe2e5de0-9900-4ac5-b364-eae0c35777fb"
-    5) "created_at"
-    6) "2023-08-29T12:17:50.57866Z"
-    7) "status"
-    8) "enabled"
-    9) "operation"
-    10) "channel.update"
-    11) "updated_at"
-    12) "2023-08-29T12:17:50.698278Z"
-    13) "metadata"
-    14) "{\"Update\":\"silent-hill\"}"
-    15) "occurred_at"
-    16) "1693311470701812291"
-    17) "id"
-    18) "8a85e2d5-e783-43ee-8bea-d6d0f8039e78"
-    19) "name"
-    20) "morning-forest"
-```
+1. In Redis Streams  
+
+    ```redis
+    1) "1693311470701-0"
+    2)  1) "updated_by"
+        2) "fe2e5de0-9900-4ac5-b364-eae0c35777fb"
+        3) "owner"
+        4) "fe2e5de0-9900-4ac5-b364-eae0c35777fb"
+        5) "created_at"
+        6) "2023-08-29T12:17:50.57866Z"
+        7) "status"
+        8) "enabled"
+        9) "operation"
+        10) "channel.update"
+        11) "updated_at"
+        12) "2023-08-29T12:17:50.698278Z"
+        13) "metadata"
+        14) "{\"Update\":\"silent-hill\"}"
+        15) "occurred_at"
+        16) "1693311470701812291"
+        17) "id"
+        18) "8a85e2d5-e783-43ee-8bea-d6d0f8039e78"
+        19) "name"
+        20) "morning-forest"
+    ```
+
+2. In Nats Stream
+
+    ```nats
+    Subject: events.mainflux.things Received: 2023-10-05T16:00:29+03:00
+
+    {"created_at":"2023-10-05T12:41:04.87198Z","id":"5f9d4b76-0717-4859-8ef8-6fcfb81f44d5","metadata":"e30=","name":"hestia","occurred_at":1696510829837578155,"operation":"channel.update","owner":"0a5f2e21-1a8b-460e-bfa9-732e570df095","status":"enabled","updated_at":"2023-10-05T13:00:29.828132Z","updated_by":"97466511-6317-4c98-8d58-7bd78bcaf587"}
+    ```
 
 Note that update channel event will contain only those fields that were updated using update channel endpoint.
 
@@ -927,79 +1197,112 @@ Note that update channel event will contain only those fields that were updated 
 
 Whenever channel instance is removed from the system, `things` service will generate and publish new `remove` event. This event will have the following format:
 
-```redis
-1) "1693311470708-0"
-2)  1) "status"
-    2) "disabled"
-    3) "updated_at"
-    4) "2023-08-29T12:17:50.698278Z"
-    5) "updated_by"
-    6) "fe2e5de0-9900-4ac5-b364-eae0c35777fb"
-    7) "occurred_at"
-    8) "1693311470708219296"
-    9) "operation"
-    10) "channel.remove"
-    11) "id"
-    12) "8a85e2d5-e783-43ee-8bea-d6d0f8039e78"
+1. In Redis
 
-1) "1693311470714-0"
-2)  1) "occurred_at"
-    2) "1693311470714118979"
-    3) "operation"
-    4) "channel.remove"
-    5) "id"
-    6) "8a85e2d5-e783-43ee-8bea-d6d0f8039e78"
-    7) "status"
-    8) "enabled"
-    9) "updated_at"
-    10) "2023-08-29T12:17:50.698278Z"
-    11) "updated_by"
-    12) "fe2e5de0-9900-4ac5-b364-eae0c35777fb"
-```
+    ```redis
+    1) "1693311470708-0"
+    2)  1) "status"
+        2) "disabled"
+        3) "updated_at"
+        4) "2023-08-29T12:17:50.698278Z"
+        5) "updated_by"
+        6) "fe2e5de0-9900-4ac5-b364-eae0c35777fb"
+        7) "occurred_at"
+        8) "1693311470708219296"
+        9) "operation"
+        10) "channel.remove"
+        11) "id"
+        12) "8a85e2d5-e783-43ee-8bea-d6d0f8039e78"
+
+    1) "1693311470714-0"
+    2)  1) "occurred_at"
+        2) "1693311470714118979"
+        3) "operation"
+        4) "channel.remove"
+        5) "id"
+        6) "8a85e2d5-e783-43ee-8bea-d6d0f8039e78"
+        7) "status"
+        8) "enabled"
+        9) "updated_at"
+        10) "2023-08-29T12:17:50.698278Z"
+        11) "updated_by"
+        12) "fe2e5de0-9900-4ac5-b364-eae0c35777fb"
+    ```
+
+2. In Nats JetStream
+
+    ```nats
+    Subject: events.mainflux.things Received: 2023-10-05T18:38:40+03:00
+
+    {"id":"e4fa015f-bfad-4f41-bebe-142d3e938d3a","occurred_at":1696520320726205997,"operation":"channel.remove","status":"disabled","updated_at":"2023-10-05T15:38:40.702159Z","updated_by":"3264e965-3fe5-4d4e-a857-48de43551d2e"}
+
+    Subject: events.mainflux.things Received: 2023-10-05T18:38:40+03:00
+
+    {"id":"e4fa015f-bfad-4f41-bebe-142d3e938d3a","occurred_at":1696520320786154457,"operation":"channel.remove","status":"enabled","updated_at":"2023-10-05T15:38:40.702159Z","updated_by":"3264e965-3fe5-4d4e-a857-48de43551d2e"}
+    ```
 
 ### Channel view event
 
 Whenever channel is viewed, `things` service will generate new `view` event. This event will have the following format:
 
-```redis
-1) "1693311470615-0"
-2)  1) "id"
-    2) "8a85e2d5-e783-43ee-8bea-d6d0f8039e78"
-    3) "owner"
-    4) "fe2e5de0-9900-4ac5-b364-eae0c35777fb"
-    5) "name"
-    6) "-frosty-moon"
-    7) "metadata"
-    8) "{}"
-    9) "created_at"
-    10) "2023-08-29T12:17:50.57866Z"
-    11) "status"
-    12) "enabled"
-    13) "occurred_at"
-    14) "1693311470615693019"
-    15) "operation"
-    16) "channel.view"
-```
+1. In Redis
+
+    ```redis
+    1) "1693311470615-0"
+    2)  1) "id"
+        2) "8a85e2d5-e783-43ee-8bea-d6d0f8039e78"
+        3) "owner"
+        4) "fe2e5de0-9900-4ac5-b364-eae0c35777fb"
+        5) "name"
+        6) "-frosty-moon"
+        7) "metadata"
+        8) "{}"
+        9) "created_at"
+        10) "2023-08-29T12:17:50.57866Z"
+        11) "status"
+        12) "enabled"
+        13) "occurred_at"
+        14) "1693311470615693019"
+        15) "operation"
+        16) "channel.view"
+    ```
+
+2. In Nats JetStream
+    ```nats
+    Subject: events.mainflux.things Received: 2023-10-05T18:38:40+03:00
+
+    {"created_at":"2023-10-05T15:38:40.31444Z","id":"e4fa015f-bfad-4f41-bebe-142d3e938d3a","metadata":"e30=","name":"-Cech-Hargreaves","occurred_at":1696520320475816826,"operation":"channel.view","owner":"3264e965-3fe5-4d4e-a857-48de43551d2e","status":"enabled"}
+    ```
 
 ### Channel list event
 
 Whenever channel list is fetched, `things` service will generate new `list` event. This event will have the following format:
 
-```redis
-1) "1693311470619-0"
-2)  1) "limit"
-    2) "10"
-    3) "status"
-    4) "enabled"
-    5) "occurred_at"
-    6) "1693311470619194337"
-    7) "operation"
-    8) "channel.list"
-    9) "total"
-    10) "0"
-    11) "offset"
-    12) "0"
-```
+1. In Redis
+
+    ```redis
+    1) "1693311470619-0"
+    2)  1) "limit"
+        2) "10"
+        3) "status"
+        4) "enabled"
+        5) "occurred_at"
+        6) "1693311470619194337"
+        7) "operation"
+        8) "channel.list"
+        9) "total"
+        10) "0"
+        11) "offset"
+        12) "0"
+    ```
+
+2. In Nats JetStreams
+
+    ```nats
+    Subject: events.mainflux.things Received: 2023-10-05T18:38:40+03:00
+
+    {"limit":10,"occurred_at":1696520320495779280,"offset":0,"operation":"channel.list","status":"enabled","total":0}
+    ```
 
 ### Channel list by thing event
 
@@ -1027,83 +1330,118 @@ Whenever channel list by thing is fetched, `things` service will generate new `l
 
 Whenever policy is authorized, `things` service will generate new `authorize` event. This event will have the following format:
 
-```redis
-1) "1693311470724-0"
-2)  1) "entity_type"
-    2) "thing"
-    3) "object"
-    4) "8a85e2d5-e783-43ee-8bea-d6d0f8039e78"
-    5) "actions"
-    6) "m_read"
-    7) "occurred_at"
-    8) "1693311470724174126"
-    9) "operation"
-    10) "policies.authorize"
-```
+1. In Redis
+
+    ```redis
+    1) "1693311470724-0"
+    2)  1) "entity_type"
+        2) "thing"
+        3) "object"
+        4) "8a85e2d5-e783-43ee-8bea-d6d0f8039e78"
+        5) "actions"
+        6) "m_read"
+        7) "occurred_at"
+        8) "1693311470724174126"
+        9) "operation"
+        10) "policies.authorize"
+    ```
+
+2. In Nats JetStreams
+
+    ```nats
+    Subject: events.mainflux.things Received: 2023-10-05T18:38:40+03:00
+
+    {"actions":"m_write","entity_type":"thing","object":"e4fa015f-bfad-4f41-bebe-142d3e938d3a","occurred_at":1696520320938561965,"operation":"policies.authorize"}
+    ```
 
 ### Policy add event
 
 Whenever policy is added, `things` service will generate new `add` event. This event will have the following format:
 
-```redis
-1) "1693311470721-0"
-2)  1) "operation"
-    2) "policies.add"
-    3) "owner_id"
-    4) "fe2e5de0-9900-4ac5-b364-eae0c35777fb"
-    5) "subject"
-    6) "12510af8-b6a7-410d-944c-9feded199d6d"
-    7) "object"
-    8) "8a85e2d5-e783-43ee-8bea-d6d0f8039e78"
-    9) "actions"
-    10) "[m_write,m_read]"
-    11) "created_at"
-    12) "2023-08-29T12:17:50.715541Z"
-    13) "occurred_at"
-    14) "1693311470721394773"
-```
+1. In Redis Streams
+
+    ```redis
+    1) "1693311470721-0"
+    2)  1) "operation"
+        2) "policies.add"
+        3) "owner_id"
+        4) "fe2e5de0-9900-4ac5-b364-eae0c35777fb"
+        5) "subject"
+        6) "12510af8-b6a7-410d-944c-9feded199d6d"
+        7) "object"
+        8) "8a85e2d5-e783-43ee-8bea-d6d0f8039e78"
+        9) "actions"
+        10) "[m_write,m_read]"
+        11) "created_at"
+        12) "2023-08-29T12:17:50.715541Z"
+        13) "occurred_at"
+        14) "1693311470721394773"
+    ```
+
+2. In Nats Stream
+
+    ```nats
+    Subject: events.mainflux.things Received: 2023-10-05T15:41:04+03:00
+
+    {"actions":"[m_write,m_read]","created_at":"2023-10-05T12:41:04.901355Z","object":"5f9d4b76-0717-4859-8ef8-6fcfb81f44d5","occurred_at":1696509664928590911,"operation":"policies.add","owner_id":"0a5f2e21-1a8b-460e-bfa9-732e570df095","subject":"9745f2ea-f776-46b1-9b44-1cfd1ad4c6f1"}
+    ```
 
 ### Policy update event
 
 Whenever policy is updated, `things` service will generate new `update` event. This event will have the following format:
 
-```redis
-1) "1693312500101-0"
-2)  1) "updated_at"
-    2) "2023-08-29T12:35:00.095028Z"
-    3) "occurred_at"
-    4) "1693312500101367995"
-    5) "operation"
-    6) "policies.update"
-    7) "owner_id"
-    8) "fe2e5de0-9900-4ac5-b364-eae0c35777fb"
-    9) "subject"
-    10) "12510af8-b6a7-410d-944c-9feded199d6d"
-    11) "object"
-    12) "8a85e2d5-e783-43ee-8bea-d6d0f8039e78"
-    13) "actions"
-    14) "[m_write,m_read]"
-    15) "created_at"
-    16) "2023-08-29T12:17:50.715541Z"
-```
+1. In Redis
+
+    ```redis
+    1) "1693312500101-0"
+    2)  1) "updated_at"
+        2) "2023-08-29T12:35:00.095028Z"
+        3) "occurred_at"
+        4) "1693312500101367995"
+        5) "operation"
+        6) "policies.update"
+        7) "owner_id"
+        8) "fe2e5de0-9900-4ac5-b364-eae0c35777fb"
+        9) "subject"
+        10) "12510af8-b6a7-410d-944c-9feded199d6d"
+        11) "object"
+        12) "8a85e2d5-e783-43ee-8bea-d6d0f8039e78"
+        13) "actions"
+        14) "[m_write,m_read]"
+        15) "created_at"
+        16) "2023-08-29T12:17:50.715541Z"
+    ```
+
+2. In Nats JestStreams
+
 
 ### Policy remove event
 
 Whenever policy is removed, `things` service will generate new `remove` event. This event will have the following format:
 
-```redis
-1) "1693312590631-0"
-2)  1) "occurred_at"
-    2) "1693312590631691388"
-    3) "operation"
-    4) "policies.delete"
-    5) "subject"
-    6) "12510af8-b6a7-410d-944c-9feded199d6d"
-    7) "object"
-    8) "8a85e2d5-e783-43ee-8bea-d6d0f8039e78"
-    9) "actions"
-    10) "[m_write,m_read]"
-```
+1. In Redis Streams
+
+    ```redis
+    1) "1693312590631-0"
+    2)  1) "occurred_at"
+        2) "1693312590631691388"
+        3) "operation"
+        4) "policies.delete"
+        5) "subject"
+        6) "12510af8-b6a7-410d-944c-9feded199d6d"
+        7) "object"
+        8) "8a85e2d5-e783-43ee-8bea-d6d0f8039e78"
+        9) "actions"
+        10) "[m_write,m_read]"
+    ```
+
+2. In Nats Stream
+
+    ```
+    Subject: events.mainflux.things Received: 2023-10-05T16:05:15+03:00
+
+    {"actions":"[m_write,m_read]","object":"5f9d4b76-0717-4859-8ef8-6fcfb81f44d5","occurred_at":1696511115507500254,"operation":"policies.delete","subject":"9745f2ea-f776-46b1-9b44-1cfd1ad4c6f1"}
+    ```
 
 ### Policy list event
 
