@@ -61,7 +61,7 @@ Whenever user is created, `users` service will generate new `create` event. This
 
 As you can see from this example, every odd field represents field name while every even field represents field value. This is standard event format for Redis Streams. If you want to extract `metadata` field from this event, you'll have to read it as string first and then you can deserialize it to some structured format.
 
-2. In Nats Stream
+2. In Nats JetStream
 
     ```nats
     Subject: events.mainflux.users Received: 2023-10-05T15:41:04+03:00
@@ -95,7 +95,7 @@ Whenever user is viewed, `users` service will generate new `view` event. This ev
         17) "occurred_at"
         18) "1693307172247989798"
     ```
-2. In Nats Stream
+2. In Nats JetStreams
 
     ```nats
     Subject: events.mainflux.users Received: 2023-10-05T18:38:40+03:00
@@ -129,7 +129,7 @@ Whenever user profile is viewed, `users` service will generate new `view_profile
         16) "user.view_profile"
     ```
 
-2. In JetStreams
+2. In Nats JetStreams
 
     ```nats
     Subject: events.mainflux.users Received: 2023-10-05T19:41:01+03:00
@@ -401,11 +401,11 @@ Whenever user tags are updated, `users` service will generate new `update_tags` 
 
 2. In Nats JetStreams
 
-```nats
-Subject: events.mainflux.users Received: 2023-10-05T18:38:40+03:00
+    ```nats
+    Subject: events.mainflux.users Received: 2023-10-05T18:38:40+03:00
 
-{"created_at":"2023-10-05T15:38:40.219889Z","id":"d4baecb8-adfa-4c7c-8257-deea5d7f9dba","identity":"Andes-Bahgat","metadata":"eyJVcGRhdGUiOiJBbGVncmlhLVdvbGwifQ==","name":"Rhude-Parrillo","occurred_at":1696520320537588492,"operation":"user.update_tags","status":"enabled","tags":"[Tischler-Persechino]","updated_at":"2023-10-05T15:38:40.533159Z","updated_by":"3264e965-3fe5-4d4e-a857-48de43551d2e"}
-```
+    {"created_at":"2023-10-05T15:38:40.219889Z","id":"d4baecb8-adfa-4c7c-8257-deea5d7f9dba","identity":"Andes-Bahgat","metadata":"eyJVcGRhdGUiOiJBbGVncmlhLVdvbGwifQ==","name":"Rhude-Parrillo","occurred_at":1696520320537588492,"operation":"user.update_tags","status":"enabled","tags":"[Tischler-Persechino]","updated_at":"2023-10-05T15:38:40.533159Z","updated_by":"3264e965-3fe5-4d4e-a857-48de43551d2e"}
+    ```
 
 ### User remove event
 
@@ -443,7 +443,7 @@ Whenever user instance changes state in the system, `users` service will generat
         12) "user.remove"
     ```
 
-2. In Nats Stream
+2. In Nats JetStream
 
     ```nats
     Subject: events.mainflux.users Received: 2023-10-05T17:59:29+03:00
@@ -478,7 +478,7 @@ Whenever group is created, `users` service will generate new `create` event. Thi
 
 As you can see from this example, every odd field represents field name while every even field represents field value. This is standard event format for Redis Streams. If you want to extract `metadata` field from this event, you'll have to read it as string first and then you can deserialize it to some structured format.
 
-2. In Nats Stream
+2. In Nats JetStream
 
     ```nats
     Subject: events.mainflux.users Received: 2023-10-05T16:12:00+03:00
@@ -516,13 +516,13 @@ Whenever group instance is updated, `users` service will generate new `update` e
         20) "enabled"
     ```
 
-In JetStreams
+2. In Nats JetStreams
 
-```nats
-Subject: events.mainflux.users Received: 2023-10-05T18:38:40+03:00
+    ```nats
+    Subject: events.mainflux.users Received: 2023-10-05T18:38:40+03:00
 
-{"created_at":"2023-10-05T15:38:40.22859Z","id":"cabccc8d-937b-4d92-832b-48d7a466e19e","metadata":"eyJVcGRhdGUiOiJSZWdvLVJlZHdheSJ9","name":"Reiger-Cheal","occurred_at":1696520320573615888,"operation":"group.update","owner":"3264e965-3fe5-4d4e-a857-48de43551d2e","status":"enabled","updated_at":"2023-10-05T15:38:40.56848Z","updated_by":"3264e965-3fe5-4d4e-a857-48de43551d2e"}
-```
+    {"created_at":"2023-10-05T15:38:40.22859Z","id":"cabccc8d-937b-4d92-832b-48d7a466e19e","metadata":"eyJVcGRhdGUiOiJSZWdvLVJlZHdheSJ9","name":"Reiger-Cheal","occurred_at":1696520320573615888,"operation":"group.update","owner":"3264e965-3fe5-4d4e-a857-48de43551d2e","status":"enabled","updated_at":"2023-10-05T15:38:40.56848Z","updated_by":"3264e965-3fe5-4d4e-a857-48de43551d2e"}
+    ```
 
 ### Group view event
 
@@ -688,7 +688,7 @@ Whenever policy is authorized, `users` service will generate new `authorize` eve
         10) "policies.authorize"
     ```
 
-2. In Nats Stream
+2. In Nats JetStreams
 
     ```nats
     Subject: events.mainflux.users Received: 2023-10-05T15:12:07+03:00
@@ -720,7 +720,7 @@ Whenever policy is added, `users` service will generate new `add` event. This ev
         14) "1693311470721394773"
     ```
 
-2. In Nats Stream
+2. In Nats JetStreams
 
     ```nats
     Subject: events.mainflux.users Received: 2023-10-05T16:13:21+03:00
@@ -841,7 +841,7 @@ Whenever thing is created, `things` service will generate new `create` event. Th
 
 As you can see from this example, every odd field represents field name while every even field represents field value. This is standard event format for Redis Streams. If you want to extract `metadata` field from this event, you'll have to read it as string first and then you can deserialize it to some structured format.
 
-2. In Nats Stream
+2. In Nats JetStreams
 
     ```nats
     Subject: events.mainflux.things Received: 2023-10-05T15:41:04+03:00
@@ -916,7 +916,7 @@ Whenever thing secret is updated, `things` service will generate new `update_sec
         20) "2023-08-29T12:17:50.566453Z"
     ```
 
-2. In Nats JetStream
+2. In Nats JetStreams
 
     ```nats
     Subject: events.mainflux.things Received: 2023-10-05T18:38:40+03:00
@@ -955,7 +955,7 @@ Whenever thing tags are updated, `things` service will generate new `update_tags
         22) "2023-08-29T12:17:50.566453Z"
     ```
 
-2. In Nats JetStream
+2. In Nats JetStreams
 
     ```nats
     Subject: events.mainflux.things Received: 2023-10-05T18:38:40+03:00
@@ -967,7 +967,7 @@ Whenever thing tags are updated, `things` service will generate new `update_tags
 
 Whenever thing instance is removed from the system, `things` service will generate and publish new `remove` event. This event will have the following format:
 
-1. In Redis
+1. In Redis Streams
 
     ```redis
     1) "1693311470689-0"
@@ -999,7 +999,7 @@ Whenever thing instance is removed from the system, `things` service will genera
         12) "1693311470695446948"
     ```
 
-2. In Nats JetsStream
+2. In Nats JetsStreams
 
     ```nats
     Subject: events.mainflux.things Received: 2023-10-05T18:38:40+03:00
@@ -1037,7 +1037,7 @@ Whenever thing is viewed, `things` service will generate new `view` event. This 
         16) "1693311470608701504"
     ```
 
-2. In Nats Stream
+2. In Nats JetStreams
 
     ```nats
     Subject: events.mainflux.things Received: 2023-10-05T15:42:00+03:00
@@ -1049,7 +1049,7 @@ Whenever thing is viewed, `things` service will generate new `view` event. This 
 
 Whenever thing list is fetched, `things` service will generate new `list` event. This event will have the following format:
 
-1. In Redis
+1. In Redis Streams
 
     ```redis
     1) "1693311470613-0"
@@ -1067,7 +1067,7 @@ Whenever thing list is fetched, `things` service will generate new `list` event.
         12) "enabled"
     ```
 
-2. In Nats JetStream
+2. In Nats JetStreams
 
     ```nats
     Subject: events.mainflux.things Received: 2023-10-05T18:38:40+03:00
@@ -1101,7 +1101,7 @@ Whenever thing list by channel is fetched, `things` service will generate new `l
 
 Whenever thing is identified, `things` service will generate new `identify` event. This event will have the following format:
 
-1. In Redis
+1. In Redis Streams
 
     ```redis
     1) "1693312391155-0"
@@ -1113,7 +1113,7 @@ Whenever thing is identified, `things` service will generate new `identify` even
         6) "1693312391155123548"
     ```
 
-2. In Nats JetStream
+2. In Nats JetStreams
 
     ```nats
     Subject: events.mainflux.things Received: 2023-10-05T18:38:40+03:00
@@ -1145,7 +1145,7 @@ Whenever channel instance is created, `things` service will generate and publish
         15) "created_at"
         16) "2023-08-29T12:17:50.57866Z"
     ```
-2. In Nats Stream
+2. In Nats JetStreams
 
     ```nats
     Subject: events.mainflux.things Received: 2023-10-05T15:55:39+03:00
@@ -1183,7 +1183,7 @@ Whenever channel instance is updated, `things` service will generate and publish
         20) "morning-forest"
     ```
 
-2. In Nats Stream
+2. In Nats JetStreams
 
     ```nats
     Subject: events.mainflux.things Received: 2023-10-05T16:00:29+03:00
@@ -1197,7 +1197,7 @@ Note that update channel event will contain only those fields that were updated 
 
 Whenever channel instance is removed from the system, `things` service will generate and publish new `remove` event. This event will have the following format:
 
-1. In Redis
+1. In Redis Streams
 
     ```redis
     1) "1693311470708-0"
@@ -1229,7 +1229,7 @@ Whenever channel instance is removed from the system, `things` service will gene
         12) "fe2e5de0-9900-4ac5-b364-eae0c35777fb"
     ```
 
-2. In Nats JetStream
+2. In Nats JetStreams
 
     ```nats
     Subject: events.mainflux.things Received: 2023-10-05T18:38:40+03:00
@@ -1245,7 +1245,7 @@ Whenever channel instance is removed from the system, `things` service will gene
 
 Whenever channel is viewed, `things` service will generate new `view` event. This event will have the following format:
 
-1. In Redis
+1. In Redis Streams
 
     ```redis
     1) "1693311470615-0"
@@ -1330,7 +1330,7 @@ Whenever channel list by thing is fetched, `things` service will generate new `l
 
 Whenever policy is authorized, `things` service will generate new `authorize` event. This event will have the following format:
 
-1. In Redis
+1. In Redis Streams
 
     ```redis
     1) "1693311470724-0"
@@ -1378,7 +1378,7 @@ Whenever policy is added, `things` service will generate new `add` event. This e
         14) "1693311470721394773"
     ```
 
-2. In Nats Stream
+2. In Nats JetStreams
 
     ```nats
     Subject: events.mainflux.things Received: 2023-10-05T15:41:04+03:00
@@ -1390,7 +1390,7 @@ Whenever policy is added, `things` service will generate new `add` event. This e
 
 Whenever policy is updated, `things` service will generate new `update` event. This event will have the following format:
 
-1. In Redis
+1. In Redis Streams
 
     ```redis
     1) "1693312500101-0"
@@ -1435,7 +1435,7 @@ Whenever policy is removed, `things` service will generate new `remove` event. T
         10) "[m_write,m_read]"
     ```
 
-2. In Nats Stream
+2. In Nats JetStreams
 
     ```
     Subject: events.mainflux.things Received: 2023-10-05T16:05:15+03:00
@@ -1482,33 +1482,43 @@ If you want to integrate through [docker-compose.yml][bootstrap-docker-compose] 
 
 Whenever configuration is created, `bootstrap` service will generate and publish new `create` event. This event will have the following format:
 
-```redis
-1) "1693313286544-0"
-2)  1) "state"
-    2) "0"
-    3) "operation"
-    4) "config.create"
-    5) "name"
-    6) "demo"
-    7) "channels"
-    8) "[8d77099e-4911-4140-8555-7d3be65a1694]"
-    9) "client_cert"
-    10) "-----BEGIN ENCRYPTED PRIVATE KEY-----MIIFHDBOBgkqhkiG9w0BBQ0wQTApBgkqhkiG9w0BBQwwHAQIc+VAU9JPnIkCAggAMAwGCCqGSIb3DQIJBQAwFAYIKoZIhvcNAwcECImSB+9qZ8dmBIIEyBW/rZlECWnEcMuTXhfJFe+3HP4rV+TXEEuigwCbtVPHWXoZj7KqGiOFgFaDL5Ne/GRwVD6geaTeQVl3aoHzo8mY0yuX2L36Ho2yHF/Bw89WT3hgP0lZ1lVO7O7n8DwybOaoJ+1S3akyb6OPbqcxJou1IGzKV1kz77R8V8nOFSd1BOepNbanGxVG8Jkgc37dQnICXwwaYkTx9PQBtSux1j3KgX0p+VAUNoUFi7N6b0MeO8iEuLU1dUiVwlH/jtitg0W3AvSV+5gezTT2VQW3CVlz6IBTPI1Rfl/3ss18Tao0NiPUmXMIgreBCamXvb0aJm8JxVbhoFYqWVNVocBD+n1+NwhCRlZM5Kgaes5S2JuFnjTAqEYytlQqEySbaN57XYCDNVmQz2iViz/+npuR9SCGwnNvV/TNsKRwav+0NC0pbf3LNk/KL9/X5ccmPhB5Rl7IS/v1BBLYX/jYWVN0dJiSA7fVIr9Acr7IbxWEQ2Y2qh1wdhayi4FBUHY3weivYSU3uGZizsSGJP/N6DutBgS1aXd5X/CqfF7VzRaKF4cfLO4XxTYUEjOztUNMN2XmW0o+ULjQmbouRPs/PIFmh6rc+h42m6p4SkjcsIKOy+mPTeJqhOVmYoMzO8+7mmXDOjFwvi/w97sdmbjII8Zn2iR/N8GuY23vv5h6LQ3tQ5kTA4IuPbYCVLeggd4iMM6TgpuJn0aG7yo4tDFqMeadCVhP2Bp3JQa8r3B2IJstTTF1OtZCrInjSus9ViOiM02Iz3ZmyglsMonJDlWeJL5jKBgqPbLR82IDhIY4IO6SqoVsWu4iWuLW5/TM3fdfYG3Wdvu7Suz7/anLAaMQEzKhObwgDdKmv4PkF75frex969CB1pQqSVnXmz4GrtxVUzWtlflaTSdSegpUXWLhG+jUNKTu+ptxDNM/JBxRNLSzdvsGbkI0qycOCliVpKkkvuiBGtiDWNax6KhV4/oRjkEkTRks9Xeko+q3uY4B//AGxsotsVhF5vhUDTOl5IX7a7wCPtbTGiaR79eprRzGnP9yP38djVrvXprJFU8P7GUr/f2qJt2jDYuCkaqAMsfjdu6YHitjj3ty4vrASgxJ0vsroWhjgiCwgASqM7GnweHSHy5/OZK8jCZX+g+B63Mu4ec+/nNnjvuLqBBZN/FSzXU5fVmYznfPaqW+1Xep+Aj1yGk3L3tvnKLc3sZ1HAJQEjud5dbME6e0JGxh5xOCnzWUR+YL/96KJAcgkxDJ1DxxHv0Uu/5kO5InOsPjs4YKuzqD4nUmGsFsJzTxG626wdGXJMO4YCRKkKtnNeWqMaslM3paN19/tTWyEbaDqc5mVzYLIb3Mzju+OV4GniDeVIvSIsXK5aFGj1PEhfCprQCqUzdNhFU8hF4kUVhn9dp0ExveT7btHSMlEZAWHRkDuLqaImpQkjYmwt90cxtdZwQvjTDtsFmQrvcSp8n1K3P5PwZpVtIw2UHpx+NjE8ZYwOozpXl/oOMzVTB8mi1dQGFkpac9cwnzCZof0ub4iutBeKc4WeEOytvY+CY7hc+/ncCprZ08nlkQarQV7jhfJj658GfBMLGzJtYkCrHwi/AoseIXa5W7eX+lz7O92H2M5QnEkPStQ9lsz2VkYA==-----END ENCRYPTED PRIVATE KEY-----"
-    11) "ca_cert"
-    12) "-----BEGIN ENCRYPTED PRIVATE KEY-----MIIFHDBOBgkqhkiG9w0BBQ0wQTApBgkqhkiG9w0BBQwwHAQIc+VAU9JPnIkCAggAMAwGCCqGSIb3DQIJBQAwFAYIKoZIhvcNAwcECImSB+9qZ8dmBIIEyBW/rZlECWnEcMuTXhfJFe+3HP4rV+TXEEuigwCbtVPHWXoZj7KqGiOFgFaDL5Ne/GRwVD6geaTeQVl3aoHzo8mY0yuX2L36Ho2yHF/Bw89WT3hgP0lZ1lVO7O7n8DwybOaoJ+1S3akyb6OPbqcxJou1IGzKV1kz77R8V8nOFSd1BOepNbanGxVG8Jkgc37dQnICXwwaYkTx9PQBtSux1j3KgX0p+VAUNoUFi7N6b0MeO8iEuLU1dUiVwlH/jtitg0W3AvSV+5gezTT2VQW3CVlz6IBTPI1Rfl/3ss18Tao0NiPUmXMIgreBCamXvb0aJm8JxVbhoFYqWVNVocBD+n1+NwhCRlZM5Kgaes5S2JuFnjTAqEYytlQqEySbaN57XYCDNVmQz2iViz/+npuR9SCGwnNvV/TNsKRwav+0NC0pbf3LNk/KL9/X5ccmPhB5Rl7IS/v1BBLYX/jYWVN0dJiSA7fVIr9Acr7IbxWEQ2Y2qh1wdhayi4FBUHY3weivYSU3uGZizsSGJP/N6DutBgS1aXd5X/CqfF7VzRaKF4cfLO4XxTYUEjOztUNMN2XmW0o+ULjQmbouRPs/PIFmh6rc+h42m6p4SkjcsIKOy+mPTeJqhOVmYoMzO8+7mmXDOjFwvi/w97sdmbjII8Zn2iR/N8GuY23vv5h6LQ3tQ5kTA4IuPbYCVLeggd4iMM6TgpuJn0aG7yo4tDFqMeadCVhP2Bp3JQa8r3B2IJstTTF1OtZCrInjSus9ViOiM02Iz3ZmyglsMonJDlWeJL5jKBgqPbLR82IDhIY4IO6SqoVsWu4iWuLW5/TM3fdfYG3Wdvu7Suz7/anLAaMQEzKhObwgDdKmv4PkF75frex969CB1pQqSVnXmz4GrtxVUzWtlflaTSdSegpUXWLhG+jUNKTu+ptxDNM/JBxRNLSzdvsGbkI0qycOCliVpKkkvuiBGtiDWNax6KhV4/oRjkEkTRks9Xeko+q3uY4B//AGxsotsVhF5vhUDTOl5IX7a7wCPtbTGiaR79eprRzGnP9yP38djVrvXprJFU8P7GUr/f2qJt2jDYuCkaqAMsfjdu6YHitjj3ty4vrASgxJ0vsroWhjgiCwgASqM7GnweHSHy5/OZK8jCZX+g+B63Mu4ec+/nNnjvuLqBBZN/FSzXU5fVmYznfPaqW+1Xep+Aj1yGk3L3tvnKLc3sZ1HAJQEjud5dbME6e0JGxh5xOCnzWUR+YL/96KJAcgkxDJ1DxxHv0Uu/5kO5InOsPjs4YKuzqD4nUmGsFsJzTxG626wdGXJMO4YCRKkKtnNeWqMaslM3paN19/tTWyEbaDqc5mVzYLIb3Mzju+OV4GniDeVIvSIsXK5aFGj1PEhfCprQCqUzdNhFU8hF4kUVhn9dp0ExveT7btHSMlEZAWHRkDuLqaImpQkjYmwt90cxtdZwQvjTDtsFmQrvcSp8n1K3P5PwZpVtIw2UHpx+NjE8ZYwOozpXl/oOMzVTB8mi1dQGFkpac9cwnzCZof0ub4iutBeKc4WeEOytvY+CY7hc+/ncCprZ08nlkQarQV7jhfJj658GfBMLGzJtYkCrHwi/AoseIXa5W7eX+lz7O92H2M5QnEkPStQ9lsz2VkYA==-----END ENCRYPTED PRIVATE KEY-----"
-    13) "occurred_at"
-    14) "1693313286544243035"
-    15) "thing_id"
-    16) "dc82d6bf-973b-4582-9806-0230cee11c20"
-    17) "content"
-    18) "{   \"server\": {     \"address\": \"127.0.0.1\",     \"port\": 8080   },   \"database\": {     \"host\": \"localhost\",     \"port\": 5432,     \"username\": \"user\",     \"password\": \"password\",     \"dbname\": \"mydb\"   },   \"logging\": {     \"level\": \"info\",     \"file\": \"app.log\"   } }"
-    19) "owner"
-    20) "64fd20bf-e8fb-46bf-9b64-2a6572eda21b"
-    21) "external_id"
-    22) "209327A2FA2D47E3B05F118D769DC521"
-    23) "client_key"
-    24) "-----BEGIN ENCRYPTED PRIVATE KEY-----MIIFHDBOBgkqhkiG9w0BBQ0wQTApBgkqhkiG9w0BBQwwHAQIc+VAU9JPnIkCAggAMAwGCCqGSIb3DQIJBQAwFAYIKoZIhvcNAwcECImSB+9qZ8dmBIIEyBW/rZlECWnEcMuTXhfJFe+3HP4rV+TXEEuigwCbtVPHWXoZj7KqGiOFgFaDL5Ne/GRwVD6geaTeQVl3aoHzo8mY0yuX2L36Ho2yHF/Bw89WT3hgP0lZ1lVO7O7n8DwybOaoJ+1S3akyb6OPbqcxJou1IGzKV1kz77R8V8nOFSd1BOepNbanGxVG8Jkgc37dQnICXwwaYkTx9PQBtSux1j3KgX0p+VAUNoUFi7N6b0MeO8iEuLU1dUiVwlH/jtitg0W3AvSV+5gezTT2VQW3CVlz6IBTPI1Rfl/3ss18Tao0NiPUmXMIgreBCamXvb0aJm8JxVbhoFYqWVNVocBD+n1+NwhCRlZM5Kgaes5S2JuFnjTAqEYytlQqEySbaN57XYCDNVmQz2iViz/+npuR9SCGwnNvV/TNsKRwav+0NC0pbf3LNk/KL9/X5ccmPhB5Rl7IS/v1BBLYX/jYWVN0dJiSA7fVIr9Acr7IbxWEQ2Y2qh1wdhayi4FBUHY3weivYSU3uGZizsSGJP/N6DutBgS1aXd5X/CqfF7VzRaKF4cfLO4XxTYUEjOztUNMN2XmW0o+ULjQmbouRPs/PIFmh6rc+h42m6p4SkjcsIKOy+mPTeJqhOVmYoMzO8+7mmXDOjFwvi/w97sdmbjII8Zn2iR/N8GuY23vv5h6LQ3tQ5kTA4IuPbYCVLeggd4iMM6TgpuJn0aG7yo4tDFqMeadCVhP2Bp3JQa8r3B2IJstTTF1OtZCrInjSus9ViOiM02Iz3ZmyglsMonJDlWeJL5jKBgqPbLR82IDhIY4IO6SqoVsWu4iWuLW5/TM3fdfYG3Wdvu7Suz7/anLAaMQEzKhObwgDdKmv4PkF75frex969CB1pQqSVnXmz4GrtxVUzWtlflaTSdSegpUXWLhG+jUNKTu+ptxDNM/JBxRNLSzdvsGbkI0qycOCliVpKkkvuiBGtiDWNax6KhV4/oRjkEkTRks9Xeko+q3uY4B//AGxsotsVhF5vhUDTOl5IX7a7wCPtbTGiaR79eprRzGnP9yP38djVrvXprJFU8P7GUr/f2qJt2jDYuCkaqAMsfjdu6YHitjj3ty4vrASgxJ0vsroWhjgiCwgASqM7GnweHSHy5/OZK8jCZX+g+B63Mu4ec+/nNnjvuLqBBZN/FSzXU5fVmYznfPaqW+1Xep+Aj1yGk3L3tvnKLc3sZ1HAJQEjud5dbME6e0JGxh5xOCnzWUR+YL/96KJAcgkxDJ1DxxHv0Uu/5kO5InOsPjs4YKuzqD4nUmGsFsJzTxG626wdGXJMO4YCRKkKtnNeWqMaslM3paN19/tTWyEbaDqc5mVzYLIb3Mzju+OV4GniDeVIvSIsXK5aFGj1PEhfCprQCqUzdNhFU8hF4kUVhn9dp0ExveT7btHSMlEZAWHRkDuLqaImpQkjYmwt90cxtdZwQvjTDtsFmQrvcSp8n1K3P5PwZpVtIw2UHpx+NjE8ZYwOozpXl/oOMzVTB8mi1dQGFkpac9cwnzCZof0ub4iutBeKc4WeEOytvY+CY7hc+/ncCprZ08nlkQarQV7jhfJj658GfBMLGzJtYkCrHwi/AoseIXa5W7eX+lz7O92H2M5QnEkPStQ9lsz2VkYA==-----END ENCRYPTED PRIVATE KEY-----"
-```
+1. In Redis Streams 
+
+    ```redis
+    1) "1693313286544-0"
+    2)  1) "state"
+        2) "0"
+        3) "operation"
+        4) "config.create"
+        5) "name"
+        6) "demo"
+        7) "channels"
+        8) "[8d77099e-4911-4140-8555-7d3be65a1694]"
+        9) "client_cert"
+        10) "-----BEGIN ENCRYPTED PRIVATE KEY-----MIIFHDBOBgkqhkiG9w0BBQ0wQTApBgkqhkiG9w0BBQwwHAQIc+VAU9JPnIkCAggAMAwGCCqGSIb3DQIJBQAwFAYIKoZIhvcNAwcECImSB+9qZ8dmBIIEyBW/rZlECWnEcMuTXhfJFe+3HP4rV+TXEEuigwCbtVPHWXoZj7KqGiOFgFaDL5Ne/GRwVD6geaTeQVl3aoHzo8mY0yuX2L36Ho2yHF/Bw89WT3hgP0lZ1lVO7O7n8DwybOaoJ+1S3akyb6OPbqcxJou1IGzKV1kz77R8V8nOFSd1BOepNbanGxVG8Jkgc37dQnICXwwaYkTx9PQBtSux1j3KgX0p+VAUNoUFi7N6b0MeO8iEuLU1dUiVwlH/jtitg0W3AvSV+5gezTT2VQW3CVlz6IBTPI1Rfl/3ss18Tao0NiPUmXMIgreBCamXvb0aJm8JxVbhoFYqWVNVocBD+n1+NwhCRlZM5Kgaes5S2JuFnjTAqEYytlQqEySbaN57XYCDNVmQz2iViz/+npuR9SCGwnNvV/TNsKRwav+0NC0pbf3LNk/KL9/X5ccmPhB5Rl7IS/v1BBLYX/jYWVN0dJiSA7fVIr9Acr7IbxWEQ2Y2qh1wdhayi4FBUHY3weivYSU3uGZizsSGJP/N6DutBgS1aXd5X/CqfF7VzRaKF4cfLO4XxTYUEjOztUNMN2XmW0o+ULjQmbouRPs/PIFmh6rc+h42m6p4SkjcsIKOy+mPTeJqhOVmYoMzO8+7mmXDOjFwvi/w97sdmbjII8Zn2iR/N8GuY23vv5h6LQ3tQ5kTA4IuPbYCVLeggd4iMM6TgpuJn0aG7yo4tDFqMeadCVhP2Bp3JQa8r3B2IJstTTF1OtZCrInjSus9ViOiM02Iz3ZmyglsMonJDlWeJL5jKBgqPbLR82IDhIY4IO6SqoVsWu4iWuLW5/TM3fdfYG3Wdvu7Suz7/anLAaMQEzKhObwgDdKmv4PkF75frex969CB1pQqSVnXmz4GrtxVUzWtlflaTSdSegpUXWLhG+jUNKTu+ptxDNM/JBxRNLSzdvsGbkI0qycOCliVpKkkvuiBGtiDWNax6KhV4/oRjkEkTRks9Xeko+q3uY4B//AGxsotsVhF5vhUDTOl5IX7a7wCPtbTGiaR79eprRzGnP9yP38djVrvXprJFU8P7GUr/f2qJt2jDYuCkaqAMsfjdu6YHitjj3ty4vrASgxJ0vsroWhjgiCwgASqM7GnweHSHy5/OZK8jCZX+g+B63Mu4ec+/nNnjvuLqBBZN/FSzXU5fVmYznfPaqW+1Xep+Aj1yGk3L3tvnKLc3sZ1HAJQEjud5dbME6e0JGxh5xOCnzWUR+YL/96KJAcgkxDJ1DxxHv0Uu/5kO5InOsPjs4YKuzqD4nUmGsFsJzTxG626wdGXJMO4YCRKkKtnNeWqMaslM3paN19/tTWyEbaDqc5mVzYLIb3Mzju+OV4GniDeVIvSIsXK5aFGj1PEhfCprQCqUzdNhFU8hF4kUVhn9dp0ExveT7btHSMlEZAWHRkDuLqaImpQkjYmwt90cxtdZwQvjTDtsFmQrvcSp8n1K3P5PwZpVtIw2UHpx+NjE8ZYwOozpXl/oOMzVTB8mi1dQGFkpac9cwnzCZof0ub4iutBeKc4WeEOytvY+CY7hc+/ncCprZ08nlkQarQV7jhfJj658GfBMLGzJtYkCrHwi/AoseIXa5W7eX+lz7O92H2M5QnEkPStQ9lsz2VkYA==-----END ENCRYPTED PRIVATE KEY-----"
+        11) "ca_cert"
+        12) "-----BEGIN ENCRYPTED PRIVATE KEY-----MIIFHDBOBgkqhkiG9w0BBQ0wQTApBgkqhkiG9w0BBQwwHAQIc+VAU9JPnIkCAggAMAwGCCqGSIb3DQIJBQAwFAYIKoZIhvcNAwcECImSB+9qZ8dmBIIEyBW/rZlECWnEcMuTXhfJFe+3HP4rV+TXEEuigwCbtVPHWXoZj7KqGiOFgFaDL5Ne/GRwVD6geaTeQVl3aoHzo8mY0yuX2L36Ho2yHF/Bw89WT3hgP0lZ1lVO7O7n8DwybOaoJ+1S3akyb6OPbqcxJou1IGzKV1kz77R8V8nOFSd1BOepNbanGxVG8Jkgc37dQnICXwwaYkTx9PQBtSux1j3KgX0p+VAUNoUFi7N6b0MeO8iEuLU1dUiVwlH/jtitg0W3AvSV+5gezTT2VQW3CVlz6IBTPI1Rfl/3ss18Tao0NiPUmXMIgreBCamXvb0aJm8JxVbhoFYqWVNVocBD+n1+NwhCRlZM5Kgaes5S2JuFnjTAqEYytlQqEySbaN57XYCDNVmQz2iViz/+npuR9SCGwnNvV/TNsKRwav+0NC0pbf3LNk/KL9/X5ccmPhB5Rl7IS/v1BBLYX/jYWVN0dJiSA7fVIr9Acr7IbxWEQ2Y2qh1wdhayi4FBUHY3weivYSU3uGZizsSGJP/N6DutBgS1aXd5X/CqfF7VzRaKF4cfLO4XxTYUEjOztUNMN2XmW0o+ULjQmbouRPs/PIFmh6rc+h42m6p4SkjcsIKOy+mPTeJqhOVmYoMzO8+7mmXDOjFwvi/w97sdmbjII8Zn2iR/N8GuY23vv5h6LQ3tQ5kTA4IuPbYCVLeggd4iMM6TgpuJn0aG7yo4tDFqMeadCVhP2Bp3JQa8r3B2IJstTTF1OtZCrInjSus9ViOiM02Iz3ZmyglsMonJDlWeJL5jKBgqPbLR82IDhIY4IO6SqoVsWu4iWuLW5/TM3fdfYG3Wdvu7Suz7/anLAaMQEzKhObwgDdKmv4PkF75frex969CB1pQqSVnXmz4GrtxVUzWtlflaTSdSegpUXWLhG+jUNKTu+ptxDNM/JBxRNLSzdvsGbkI0qycOCliVpKkkvuiBGtiDWNax6KhV4/oRjkEkTRks9Xeko+q3uY4B//AGxsotsVhF5vhUDTOl5IX7a7wCPtbTGiaR79eprRzGnP9yP38djVrvXprJFU8P7GUr/f2qJt2jDYuCkaqAMsfjdu6YHitjj3ty4vrASgxJ0vsroWhjgiCwgASqM7GnweHSHy5/OZK8jCZX+g+B63Mu4ec+/nNnjvuLqBBZN/FSzXU5fVmYznfPaqW+1Xep+Aj1yGk3L3tvnKLc3sZ1HAJQEjud5dbME6e0JGxh5xOCnzWUR+YL/96KJAcgkxDJ1DxxHv0Uu/5kO5InOsPjs4YKuzqD4nUmGsFsJzTxG626wdGXJMO4YCRKkKtnNeWqMaslM3paN19/tTWyEbaDqc5mVzYLIb3Mzju+OV4GniDeVIvSIsXK5aFGj1PEhfCprQCqUzdNhFU8hF4kUVhn9dp0ExveT7btHSMlEZAWHRkDuLqaImpQkjYmwt90cxtdZwQvjTDtsFmQrvcSp8n1K3P5PwZpVtIw2UHpx+NjE8ZYwOozpXl/oOMzVTB8mi1dQGFkpac9cwnzCZof0ub4iutBeKc4WeEOytvY+CY7hc+/ncCprZ08nlkQarQV7jhfJj658GfBMLGzJtYkCrHwi/AoseIXa5W7eX+lz7O92H2M5QnEkPStQ9lsz2VkYA==-----END ENCRYPTED PRIVATE KEY-----"
+        13) "occurred_at"
+        14) "1693313286544243035"
+        15) "thing_id"
+        16) "dc82d6bf-973b-4582-9806-0230cee11c20"
+        17) "content"
+        18) "{   \"server\": {     \"address\": \"127.0.0.1\",     \"port\": 8080   },   \"database\": {     \"host\": \"localhost\",     \"port\": 5432,     \"username\": \"user\",     \"password\": \"password\",     \"dbname\": \"mydb\"   },   \"logging\": {     \"level\": \"info\",     \"file\": \"app.log\"   } }"
+        19) "owner"
+        20) "64fd20bf-e8fb-46bf-9b64-2a6572eda21b"
+        21) "external_id"
+        22) "209327A2FA2D47E3B05F118D769DC521"
+        23) "client_key"
+        24) "-----BEGIN ENCRYPTED PRIVATE KEY-----MIIFHDBOBgkqhkiG9w0BBQ0wQTApBgkqhkiG9w0BBQwwHAQIc+VAU9JPnIkCAggAMAwGCCqGSIb3DQIJBQAwFAYIKoZIhvcNAwcECImSB+9qZ8dmBIIEyBW/rZlECWnEcMuTXhfJFe+3HP4rV+TXEEuigwCbtVPHWXoZj7KqGiOFgFaDL5Ne/GRwVD6geaTeQVl3aoHzo8mY0yuX2L36Ho2yHF/Bw89WT3hgP0lZ1lVO7O7n8DwybOaoJ+1S3akyb6OPbqcxJou1IGzKV1kz77R8V8nOFSd1BOepNbanGxVG8Jkgc37dQnICXwwaYkTx9PQBtSux1j3KgX0p+VAUNoUFi7N6b0MeO8iEuLU1dUiVwlH/jtitg0W3AvSV+5gezTT2VQW3CVlz6IBTPI1Rfl/3ss18Tao0NiPUmXMIgreBCamXvb0aJm8JxVbhoFYqWVNVocBD+n1+NwhCRlZM5Kgaes5S2JuFnjTAqEYytlQqEySbaN57XYCDNVmQz2iViz/+npuR9SCGwnNvV/TNsKRwav+0NC0pbf3LNk/KL9/X5ccmPhB5Rl7IS/v1BBLYX/jYWVN0dJiSA7fVIr9Acr7IbxWEQ2Y2qh1wdhayi4FBUHY3weivYSU3uGZizsSGJP/N6DutBgS1aXd5X/CqfF7VzRaKF4cfLO4XxTYUEjOztUNMN2XmW0o+ULjQmbouRPs/PIFmh6rc+h42m6p4SkjcsIKOy+mPTeJqhOVmYoMzO8+7mmXDOjFwvi/w97sdmbjII8Zn2iR/N8GuY23vv5h6LQ3tQ5kTA4IuPbYCVLeggd4iMM6TgpuJn0aG7yo4tDFqMeadCVhP2Bp3JQa8r3B2IJstTTF1OtZCrInjSus9ViOiM02Iz3ZmyglsMonJDlWeJL5jKBgqPbLR82IDhIY4IO6SqoVsWu4iWuLW5/TM3fdfYG3Wdvu7Suz7/anLAaMQEzKhObwgDdKmv4PkF75frex969CB1pQqSVnXmz4GrtxVUzWtlflaTSdSegpUXWLhG+jUNKTu+ptxDNM/JBxRNLSzdvsGbkI0qycOCliVpKkkvuiBGtiDWNax6KhV4/oRjkEkTRks9Xeko+q3uY4B//AGxsotsVhF5vhUDTOl5IX7a7wCPtbTGiaR79eprRzGnP9yP38djVrvXprJFU8P7GUr/f2qJt2jDYuCkaqAMsfjdu6YHitjj3ty4vrASgxJ0vsroWhjgiCwgASqM7GnweHSHy5/OZK8jCZX+g+B63Mu4ec+/nNnjvuLqBBZN/FSzXU5fVmYznfPaqW+1Xep+Aj1yGk3L3tvnKLc3sZ1HAJQEjud5dbME6e0JGxh5xOCnzWUR+YL/96KJAcgkxDJ1DxxHv0Uu/5kO5InOsPjs4YKuzqD4nUmGsFsJzTxG626wdGXJMO4YCRKkKtnNeWqMaslM3paN19/tTWyEbaDqc5mVzYLIb3Mzju+OV4GniDeVIvSIsXK5aFGj1PEhfCprQCqUzdNhFU8hF4kUVhn9dp0ExveT7btHSMlEZAWHRkDuLqaImpQkjYmwt90cxtdZwQvjTDtsFmQrvcSp8n1K3P5PwZpVtIw2UHpx+NjE8ZYwOozpXl/oOMzVTB8mi1dQGFkpac9cwnzCZof0ub4iutBeKc4WeEOytvY+CY7hc+/ncCprZ08nlkQarQV7jhfJj658GfBMLGzJtYkCrHwi/AoseIXa5W7eX+lz7O92H2M5QnEkPStQ9lsz2VkYA==-----END ENCRYPTED PRIVATE KEY-----"
+    ```
+
+2. In Nats Jet Streams
+
+    ```nats
+    Subject: events.mainflux.bootstrap Received: 2023-10-11T19:17:46+03:00
+
+    {"client_cert":"-----BEGIN CERTIFICATE-----\nMIIEATCCAumgAwIBAgIUNl+p3eaPJsZRFvW/u5AGBLgx7YMwDQYJKoZIhvcNAQEL\nBQAwLjEsMCoGA1UEAxMjbWFpbmZsdXguY29tIEludGVybWVkaWF0ZSBBdXRob3Jp\ndHkwHhcNMjMxMDExMTYwMDQ0WhcNMjMxMTEwMTYwMTE0WjAvMS0wKwYDVQQDEyQ1\nNmRhNGU5NC0zZDFjLTRhMGQtYTNmNC1hNTdkZDBhNTVkN2IwggEiMA0GCSqGSIb3\nDQEBAQUAA4IBDwAwggEKAoIBAQCt3dFuSvEtihmHKBNCe8AUI/xTJn+JCUF90+ZY\njoz8hWVwd/UhJQKTblBhWL/osGOrr3PItcCVZ1JDaGQMQzhtaPYnBbwJDwMTbcey\nlb/E6O/DD4UCqWpjQjYhc0/z98oM70E+Szs6yp+68qYIGQDH669P91TaURtuGGMr\n8nLN6fQTb9mVZX1L3ps8zHoxb+i7oVhLmjGeGXjf3HP4U+L/hwYhZ/gqqXYZJli6\nR1j5BxJuk1aVKqwrm2qbuFYhWI7Wl6ZEoEk2Q3FV1onzxcVHB5xBacDcNHhyQmoE\nhIg4lt1DTaUKRxlZqbhJQtLrrCeI8NCvEpC/dh1eBwddIxKbAgMBAAGjggEUMIIB\nEDAOBgNVHQ8BAf8EBAMCA6gwHQYDVR0lBBYwFAYIKwYBBQUHAwEGCCsGAQUFBwMC\nMB0GA1UdDgQWBBTcmEIW7knfrwBTyBu6WwycgGqzwTAfBgNVHSMEGDAWgBQMxD1V\nt+J/aShmUQJJHmdmmZ/fXDA7BggrBgEFBQcBAQQvMC0wKwYIKwYBBQUHMAKGH2h0\ndHA6Ly92YXVsdDo4MjAwL3YxL3BraV9pbnQvY2EwLwYDVR0RBCgwJoIkNTZkYTRl\nOTQtM2QxYy00YTBkLWEzZjQtYTU3ZGQwYTU1ZDdiMDEGA1UdHwQqMCgwJqAkoCKG\nIGh0dHA6Ly92YXVsdDo4MjAwL3YxL3BraV9pbnQvY3JsMA0GCSqGSIb3DQEBCwUA\nA4IBAQCiCS+dPhXS/upfMieFbt8+QmYQFZ82Ct2oTsDTBaDczE7MiLxrl5iKbynk\nT47y+hyvWFIb31BhrIrS6mRR+9IoJdmje3KxyvNr/TtSw7T4spbfRo30uk2flnA0\nDhJv3bzcYRwjaLdBcZTUS0GETqztdqMThJIY2EAfhfKDM0ecM4tF2c8/RT14BpPO\nEVCUX69A0k6p80xTfmyhvKIfiMsJIcqsHuOiEsiXwgNNUqc332bIV+fQW+vXK8eS\nstp7N2v6axo016wf3qgEUPdPC0sPMHlwIc3s6ddZOoatk6LKH1nW2gIguUH4Ws7s\nAN5Cs0h2D+AWi+IJpDuUzvgrd4/3\n-----END CERTIFICATE-----","client_key":"-----BEGIN RSA PRIVATE KEY-----\nMIIEpQIBAAKCAQEArd3RbkrxLYoZhygTQnvAFCP8UyZ/iQlBfdPmWI6M/IVlcHf1\nISUCk25QYVi/6LBjq69zyLXAlWdSQ2hkDEM4bWj2JwW8CQ8DE23HspW/xOjvww+F\nAqlqY0I2IXNP8/fKDO9BPks7OsqfuvKmCBkAx+uvT/dU2lEbbhhjK/Jyzen0E2/Z\nlWV9S96bPMx6MW/ou6FYS5oxnhl439xz+FPi/4cGIWf4Kql2GSZYukdY+QcSbpNW\nlSqsK5tqm7hWIViO1pemRKBJNkNxVdaJ88XFRwecQWnA3DR4ckJqBISIOJbdQ02l\nCkcZWam4SULS66wniPDQrxKQv3YdXgcHXSMSmwIDAQABAoIBAGFvWKmdd/EUXl/+\n1mRAo5Dl5cbXYUtzk28nbAQexuXQ/9r6brYHXp0uif8z1EBbcU/KgHFvYaCYiWJb\nQw4YMawm0SNnNExDTG7765iqERERlSPUM68dMBC2D03JqHnJWELNZdu6H1RALyl+\nSAtrr6NZ8iI3MicyotOc+R6svSelUigaTKYGadWKNQJjOpLpFhu0D87iTdQ2dJyU\nJKGuB1YCp3rTNXTLuq/omMDyqJYPCNXbKW78bM9UExz0suYJi6URW/aQIK/A8CUh\nXAm40C2aQ8d5tHONsIGB9BlzOkHrXB2CvHKkQWl/TEfo6qcFI6qhx1Gx72SOK7F1\nAE0dDQkCgYEA5Vqq4/LrY/uzjTN918IYrcSi3gr0NoUY/KuZverBZdSR/fS0vMHX\nQ/X7XGE2gOGrzqWN2dtEAmMrisfo9zUlimU+7SWeetOKa5JTtmSZGFWvCrvsnWkH\narZT59t3yJ7YqwbjRmaSC3Uq7veFBsIEKbszm0eeMCtNcSLuykmBM/8CgYEAwhDd\nS3OLj4J62PlSjyBHSDP2Zv5sG6jXDDRPo8HQWcWoOq2stnwgrblkEXpsSpaRaUP8\nQabEtkobckYx3OK6/0Q4c0A6I4lHQpm2m6K2o+8lsG/OwwNplXA+kpYuqUYEjgBl\nFiGblZCtyDPdd4PnHDBjKLUzOYxgRDxfVLLKcWUCgYEAm4+ypyellswqzZPmQAhL\nOtlLanVdjPkbqI0vmwv2Hv5eAzUNvZVwT40w70iUcjgekuvhWamJ6GChMOFE1x96\nFfN0Cd9hLYf7s9is5OI4oLPFJO+vnliVikCein1mMnHjHaVvU9nQJutSsoC5/opr\nzm5Fo4Wg+qT0Qs9hzVyrwLsCgYEAoTk9f6d4dDskMAnByuI4FgYFWL9ZtQjpz1vO\nJe+oVkxdXJJYgCpTQ8BXICYivTylhVxTv376wa6DasZiOm2qiNN2Slk7c7ZimzP0\nfwwIy9yr5Q6eKWk2WE4tzb4y+bIPqqEtWduF1BWkKkTcYqQUZljUqEcRTWgPueCm\nGkmG4fkCgYEAk1rI1pAdfdxLrKTGu2WRfr0UgNx/eUjVuL5GT3Bu092QLXwFc3Py\nsIu7vHRQY1ASGRDvlyx76Uc+mtmXhowwBL1fTiKcfgD3SbqRTw8rwJbF6MNB7fOH\nSWlA4wuzpwVvg0j2DoY5LbwMN7AbrGS451E14xUwpEWdIDChWw14qag=\n-----END RSA PRIVATE KEY-----","external_id":"889","name":"ariadne","occurred_at":1697041066438195084,"operation":"config.create","owner":"1058552c-3f6a-4bfe-827e-ecbcdc95d344","state":"0","thing_id":"bb569875-a268-4ed4-b382-b88b181c61f3"}
+    ```
 
 ### Configuration update event
 
@@ -1554,17 +1564,27 @@ Whenever certificate is updated, `bootstrap` service will generate and publish n
 
 Whenever configuration list is fetched, `bootstrap` service will generate new `list` event. This event will have the following format:
 
-```redis
-1) "1693339274766-0"
-2) 1) "occurred_at"
-    2) "1693339274766130265"
-    3) "offset"
-    4) "0"
-    5) "limit"
-    6) "10"
-    7) "operation"
-    8) "config.list"
-```
+1. In Redis Streams
+
+    ```redis
+    1) "1693339274766-0"
+    2) 1) "occurred_at"
+        2) "1693339274766130265"
+        3) "offset"
+        4) "0"
+        5) "limit"
+        6) "10"
+        7) "operation"
+        8) "config.list"
+    ```
+
+2. In Nats JetStreams
+
+    ```nats
+    Subject: events.mainflux.bootstrap Received: 2023-10-11T19:23:05+03:00
+
+    {"external_id":"879","name":"aphrodite","occurred_at":1697042445469239430,"operation":"config.list","owner":"1058552c-3f6a-4bfe-827e-ecbcdc95d344","state":"0","thing_id":"1f9c0d1d-0d6b-4a83-83b9-50845e557a85"}
+    ```
 
 ### Configuration view event
 
@@ -1598,15 +1618,25 @@ Whenever configuration is viewed, `bootstrap` service will generate new `view` e
 
 Whenever configuration is removed, `bootstrap` service will generate and publish new `remove` event. This event will have the following format:
 
-```redis
-1) "1693339203771-0"
-2) 1) "occurred_at"
-    2) "1693339203771705590"
-    3) "thing_id"
-    4) "853f37b9-513a-41a2-a575-bbaa746961a6"
-    5) "operation"
-    6) "config.remove"
-```
+1. In Redis Streams 
+
+    ```redis
+    1) "1693339203771-0"
+    2) 1) "occurred_at"
+        2) "1693339203771705590"
+        3) "thing_id"
+        4) "853f37b9-513a-41a2-a575-bbaa746961a6"
+        5) "operation"
+        6) "config.remove"
+    ```
+
+2. In Nats JetStreams
+
+    ```nats
+    Subject: events.mainflux.bootstrap Received: 2023-10-11T19:24:50+03:00
+
+    {"occurred_at":1697041490458439515,"operation":"config.remove","thing_id":"6a08150a-cd19-460f-99c9-a760ee50aed3"}
+    ```
 
 ### Configuration remove handler
 
@@ -1655,17 +1685,27 @@ Whenever thing is bootstrapped, `bootstrap` service will generate and publish ne
 
 Whenever thing's state changes, `bootstrap` service will generate and publish new `change state` event. This event will have the following format:
 
-```redis
-1) "1555405294806-0"
-2) 1) "thing_id"
-   2) "63a110d4-2b77-48d2-aa46-2582681eeb82"
-   3) "state"
-   4) "0"
-   5) "timestamp"
-   6) "1555405294"
-   7) "operation"
-   8) "thing.state_change"
-```
+1. In Redis Streams
+
+    ```redis
+    1) "1555405294806-0"
+    2) 1) "thing_id"
+    2) "63a110d4-2b77-48d2-aa46-2582681eeb82"
+    3) "state"
+    4) "0"
+    5) "timestamp"
+    6) "1555405294"
+    7) "operation"
+    8) "thing.state_change"
+    ```
+
+2. In Nats JetStreams
+
+    ```nats
+    Subject: events.mainflux.bootstrap Received: 2023-10-11T19:26:31+03:00
+
+    {"occurred_at":1697041591648042067,"operation":"thing.change_state","state":"0","thing_id":"1f9c0d1d-0d6b-4a83-83b9-50845e557a85"}
+    ```
 
 ### Thing update connections event
 
@@ -1728,33 +1768,54 @@ Events that are coming from MQTT adapter have following fields:
 
 If you want to integrate through [docker-compose.yml][mf-docker-compose] you can use `mainflux-es-redis` service. Just connect to it and consume events from Redis Stream named `mainflux.mqtt`.
 
-Example of connect event:
+Examples of connect event:
 
-```redis
-1) 1) "1693312937469-0"
-2) 1) "thing_id"
-    1) "76a58221-e319-492a-be3e-b3d15631e92a"
-    2) "event_type"
-    3) "connect"
-    4) "instance"
-    5) ""
-    6) "occurred_at"
-    7) "1693312937469719069"
-```
+1. In Redis Streams
+
+    ```redis
+    1) 1) "1693312937469-0"
+    2) 1) "thing_id"
+        1) "76a58221-e319-492a-be3e-b3d15631e92a"
+        2) "event_type"
+        3) "connect"
+        4) "instance"
+        5) ""
+        6) "occurred_at"
+        7) "1693312937469719069"
+    ```
+
+2. In Nats JetStreams
+
+    ```nats
+    Subject: events.mainflux.mqtt Received: 2023-10-09T14:57:36+03:00
+
+    {"event_type":"connect","instance":"","occurred_at":1696852656381976408,"thing_id":"9b23fec0-41a2-44ed-af13-7c54706b3291"}
+    ```
 
 Example of disconnect event:
 
-```redis
-1) 1) "1693312937471-0"
-2) 1) "thing_id"
-    2) "76a58221-e319-492a-be3e-b3d15631e92a"
-    3) "event_type"
-    4) "disconnect"
-    5) "instance"
-    6) ""
-    7) "occurred_at"
-    8) "1693312937471064150"
-```
+1. In Redis Streams
+
+    ```redis
+    1) 1) "1693312937471-0"
+    2) 1) "thing_id"
+        2) "76a58221-e319-492a-be3e-b3d15631e92a"
+        3) "event_type"
+        4) "disconnect"
+        5) "instance"
+        6) ""
+        7) "occurred_at"
+        8) "1693312937471064150"
+    ```
+
+2. In Nats JetStreams
+
+    ```nats
+    Subject: events.mainflux.mqtt Received: 2023-10-09T14:57:36+03:00
+
+    {"event_type":"disconnect","instance":"","occurred_at":1696852656435238414,"thing_id":"9b23fec0-41a2-44ed-af13-7c54706b3291"}
+    ```
+
 
 [redis-streams]: https://redis.io/topics/streams-intro
 [mf-docker-compose]: https://github.com/absmach/magistrala/blob/master/docker/docker-compose.yml
