@@ -68,6 +68,12 @@ As you can see from this example, every odd field represents field name while ev
 
     {"created_at":"2023-10-05T12:41:04.743529Z","id":"0a5f2e21-1a8b-460e-bfa9-732e570df095","identity":"wizardly_hopper@email.com","metadata":"e30=","name":"wizardly_hopper","occurred_at":1696509664755440542,"operation":"user.create","status":"enabled"}
     ```
+
+3. In RabbitMQ Streams
+    ```
+    {"created_at":"2023-10-17T08:43:52.329385Z","id":"b2941bd6-ca98-4c56-8d94-05fbf6a967c4","identity":"-Comley-Hipp@email.com","metadata":"e30=","name":"-Skurka-Brule","occurred_at":1697532232341083347,"operation":"user.create","status":"enabled"}
+    ```
+
 ### User view event
 
 Whenever user is viewed, `users` service will generate new `view` event. This event will have the following format:
@@ -101,6 +107,12 @@ Whenever user is viewed, `users` service will generate new `view` event. This ev
     Subject: events.mainflux.users Received: 2023-10-05T18:38:40+03:00
 
     {"created_at":"2023-10-05T15:38:40.219889Z","id":"d4baecb8-adfa-4c7c-8257-deea5d7f9dba","identity":"-Hilling-Karole@email.com","metadata":"e30=","name":"-Doud-Varley","occurred_at":1696520320355145103,"operation":"user.view","owner":"3264e965-3fe5-4d4e-a857-48de43551d2e","status":"enabled"}
+    ```
+
+3. In rabbitmq streams
+
+    ```
+    {"created_at":"2023-10-17T08:43:52.441962Z","id":"00397996-f7e0-4035-9271-3e48ee66d525","identity":"-Yanish-Lanctot@email.com","metadata":"e30=","name":"-Busbey-Vadala","occurred_at":1697532237472321186,"operation":"user.view","owner":"b2941bd6-ca98-4c56-8d94-05fbf6a967c4","status":"enabled"}
     ```
 
 ### User view profile event
@@ -167,6 +179,12 @@ Whenever user list is fetched, `users` service will generate new `list` event. T
     {"limit":10,"occurred_at":1696520320382884278,"offset":0,"operation":"user.list","status":"enabled","total":0}
     ```
 
+3. In rabbitmq streams
+
+    ```
+    {"limit":10,"occurred_at":1697532237475179227,"offset":0,"operation":"user.list","status":"enabled","total":0}
+    ```
+
 ### User list by group event
 
 Whenever user list by group is fetched, `users` service will generate new `list_by_group` event. This event will have the following format:
@@ -213,6 +231,12 @@ Whenever user is identified, `users` service will generate new `identify` event.
     {"occurred_at":1696507882455392181,"operation":"user.identify","user_id":"733005f5-7a69-4da3-adac-1ac3bd6fdedf"}
     ```
 
+3. In rabbitmq streams
+
+    ```
+    {"occurred_at":1697532232453091076,"operation":"user.identify","user_id":"b2941bd6-ca98-4c56-8d94-05fbf6a967c4"}
+    ```
+
 ### User generate reset token event
 
 Whenever user reset token is generated, `users` service will generate new `generate_reset_token` event. This event will have the following format:
@@ -252,6 +276,13 @@ Whenever user token is issued, `users` service will generate new `issue_token` e
 
     {"identity":"admin@example.com","occurred_at":1696507142218064965,"operation":"user.issue_token"}
     ```
+
+3. In rabbitmq streams
+
+    ```
+    {"identity":"-Comley-Hipp@email.com","occurred_at":1697532232391996417,"operation":"user.issue_token"}
+    ```
+
 ### User refresh token event
 
 Whenever user token is refreshed, `users` service will generate new `refresh_token` event. This event will have the following format:
@@ -329,6 +360,13 @@ Whenever user instance is updated, `users` service will generate new `update` ev
 
     {"created_at":"2023-10-05T15:38:40.219889Z","id":"d4baecb8-adfa-4c7c-8257-deea5d7f9dba","identity":"-Hilling-Karole@email.com","metadata":"eyJVcGRhdGUiOiJBbGVncmlhLVdvbGwifQ==","name":"Rhude-Parrillo","occurred_at":1696520320510448519,"operation":"user.update","status":"enabled","updated_at":"2023-10-05T15:38:40.500637Z","updated_by":"3264e965-3fe5-4d4e-a857-48de43551d2e"}
     ```
+
+3. In rabbitmq streams
+
+    ```
+    {"created_at":"2023-10-17T08:43:52.441962Z","id":"00397996-f7e0-4035-9271-3e48ee66d525","identity":"-Yanish-Lanctot@email.com","metadata":"eyJVcGRhdGUiOiJWZW5hYmxlcy1IeW1hbiJ9","name":"Eicholtz-Stallabrass","occurred_at":1697532242530064639,"operation":"user.update","status":"enabled","updated_at":"2023-10-17T08:44:02.519652Z","updated_by":"b2941bd6-ca98-4c56-8d94-05fbf6a967c4"}
+    ```
+
 ### User update identity event
 
 Whenever user identity is updated, `users` service will generate new `update_identity` event. This event will have the following format:
@@ -365,6 +403,12 @@ Whenever user identity is updated, `users` service will generate new `update_ide
     Subject: events.mainflux.users Received: 2023-10-05T18:38:40+03:00
 
     {"created_at":"2023-10-05T15:38:40.219889Z","id":"d4baecb8-adfa-4c7c-8257-deea5d7f9dba","identity":"Andes-Bahgat","metadata":"eyJVcGRhdGUiOiJBbGVncmlhLVdvbGwifQ==","name":"Rhude-Parrillo","occurred_at":1696520320527730565,"operation":"user.update_identity","status":"enabled","updated_at":"2023-10-05T15:38:40.518477Z","updated_by":"3264e965-3fe5-4d4e-a857-48de43551d2e"}
+    ```
+
+3. In rabbitmq streams
+
+    ```
+    {"created_at":"2023-10-17T08:43:52.441962Z","id":"00397996-f7e0-4035-9271-3e48ee66d525","identity":"Cris-Unkles","metadata":"eyJVcGRhdGUiOiJWZW5hYmxlcy1IeW1hbiJ9","name":"Eicholtz-Stallabrass","occurred_at":1697532242534643742,"operation":"user.update_identity","status":"enabled","updated_at":"2023-10-17T08:44:02.532198Z","updated_by":"b2941bd6-ca98-4c56-8d94-05fbf6a967c4"}
     ```
 
 ### User update tags event
@@ -405,6 +449,12 @@ Whenever user tags are updated, `users` service will generate new `update_tags` 
     Subject: events.mainflux.users Received: 2023-10-05T18:38:40+03:00
 
     {"created_at":"2023-10-05T15:38:40.219889Z","id":"d4baecb8-adfa-4c7c-8257-deea5d7f9dba","identity":"Andes-Bahgat","metadata":"eyJVcGRhdGUiOiJBbGVncmlhLVdvbGwifQ==","name":"Rhude-Parrillo","occurred_at":1696520320537588492,"operation":"user.update_tags","status":"enabled","tags":"[Tischler-Persechino]","updated_at":"2023-10-05T15:38:40.533159Z","updated_by":"3264e965-3fe5-4d4e-a857-48de43551d2e"}
+    ```
+
+3. In rabbitmq streams
+
+    ```
+    {"created_at":"2023-10-17T08:43:52.441962Z","id":"00397996-f7e0-4035-9271-3e48ee66d525","identity":"Cris-Unkles","metadata":"eyJVcGRhdGUiOiJWZW5hYmxlcy1IeW1hbiJ9","name":"Eicholtz-Stallabrass","occurred_at":1697532242539607155,"operation":"user.update_tags","status":"enabled","tags":"[Jagdish-Daneshzadeh]","updated_at":"2023-10-17T08:44:02.536891Z","updated_by":"b2941bd6-ca98-4c56-8d94-05fbf6a967c4"}
     ```
 
 ### User remove event
@@ -450,6 +500,13 @@ Whenever user instance changes state in the system, `users` service will generat
 
     {"id":"0a5f2e21-1a8b-460e-bfa9-732e570df095","occurred_at":1696517969187562377,"operation":"user.remove","status":"disabled","updated_at":"0001-01-01T00:00:00Z","updated_by":""}
     ```
+
+3. In rabbitmq streams
+
+    ```
+    {"id":"00397996-f7e0-4035-9271-3e48ee66d525","occurred_at":1697532242544658933,"operation":"user.remove","status":"disabled","updated_at":"2023-10-17T08:44:02.536891Z","updated_by":"b2941bd6-ca98-4c56-8d94-05fbf6a967c4"}
+    ```
+
 ### Group create event
 
 Whenever group is created, `users` service will generate new `create` event. This event will have the following format:
@@ -484,6 +541,12 @@ As you can see from this example, every odd field represents field name while ev
     Subject: events.mainflux.users Received: 2023-10-05T16:12:00+03:00
 
     {"created_at":"2023-10-05T13:12:00.88713Z","id":"f565885c-826d-4c4c-9277-a3c8537aadff","metadata":"e30=","name":"cyclopes","occurred_at":1696511520897093737,"operation":"group.create","owner":"97466511-6317-4c98-8d58-7bd78bcaf587","status":"enabled"}
+    ```
+
+3. In rabbitmq streams
+
+    ```
+    {"created_at":"2023-10-17T08:43:52.447093Z","id":"d9c550f9-e644-453b-af5b-1ab7e9a99d9d","metadata":"e30=","name":"-Zarella-Knobeloch","occurred_at":1697532232450859819,"operation":"group.create","owner":"b2941bd6-ca98-4c56-8d94-05fbf6a967c4","status":"enabled"}
     ```
 
 ### Group update event
@@ -524,6 +587,12 @@ Whenever group instance is updated, `users` service will generate new `update` e
     {"created_at":"2023-10-05T15:38:40.22859Z","id":"cabccc8d-937b-4d92-832b-48d7a466e19e","metadata":"eyJVcGRhdGUiOiJSZWdvLVJlZHdheSJ9","name":"Reiger-Cheal","occurred_at":1696520320573615888,"operation":"group.update","owner":"3264e965-3fe5-4d4e-a857-48de43551d2e","status":"enabled","updated_at":"2023-10-05T15:38:40.56848Z","updated_by":"3264e965-3fe5-4d4e-a857-48de43551d2e"}
     ```
 
+3. In rabbitmq streams
+
+    ```
+    {"created_at":"2023-10-17T08:43:52.447093Z","id":"d9c550f9-e644-453b-af5b-1ab7e9a99d9d","metadata":"eyJVcGRhdGUiOiJCaW5ueS1TYXZhZGtvdWhpIn0=","name":"Knick-Doskas","occurred_at":1697532242554817001,"operation":"group.update","owner":"b2941bd6-ca98-4c56-8d94-05fbf6a967c4","status":"enabled","updated_at":"2023-10-17T08:44:02.552421Z","updated_by":"b2941bd6-ca98-4c56-8d94-05fbf6a967c4"}
+    ```
+
 ### Group view event
 
 Whenever group is viewed, `users` service will generate new `view` event. This event will have the following format:
@@ -558,6 +627,12 @@ Whenever group is viewed, `users` service will generate new `view` event. This e
     {"created_at":"2023-10-05T15:38:40.22859Z","id":"cabccc8d-937b-4d92-832b-48d7a466e19e","metadata":"e30=","name":"-Conneely-Chiang","occurred_at":1696520320392002702,"operation":"group.view","owner":"3264e965-3fe5-4d4e-a857-48de43551d2e","status":"enabled"}
     ```
 
+3. In rabbitmq streams
+
+    ```
+    {"created_at":"2023-10-17T08:43:52.447093Z","id":"d9c550f9-e644-453b-af5b-1ab7e9a99d9d","metadata":"e30=","name":"-Zarella-Knobeloch","occurred_at":1697532237477518526,"operation":"group.view","owner":"b2941bd6-ca98-4c56-8d94-05fbf6a967c4","status":"enabled"}
+    ```
+
 ### Group list event
 
 Whenever group list is fetched, `users` service will generate new `list` event. This event will have the following format:
@@ -586,6 +661,12 @@ Whenever group list is fetched, `users` service will generate new `list` event. 
     Subject: events.mainflux.users Received: 2023-10-05T19:41:01+03:00
 
     {"limit":100,"occurred_at":1696524061330756963,"offset":0,"operation":"group.list","status":"all","total":0}
+    ```
+
+3. In rabbitmq streams
+
+    ```
+    {"limit":10,"occurred_at":1697532237481188226,"offset":0,"operation":"group.list","status":"enabled","total":0}
     ```
 
 ### Group list by user event
@@ -668,6 +749,12 @@ Whenever group instance changes state in the system, `users` service will genera
     {"id":"cabccc8d-937b-4d92-832b-48d7a466e19e","occurred_at":1696520320592509139,"operation":"group.remove","status":"enabled","updated_at":"2023-10-05T15:38:40.56848Z","updated_by":"3264e965-3fe5-4d4e-a857-48de43551d2e"}
     ```
 
+3. In rabbitmq streams
+
+    ```
+    {"id":"d9c550f9-e644-453b-af5b-1ab7e9a99d9d","occurred_at":1697532242559729288,"operation":"group.remove","status":"disabled","updated_at":"2023-10-17T08:44:02.552421Z","updated_by":"b2941bd6-ca98-4c56-8d94-05fbf6a967c4"}
+    ```
+
 ### Policy authorize event
 
 Whenever policy is authorized, `users` service will generate new `authorize` event. This event will have the following format:
@@ -694,6 +781,12 @@ Whenever policy is authorized, `users` service will generate new `authorize` eve
     Subject: events.mainflux.users Received: 2023-10-05T15:12:07+03:00
 
     {"action":"c_list","entity_type":"client","object":"things","occurred_at":1696507927648459930,"operation":"policies.authorize"}
+    ```
+
+3. In rabbitmq streams
+
+    ```
+    {"action":"g_list","entity_type":"group","object":"things","occurred_at":1697536686571995884,"operation":"policies.authorize"}
     ```
 
 ### Policy add event
@@ -728,65 +821,95 @@ Whenever policy is added, `users` service will generate new `add` event. This ev
     {"actions":"[m_read]","object":"f565885c-826d-4c4c-9277-a3c8537aadff","occurred_at":1696511601827118557,"operation":"policies.add","subject":"0a5f2e21-1a8b-460e-bfa9-732e570df095"}
     ```
 
+3. In rabbitmq streams
+
+    ```
+    {"actions":"[c_list,c_update,c_delete]","object":"d9c550f9-e644-453b-af5b-1ab7e9a99d9d","occurred_at":1697538038965204061,"operation":"policies.add","subject":"df0a29f6-df00-46e8-bde5-cbdf418510da"}
+    ```
+
 ### Policy update event
 
 Whenever policy is updated, `users` service will generate new `update` event. This event will have the following format:
 
-```redis
-1) "1693312500101-0"
-2)  1) "updated_at"
-    2) "2023-08-29T12:35:00.095028Z"
-    3) "occurred_at"
-    4) "1693312500101367995"
-    5) "operation"
-    6) "policies.update"
-    7) "owner_id"
-    8) "fe2e5de0-9900-4ac5-b364-eae0c35777fb"
-    9) "subject"
-    10) "12510af8-b6a7-410d-944c-9feded199d6d"
-    11) "object"
-    12) "8a85e2d5-e783-43ee-8bea-d6d0f8039e78"
-    13) "actions"
-    14) "[g_add,c_list]"
-    15) "created_at"
-    16) "2023-08-29T12:17:50.715541Z"
-```
+1. In Redis Streams
+
+    ```redis
+    1) "1693312500101-0"
+    2)  1) "updated_at"
+        2) "2023-08-29T12:35:00.095028Z"
+        3) "occurred_at"
+        4) "1693312500101367995"
+        5) "operation"
+        6) "policies.update"
+        7) "owner_id"
+        8) "fe2e5de0-9900-4ac5-b364-eae0c35777fb"
+        9) "subject"
+        10) "12510af8-b6a7-410d-944c-9feded199d6d"
+        11) "object"
+        12) "8a85e2d5-e783-43ee-8bea-d6d0f8039e78"
+        13) "actions"
+        14) "[g_add,c_list]"
+        15) "created_at"
+        16) "2023-08-29T12:17:50.715541Z"
+    ```
+
+2. In rabbitmq streams
+
+    ```
+    {"actions":"[g_list]","object":"0f551d14-0efe-4b5e-bc96-b9cd834e91d1","occurred_at":1697538056924321702,"operation":"policies.update","subject":"bd3f51f6-d84e-41d9-8205-f725c6b5e774"}
+    ```
 
 ### Policy remove event
 
 Whenever policy is removed, `users` service will generate new `remove` event. This event will have the following format:
 
-```redis
-1) "1693312590631-0"
-2)  1) "occurred_at"
-    2) "1693312590631691388"
-    3) "operation"
-    4) "policies.delete"
-    5) "subject"
-    6) "12510af8-b6a7-410d-944c-9feded199d6d"
-    7) "object"
-    8) "8a85e2d5-e783-43ee-8bea-d6d0f8039e78"
-    9) "actions"
-    10) "[g_add,c_list]"
-```
+1. In Redis Streams
+
+    ```redis
+    1) "1693312590631-0"
+    2)  1) "occurred_at"
+        2) "1693312590631691388"
+        3) "operation"
+        4) "policies.delete"
+        5) "subject"
+        6) "12510af8-b6a7-410d-944c-9feded199d6d"
+        7) "object"
+        8) "8a85e2d5-e783-43ee-8bea-d6d0f8039e78"
+        9) "actions"
+        10) "[g_add,c_list]"
+    ```
+
+2. In rabbitmq streams
+
+    ```
+    {"object":"0f551d14-0efe-4b5e-bc96-b9cd834e91d1","occurred_at":1697538064359063507,"operation":"policies.delete","subject":"bd3f51f6-d84e-41d9-8205-f725c6b5e774"}
+    ```
 
 ### Policy list event
 
 Whenever policy list is fetched, `things` service will generate new `list` event. This event will have the following format:
 
-```redis
-1) "1693312633649-0"
-2)  1) "operation"
-    2) "policies.list"
-    3) "total"
-    4) "0"
-    5) "limit"
-    6) "10"
-    7) "offset"
-    8) "0"
-    9) "occurred_at"
-    10) "1693312633649171129"
-```
+1. In Redis Streams
+
+    ```redis
+    1) "1693312633649-0"
+    2)  1) "operation"
+        2) "policies.list"
+        3) "total"
+        4) "0"
+        5) "limit"
+        6) "10"
+        7) "offset"
+        8) "0"
+        9) "occurred_at"
+        10) "1693312633649171129"
+    ```
+
+2. In rabbitmq streams
+
+    ```
+    {"limit":10,"occurred_at":1697536690236286573,"offset":0,"operation":"policies.list","total":0}
+    ```
 
 ## Things Service
 
@@ -848,6 +971,13 @@ As you can see from this example, every odd field represents field name while ev
 
     {"created_at":"2023-10-05T12:41:04.833207Z","id":"9745f2ea-f776-46b1-9b44-1cfd1ad4c6f1","metadata":"e30=","name":"d0","occurred_at":1696509664860397827,"operation":"thing.create","owner":"0a5f2e21-1a8b-460e-bfa9-732e570df095","status":"enabled"}
     ```
+
+3. In rabbitmq streams
+
+    ```
+    {"created_at":"2023-10-17T08:43:52.453621Z","id":"83c884cc-51b7-40ab-a98f-83ea93f4cdd6","metadata":"e30=","name":"-Maune-Tuttle","occurred_at":1697532232459167722,"operation":"thing.create","owner":"b2941bd6-ca98-4c56-8d94-05fbf6a967c4","status":"enabled"}
+    ```
+
 ### Thing update event
 
 Whenever thing instance is updated, `things` service will generate new `update` event. This event will have the following format:
@@ -884,6 +1014,12 @@ Whenever thing instance is updated, `things` service will generate new `update` 
     Subject: events.mainflux.things Received: 2023-10-05T18:38:40+03:00
 
     {"created_at":"2023-10-05T15:38:40.264564Z","id":"47540f84-029b-436f-89b5-3c10f87e302b","metadata":"eyJVcGRhdGUiOiJCZXJuYXJkLUJyaWNrZXkifQ==","name":"Bence-Jefferson","occurred_at":1696520320614766498,"operation":"thing.update","owner":"3264e965-3fe5-4d4e-a857-48de43551d2e","status":"enabled","updated_at":"2023-10-05T15:38:40.606662Z","updated_by":"3264e965-3fe5-4d4e-a857-48de43551d2e"}
+    ```
+
+3. In rabbitmq streams
+
+    ```
+    {"created_at":"2023-10-17T08:43:52.453621Z","id":"83c884cc-51b7-40ab-a98f-83ea93f4cdd6","metadata":"eyJVcGRhdGUiOiJTdGV2ZW5zb24tTW9udHNpb24ifQ==","name":"Marner-Shapiro","occurred_at":1697532242575070481,"operation":"thing.update","owner":"b2941bd6-ca98-4c56-8d94-05fbf6a967c4","status":"enabled","updated_at":"2023-10-17T08:44:02.571677Z","updated_by":"b2941bd6-ca98-4c56-8d94-05fbf6a967c4"}
     ```
 
 ### Thing update secret event
@@ -923,6 +1059,13 @@ Whenever thing secret is updated, `things` service will generate new `update_sec
 
     {"created_at":"2023-10-05T15:38:40.264564Z","id":"47540f84-029b-436f-89b5-3c10f87e302b","metadata":"eyJVcGRhdGUiOiJCZXJuYXJkLUJyaWNrZXkifQ==","name":"Bence-Jefferson","occurred_at":1696520320633637049,"operation":"thing.update_secret","owner":"3264e965-3fe5-4d4e-a857-48de43551d2e","status":"enabled","updated_at":"2023-10-05T15:38:40.625663Z","updated_by":"3264e965-3fe5-4d4e-a857-48de43551d2e"}
     ```
+
+3. In rabbitmq streams
+
+    ```
+    {"created_at":"2023-10-17T08:43:52.453621Z","id":"83c884cc-51b7-40ab-a98f-83ea93f4cdd6","metadata":"eyJVcGRhdGUiOiJTdGV2ZW5zb24tTW9udHNpb24ifQ==","name":"Marner-Shapiro","occurred_at":1697532242583980252,"operation":"thing.update_secret","owner":"b2941bd6-ca98-4c56-8d94-05fbf6a967c4","status":"enabled","updated_at":"2023-10-17T08:44:02.580896Z","updated_by":"b2941bd6-ca98-4c56-8d94-05fbf6a967c4"}
+    ```
+
 ### Thing update tags event
 
 Whenever thing tags are updated, `things` service will generate new `update_tags` event. This event will have the following format:
@@ -961,6 +1104,12 @@ Whenever thing tags are updated, `things` service will generate new `update_tags
     Subject: events.mainflux.things Received: 2023-10-05T18:38:40+03:00
 
     {"created_at":"2023-10-05T15:38:40.264564Z","id":"47540f84-029b-436f-89b5-3c10f87e302b","metadata":"eyJVcGRhdGUiOiJCZXJuYXJkLUJyaWNrZXkifQ==","name":"Bence-Jefferson","occurred_at":1696520320651750298,"operation":"thing.update_tags","owner":"3264e965-3fe5-4d4e-a857-48de43551d2e","status":"enabled","tags":"[Kac-Kimma]","updated_at":"2023-10-05T15:38:40.643285Z","updated_by":"3264e965-3fe5-4d4e-a857-48de43551d2e"}
+    ```
+
+3. In rabbitmq streams
+
+    ```
+    {"created_at":"2023-10-17T08:43:52.453621Z","id":"83c884cc-51b7-40ab-a98f-83ea93f4cdd6","metadata":"eyJVcGRhdGUiOiJTdGV2ZW5zb24tTW9udHNpb24ifQ==","name":"Marner-Shapiro","occurred_at":1697532242593091501,"operation":"thing.update_tags","owner":"b2941bd6-ca98-4c56-8d94-05fbf6a967c4","status":"enabled","tags":"[Donni-Planting]","updated_at":"2023-10-17T08:44:02.589939Z","updated_by":"b2941bd6-ca98-4c56-8d94-05fbf6a967c4"}
     ```
 
 ### Thing remove event
@@ -1011,6 +1160,12 @@ Whenever thing instance is removed from the system, `things` service will genera
     {"id":"47540f84-029b-436f-89b5-3c10f87e302b","occurred_at":1696520320692289306,"operation":"thing.remove","status":"enabled","updated_at":"2023-10-05T15:38:40.643285Z","updated_by":"3264e965-3fe5-4d4e-a857-48de43551d2e"}
     ```
 
+3. In rabbitmq streams
+
+    ```
+    {"id":"83c884cc-51b7-40ab-a98f-83ea93f4cdd6","occurred_at":1697532242603326333,"operation":"thing.remove","status":"disabled","updated_at":"2023-10-17T08:44:02.589939Z","updated_by":"b2941bd6-ca98-4c56-8d94-05fbf6a967c4"}
+    ```
+
 ### Thing view event
 
 Whenever thing is viewed, `things` service will generate new `view` event. This event will have the following format:
@@ -1045,6 +1200,12 @@ Whenever thing is viewed, `things` service will generate new `view` event. This 
     {"created_at":"2023-10-05T12:41:04.833207Z","id":"9745f2ea-f776-46b1-9b44-1cfd1ad4c6f1","metadata":"e30=","name":"d0","occurred_at":1696509720925490970,"operation":"thing.view","owner":"0a5f2e21-1a8b-460e-bfa9-732e570df095","status":"enabled"}
     ```
 
+3. In rabbitmq streams
+
+    ```
+    {"created_at":"2023-10-17T08:43:52.453621Z","id":"83c884cc-51b7-40ab-a98f-83ea93f4cdd6","metadata":"e30=","name":"-Maune-Tuttle","occurred_at":1697532237490995357,"operation":"thing.view","owner":"b2941bd6-ca98-4c56-8d94-05fbf6a967c4","status":"enabled"}
+    ```
+
 ### Thing list event
 
 Whenever thing list is fetched, `things` service will generate new `list` event. This event will have the following format:
@@ -1073,6 +1234,12 @@ Whenever thing list is fetched, `things` service will generate new `list` event.
     Subject: events.mainflux.things Received: 2023-10-05T18:38:40+03:00
 
     {"limit":10,"occurred_at":1696520320459999484,"offset":0,"operation":"thing.list","status":"enabled","total":0}
+    ```
+
+3. In rabbitmq streams
+
+    ```
+    {"limit":10,"occurred_at":1697532237496534968,"offset":0,"operation":"thing.list","status":"enabled","total":0}
     ```
 
 ### Thing list by channel event
@@ -1153,6 +1320,12 @@ Whenever channel instance is created, `things` service will generate and publish
     {"created_at":"2023-10-05T12:55:39.175568Z","id":"45eb9f35-1360-4051-81e2-9582433a6607","metadata":"e30=","name":"hephaestus","occurred_at":1696510539182201160,"operation":"channel.create","owner":"97466511-6317-4c98-8d58-7bd78bcaf587","status":"enabled"}
     ```
 
+3. In rabbitmq streams
+
+    ```
+    {"created_at":"2023-10-17T08:43:52.461635Z","id":"b9ae027e-9068-4bff-9ced-45a28351a1ce","metadata":"e30=","name":"-Dortch-Peckett","occurred_at":1697532232464401399,"operation":"channel.create","owner":"b2941bd6-ca98-4c56-8d94-05fbf6a967c4","status":"enabled"}
+    ```
+
 ### Channel update event
 
 Whenever channel instance is updated, `things` service will generate and publish new `update` event. This event will have the following format:
@@ -1189,6 +1362,12 @@ Whenever channel instance is updated, `things` service will generate and publish
     Subject: events.mainflux.things Received: 2023-10-05T16:00:29+03:00
 
     {"created_at":"2023-10-05T12:41:04.87198Z","id":"5f9d4b76-0717-4859-8ef8-6fcfb81f44d5","metadata":"e30=","name":"hestia","occurred_at":1696510829837578155,"operation":"channel.update","owner":"0a5f2e21-1a8b-460e-bfa9-732e570df095","status":"enabled","updated_at":"2023-10-05T13:00:29.828132Z","updated_by":"97466511-6317-4c98-8d58-7bd78bcaf587"}
+    ```
+
+3. In rabbitmq streams
+
+    ```
+    {"created_at":"2023-10-17T08:43:52.461635Z","id":"b9ae027e-9068-4bff-9ced-45a28351a1ce","metadata":"eyJVcGRhdGUiOiJTaXNuZXktS29ra2F0In0=","name":"Pelley-Staffing","occurred_at":1697532242622549294,"operation":"channel.update","owner":"b2941bd6-ca98-4c56-8d94-05fbf6a967c4","status":"enabled","updated_at":"2023-10-17T08:44:02.619432Z","updated_by":"b2941bd6-ca98-4c56-8d94-05fbf6a967c4"}
     ```
 
 Note that update channel event will contain only those fields that were updated using update channel endpoint.
@@ -1241,6 +1420,12 @@ Whenever channel instance is removed from the system, `things` service will gene
     {"id":"e4fa015f-bfad-4f41-bebe-142d3e938d3a","occurred_at":1696520320786154457,"operation":"channel.remove","status":"enabled","updated_at":"2023-10-05T15:38:40.702159Z","updated_by":"3264e965-3fe5-4d4e-a857-48de43551d2e"}
     ```
 
+3. In rabbitmq streams
+
+    ```
+    {"id":"b9ae027e-9068-4bff-9ced-45a28351a1ce","occurred_at":1697532242632439430,"operation":"channel.remove","status":"disabled","updated_at":"2023-10-17T08:44:02.619432Z","updated_by":"b2941bd6-ca98-4c56-8d94-05fbf6a967c4"}
+    ```
+
 ### Channel view event
 
 Whenever channel is viewed, `things` service will generate new `view` event. This event will have the following format:
@@ -1274,6 +1459,12 @@ Whenever channel is viewed, `things` service will generate new `view` event. Thi
     {"created_at":"2023-10-05T15:38:40.31444Z","id":"e4fa015f-bfad-4f41-bebe-142d3e938d3a","metadata":"e30=","name":"-Cech-Hargreaves","occurred_at":1696520320475816826,"operation":"channel.view","owner":"3264e965-3fe5-4d4e-a857-48de43551d2e","status":"enabled"}
     ```
 
+3. In rabbitmq streams
+
+    ```
+    {"created_at":"2023-10-17T08:43:52.461635Z","id":"b9ae027e-9068-4bff-9ced-45a28351a1ce","metadata":"e30=","name":"-Dortch-Peckett","occurred_at":1697532237504403729,"operation":"channel.view","owner":"b2941bd6-ca98-4c56-8d94-05fbf6a967c4","status":"enabled"}
+    ```
+
 ### Channel list event
 
 Whenever channel list is fetched, `things` service will generate new `list` event. This event will have the following format:
@@ -1302,6 +1493,12 @@ Whenever channel list is fetched, `things` service will generate new `list` even
     Subject: events.mainflux.things Received: 2023-10-05T18:38:40+03:00
 
     {"limit":10,"occurred_at":1696520320495779280,"offset":0,"operation":"channel.list","status":"enabled","total":0}
+    ```
+
+3. In rabbitmq streams
+
+    ```
+    {"limit":10,"occurred_at":1697532237512138449,"offset":0,"operation":"channel.list","status":"enabled","total":0}
     ```
 
 ### Channel list by thing event
@@ -1354,6 +1551,12 @@ Whenever policy is authorized, `things` service will generate new `authorize` ev
     {"actions":"m_write","entity_type":"thing","object":"e4fa015f-bfad-4f41-bebe-142d3e938d3a","occurred_at":1696520320938561965,"operation":"policies.authorize"}
     ```
 
+3. In Rabbitmq streams
+
+    ```
+    {"action":"c_list","entity_type":"client","object":"things","occurred_at":1697536682155214702,"operation":"policies.authorize"}
+    ```
+
 ### Policy add event
 
 Whenever policy is added, `things` service will generate new `add` event. This event will have the following format:
@@ -1386,6 +1589,12 @@ Whenever policy is added, `things` service will generate new `add` event. This e
     {"actions":"[m_write,m_read]","created_at":"2023-10-05T12:41:04.901355Z","object":"5f9d4b76-0717-4859-8ef8-6fcfb81f44d5","occurred_at":1696509664928590911,"operation":"policies.add","owner_id":"0a5f2e21-1a8b-460e-bfa9-732e570df095","subject":"9745f2ea-f776-46b1-9b44-1cfd1ad4c6f1"}
     ```
 
+3. In rabbitmq streams
+
+    ```
+    {"actions":"[m_read]","created_at":"2023-10-17T10:19:44.704766Z","object":"b9ae027e-9068-4bff-9ced-45a28351a1ce","occurred_at":1697537984720752374,"operation":"policies.add","owner_id":"9eef7587-fb81-4db9-bedd-2ccc4f680532","subject":"87b6a3c2-e498-477f-813e-102a97ae0141"}
+    ```
+
 ### Policy update event
 
 Whenever policy is updated, `things` service will generate new `update` event. This event will have the following format:
@@ -1412,8 +1621,11 @@ Whenever policy is updated, `things` service will generate new `update` event. T
         16) "2023-08-29T12:17:50.715541Z"
     ```
 
-2. In Nats JestStreams
+2. In rabbitmq streams
 
+    ```
+    {"actions":"[m_read,m_write]","created_at":"2023-10-17T10:19:44.704766Z","object":"b9ae027e-9068-4bff-9ced-45a28351a1ce","occurred_at":1697537993401523330,"operation":"policies.update","owner_id":"9eef7587-fb81-4db9-bedd-2ccc4f680532","subject":"87b6a3c2-e498-477f-813e-102a97ae0141","updated_at":"2023-10-17T10:19:53.388419Z"}
+    ```
 
 ### Policy remove event
 
@@ -1437,29 +1649,43 @@ Whenever policy is removed, `things` service will generate new `remove` event. T
 
 2. In Nats JetStreams
 
-    ```
+    ```nats
     Subject: events.mainflux.things Received: 2023-10-05T16:05:15+03:00
 
     {"actions":"[m_write,m_read]","object":"5f9d4b76-0717-4859-8ef8-6fcfb81f44d5","occurred_at":1696511115507500254,"operation":"policies.delete","subject":"9745f2ea-f776-46b1-9b44-1cfd1ad4c6f1"}
+    ```
+
+3. In rabbitmq streams 
+
+    ```
+    {"actions":"[m_write,m_read]","object":"053a122e-ea3b-42de-9f5f-9eef7e19491c","occurred_at":1697537995704396106,"operation":"policies.delete","subject":"323a1297-5ca3-425e-b08f-b4bdf0925f10"}
     ```
 
 ### Policy list event
 
 Whenever policy list is fetched, `things` service will generate new `list` event. This event will have the following format:
 
-```redis
-1) "1693312633649-0"
-2)  1) "operation"
-    2) "policies.list"
-    3) "total"
-    4) "0"
-    5) "limit"
-    6) "10"
-    7) "offset"
-    8) "0"
-    9) "occurred_at"
-    10) "1693312633649171129"
-```
+1. In Redis Streams
+
+    ```redis
+    1) "1693312633649-0"
+    2)  1) "operation"
+        2) "policies.list"
+        3) "total"
+        4) "0"
+        5) "limit"
+        6) "10"
+        7) "offset"
+        8) "0"
+        9) "occurred_at"
+        10) "1693312633649171129"
+    ```
+
+2. In rabbitmq streams
+
+    ```
+    {"limit":10,"occurred_at":1697536686568649276,"offset":0,"operation":"policies.list","total":0}
+    ```
 
 > **Note:** Every one of these events will omit fields that were not used or are not
 > relevant for specific operation. Also, field ordering is not guaranteed, so DO NOT
