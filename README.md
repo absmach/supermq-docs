@@ -1,6 +1,5 @@
 # Magistrala
 
-![build][build]
 [![license][license]](LICENSE)
 [![chat][gitter-badge]][gitter]
 
@@ -25,7 +24,7 @@ pip install mkdocs
 Doc repo can be fetched from GitHub:
 
 ```bash
-git clone git@github.com:mainflux/docs.git
+git clone git@github.com:/absmach/magistrala-docs.git
 ```
 
 ## Usage
@@ -42,23 +41,22 @@ Then just point the browser to `http://127.0.0.1:8000`.
 
 Thank you for your interest in Magistrala and the desire to contribute!
 
-1. Take a look at our [open issues](https://github.com/mainflux/docs/issues). The [good-first-issue](https://github.com/mainflux/docs/labels/good-first-issue) label is specifically for issues that are great for getting started.
+1. Take a look at our [open issues](https://github.com/absmach/magistrala-docs/issues). The [good-first-issue](https://github.com/absmach/magistrala-docs/labels/good-first-issue) label is specifically for issues that are great for getting started.
 2. Check out the [contribution guide](CONTRIBUTING.md) to learn more about our style and conventions.
 3. Make your changes compatible with our workflow.
 
 ## Community
 
-- [Gitter][gitter]
+- [Matrix][matrix]
 - [Twitter][twitter]
 
 ## License
 
 [Apache-2.0](LICENSE)
 
-[gitter]: https://gitter.im/mainflux/mainflux?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge
+[matrix]: https://matrix.to/#/#Mainflux_mainflux:gitter.im
 [gitter-badge]: https://badges.gitter.im/Join%20Chat.svg
 [license]: https://img.shields.io/badge/license-Apache%20v2.0-blue.svg
-[blog]: https://medium.com/mainflux-iot-platform
-[twitter]: https://twitter.com/mainflux
-[docs]: https://docs.mainflux.io
-[build]: https://github.com/mainflux/docs/actions/workflows/main.yaml/badge.svg
+[blog]: https://medium.com/abstract-machines-blog
+[twitter]: https://twitter.com/absmach
+[docs]: https://docs.magistrala.abstractmachines.io
