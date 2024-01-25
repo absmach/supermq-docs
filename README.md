@@ -1,6 +1,9 @@
 # Magistrala
 
 [![license][license]](LICENSE)
+[build][build]
+[![Build](https://github.com/absmach/magistrala-docs/actions/workflows/pages.yaml/badge.svg?branch=main)](https://github.com/absmach/magistrala-docs/actions/workflows/pages.yaml)
+
 
 This repo collects the collaborative work on Magistrala documentation.
 The official documentation is hosted at [Magistrala Docs page][docs].
