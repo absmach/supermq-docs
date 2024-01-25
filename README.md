@@ -1,16 +1,16 @@
-# Mainflux
+# Magistrala
 
 ![build][build]
 [![license][license]](LICENSE)
 [![chat][gitter-badge]][gitter]
 
-This repo collects the collaborative work on Mainflux documentation.
-The official documentation is hosted at [Mainflux Docs page][docs].
+This repo collects the collaborative work on Magistrala documentation.
+The official documentation is hosted at [Magistrala Docs page][docs].
 Documentation is auto-generated from Markdown files in this repo.
 
 [MkDocs](https://www.mkdocs.org/) is used to serve the docs locally with different theming.
 
-> Additional practical information about Mainflux system, news and tutorials can be found on the [Mainflux blog][blog].
+> Additional practical information about Magistrala system, news and tutorials can be found on the [Magistrala blog][blog].
 
 ## Prerequisites
 
@@ -40,7 +40,7 @@ Then just point the browser to `http://127.0.0.1:8000`.
 
 ## Contributing
 
-Thank you for your interest in Mainflux and the desire to contribute!
+Thank you for your interest in Magistrala and the desire to contribute!
 
 1. Take a look at our [open issues](https://github.com/mainflux/docs/issues). The [good-first-issue](https://github.com/mainflux/docs/labels/good-first-issue) label is specifically for issues that are great for getting started.
 2. Check out the [contribution guide](CONTRIBUTING.md) to learn more about our style and conventions.

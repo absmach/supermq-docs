@@ -13,14 +13,14 @@ Once everything is installed, execute the following command from project root:
 make run
 ```
 
-This will start Mainflux docker composition, which will output the logs from the containers.
+This will start Magistrala docker composition, which will output the logs from the containers.
 
 ## Step 2 - Install the CLI
 
-Open a new terminal from which you can interact with the running Mainflux system. The easiest way to do this is by using the Mainflux CLI, which can be downloaded as a tarball from GitHub (here we use release `0.14.0` but be sure to use the [latest CLI release][mf-releases]):
+Open a new terminal from which you can interact with the running Magistrala system. The easiest way to do this is by using the Magistrala CLI, which can be downloaded as a tarball from GitHub (here we use release `0.14.0` but be sure to use the [latest CLI release][mf-releases]):
 
 ```bash
-wget -O- https://github.com/mainflux/mainflux/releases/download/0.14.0/mainflux-cli_0.14.0_linux-amd64.tar.gz | tar xvz -C $GOBIN
+wget -O- https://github.com/absmach/magistrala/releases/download/0.14.0/mainflux-cli_0.14.0_linux-amd64.tar.gz | tar xvz -C $GOBIN
 ```
 
 > Make sure that `$GOBIN` is added to your `$PATH` so that `mainflux-cli` command can be accessible system-wide
@@ -38,7 +38,7 @@ mainflux-cli provision test
 ```
 
 This command actually creates a temporary testing user, logs it in, then creates two things and two channels on behalf of this user.
-This quickly provisions a Mainflux system with one simple testing scenario.
+This quickly provisions a Magistrala system with one simple testing scenario.
 
 You can read more about system provisioning in the dedicated [Provisioning][provisioning] chapter
 
@@ -112,7 +112,7 @@ Output of the command follows this pattern:
 
 ```
 
-In the Mainflux system terminal (where docker compose is running) you should see following logs:
+In the Magistrala system terminal (where docker compose is running) you should see following logs:
 
 ```bash
 ...
@@ -132,7 +132,7 @@ mainflux-things | {"level":"info","message":"Method add_policy for client with i
 
 ```
 
-This proves that these provisioning commands were sent from the CLI to the Mainflux system.
+This proves that these provisioning commands were sent from the CLI to the Magistrala system.
 
 ## Step 4 - Send Messages
 
@@ -148,7 +148,7 @@ For example:
 mainflux-cli messages send a31e16f8-343c-4366-8b4f-c95e190937f4 '[{"bn":"some-base-name:","bt":1.276020076001e+09, "bu":"A","bver":5, "n":"voltage","u":"V","v":120.1}, {"n":"current","t":-5,"v":1.2}, {"n":"current","t":-4,"v":1.3}]' fc9473d8-6756-4fcc-968f-ea43cd0b803b
 ```
 
-In the Mainflux system terminal you should see following logs:
+In the Magistrala system terminal you should see following logs:
 
 ```bash
 ...
@@ -164,6 +164,6 @@ This proves that messages have been correctly sent through the system via the pr
 
 [docker]: https://docs.docker.com/install/
 [docker-compose]: https://docs.docker.com/compose/install/
-[mf-releases]: https://github.com/mainflux/mainflux/releases
+[mf-releases]: https://github.com/absmach/magistrala/releases
 [cli]: cli.md
 [provisioning]: /provision/#platform-management

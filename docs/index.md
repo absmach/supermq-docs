@@ -2,9 +2,9 @@
 
 ## About
 
-### What is Mainflux?
+### What is Magistrala?
 
-Mainflux is modern, scalable, secure open source and patent-free IoT cloud platform written in Go.
+Magistrala is modern, scalable, secure open source and patent-free IoT cloud platform written in Go.
 
 It accepts user and thing connections over various network protocols (i.e. HTTP, MQTT, WebSocket, CoAP), thus making a seamless bridge between them. It is used as the IoT middleware for building complex IoT solutions.
 
@@ -22,9 +22,9 @@ It accepts user and thing connections over various network protocols (i.e. HTTP,
 - Multi-tenancy support
 - Extensibility and customization support
 
-## Contributing to Mainflux
+## Contributing to Magistrala
 
-Thank you for your interest in Mainflux and the desire to contribute!
+Thank you for your interest in Magistrala and the desire to contribute!
 
 Take a look at our [open issues][open-issues]. The [good-first-issue][good-first-issue] label is specifically for issues that are great for getting started. Checkout the [contribution guide][contribution-guide] to learn more about our style and conventions. Make your changes compatible to our workflow.
 
@@ -33,7 +33,7 @@ Take a look at our [open issues][open-issues]. The [good-first-issue][good-first
 [Apache-2.0][license]
 
 [gopher]: img/gopherBanner.jpg
-[open-issues]: https://github.com/mainflux/mainflux/issues
-[good-first-issue]: https://github.com/mainflux/mainflux/labels/good-first-issue
-[contribution-guide]: https://github.com/mainflux/mainflux/blob/master/CONTRIBUTING.md
-[license]: https://github.com/mainflux/mainflux/blob/master/LICENSE
+[open-issues]: https://github.com/absmach/magistrala/issues
+[good-first-issue]: https://github.com/absmach/magistrala/labels/good-first-issue
+[contribution-guide]: https://github.com/absmach/magistrala/blob/master/CONTRIBUTING.md
+[license]: https://github.com/absmach/magistrala/blob/master/LICENSE

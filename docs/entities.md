@@ -1,6 +1,6 @@
 # Entities
 
-Client is a component that will replace and unify the Mainflux Things and Users services. The purpose is to represent generic client accounts. Each client is identified using its identity and secret. The client will differ from Things service to Users service but we aim to achieve 1:1 implementation between the clients whilst changing how client secret works. This includes client secret generation, usage, modification and storage
+Client is a component that will replace and unify the Magistrala Things and Users services. The purpose is to represent generic client accounts. Each client is identified using its identity and secret. The client will differ from Things service to Users service but we aim to achieve 1:1 implementation between the clients whilst changing how client secret works. This includes client secret generation, usage, modification and storage
 
 ## Generic Client Entity
 
@@ -51,7 +51,7 @@ Currently, we have the things service and the users service as 2 deployments of 
 
 ## Users service
 
-For grouping Mainflux entities there are `groups` object in the `users` service. The users groups can be used for grouping `users` only. Groups are organized like a tree, group can have one parent and children. Group with no parent is root of the tree.
+For grouping Magistrala entities there are `groups` object in the `users` service. The users groups can be used for grouping `users` only. Groups are organized like a tree, group can have one parent and children. Group with no parent is root of the tree.
 
 ### Users
 

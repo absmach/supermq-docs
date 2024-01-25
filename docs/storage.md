@@ -1,6 +1,6 @@
 # Storage
 
-Mainflux supports various storage databases in which messages are stored:
+Magistrala supports various storage databases in which messages are stored:
 
 - CassandraDB
 - MongoDB
@@ -10,13 +10,13 @@ Mainflux supports various storage databases in which messages are stored:
 
 These storages are activated via docker-compose add-ons.
 
-The `<project_root>/docker` folder contains an `addons` directory. This directory is used for various services that are not core to the Mainflux platform but could be used for providing additional features.
+The `<project_root>/docker` folder contains an `addons` directory. This directory is used for various services that are not core to the Magistrala platform but could be used for providing additional features.
 
 In order to run these services, core services, as well as the network from the core composition, should be already running.
 
 ## Writers
 
-Writers provide an implementation of various `message writers`. Message writers are services that consume Mainflux messages, transform them to desired format and store them in specific data store. The path of the configuration file can be set using the following environment variables: `MF_CASSANDRA_WRITER_CONFIG_PATH`, `MF_POSTGRES_WRITER_CONFIG_PATH`, `MF_INFLUX_WRITER_CONFIG_PATH`, `MF_MONGO_WRITER_CONFIG_PATH` and `MF_TIMESCALE_WRITER_CONFIG_PATH`.
+Writers provide an implementation of various `message writers`. Message writers are services that consume Magistrala messages, transform them to desired format and store them in specific data store. The path of the configuration file can be set using the following environment variables: `MF_CASSANDRA_WRITER_CONFIG_PATH`, `MF_POSTGRES_WRITER_CONFIG_PATH`, `MF_INFLUX_WRITER_CONFIG_PATH`, `MF_MONGO_WRITER_CONFIG_PATH` and `MF_TIMESCALE_WRITER_CONFIG_PATH`.
 
 ### Subscriber config
 
@@ -41,7 +41,7 @@ format = "senml"
 content_type = "application/senml+json"
 ```
 
-Usually, the payload of the IoT message contains message time. It can be in different formats (like base time and record time in the case of SenML) and the message field can be under the arbitrary key. Usually, we would want to map that time to the Mainflux Message field Created and for that reason, we need to configure the Transformer to be able to read the field, parse it using proper format and location (if devices time is different than the service time), and map it to Mainflux Message.
+Usually, the payload of the IoT message contains message time. It can be in different formats (like base time and record time in the case of SenML) and the message field can be under the arbitrary key. Usually, we would want to map that time to the Magistrala Message field Created and for that reason, we need to configure the Transformer to be able to read the field, parse it using proper format and location (if devices time is different than the service time), and map it to Magistrala Message.
 
 For JSON transformer you can configure `time_fields` in the `[transformer]` section to use arbitrary fields from the JSON message payload as timestamp. `time_fields` is represented by an array of objects with fields `field_name`, `field_format` and `location` that represent respectively the name of the JSON key to use as timestamp, the time format to use for the field value and the time location. Here is an example:
 
@@ -98,7 +98,7 @@ The message format is stored in _the subtopic_. It's the last part of the subtop
 http://localhost:8008/channels/<channelID>/messages/home/temperature/myFormat
 ```
 
-the message format is `myFormat`. It can be any valid subtopic name, JSON transformer is format-agnostic. The format is used by the JSON message consumers so that they can process the message properly. If the format is not present (i.e. message subtopic is empty), JSON Transformer will report an error. Message writers will store the message(s) in the table/collection/measurement (depending on the underlying database) with the name of the format (which in the example is `myFormat`). Mainflux writers will try to save any format received (whether it will be successful depends on the writer implementation and the underlying database), but it's recommended that publishers don't send different formats to the same subtopic.
+the message format is `myFormat`. It can be any valid subtopic name, JSON transformer is format-agnostic. The format is used by the JSON message consumers so that they can process the message properly. If the format is not present (i.e. message subtopic is empty), JSON Transformer will report an error. Message writers will store the message(s) in the table/collection/measurement (depending on the underlying database) with the name of the format (which in the example is `myFormat`). Magistrala writers will try to save any format received (whether it will be successful depends on the writer implementation and the underlying database), but it's recommended that publishers don't send different formats to the same subtopic.
 
 ### InfluxDB, InfluxDB Writer
 
@@ -154,7 +154,7 @@ Timescale default port (5432) is exposed, so you can use various tools for datab
 
 ## Readers
 
-Readers provide an implementation of various `message readers`. Message readers are services that consume normalized (in `SenML` format) Mainflux messages from data storage and opens HTTP API for message consumption. Installing corresponding writer before reader is implied.
+Readers provide an implementation of various `message readers`. Message readers are services that consume normalized (in `SenML` format) Magistrala messages from data storage and opens HTTP API for message consumption. Installing corresponding writer before reader is implied.
 
 Each of the Reader services exposes the same [HTTP API][readers-api] for fetching messages on its default port.
 
@@ -251,4 +251,4 @@ docker-compose -f docker/addons/timescale-reader/docker-compose.yml up -d
 [nats-wildcards]: https://docs.nats.io/nats-concepts/subjects#wildcards
 [writers]: /storage/#writers
 [influxdb]: https://docs.influxdata.com/influxdb
-[readers-api]: https://github.com/mainflux/mainflux/blob/master/api/readers.yml
+[readers-api]: https://github.com/absmach/magistrala/blob/master/api/readers.yml

@@ -135,6 +135,6 @@ TBD
 [satori]: https://github.com/satori-com/mzbench
 [mzbench-cli]: https://github.com/mzbench/mzbench/blob/master/doc/cli.md
 [mzbench-dashboard]: https://github.com/mzbench/mzbench/blob/master/doc/dashboard.md
-[mf-benchmark]: https://github.com/mainflux/benchmark/tree/master/mzbench
+[mf-benchmark]: https://github.com/mainflux/benchmark/terr/main/mzbench
 [mzbench-architecture-running]: https://github.com/mzbench/mzbench/raw/master/doc/images/scheme_2.png
 [mzbench-scenarios]: https://github.com/mzbench/mzbench/blob/master/scenarios/spec.md#pre_hook-and-post_hook

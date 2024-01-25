@@ -8,7 +8,7 @@ Provisioning is a process of configuration of an IoT platform in which system op
 
 #### Account Creation
 
-Use the Mainflux API to create user account:
+Use the Magistrala API to create user account:
 
 ```bash
 curl -s -S -i --cacert docker/ssl/certs/ca.crt -X POST -H "Content-Type: application/json" https://localhost/users -d '{"name": "John Doe", "credentials": {"identity": "john.doe@email.com", "secret": "12345678"}, "status": "enabled"}'
@@ -525,17 +525,17 @@ For more information about the Things service API, please check out the [API doc
 
 ## Provision Service
 
-Provisioning is a process of configuration of an IoT platform in which system operator creates and sets-up different entities used in the platform - users, channels and things. It is part of process of setting up IoT applications where we connect devices on edge with platform in cloud. For provisioning we can use [Mainflux CLI][cli] for creating users and for each node in the edge (eg. gateway) required number of things, channels, connecting them and creating certificates if needed. Provision service is used to set up initial application configuration once user is created. Provision service creates things, channels, connections and certificates. Once user is created we can use provision to create a setup for edge node in one HTTP request instead of issuing several CLI commands.
+Provisioning is a process of configuration of an IoT platform in which system operator creates and sets-up different entities used in the platform - users, channels and things. It is part of process of setting up IoT applications where we connect devices on edge with platform in cloud. For provisioning we can use [Magistrala CLI][cli] for creating users and for each node in the edge (eg. gateway) required number of things, channels, connecting them and creating certificates if needed. Provision service is used to set up initial application configuration once user is created. Provision service creates things, channels, connections and certificates. Once user is created we can use provision to create a setup for edge node in one HTTP request instead of issuing several CLI commands.
 
-Provision service provides an HTTP API to interact with [Mainflux][provision-api].
+Provision service provides an HTTP API to interact with [Magistrala][provision-api].
 
-For gateways to communicate with [Mainflux][mainflux] configuration is required (MQTT host, thing, channels, certificates...). Gateway will send a request to [Bootstrap][bootstrap] service providing `<external_id>` and `<external_key>` in HTTP request to get the configuration. To make a request to [Bootstrap][bootstrap] service you can use [Agent][agent] service on a gateway.
+For gateways to communicate with [Magistrala][mainflux] configuration is required (MQTT host, thing, channels, certificates...). Gateway will send a request to [Bootstrap][bootstrap] service providing `<external_id>` and `<external_key>` in HTTP request to get the configuration. To make a request to [Bootstrap][bootstrap] service you can use [Agent][agent] service on a gateway.
 
-To create bootstrap configuration you can use [Bootstrap][bootstrap] or `Provision` service. [Mainflux UI][mfxui] uses [Bootstrap][bootstrap] service for creating gateway configurations. `Provision` service should provide an easy way of provisioning your gateways i.e creating bootstrap configuration and as many things and channels that your setup requires.
+To create bootstrap configuration you can use [Bootstrap][bootstrap] or `Provision` service. [Magistrala UI][mfxui] uses [Bootstrap][bootstrap] service for creating gateway configurations. `Provision` service should provide an easy way of provisioning your gateways i.e creating bootstrap configuration and as many things and channels that your setup requires.
 
 Also, you may use provision service to create certificates for each thing. Each service running on gateway may require more than one thing and channel for communication.
 If, for example, you are using services [Agent][agent] and [Export][exp] on a gateway you will need two channels for `Agent` (`data` and `control`) and one thing for `Export`.
-Additionally, if you enabled mTLS each service will need its own thing and certificate for access to [Mainflux][mainflux].
+Additionally, if you enabled mTLS each service will need its own thing and certificate for access to [Magistrala][mainflux].
 Your setup could require any number of things and channels, this kind of setup we can call `provision layout`.
 
 Provision service provides a way of specifying this `provision layout` and creating a setup according to that layout by serving requests on `/mapping` endpoint. Provision layout is configured in [config.toml][conftoml].
@@ -647,8 +647,8 @@ Example of provision layout below
 
 ### Authentication
 
-In order to create necessary entities provision service needs to authenticate against Mainflux.
-To provide authentication credentials to the provision service you can pass it in as an environment variable or in a config file as Mainflux user and password or as API token (that can be issued on `/users/tokens/issue` endpoint of [users service][users].
+In order to create necessary entities provision service needs to authenticate against Magistrala.
+To provide authentication credentials to the provision service you can pass it in as an environment variable or in a config file as Magistrala user and password or as API token (that can be issued on `/users/tokens/issue` endpoint of [users service][users].
 
 Additionally, users or API token can be passed in Authorization header, this authentication takes precedence over others.
 
@@ -738,7 +738,7 @@ Response contains created things, channels and certificates if any:
 
 ### Example
 
-Deploy Mainflux UI docker composition as it contains all the required services for provisioning to work ( `certs`, `bootstrap` and Mainflux core)
+Deploy Magistrala UI docker composition as it contains all the required services for provisioning to work ( `certs`, `bootstrap` and Magistrala core)
 
 ```bash
 git clone https://github.com/mainflux/ui
@@ -784,19 +784,19 @@ make
 MF_AGENT_BOOTSTRAP_ID=gateway MF_AGENT_BOOTSTRAP_KEY=external_key MF_AGENT_BOOTSTRAP_URL=http://mainflux.ccom:9013/things/bootstrap build/mainflux-agent
 ```
 
-Agent will retrieve connections parameters and connect to Mainflux cloud.
+Agent will retrieve connections parameters and connect to Magistrala cloud.
 
-For more information about the Provision service API, please check out the [API documentation](https://github.com/mainflux/mainflux/blob/master/api/provision.yml).
+For more information about the Provision service API, please check out the [API documentation](https://github.com/absmach/magistrala/blob/master/api/provision.yml).
 
-[mainflux]: https://github.com/mainflux/mainflux
-[bootstrap]: https://github.com/mainflux/mainflux/tree/master/bootstrap
+[mainflux]: https://github.com/absmach/magistrala
+[bootstrap]: https://github.com/absmach/magistrala/terr/main/bootstrap
 [agent]: https://github.com/mainflux/agent
-[mfxui]: https://github.com/mainflux/mainflux/ui
-[config]: https://github.com/mainflux/mainflux/tree/master/provision#configuration
-[env]: https://github.com/mainflux/mainflux/blob/master/.env
-[conftoml]: https://github.com/mainflux/mainflux/blob/master/docker/addons/provision/configs/config.toml
-[users]: https://github.com/mainflux/mainflux/blob/master/users/README.md
+[mfxui]: https://github.com/absmach/magistrala/ui
+[config]: https://github.com/absmach/magistrala/terr/main/provision#configuration
+[env]: https://github.com/absmach/magistrala/blob/master/.env
+[conftoml]: https://github.com/absmach/magistrala/blob/master/docker/addons/provision/configs/config.toml
+[users]: https://github.com/absmach/magistrala/blob/master/users/README.md
 [exp]: https://github.com/mainflux/export
-[cli]: https://github.com/mainflux/mainflux/tree/master/cli
+[cli]: https://github.com/absmach/magistrala/terr/main/cli
 [auth]: authentication.md
 [provision-api]: https://api.mainflux.io/?urls.primaryName=provision.yml

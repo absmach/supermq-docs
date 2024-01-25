@@ -1,6 +1,6 @@
 # Kubernetes
 
-Mainflux can be easily deployed on Kubernetes platform by using Helm Chart from official [Mainflux DevOps GitHub repository][devops-repo].
+Magistrala can be easily deployed on Kubernetes platform by using Helm Chart from official [Magistrala DevOps GitHub repository][devops-repo].
 
 ## Prerequisites
 
@@ -46,9 +46,9 @@ Follow [these instructions][nginx-ingress] to install it or:
 helm install ingress-nginx ingress-nginx/ingress-nginx --version 3.26.0 --create-namespace -n ingress-nginx
 ```
 
-## Deploying Mainflux
+## Deploying Magistrala
 
-Get Helm charts from [Mainflux DevOps GitHub repository][devops-repo]:
+Get Helm charts from [Magistrala DevOps GitHub repository][devops-repo]:
 
 ```bash
 git clone https://github.com/mainflux/devops.git
@@ -73,7 +73,7 @@ Deploying release named `mainflux` in namespace named `mf` is done with just:
 helm install mainflux . -n mf
 ```
 
-Mainflux is now deployed on your Kubernetes.
+Magistrala is now deployed on your Kubernetes.
 
 ### Customizing Installation
 
@@ -145,9 +145,9 @@ The following table lists the configurable parameters and their default values.
 | twins.httpPort                     | Twins service HTTP port                                                                         | 9021             |
 | twins.redisCachePort               | Twins service Redis Cache port                                                                  | 6379             |
 
-All Mainflux services (both core and add-ons) can have their `logLevel`, `image.pullPolicy`, `image.repository` and `image.tag` overridden.
+All Magistrala services (both core and add-ons) can have their `logLevel`, `image.pullPolicy`, `image.repository` and `image.tag` overridden.
 
-Mainflux Core is a minimalistic set of required Mainflux services. They are all installed by default:
+Magistrala Core is a minimalistic set of required Magistrala services. They are all installed by default:
 
 - authn
 - users
@@ -157,7 +157,7 @@ Mainflux Core is a minimalistic set of required Mainflux services. They are all 
 - adapter_coap
 - ui
 
-Mainflux Add-ons are optional services that are disabled by default. Find in Configuration table parameters for enabling them, i.e. to enable influxdb reader & writer you should run `helm install` with `--set influxdb=true`.
+Magistrala Add-ons are optional services that are disabled by default. Find in Configuration table parameters for enabling them, i.e. to enable influxdb reader & writer you should run `helm install` with `--set influxdb=true`.
 List of add-ons services in charts:
 
 - bootstrap
@@ -251,5 +251,5 @@ mosquitto_pub -d -L mqtts://<thing_id>:<thing_secret>@example.com:8883/channels/
 [ingress-controller-args]: https://kubernetes.github.io/ingress-nginx/user-guide/cli-arguments/
 [ingress-controller-tcp-udp]: https://kubernetes.github.io/ingress-nginx/user-guide/exposing-tcp-udp-services/
 [authentication]: /authentication
-[makefile]: https://github.com/mainflux/mainflux/blob/master/docker/ssl/Makefile
+[makefile]: https://github.com/absmach/magistrala/blob/master/docker/ssl/Makefile
 [secrets]: https://github.com/mainflux/devops/blob/master/charts/mainflux/secrets/secrets.sh

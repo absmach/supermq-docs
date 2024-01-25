@@ -1,9 +1,9 @@
 # Bootstrap
 
-`Bootstrapping` refers to a self-starting process that is supposed to proceed without external input. Mainflux platform supports bootstrapping process, but some of the preconditions need to be fulfilled in advance. The device can trigger a bootstrap when:s
+`Bootstrapping` refers to a self-starting process that is supposed to proceed without external input. Magistrala platform supports bootstrapping process, but some of the preconditions need to be fulfilled in advance. The device can trigger a bootstrap when:s
 
-- device contains only bootstrap credentials and no Mainflux credentials
-- device, for any reason, fails to start a communication with the configured Mainflux services (server not responding, authentication failure, etc..).
+- device contains only bootstrap credentials and no Magistrala credentials
+- device, for any reason, fails to start a communication with the configured Magistrala services (server not responding, authentication failure, etc..).
 - device, for any reason, wants to update its configuration
 
 > Bootstrapping and provisioning are two different procedures. Provisioning refers to entities management while bootstrapping is related to entity configuration.
@@ -13,16 +13,16 @@ Bootstrapping procedure is the following:
 ![Configure device][image-1]
 _1) Configure device with Bootstrap service URL, an external key and external ID_
 
-> ![Provision Mainflux channels][image-2]
+> ![Provision Magistrala channels][image-2]
 >
-> _Optionally create Mainflux channels if they don't exist_
+> _Optionally create Magistrala channels if they don't exist_
 >
-> ![Provision Mainflux things][image-3]
+> ![Provision Magistrala things][image-3]
 >
-> _Optionally create Mainflux thing if it doesn't exist_
+> _Optionally create Magistrala thing if it doesn't exist_
 
 ![Upload configuration][image-4]
-_2) Upload configuration for the Mainflux thing_
+_2) Upload configuration for the Magistrala thing_
 
 ![Bootstrap][image-5]
 _3) Bootstrap - send a request for the configuration_
@@ -32,9 +32,9 @@ _4) Connect/disconnect thing from channels, update or remove configuration_
 
 ## Configuration
 
-The configuration of Mainflux thing consists of three major parts:
+The configuration of Magistrala thing consists of three major parts:
 
-- The list of Mainflux channels the thing is connected to
+- The list of Magistrala channels the thing is connected to
 - Custom configuration related to the specific thing
 - Thing Secret and certificate data related to that thing
 
@@ -58,9 +58,9 @@ curl -s -S -i -X POST -H "Authorization: Bearer <user_token>" -H "Content-Type: 
 }'
 ```
 
-In this example, `channels` field represents the list of Mainflux channel IDs the thing is connected to. These channels need to be provisioned before the configuration is uploaded. Field `content` represents custom configuration. This custom configuration contains parameters that can be used to set up the thing. It can also be empty if no additional set up is needed. Field `name` is human readable name and `thing_id` is an ID of the Mainflux thing. This field is not required. If `thing_id` is empty, corresponding Mainflux thing will be created implicitly and its ID will be sent as a part of `Location` header of the response. Fields `client_cert`, `client_key` and `ca_cert` represent PEM or base64-encoded DER client certificate, client certificate key and trusted CA, respectively.
+In this example, `channels` field represents the list of Magistrala channel IDs the thing is connected to. These channels need to be provisioned before the configuration is uploaded. Field `content` represents custom configuration. This custom configuration contains parameters that can be used to set up the thing. It can also be empty if no additional set up is needed. Field `name` is human readable name and `thing_id` is an ID of the Magistrala thing. This field is not required. If `thing_id` is empty, corresponding Magistrala thing will be created implicitly and its ID will be sent as a part of `Location` header of the response. Fields `client_cert`, `client_key` and `ca_cert` represent PEM or base64-encoded DER client certificate, client certificate key and trusted CA, respectively.
 
-There are two more fields: `external_id` and `external_key`. External ID represents an ID of the device that corresponds to the given thing. For example, this can be a MAC address or the serial number of the device. The external key represents the device key. This is the secret key that's safely stored on the device and it is used to authorize the thing during the bootstrapping process. Please note that external ID and external key and Mainflux ID and Mainflux key are _completely different concepts_. External id and key are only used to authenticate a device that corresponds to the specific Mainflux thing during the bootstrapping procedure. As Configuration optionally contains client certificate and issuing CA, it's possible that device is not able to establish TLS encrypted communication with Mainflux before bootstrapping. For that purpose, Bootstrap service exposes endpoint used for secure bootstrapping which can be used regardless of protocol (HTTP or HTTPS). Both device and Bootstrap service use a secret key to encrypt the content. Encryption is done as follows:
+There are two more fields: `external_id` and `external_key`. External ID represents an ID of the device that corresponds to the given thing. For example, this can be a MAC address or the serial number of the device. The external key represents the device key. This is the secret key that's safely stored on the device and it is used to authorize the thing during the bootstrapping process. Please note that external ID and external key and Magistrala ID and Magistrala key are _completely different concepts_. External id and key are only used to authenticate a device that corresponds to the specific Magistrala thing during the bootstrapping procedure. As Configuration optionally contains client certificate and issuing CA, it's possible that device is not able to establish TLS encrypted communication with Magistrala before bootstrapping. For that purpose, Bootstrap service exposes endpoint used for secure bootstrapping which can be used regardless of protocol (HTTP or HTTPS). Both device and Bootstrap service use a secret key to encrypt the content. Encryption is done as follows:
 
 1. Device uses the secret encryption key to encrypt the value of that exact external key
 2. Device sends a bootstrap request using the value from 1 as an Authorization header
@@ -75,7 +75,7 @@ For more details on which encryption mechanisms are used, please take a look at 
 
 ### Bootstrapping
 
-Currently, the bootstrapping procedure is executed over the HTTP protocol. Bootstrapping is nothing else but fetching and applying the configuration that corresponds to the given Mainflux thing. In order to fetch the configuration, _the thing_ needs to send a bootstrapping request:
+Currently, the bootstrapping procedure is executed over the HTTP protocol. Bootstrapping is nothing else but fetching and applying the configuration that corresponds to the given Magistrala thing. In order to fetch the configuration, _the thing_ needs to send a bootstrapping request:
 
 ```bash
 curl -s -S -i -H "Authorization: Thing <external_key>" http://localhost:9013/things/bootstrap/<external_id>
@@ -106,7 +106,7 @@ The response body should look something like:
 }
 ```
 
-The response consists of an ID and key of the Mainflux thing, the list of channels and custom configuration (`content` field). The list of channels contains not just channel IDs, but the additional Mainflux channel data (`name` and `metadata` fields), as well.
+The response consists of an ID and key of the Magistrala thing, the list of channels and custom configuration (`content` field). The list of channels contains not just channel IDs, but the additional Magistrala channel data (`name` and `metadata` fields), as well.
 
 ### Enabling and disabling things
 
@@ -126,4 +126,4 @@ For more information about the Bootstrap service API, please check out the [API 
 [image-4]: img/bootstrap/4.png
 [image-5]: img/bootstrap/5.png
 [image-6]: img/bootstrap/6.png
-[api-docs]: https://github.com/mainflux/mainflux/blob/master/api/openapi/bootstrap.yml
+[api-docs]: https://github.com/absmach/magistrala/blob/master/api/openapi/bootstrap.yml

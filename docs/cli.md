@@ -1,13 +1,13 @@
 # CLI
 
-Mainflux CLI makes it easy to manage users, things, channels and messages.
+Magistrala CLI makes it easy to manage users, things, channels and messages.
 
 CLI can be downloaded as separate asset from [project realeses][releases] or it can be built with `GNU Make` tool:
 
 Get the mainflux code
 
 ```bash
-go get github.com/mainflux/mainflux
+go get github.com/absmach/magistrala
 ```
 
 Build the mainflux-cli
@@ -135,7 +135,7 @@ Use "mainflux-cli channels [command] --help" for more information about a comman
 
 ## Service
 
-### Get Mainflux Things services health check
+### Get Magistrala Things services health check
 
 ```bash
 mainflux-cli health
@@ -157,7 +157,7 @@ Response should look like this:
 
 #### Create User
 
-Mainflux has two options for user creation. Either the `<user_token>` is provided or not. If the `<user_token>` is provided then the created user will be owned by the user identified by the `<user_token>`. Otherwise, when the token is not used, since everybody can create new users, the user will not have an owner. However, the token is still required, in order to be consistent. For more details, please see [Authorization page](authorization.md).
+Magistrala has two options for user creation. Either the `<user_token>` is provided or not. If the `<user_token>` is provided then the created user will be owned by the user identified by the `<user_token>`. Otherwise, when the token is not used, since everybody can create new users, the user will not have an owner. However, the token is still required, in order to be consistent. For more details, please see [Authorization page](authorization.md).
 
 ```bash
 mainflux-cli users create <user_name> <user_email> <user_password>
@@ -608,7 +608,7 @@ mainflux-cli bootstrap bootstrap <external_id> <external_key> -b <bootstrap-url>
 ```
 
 ## Config
-Mainflux CLI tool supports configuration files that contain some of the basic settings so you don't have to specify them through flags. Once you set the settings, they remain stored locally.
+Magistrala CLI tool supports configuration files that contain some of the basic settings so you don't have to specify them through flags. Once you set the settings, they remain stored locally.
 
 ```bash
 mainflux-cli config <parameter> <value>
@@ -650,4 +650,4 @@ The possible parameters that can be set using the config command are:
 | offset              | Offset query parameter                               |                                        |
 | raw_output          | Enables raw output mode for easier parsing of output |                                        |
 
-[releases]: https://github.com/mainflux/mainflux/releases
+[releases]: https://github.com/absmach/magistrala/releases

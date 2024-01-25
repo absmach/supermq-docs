@@ -172,20 +172,20 @@ func main() {
 
 ## MQTT-over-WS
 
-Mainflux also supports [MQTT-over-WS][mqtt-over-websockets], along with pure WS protocol. this bring numerous benefits for IoT applications that are derived from the properties of MQTT - like QoS and PUB/SUB features.
+Magistrala also supports [MQTT-over-WS][mqtt-over-websockets], along with pure WS protocol. this bring numerous benefits for IoT applications that are derived from the properties of MQTT - like QoS and PUB/SUB features.
 
-There are 2 reccomended Javascript libraries for implementing browser support for Mainflux MQTT-over-WS connectivity:
+There are 2 reccomended Javascript libraries for implementing browser support for Magistrala MQTT-over-WS connectivity:
 
 1. [Eclipse Paho JavaScript Client][paho-js]
 2. [MQTT.js][mqttjs]
 
-As WS is an extension of HTTP protocol, Mainflux exposes it on port `8008`, so it's usage is practically transparent.
+As WS is an extension of HTTP protocol, Magistrala exposes it on port `8008`, so it's usage is practically transparent.
 Additionally, please notice that since same port as for HTTP is used (`8008`), and extension URL `/mqtt` should be used -
 i.e. connection URL should be `ws://<host_addr>/mqtt`.
 
 For quick testing you can use [HiveMQ UI tool][websocket-client].
 
-Here is an example of a browser application connecting to Mainflux server and sending and receiving messages over WebSocket using MQTT.js library:
+Here is an example of a browser application connecting to Magistrala server and sending and receiving messages over WebSocket using MQTT.js library:
 
 ```javascript
 <script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
@@ -270,18 +270,18 @@ it's subtopics.
 
 ## MQTT Broker
 
-Mainflux supports the MQTT protocol for message exchange. MQTT is a lightweight Publish/Subscribe messaging protocol used to connect restricted devices in low bandwidth, high-latency or unreliable networks. The publish-subscribe messaging pattern requires a message broker. The broker is responsible for distributing messages to and from clients connected to the MQTT adapter.
+Magistrala supports the MQTT protocol for message exchange. MQTT is a lightweight Publish/Subscribe messaging protocol used to connect restricted devices in low bandwidth, high-latency or unreliable networks. The publish-subscribe messaging pattern requires a message broker. The broker is responsible for distributing messages to and from clients connected to the MQTT adapter.
 
-Mainflux supports [MQTT version 3.1.1][mqtt-v3.1.1]. The MQTT adapter is based on [Eclipse Paho][paho] MQTT client library. The adapter is configured to use [nats][nats-mqtt] as the default MQTT broker, but you can use [vernemq][vernemq] too.
+Magistrala supports [MQTT version 3.1.1][mqtt-v3.1.1]. The MQTT adapter is based on [Eclipse Paho][paho] MQTT client library. The adapter is configured to use [nats][nats-mqtt] as the default MQTT broker, but you can use [vernemq][vernemq] too.
 
 ### Configuration
 
-In the dev environment, docker profiles are preferred when handling different MQTT and message brokers supported by Mainflux.
+In the dev environment, docker profiles are preferred when handling different MQTT and message brokers supported by Magistrala.
 
-Mainflux uses two types of brokers:
+Magistrala uses two types of brokers:
 
 1. `MQTT_BROKER`: Handles MQTT communication between MQTT adapters and message broker.
-2. `MESSAGE_BROKER`: Manages communication between adapters and Mainflux writer services.
+2. `MESSAGE_BROKER`: Manages communication between adapters and Magistrala writer services.
 
 `MQTT_BROKER` can be either `vernemq` or `nats`.
 `MESSAGE_BROKER` can be either `nats` or `rabbitmq`.
@@ -313,7 +313,7 @@ NATS support for MQTT and it is designed to empower users to leverage their exis
 
 #### Architecture
 
-To enable MQTT support on NATS, JetStream needs to be enabled. This is done by default in Mainflux. This is because persistence is necessary for sessions and retained messages, even for QoS 0 retained messages. Communication between MQTT and NATS involves creating similar NATS subscriptions when MQTT clients subscribe to topics. This ensures that the interest is registered in the NATS cluster, and messages are delivered accordingly. When MQTT publishers send messages, they are converted to NATS subjects, and matching NATS subscriptions receive the MQTT messages.
+To enable MQTT support on NATS, JetStream needs to be enabled. This is done by default in Magistrala. This is because persistence is necessary for sessions and retained messages, even for QoS 0 retained messages. Communication between MQTT and NATS involves creating similar NATS subscriptions when MQTT clients subscribe to topics. This ensures that the interest is registered in the NATS cluster, and messages are delivered accordingly. When MQTT publishers send messages, they are converted to NATS subjects, and matching NATS subscriptions receive the MQTT messages.
 
 NATS supports up to QoS 1 subscriptions, where the server retains messages until it receives the PUBACK for the corresponding packet identifier. If PUBACK is not received within the "ack_wait" interval, the message is resent. The maximum value for "max_ack_pending" is 65535.
 
@@ -323,7 +323,7 @@ NATS supports MQTT in a NATS cluster, with the replication factor automatically 
 
 #### Limitations
 
-- NATS does not support QoS 2 messages. Hence Mainflux inherently does not support QoS 2 messages.
+- NATS does not support QoS 2 messages. Hence Magistrala inherently does not support QoS 2 messages.
 - MQTT wildcard "#" may cause the NATS server to create two subscriptions.
 - MQTT concurrent sessions may result in the new connection being evicted instead of the existing one.
 
@@ -348,15 +348,15 @@ VerneMQ uses a master-less clustering technology, which means there are no speci
 
 ## Message Broker
 
-Mainflux supports multiple message brokers for message exchange. Message brokers are used to distribute messages to and from clients connected to the different protocols adapters and writers. Writers, which are responsible for storing messages in the database, are connected to the message broker using wildcard subscriptions. This means that writers will receive all messages published to the message broker. Clients can subscribe to the message broker using topic and subtopic combinations. The message broker will then forward all messages published to the topic and subtopic combination to the client.
+Magistrala supports multiple message brokers for message exchange. Message brokers are used to distribute messages to and from clients connected to the different protocols adapters and writers. Writers, which are responsible for storing messages in the database, are connected to the message broker using wildcard subscriptions. This means that writers will receive all messages published to the message broker. Clients can subscribe to the message broker using topic and subtopic combinations. The message broker will then forward all messages published to the topic and subtopic combination to the client.
 
-Mainflux supports [NATS][nats], [RabbitMQ][rabbitmq] and [Kafka][kafka] as message brokers.
+Magistrala supports [NATS][nats], [RabbitMQ][rabbitmq] and [Kafka][kafka] as message brokers.
 
 ### NATS JetStream
 
-Since Mainflux supports configurable message brokers, you can use Nats with JetStream enabled as a message broker. To do so, you need to set `MF_BROKER_TYPE` to `nats` and set `MF_NATS_URL` to the url of your nats instance. When using `make` command to start Mainflux `MF_BROKER_URL` is automatically set to `MF_NATS_URL`.
+Since Magistrala supports configurable message brokers, you can use Nats with JetStream enabled as a message broker. To do so, you need to set `MF_BROKER_TYPE` to `nats` and set `MF_NATS_URL` to the url of your nats instance. When using `make` command to start Magistrala `MF_BROKER_URL` is automatically set to `MF_NATS_URL`.
 
-Since Mainflux is using `nats:2.9.21-alpine` docker image with the following configuration:
+Since Magistrala is using `nats:2.9.21-alpine` docker image with the following configuration:
 
 ```conf
 max_payload: 1MB
@@ -377,21 +377,21 @@ These are the default values but you can change them by editing the configuratio
 
 #### Architecture
 
-The main reason for using Nats with JetStream enabled is to have a distributed system with high availability and minimal dependencies. Nats is configure to run as the default message broker, but you can use any other message broker supported by Mainflux. Nats is configured to use JetStream, which is a distributed streaming platform built on top of nats. JetStream is used to store messages and to provide high availability. This makes nats to be used as the default event store, but you can use any other event store supported by Mainflux. Nats with JetStream enabled is also used as a key-value store for caching purposes. This makes nats to be used as the default cache store, but you can use any other cache store supported by Mainflux.
+The main reason for using Nats with JetStream enabled is to have a distributed system with high availability and minimal dependencies. Nats is configure to run as the default message broker, but you can use any other message broker supported by Magistrala. Nats is configured to use JetStream, which is a distributed streaming platform built on top of nats. JetStream is used to store messages and to provide high availability. This makes nats to be used as the default event store, but you can use any other event store supported by Magistrala. Nats with JetStream enabled is also used as a key-value store for caching purposes. This makes nats to be used as the default cache store, but you can use any other cache store supported by Magistrala.
 
-This versatile architecture allows you to use nats alone for the MQTT broker, message broker, event store and cache store. This is the default configuration, but you can use any other MQTT broker, message broker, event store and cache store supported by Mainflux.
+This versatile architecture allows you to use nats alone for the MQTT broker, message broker, event store and cache store. This is the default configuration, but you can use any other MQTT broker, message broker, event store and cache store supported by Magistrala.
 
 ### RabbitMQ
 
-Since Mainflux uses a configurable message broker, you can use RabbitMQ as a message broker. To do so, you need to set `MF_BROKER_TYPE` to `rabbitmq` and set `MF_RABBITMQ_URL` to the url of your RabbitMQ instance. When using `make` command to start Mainflux `MF_BROKER_URL` is automatically set to `MF_RABBITMQ_URL`.
+Since Magistrala uses a configurable message broker, you can use RabbitMQ as a message broker. To do so, you need to set `MF_BROKER_TYPE` to `rabbitmq` and set `MF_RABBITMQ_URL` to the url of your RabbitMQ instance. When using `make` command to start Magistrala `MF_BROKER_URL` is automatically set to `MF_RABBITMQ_URL`.
 
-Since Mainflux is using `rabbitmq:3.9.20-management-alpine` docker image, the management console is available at port `MF_RABBITMQ_HTTP_PORT`
+Since Magistrala is using `rabbitmq:3.9.20-management-alpine` docker image, the management console is available at port `MF_RABBITMQ_HTTP_PORT`
 
 #### Architecture
 
-Mainflux has one exchange for the entire platform called `messages`. This exchange is of type `topic`. The exchange is `durable` i.e. it will survive broker restarts and remain declared when there are no remaining bindings. The exchange does not `auto-delete` when all queues have finished using it. When declaring the exchange `no_wait` is set to `false` which means that the broker will wait for a confirmation from the server that the exchange was successfully declared. The exchange is not `internal` i.e. other exchanges can publish messages to it.
+Magistrala has one exchange for the entire platform called `messages`. This exchange is of type `topic`. The exchange is `durable` i.e. it will survive broker restarts and remain declared when there are no remaining bindings. The exchange does not `auto-delete` when all queues have finished using it. When declaring the exchange `no_wait` is set to `false` which means that the broker will wait for a confirmation from the server that the exchange was successfully declared. The exchange is not `internal` i.e. other exchanges can publish messages to it.
 
-Mainflux uses topic-based routing to route messages to the appropriate queues. The routing key is in the format `channels.<channel_id>.<optional_subtopic>`. A few valid routing key examples: `channels.318BC587-A68B-40D3-9026-3356FA4E702C`, `channels.318BC587-A68B-40D3-9026-3356FA4E702C.bedroom.temperature`.
+Magistrala uses topic-based routing to route messages to the appropriate queues. The routing key is in the format `channels.<channel_id>.<optional_subtopic>`. A few valid routing key examples: `channels.318BC587-A68B-40D3-9026-3356FA4E702C`, `channels.318BC587-A68B-40D3-9026-3356FA4E702C.bedroom.temperature`.
 
 The AMQP published message doesn't contain any headers. The message body is the payload of the message.
 
@@ -408,30 +408,30 @@ For more information and examples checkout [official nats.io documentation][nats
 
 ### Kafka
 
-Since Mainflux uses a configurable message broker, you can use Kafka as a message broker. To do so, you need to set `MF_BROKER_TYPE` to `kafka` and set `MF_KAFKA_URL` to the url of your Kafka instance. When using `make` command to start Mainflux `MF_BROKER_URL` is automatically set to `MF_KAFKA_URL`.
+Since Magistrala uses a configurable message broker, you can use Kafka as a message broker. To do so, you need to set `MF_BROKER_TYPE` to `kafka` and set `MF_KAFKA_URL` to the url of your Kafka instance. When using `make` command to start Magistrala `MF_BROKER_URL` is automatically set to `MF_KAFKA_URL`.
 
-Mainflux utilizes `spotify/kafka:latest` docker image. The image also exposes `kafka:9092` and `zookeeper:2181` ports. This is used for development purposes only. For production, it is assumed that you have your own Kafka cluster.
+Magistrala utilizes `spotify/kafka:latest` docker image. The image also exposes `kafka:9092` and `zookeeper:2181` ports. This is used for development purposes only. For production, it is assumed that you have your own Kafka cluster.
 
 ##### Architecture
 
-The publisher implementation is based on the `segmentio/kafka-go` library. Publishing messages is well supported by the library, but subscribing to topics is not. The library does not provide a way to subscribe to all topics, but only to a specific topic. This is a problem because the Mainflux platform uses a topic per channel, and the number of channels is not known in advance. The solution is to use the Zookeeper library to get a list of all topics and then subscribe to each of them. The list of topics is obtained by connecting to the Zookeeper server and reading the list of topics from the `/brokers/topics` node. The first message published from the topic can be lost if subscription happens closely followed by publishing. After the subscription, we guarantee that all messages will be received.
+The publisher implementation is based on the `segmentio/kafka-go` library. Publishing messages is well supported by the library, but subscribing to topics is not. The library does not provide a way to subscribe to all topics, but only to a specific topic. This is a problem because the Magistrala platform uses a topic per channel, and the number of channels is not known in advance. The solution is to use the Zookeeper library to get a list of all topics and then subscribe to each of them. The list of topics is obtained by connecting to the Zookeeper server and reading the list of topics from the `/brokers/topics` node. The first message published from the topic can be lost if subscription happens closely followed by publishing. After the subscription, we guarantee that all messages will be received.
 
-Mainflux publishes messages to Kafka using the `channels.<channel_id>.<optional_subtopic>` topic. A few valid topic examples: `channels.318BC587-A68B-40D3-9026-3356FA4E702C`, `channels.318BC587-A68B-40D3-9026-3356FA4E702C.bedroom.temperature`. All topics have a single partition and replication factor of 1. On publishing messages a topic is created and a writer is created for that topic. The writer is not closed after publishing a message. The writer is closed when the application is closed. The `batchSize` is set to 1, which means that messages are written to Kafka as soon as they are published. The `requiredAcks` is set to `RequireAll` which means that the server will wait for the leader to receive the message and wait for the full set of in-sync replicas to receive the message.
+Magistrala publishes messages to Kafka using the `channels.<channel_id>.<optional_subtopic>` topic. A few valid topic examples: `channels.318BC587-A68B-40D3-9026-3356FA4E702C`, `channels.318BC587-A68B-40D3-9026-3356FA4E702C.bedroom.temperature`. All topics have a single partition and replication factor of 1. On publishing messages a topic is created and a writer is created for that topic. The writer is not closed after publishing a message. The writer is closed when the application is closed. The `batchSize` is set to 1, which means that messages are written to Kafka as soon as they are published. The `requiredAcks` is set to `RequireAll` which means that the server will wait for the leader to receive the message and wait for the full set of in-sync replicas to receive the message.
 
-On subscribing to messages from a channel, a reader is configured with the topic `channels.<channel_id>.<optional_subtopic>`. The reader is not closed after reading a message. The reader is closed when the application is closed. The `maxWait` is set to 1 second, which means that the reader will wait for 1 second for new data to come when fetching batches of messages from kafka. The `heartbeatInterval` is set to 1 second, which means that the reader will send the consumer group heartbeat update every 1 second. The `partitionWatchInterval` is set to 1 second, which means that the reader will check for partition changes every 1 second. The `sessionTimeout` is set to 1 second, which means that the coordinator will consider the consumer dead and initiate a rebalance if no heartbeat is received for 1 second. For wildcard topics since kafka does not support wildcards, Mainflux subscribes to all topics and filter the messages received.
+On subscribing to messages from a channel, a reader is configured with the topic `channels.<channel_id>.<optional_subtopic>`. The reader is not closed after reading a message. The reader is closed when the application is closed. The `maxWait` is set to 1 second, which means that the reader will wait for 1 second for new data to come when fetching batches of messages from kafka. The `heartbeatInterval` is set to 1 second, which means that the reader will send the consumer group heartbeat update every 1 second. The `partitionWatchInterval` is set to 1 second, which means that the reader will check for partition changes every 1 second. The `sessionTimeout` is set to 1 second, which means that the coordinator will consider the consumer dead and initiate a rebalance if no heartbeat is received for 1 second. For wildcard topics since kafka does not support wildcards, Magistrala subscribes to all topics and filter the messages received.
 
 When Unsubscribing from a channel, the reader is closed.
 
 For more information and examples checkout [official nats.io documentation][nats], [official rabbitmq documentation][rabbitmq], [official vernemq documentation][vernemq] and [official kafka documentation][kafka].
 
 [nats-jestream]: https://docs.nats.io/nats-concepts/jetstream
-[http-api]: https://github.com/mainflux/mainflux/blob/master/api/openapi/http.yml
+[http-api]: https://github.com/absmach/magistrala/blob/master/api/openapi/http.yml
 [mosquitto]: https://mosquitto.org
 [paho]: https://www.eclipse.org/paho/
 [rfc7252]: https://tools.ietf.org/html/rfc7252
 [coap-cli]: https://github.com/mainflux/coap-cli
 [rfc7641]: https://tools.ietf.org/html/rfc7641#page-18
-[coap]: https://www.github.com/mainflux/mainflux/tree/master/coap/README.md
+[coap]: https://www.github.com/absmach/magistrala/terr/main/coap/README.md
 [mqtt-over-websockets]: https://www.hivemq.com/blog/mqtt-essentials-special-mqtt-over-websockets/#:~:text=In%20MQTT%20over%20WebSockets%2C%20the,(WebSockets%20also%20leverage%20TCP).
 [paho-js]: https://www.eclipse.org/paho/index.php?page=clients/js/index.php
 [mqttjs]: https://github.com/mqttjs/MQTT.js

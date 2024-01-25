@@ -1,6 +1,6 @@
 # Twins Service
 
-_Mainflux twins service is built on top of the Mainflux platform. In order to fully understand what follows, be sure to get acquainted with [overall Mainflux architecture][architecture]._
+_Magistrala twins service is built on top of the Magistrala platform. In order to fully understand what follows, be sure to get acquainted with [overall Magistrala architecture][architecture]._
 
 ## What is Digital Twin
 
@@ -10,37 +10,37 @@ For example, an industrial machine can use multiple protocols such as MQTT, OPC-
 
 Digital twin is an abstract - and usually less detailed - digital replica of a real world system such as the industrial machine we have just described. It is used to create and store information about system's state at any given moment, to compare system state over a given period of time - so-called diffs or deltas - as well as to control agents composing the system.
 
-## Mainflux Digital Twin
+## Magistrala Digital Twin
 
-Any data producer or data consumer - which we refer to here collectively as data agent - or an interrelated system of data agents, can be represented by means of possibly multiple [Mainflux things, channels and subtopics][architecture]. For example, an OPC-UA server can be represented as a Mainflux thing and its nodes can be represented as multiple Mainflux channels or multiple subtopics of a single Mainflux channel. What is more, you can invert the representation: you can represent server as a channel and node as things. Mainflux platform is meant to empower you with the freedom of expression so you can make a digital representation of any data agent according to your needs.
+Any data producer or data consumer - which we refer to here collectively as data agent - or an interrelated system of data agents, can be represented by means of possibly multiple [Magistrala things, channels and subtopics][architecture]. For example, an OPC-UA server can be represented as a Magistrala thing and its nodes can be represented as multiple Magistrala channels or multiple subtopics of a single Magistrala channel. What is more, you can invert the representation: you can represent server as a channel and node as things. Magistrala platform is meant to empower you with the freedom of expression so you can make a digital representation of any data agent according to your needs.
 
-Although this works well, satisfies the requirements of a wide variety of use cases and corresponds to the intended use of Mainlfux IoT platform, this setup can be insufficient in two important ways. Firstly, different things, channels, and their connections - i.e. Mainflux representations of different data agent structures - are unrelated to each other, i.e. they do not form a **meaningful whole** and, as a consequence, they do not represent a **single unified system**. Secondly, the **semantic** aspect, i.e. the **meaning** of different things and channels is not transparent and defined by the sole use of Mainflux platform entities (channels and things).
+Although this works well, satisfies the requirements of a wide variety of use cases and corresponds to the intended use of Mainlfux IoT platform, this setup can be insufficient in two important ways. Firstly, different things, channels, and their connections - i.e. Magistrala representations of different data agent structures - are unrelated to each other, i.e. they do not form a **meaningful whole** and, as a consequence, they do not represent a **single unified system**. Secondly, the **semantic** aspect, i.e. the **meaning** of different things and channels is not transparent and defined by the sole use of Magistrala platform entities (channels and things).
 
 Certainly, we can try to describe things and channels connections and relations as well as their meaning - i.e. their role, position, function in the overall system - by means of their [metadata][provision]. Although this might work well - with a proviso of a lot of additional effort of writing the relatively complex code to create and parse metadata - it is not a practical approach and we still don't get - at least not out of the box - a readable and useful overview of the system as a whole. Also, this approach does not enable us to answer a simple but very important question, i.e. what was the detailed state of a complete system at a certain moment in time.
 
-To overcome these problems, Mainflux comes with a **digital twin service**. The twins service is built on top of the Mainflux platform and relies on its architecture and entities, more precisely, on Mainflux users, things and channels. The primary task of the twin service is to handle Mainflux digital twins. Mainflux digital twin consists of three parts:
+To overcome these problems, Magistrala comes with a **digital twin service**. The twins service is built on top of the Magistrala platform and relies on its architecture and entities, more precisely, on Magistrala users, things and channels. The primary task of the twin service is to handle Magistrala digital twins. Magistrala digital twin consists of three parts:
 
 - General data about twin itself, i.e. **twin's metadata**,
 - History of twin's **definitions**, including current definition,
 - History of twin's **states**, including current state.
 
-## Mainflux Platform and Mainflux Twins Service
+## Magistrala Platform and Magistrala Twins Service
 
-Mainflux Twins service depends on the Mainflux IoT platform. The following diagram shows the place of the twins service in the overall [Mainflux architecture][architecture]:
+Magistrala Twins service depends on the Magistrala IoT platform. The following diagram shows the place of the twins service in the overall [Magistrala architecture][architecture]:
 
-![Mainflux Twins service architecture][twins-arch]
+![Magistrala Twins service architecture][twins-arch]
 
 You use an HTTP client to communicate with the twins service. Every request sent to the twins service is authenticated by users service. Twins service handles CRUD requests and creates, retrieves, updates and deletes twins. The CRUD operations depend on the database to persist and fetch already saved twins.
 
-Twins service listens to the message broker server and intercepts messages passing _via_ the message broker. Every Mainflux message contains information about subchannel and topic used to send a message. Twins service compares this info with attribute definitions of twins persisted in the database, fetches the corresponding twins and updates their respective states.
+Twins service listens to the message broker server and intercepts messages passing _via_ the message broker. Every Magistrala message contains information about subchannel and topic used to send a message. Twins service compares this info with attribute definitions of twins persisted in the database, fetches the corresponding twins and updates their respective states.
 
-Before we dwell into twin's anatomy, it is important to realize that in order to use Mainflux twin service, you have to [provision Mainflux things and channels][provision] and you have to connect things and channels beforehand. As you go, you can modify your things, channels and connections and you can modify your digital twin to reflect these modifications, but you have to have at least a minimal setup in order to use the twin service.
+Before we dwell into twin's anatomy, it is important to realize that in order to use Magistrala twin service, you have to [provision Magistrala things and channels][provision] and you have to connect things and channels beforehand. As you go, you can modify your things, channels and connections and you can modify your digital twin to reflect these modifications, but you have to have at least a minimal setup in order to use the twin service.
 
 ## Twin's Anatomy
 
-Twin's **general information** stores twin's owner email - owner is represented by Mainflux user -, twin's ID (unique) and name (not necessarily unique), twin's creation and update dates as well as twin's revision number. The latter refers to the sequential number of twin's definition.
+Twin's **general information** stores twin's owner email - owner is represented by Magistrala user -, twin's ID (unique) and name (not necessarily unique), twin's creation and update dates as well as twin's revision number. The latter refers to the sequential number of twin's definition.
 
-The twin's **definition** is meant to be a semantic representation of system's data sources and consumers (data agents). Each data data agent is represented by means of **attribute**. Attribute consists of data agent's name, Mainflux channel and subtopic over which it communicates. Nota bene: each attribute is uniquely defined by the combination of channel and subtopic and we cannot have two or more attributes with the same channel and subtopic in the same definition.
+The twin's **definition** is meant to be a semantic representation of system's data sources and consumers (data agents). Each data data agent is represented by means of **attribute**. Attribute consists of data agent's name, Magistrala channel and subtopic over which it communicates. Nota bene: each attribute is uniquely defined by the combination of channel and subtopic and we cannot have two or more attributes with the same channel and subtopic in the same definition.
 
 Attributes have a state persistence flag that determines whether the messages communicated by its corresponding channel and subtopic trigger the creation of a new twin state. Twin states are persisted in the separate collection of the same database. Currently, twins service uses the MongoDB. InfluxDB support for twins and states persistence is on the roadmap.
 
@@ -121,7 +121,7 @@ When we define our digital twin, its JSON representation might look like this:
 }
 ```
 
-In the case of the upper twin, we begin with an empty definition, the one with the `id` **0** - we could have provided the definition immediately - and over the course of time, we add two more definitions, so the total number of revisions is **2** (revision index is zero-based). We decide not to persist the number of rotation per second in our digital twin state. We define it, though, because the definition and its attributes are used not only to define states of a complex data agent system, but also to define the semantic structure of the system. `delta` is the number of nanoseconds used to determine whether the received attribute value should trigger the generation of the new state or the same state should be updated. The reason for this is to enable state sampling over the regular intervals of time. Discarded values are written to the database of choice by Mainflux [writers][writer], so you can always retrieve intermediate values if need be.
+In the case of the upper twin, we begin with an empty definition, the one with the `id` **0** - we could have provided the definition immediately - and over the course of time, we add two more definitions, so the total number of revisions is **2** (revision index is zero-based). We decide not to persist the number of rotation per second in our digital twin state. We define it, though, because the definition and its attributes are used not only to define states of a complex data agent system, but also to define the semantic structure of the system. `delta` is the number of nanoseconds used to determine whether the received attribute value should trigger the generation of the new state or the same state should be updated. The reason for this is to enable state sampling over the regular intervals of time. Discarded values are written to the database of choice by Magistrala [writers][writer], so you can always retrieve intermediate values if need be.
 
 **states** are created according to the twin's current definition. A state stores twin's ID - every state belongs to a single twin -, its own ID, twin's definition number, creation date and the actual payload. **Payload** is a set of key-value pairs where a key corresponds to the attribute name and a value is the actual value of the attribute. All [SenML value types][senml] are supported.
 
@@ -193,7 +193,7 @@ As you can see, the first two states correspond to the definition **1** and have
 
 ## Authentication and Authorization
 
-Twin belongs to a Mainflux user, tenant representing a physical person or an organization. User owns Mainflux things and channels as well as twins. Mainflux user provides authorization and authentication mechanisms to twins service. For more details, please see [Authentication with Mainflux keys][authentication]. In practical terms, we need to create a Mainflux user in order to create a digital twin. Every twin belongs to exactly one user. One user can have unlimited number of digital twins.
+Twin belongs to a Magistrala user, tenant representing a physical person or an organization. User owns Magistrala things and channels as well as twins. Magistrala user provides authorization and authentication mechanisms to twins service. For more details, please see [Authentication with Magistrala keys][authentication]. In practical terms, we need to create a Magistrala user in order to create a digital twin. Every twin belongs to exactly one user. One user can have unlimited number of digital twins.
 
 ## Twin Operations
 
@@ -303,9 +303,9 @@ curl -s -S -i -X GET -H "Authorization: Bearer <user_token>" http://localhost:90
 
 ## Notifications
 
-Every twin and states related operation publishes notifications _via_ the message broker. To fully understand what follows, please read about [Mainflux messaging][messaging] capabilities and utilities.
+Every twin and states related operation publishes notifications _via_ the message broker. To fully understand what follows, please read about [Magistrala messaging][messaging] capabilities and utilities.
 
-In order to pick up this notifications, you have to create a Mainflux channel before you start the twins service and inform the twins service about the channel by means of the environment variable, like this:
+In order to pick up this notifications, you have to create a Magistrala channel before you start the twins service and inform the twins service about the channel by means of the environment variable, like this:
 
 ```bash
 export MF_TWINS_CHANNEL_ID=f6894dfe-a7c9-4eef-a614-637ebeea5b4c
@@ -332,9 +332,9 @@ where `<optional_subtopic>` is one of the following:
 - `save.success` - on successful state save
 - `save.failure` - on state save failure.
 
-Normally, you can use the default message broker, NATS, wildcards. In order to learn more about Mainflux channel topic composition, please read about [subtopics][messaging]. The point is to be able to subscribe to all subjects or any operation pair subject - e.g. create.success/failure - by means of one connection and read all messages or all operation related messages in the context of the same subscription.
+Normally, you can use the default message broker, NATS, wildcards. In order to learn more about Magistrala channel topic composition, please read about [subtopics][messaging]. The point is to be able to subscribe to all subjects or any operation pair subject - e.g. create.success/failure - by means of one connection and read all messages or all operation related messages in the context of the same subscription.
 
-Since messages published on message broker are republished on any other protocol supported by Mainflux - HTTP, MQTT, CoAP and WS - you can use any supported protocol client to pick up notifications.
+Since messages published on message broker are republished on any other protocol supported by Magistrala - HTTP, MQTT, CoAP and WS - you can use any supported protocol client to pick up notifications.
 
 [architecture]: /architecture/#architecture
 [provision]: /provision/#provision
@@ -342,5 +342,5 @@ Since messages published on message broker are republished on any other protocol
 [writer]: /storage/#writers
 [senml]: https://tools.ietf.org/html/rfc8428#section-4.3
 [authentication]: /authentication/#authentication
-[twins-api]: https://github.com/mainflux/mainflux/blob/master/api/openapi/twins.yml
+[twins-api]: https://github.com/absmach/magistrala/blob/master/api/openapi/twins.yml
 [messaging]: /messaging/#messaging

@@ -37,7 +37,7 @@ If you wish to secure the gRPC connection to `Things` and `Users` services you m
 
 ## Securing PostgreSQL Connections
 
-By default, Mainflux will connect to Postgres using insecure transport.
+By default, Magistrala will connect to Postgres using insecure transport.
 If a secured connection is required, you can select the SSL mode and set paths to any extra certificates and keys needed.
 
 `MF_USERS_DB_SSL_MODE` the SSL connection mode for Users.
@@ -54,6 +54,6 @@ Supported database connection modes are: `disabled` (default), `required`, `veri
 
 ## Securing gRPC
 
-By default gRPC communication is not secure as Mainflux system is most often run in a private network behind the reverse proxy.
+By default gRPC communication is not secure as Magistrala system is most often run in a private network behind the reverse proxy.
 
 However, TLS can be activated and configured.

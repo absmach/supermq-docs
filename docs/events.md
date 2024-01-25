@@ -1,6 +1,6 @@
 # Events
 
-In order to be easily integratable system, Mainflux is using [Redis Streams][redis-streams] as an event log for event sourcing. Services that are publishing events to Redis Streams are `users` service, `things` service, `bootstrap` service and `mqtt` adapter.
+In order to be easily integratable system, Magistrala is using [Redis Streams][redis-streams] as an event log for event sourcing. Services that are publishing events to Redis Streams are `users` service, `things` service, `bootstrap` service and `mqtt` adapter.
 
 ## Users Service
 
@@ -1410,5 +1410,5 @@ Example of disconnect event:
 ```
 
 [redis-streams]: https://redis.io/topics/streams-intro
-[mf-docker-compose]: https://github.com/mainflux/mainflux/blob/master/docker/docker-compose.yml
-[bootstrap-docker-compose]: https://github.com/mainflux/mainflux/blob/master/docker/addons/bootstrap/docker-compose.yml
+[mf-docker-compose]: https://github.com/absmach/magistrala/blob/master/docker/docker-compose.yml
+[bootstrap-docker-compose]: https://github.com/absmach/magistrala/blob/master/docker/addons/bootstrap/docker-compose.yml

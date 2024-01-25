@@ -4,7 +4,7 @@ Provisioning is a process of configuration of an IoT platform in which system op
 
 ## Certs Service
 
-Issues certificates for things. `Certs` service can create certificates to be used when `Mainflux` is deployed to support mTLS.  
+Issues certificates for things. `Certs` service can create certificates to be used when `Magistrala` is deployed to support mTLS.  
 `Certs` service will create certificate for valid thing ID if valid user token is passed and user is owner of the provided thing ID.
 
 Certificate service can create certificates in PKI mode - where certificates issued by PKI, when you deploy `Vault` as PKI certificate management `cert` service will proxy requests to `Vault` previously checking access rights and saving info on successfully created certificate.
@@ -28,7 +28,7 @@ MF_CERTS_VAULT_TOKEN=<vault_acces_token>
 
 For lab purposes you can use docker-compose and script for setting up PKI in [meodor-vault][meodor-vault].
 
-Make sure you have an already running instance of `Mainflux` , `Vault` and `Certs` service.
+Make sure you have an already running instance of `Magistrala` , `Vault` and `Certs` service.
 
 To start mainflux run:
 
@@ -153,5 +153,5 @@ For more information about the Certification service API, please check out the [
 
 [vault-pki-engine]: https://learn.hashicorp.com/tutorials/vault/pki-engine
 [meodor-vault]: https://github.com/mteodor/vault
-[api-docs]: https://github.com/mainflux/mainflux/blob/master/api/certs.yml
-[mainflux-vault]: https://github.com/mainflux/mainflux/blob/master/docker/addons/vault/README.md#setup
+[api-docs]: https://github.com/absmach/magistrala/blob/master/api/certs.yml
+[mainflux-vault]: https://github.com/absmach/magistrala/blob/master/docker/addons/vault/README.md#setup

@@ -2,13 +2,13 @@
 
 ## Policies
 
-Mainflux uses policies to control permissions on entities: **users**, **things**, **groups** and **channels**. Under the hood, Mainflux uses its own fine grained access control list. Policies define permissions for the entities. For example, _which user_ has _access_ to _a specific thing_. Such policies have three main components: **subject**, **object**, and **action**.
+Magistrala uses policies to control permissions on entities: **users**, **things**, **groups** and **channels**. Under the hood, Magistrala uses its own fine grained access control list. Policies define permissions for the entities. For example, _which user_ has _access_ to _a specific thing_. Such policies have three main components: **subject**, **object**, and **action**.
 
 To put it briefly:
 
-**Subject**: As the name suggests, it is the subject that will have the policy such as _users_ or _things_. Mainflux uses entity UUID on behalf of the real entities.
+**Subject**: As the name suggests, it is the subject that will have the policy such as _users_ or _things_. Magistrala uses entity UUID on behalf of the real entities.
 
-**Object**: Objects are Mainflux entities (e.g. _channels_ or _group_ ) represented by their UUID.
+**Object**: Objects are Magistrala entities (e.g. _channels_ or _group_ ) represented by their UUID.
 
 **Action**: This is the action that the subject wants to do on the object. This is one of the supported actions (read, write, update, delete, list or add)
 
@@ -110,17 +110,17 @@ For the sake of simplicity, all the operations at the moment are executed on the
 
 If the user has no such policy, the operation will be denied; otherwise, the operation will be allowed.
 
-In order to check whether a user has the policy or not, Mainflux makes a gRPC call to policies API, then policies sub-service handles the checking existence of the policy.
+In order to check whether a user has the policy or not, Magistrala makes a gRPC call to policies API, then policies sub-service handles the checking existence of the policy.
 
-All policies are stored in the Postgres Database. The database responsible for storing all policies is deployed along with the Mainflux.
+All policies are stored in the Postgres Database. The database responsible for storing all policies is deployed along with the Magistrala.
 
 ## Predefined Policies
 
-Mainflux comes with predefined policies.
+Magistrala comes with predefined policies.
 
 ### Users service related policies
 
-- By default, Mainflux allows anybody to create a user.
+- By default, Magistrala allows anybody to create a user.
 - The admin has a special policy indicating that the user is admin. This is implemented using roles as the following:
   `<admin_id>` has `admin` role as part of its description.
 

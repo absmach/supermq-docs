@@ -1,24 +1,24 @@
 # Edge
 
-Mainflux IoT platform provides services for supporting management of devices on the edge. Typically, IoT solution includes devices (sensors/actuators) deployed in far edge and connected through some proxy gateway. Although most devices could be connected to the Mainflux directly, using gateways decentralizes system, decreases load on the cloud and makes setup less difficult. Also, gateways can provide additional data processing, filtering and storage.
+Magistrala IoT platform provides services for supporting management of devices on the edge. Typically, IoT solution includes devices (sensors/actuators) deployed in far edge and connected through some proxy gateway. Although most devices could be connected to the Magistrala directly, using gateways decentralizes system, decreases load on the cloud and makes setup less difficult. Also, gateways can provide additional data processing, filtering and storage.
 
 Services that can be used on gateway to enable data and control plane for edge:
 
 - [Agent][agent]
 - [Export][export]
-- [Mainflux][mainflux]
+- [Magistrala][mainflux]
 
 |       ![Edge1][edge-diagram]        |
 | :---------------------------------: |
 | Figure 1 - Edge services deployment |
 
-Figure shows edge gateway that is running Agent, Export and minimal deployment of Mainflux services. Mainflux services enable device management and MQTT protocol, NATS being a central message bus as it is the default message broker in Mainflux becomes also central message bus for other services like `Agent` and `Export` as well as for any new custom developed service that can be built to interface with devices with any of hardware supported interfaces on the gateway, those services would publish data to the message broker where `Export` service can pick them up and send to cloud.
+Figure shows edge gateway that is running Agent, Export and minimal deployment of Magistrala services. Magistrala services enable device management and MQTT protocol, NATS being a central message bus as it is the default message broker in Magistrala becomes also central message bus for other services like `Agent` and `Export` as well as for any new custom developed service that can be built to interface with devices with any of hardware supported interfaces on the gateway, those services would publish data to the message broker where `Export` service can pick them up and send to cloud.
 
 Agent can be used to control deployed services as well as to monitor their liveliness through subcribing to `heartbeat` Message Broker subject where services should publish their liveliness status, like `Export` service does.
 
 ## Agent
 
-Agent is service that is used to manage gateways that are connected to Mainflux in cloud. It provides a way to send commands to gateway and receive response via mqtt. There are two types of channels used for **Agent** `data` and `control`. Over the `control` we are sending commands and receiving response from commands. Data collected from sensors connected to gateway are being sent over `data` channel. Agent is able to configure itself provided that [bootstrap server][bootstrap] is running, it will retrieve configuration from bootstrap server provided few arguments - `external_id` and `external_key` see [bootstraping][bootstraping].
+Agent is service that is used to manage gateways that are connected to Magistrala in cloud. It provides a way to send commands to gateway and receive response via mqtt. There are two types of channels used for **Agent** `data` and `control`. Over the `control` we are sending commands and receiving response from commands. Data collected from sensors connected to gateway are being sent over `data` channel. Agent is able to configure itself provided that [bootstrap server][bootstrap] is running, it will retrieve configuration from bootstrap server provided few arguments - `external_id` and `external_key` see [bootstraping][bootstraping].
 
 Agent service has following features:
 
@@ -30,7 +30,7 @@ Agent service has following features:
 
 ### Run Agent
 
-Before running agent we need to provision a thing and DATA and CONTROL channel. Thing that will be used as gateway representation and make bootstrap configuration. If using Mainflux UI this is done automatically when adding gateway through UI. Gateway can be provisioned with [`provision`][provision] service.
+Before running agent we need to provision a thing and DATA and CONTROL channel. Thing that will be used as gateway representation and make bootstrap configuration. If using Magistrala UI this is done automatically when adding gateway through UI. Gateway can be provisioned with [`provision`][provision] service.
 
 When you provisioned gateway as described in [provision][provision] you can check results
 
@@ -205,7 +205,7 @@ You can observe commands and response from commands executed against edgex
 
 ## Export
 
-Mainflux Export service can send message from one Mainflux cloud to another via MQTT, or it can send messages from edge gateway to Mainflux Cloud. Export service is subscribed to local message bus and connected to MQTT broker in the cloud. Messages collected on local message bus are redirected to the cloud. When connection is lost, if QoS2 is used, messages from the local bus are stored into file or in memory to be resent upon reconnection. Additonaly `Export` service publishes liveliness status to `Agent` via the Message Broker subject `heartbeat.export.service`
+Magistrala Export service can send message from one Magistrala cloud to another via MQTT, or it can send messages from edge gateway to Magistrala Cloud. Export service is subscribed to local message bus and connected to MQTT broker in the cloud. Messages collected on local message bus are redirected to the cloud. When connection is lost, if QoS2 is used, messages from the local bus are stored into file or in memory to be resent upon reconnection. Additonaly `Export` service publishes liveliness status to `Agent` via the Message Broker subject `heartbeat.export.service`
 
 ### Install
 
@@ -307,8 +307,8 @@ curl -X GET http://localhost:8170/health
 
 To establish connection to MQTT broker following settings are needed:
 
-- `username` - Mainflux <thing_id>
-- `password` - Mainflux <thing_secret>
+- `username` - Magistrala <thing_id>
+- `password` - Magistrala <thing_secret>
 - `url` - url of MQTT broker
 
 Additionally, you will need MQTT client certificates if you enable mTLS. To obtain certificates `ca.crt`, `thing.crt` and key `thing.key` follow instructions [here][mutual-tls] or [here][certs-service].
@@ -319,23 +319,23 @@ To setup `MTLS` connection `Export` service requires client certificate and `mtl
 
 #### Routes
 
-Routes are being used for specifying which subscriber's topic(subject) goes to which publishing topic. Currently only MQTT is supported for publishing. To match Mainflux requirements `mqtt_topic` must contain `channel/<channel_id>/messages`, additional subtopics can be appended.
+Routes are being used for specifying which subscriber's topic(subject) goes to which publishing topic. Currently only MQTT is supported for publishing. To match Magistrala requirements `mqtt_topic` must contain `channel/<channel_id>/messages`, additional subtopics can be appended.
 
 - `mqtt_topic` - `channel/<channel_id>/messages/<custom_subtopic>`
 - `nats_topic` - `Export` service will be subscribed to the Message Broker subject `<nats_topic>.>`
 - `subtopic` - messages will be published to MQTT topic `<mqtt_topic>/<subtopic>/<nats_subject>`, where dots in nats_subject are replaced with '/'
 - `workers` - specifies number of workers that will be used for message forwarding.
 - `type` - specifies message transformation:
-  - `default` is for sending messages as they are received on the Message Broker with no transformation (so they should be in SenML or JSON format if we want to persist them in Mainflux in cloud). If you don't want to persist messages in Mainflux or you are not exporting to Mainflux cloud - message format can be anything that suits your application as message passes untransformed.
-  - `mfx` is for messages that are being picked up on internal Mainflux Message Broker bus. When using `Export` along with Mainflux deployed on gateway ([Fig. 1][back-to-edge]) messages coming from MQTT broker that are published to the Message Broker bus are [Mainflux message][protomsg]. Using `mfx` type will extract payload and `export` will publish it to `mqtt_topic`. Extracted payload is SenML or JSON if we want to persist messages. `nats_topic` in this case must be `channels`, or if you want to pick messages from a specific channel in local Mainflux instance to be exported to cloud you can put `channels.<local_mainflux_channel_id>`.
+  - `default` is for sending messages as they are received on the Message Broker with no transformation (so they should be in SenML or JSON format if we want to persist them in Magistrala in cloud). If you don't want to persist messages in Magistrala or you are not exporting to Magistrala cloud - message format can be anything that suits your application as message passes untransformed.
+  - `mfx` is for messages that are being picked up on internal Magistrala Message Broker bus. When using `Export` along with Magistrala deployed on gateway ([Fig. 1][back-to-edge]) messages coming from MQTT broker that are published to the Message Broker bus are [Magistrala message][protomsg]. Using `mfx` type will extract payload and `export` will publish it to `mqtt_topic`. Extracted payload is SenML or JSON if we want to persist messages. `nats_topic` in this case must be `channels`, or if you want to pick messages from a specific channel in local Magistrala instance to be exported to cloud you can put `channels.<local_mainflux_channel_id>`.
 
 Before running `Export` service edit `configs/config.toml` and provide `username`, `password` and `url`
 
-- `username` - matches `thing_id` in Mainflux cloud instance
+- `username` - matches `thing_id` in Magistrala cloud instance
 - `password` - matches `thing_secret`
 - `channel` - MQTT part of the topic where to publish MQTT data (`channel/<channel_id>/messages` is format of mainflux MQTT topic) and plays a part in authorization.
 
-If Mainflux and Export service are deployed on same gateway `Export` can be configured to send messages from Mainflux internal Message Broker bus to Mainflux in a cloud. In order for `Export` service to listen on Mainflux Message Broker deployed on the same machine Message Broker port must be exposed. Edit Mainflux [docker-compose.yml][docker-compose]. Default Message Broker, NATS, section must look like below:
+If Magistrala and Export service are deployed on same gateway `Export` can be configured to send messages from Magistrala internal Message Broker bus to Magistrala in a cloud. In order for `Export` service to listen on Magistrala Message Broker deployed on the same machine Message Broker port must be exposed. Edit Magistrala [docker-compose.yml][docker-compose]. Default Message Broker, NATS, section must look like below:
 
 ```yaml
 nats:
@@ -378,17 +378,17 @@ MAINFLUX_USER_EMAIL='edge@email.com'
 MAINFLUX_USER_PASSWORD='12345678'
 ```
 
-`EXTERNAL_KEY` and `EXTERNAL_ID` are parameters posted to `/mapping` endpoint of `provision` service, `MAINFLUX_HOST` is location of cloud instance of Mainflux that `export` should connect to and `MAINFLUX_USER_EMAIL` and `MAINFLUX_USER_PASSWORD` are users credentials in the cloud.
+`EXTERNAL_KEY` and `EXTERNAL_ID` are parameters posted to `/mapping` endpoint of `provision` service, `MAINFLUX_HOST` is location of cloud instance of Magistrala that `export` should connect to and `MAINFLUX_USER_EMAIL` and `MAINFLUX_USER_PASSWORD` are users credentials in the cloud.
 
 ## Example deployment
 
 ### Edge deployment
 
-The following are steps that are an example usage of Mainflux components to connect edge with cloud. We will start Mainflux in the cloud with additional services [Bootstrap][bootstrap] and [Provision][provision]. Using [Bootstrap](bootstrap) and [Provision](provision) we will create a configuration for use in gateway deployment. On the gateway we will start services [Agent][agent] and [Export][export] using previously created configuration.
+The following are steps that are an example usage of Magistrala components to connect edge with cloud. We will start Magistrala in the cloud with additional services [Bootstrap][bootstrap] and [Provision][provision]. Using [Bootstrap](bootstrap) and [Provision](provision) we will create a configuration for use in gateway deployment. On the gateway we will start services [Agent][agent] and [Export][export] using previously created configuration.
 
 ## Services in the cloud
 
-Start the Mainflux:
+Start the Magistrala:
 
 ```bash
 docker-compose -f docker/docker-compose.yml up
@@ -466,7 +466,7 @@ curl -s -S  -X POST  http://localhost:9016/mapping -H "Authorization: Bearer $US
 }
 ```
 
-Parameters <external_id> and <external_key> are representing the gateway. `Provision` will use them to create a bootstrap configuration that will make a relation with Mainflux entities used for connection, authentication and authorization `thing` and `channel`. These parameters will be used by `Agent` service on the gateway to retrieve that information and establish a connection with the cloud.
+Parameters <external_id> and <external_key> are representing the gateway. `Provision` will use them to create a bootstrap configuration that will make a relation with Magistrala entities used for connection, authentication and authorization `thing` and `channel`. These parameters will be used by `Agent` service on the gateway to retrieve that information and establish a connection with the cloud.
 
 ## Services on the Edge
 
@@ -552,7 +552,7 @@ In terminal where export is started you should see following message:
 {"level":"debug","message":"Published to: export.test, payload: [{\"bn\":\"test\"}]","ts":"2020-05-08T15:14:15.757298992Z"}
 ```
 
-In Mainflux `mqtt` service:
+In Magistrala `mqtt` service:
 
 ```log
 mainflux-mqtt   | {"level":"info","message":"Publish - client ID export-88529fb2-6c1e-4b60-b9ab-73b5d89f7404 to the topic: channels/e2adcfa6-96b2-425d-8cd4-ff8cb9c056ce/messages/export/test","ts":"2020-05-08T15:16:02.999684791Z"}
@@ -568,11 +568,11 @@ mainflux-mqtt   | {"level":"info","message":"Publish - client ID export-88529fb2
 [edgex-repo]: https://github.com/edgexfoundry/edgex-go
 [edgex-raml]: https://github.com/edgexfoundry/edgex-go/blob/master/api/raml/system-agent.raml
 [conftoml]: https://github.com/mainflux/export/blob/master/configs/config.toml
-[docker-compose]: https://github.com/mainflux/mainflux/docker/docker-compose.yml
+[docker-compose]: https://github.com/absmach/magistrala/docker/docker-compose.yml
 [env]: https://github.com/mainflux/export#environmet-variables
 [mutual-tls]: /authentication/#mutual-tls-authentication-with-x509-certificates
 [certs-service]: /certs/#certs-service
-[protomsg]: https://github.com/mainflux/mainflux/blob/master/pkg/messaging/message.proto
+[protomsg]: https://github.com/absmach/magistrala/blob/master/pkg/messaging/message.proto
 [back-to-edge]: /edge/#edge
 [nats]: https://nats.io/
 [dev-guide]: /dev-guide
