@@ -7,7 +7,7 @@ copyright: Copyright (c) Abstract Machines
 repo_url: https://github.com/absmach/magistrala
 site_description: Magistrala IoT System
 site_name: Magistrala
-site_url: https://docs.mainflux.io
+site_url: https://docs.magistrala.abstractmachines.fr
 edit_uri: ""
 theme:
   name: material

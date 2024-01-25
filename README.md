@@ -1,7 +1,6 @@
 # Magistrala
 
 [![license][license]](LICENSE)
-[![chat][gitter-badge]][gitter]
 
 This repo collects the collaborative work on Magistrala documentation.
 The official documentation is hosted at [Magistrala Docs page][docs].
@@ -55,8 +54,7 @@ Thank you for your interest in Magistrala and the desire to contribute!
 [Apache-2.0](LICENSE)
 
 [matrix]: https://matrix.to/#/#Mainflux_mainflux:gitter.im
-[gitter-badge]: https://badges.gitter.im/Join%20Chat.svg
 [license]: https://img.shields.io/badge/license-Apache%20v2.0-blue.svg
 [blog]: https://medium.com/abstract-machines-blog
 [twitter]: https://twitter.com/absmach
-[docs]: https://docs.magistrala.abstractmachines.io
+[docs]: https://docs.magistrala.abstractmachines.fr
