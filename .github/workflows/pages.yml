@@ -1,15 +1,14 @@
 name: Publish docs via GitHub Pages
 
-# Controls when the action will run
+# Controls when the action will run.
 on:
   push:
     branches:
-      - main
+      - master
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
-permissions:
-  contents: write
+
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   build:
@@ -17,12 +16,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout master
-        uses: actions/checkout@v4
+        uses: actions/checkout@v2
 
       - name: Deploy docs
         uses: mhausenblas/mkdocs-deploy-gh-pages@master
         # Or use mhausenblas/mkdocs-deploy-gh-pages@nomaterial to build without the mkdocs-material theme
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          CUSTOM_DOMAIN: docs.magistrala.abstractmachines.fr
-
+          CUSTOM_DOMAIN: docs.mainflux.io
