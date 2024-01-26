@@ -39,7 +39,7 @@ Whenever user is created, `users` service will generate new `create` event. This
 
 1. In Redis Streams 
 
-    ```json
+    ```redis
     1) "1693307171926-0"
     2)  1) "occurred_at"
         2) "1693307171925834295"
@@ -80,7 +80,7 @@ Whenever user is viewed, `users` service will generate new `view` event. This ev
 
 1. In Redis Streams
 
-    ```json
+    ```redis
     1) "1693307172248-0"
     2)  1) "name"
         2) "-holy-pond"
@@ -121,7 +121,7 @@ Whenever user profile is viewed, `users` service will generate new `view_profile
 
 1. In Redis
 
-    ```json
+    ```redis
     1) "1693308867001-0"
     2)  1) "id"
         2) "64fd20bf-e8fb-46bf-9b64-2a6572eda21b"
@@ -155,7 +155,7 @@ Whenever user list is fetched, `users` service will generate new `list` event. T
 
 1. In Redis Streams 
 
-    ```json
+    ```redis
     1) "1693307172254-0"
     2)  1) "status"
         2) "enabled"
@@ -189,7 +189,7 @@ Whenever user list is fetched, `users` service will generate new `list` event. T
 
 Whenever user list by group is fetched, `users` service will generate new `list_by_group` event. This event will have the following format:
 
-```json
+```redis
 1) "1693308952544-0"
 2)  1) "operation"
     2) "user.list_by_group"
@@ -213,7 +213,7 @@ Whenever user is identified, `users` service will generate new `identify` event.
 
 1. In Redis Streams 
 
-    ```json
+    ```redis
     1) "1693307172168-0"
     2) 1) "operation"
         2) "user.identify"
@@ -241,7 +241,7 @@ Whenever user is identified, `users` service will generate new `identify` event.
 
 Whenever user reset token is generated, `users` service will generate new `generate_reset_token` event. This event will have the following format:
 
-```json
+```redis
 1) "1693310458376-0"
 2) 1) "operation"
     2) "user.generate_reset_token"
@@ -259,7 +259,7 @@ Whenever user token is issued, `users` service will generate new `issue_token` e
 
 1. In Redis Streams
 
-    ```json
+    ```redis
     1) "1693307171987-0"
     2) 1) "operation"
         2) "user.issue_token"
@@ -287,7 +287,7 @@ Whenever user token is issued, `users` service will generate new `issue_token` e
 
 Whenever user token is refreshed, `users` service will generate new `refresh_token` event. This event will have the following format:
 
-```json
+```redis
 1) "1693309886622-0"
 2) 1) "operation"
     2) "user.refresh_token"
@@ -299,7 +299,7 @@ Whenever user token is refreshed, `users` service will generate new `refresh_tok
 
 Whenever user secret is reset, `users` service will generate new `reset_secret` event. This event will have the following format:
 
-```json
+```redis
 1) "1693311075789-0"
 2)  1) "operation"
     2) "user.update_secret"
@@ -329,7 +329,7 @@ Whenever user instance is updated, `users` service will generate new `update` ev
 
 1. In Redis
 
-    ```json
+    ```redis
     1) "1693307172308-0"
     2)  1) "operation"
         2) "user.update"
@@ -373,7 +373,7 @@ Whenever user identity is updated, `users` service will generate new `update_ide
 
 1. In Redis
 
-    ```json
+    ```redis
     1) "1693307172321-0"
     2)  1) "metadata"
         2) "{\"Update\":\"rough-leaf\"}"
@@ -417,7 +417,7 @@ Whenever user tags are updated, `users` service will generate new `update_tags` 
 
 1. In Redis
 
-    ```json
+    ```redis
     1) "1693307172332-0"
     2)  1) "name"
         2) "fragrant-voice"
@@ -463,7 +463,7 @@ Whenever user instance changes state in the system, `users` service will generat
 
 1. In Redis Streams
 
-    ```json
+    ```redis
     1) "1693307172345-0"
     2)  1) "operation"
         2) "user.remove"
@@ -513,7 +513,7 @@ Whenever group is created, `users` service will generate new `create` event. Thi
 
 1. In Redis Streams
 
-    ```json
+    ```redis
     1) "1693307172153-0"
     2)  1) "name"
         2) "-fragrant-resonance"
@@ -555,7 +555,7 @@ Whenever group instance is updated, `users` service will generate new `update` e
 
 1. In Redis
 
-    ```json
+    ```redis
     1) "1693307172445-0"
     2)  1) "operation"
         2) "group.update"
@@ -599,7 +599,7 @@ Whenever group is viewed, `users` service will generate new `view` event. This e
 
 1. In Redis Streams
 
-    ```json
+    ```redis
     1) "1693307172257-0"
     2)  1) "occurred_at"
         2) "1693307172257041358"
@@ -639,7 +639,7 @@ Whenever group list is fetched, `users` service will generate new `list` event. 
 
 1. In Redis
 
-    ```json
+    ```redis
     1) "1693307172264-0"
     2)  1) "occurred_at"
         2) "1693307172264183217"
@@ -675,7 +675,7 @@ Whenever group list by user is fetched, `users` service will generate new `list_
 
 1. In Redis
 
-    ```json
+    ```redis
     1) "1693308937283-0"
     2)  1) "limit"
         2) "10"
@@ -707,7 +707,7 @@ Whenever group instance changes state in the system, `users` service will genera
 
 1. In Redis
 
-    ```json
+    ```redis
     1) "1693307172460-0"
     2)  1) "updated_by"
         2) "e1b982d8-a332-4bc2-aaff-4bbaa86880fc"
@@ -761,7 +761,7 @@ Whenever policy is authorized, `users` service will generate new `authorize` eve
 
 1. In Redis Streams
 
-    ```json
+    ```redis
     1) "1693311470724-0"
     2)  1) "entity_type"
         2) "thing"
@@ -795,7 +795,7 @@ Whenever policy is added, `users` service will generate new `add` event. This ev
 
 1. In Redis Streams
 
-    ```json
+    ```redis
     1) "1693311470721-0"
     2)  1) "operation"
         2) "policies.add"
@@ -833,7 +833,7 @@ Whenever policy is updated, `users` service will generate new `update` event. Th
 
 1. In Redis Streams
 
-    ```json
+    ```redis
     1) "1693312500101-0"
     2)  1) "updated_at"
         2) "2023-08-29T12:35:00.095028Z"
@@ -865,7 +865,7 @@ Whenever policy is removed, `users` service will generate new `remove` event. Th
 
 1. In Redis Streams
 
-    ```json
+    ```redis
     1) "1693312590631-0"
     2)  1) "occurred_at"
         2) "1693312590631691388"
@@ -891,7 +891,7 @@ Whenever policy list is fetched, `things` service will generate new `list` event
 
 1. In Redis Streams
 
-    ```json
+    ```redis
     1) "1693312633649-0"
     2)  1) "operation"
         2) "policies.list"
@@ -942,7 +942,7 @@ Whenever thing is created, `things` service will generate new `create` event. Th
 
 1. In Redis Streams
 
-    ```json
+    ```redis
     1) 1) "1693311470576-0"
     2)  1) "operation"
         2) "thing.create"
@@ -984,7 +984,7 @@ Whenever thing instance is updated, `things` service will generate new `update` 
 
 1. In Redis
 
-    ```json
+    ```redis
     1) "1693311470669-0"
     2)  1) "operation"
         2) "thing.update"
@@ -1028,7 +1028,7 @@ Whenever thing secret is updated, `things` service will generate new `update_sec
 
 1. In Redis 
 
-    ```json
+    ```redis
     1) "1693311470676-0"
     2)  1) "id"
         2) "12510af8-b6a7-410d-944c-9feded199d6d"
@@ -1072,7 +1072,7 @@ Whenever thing tags are updated, `things` service will generate new `update_tags
 
 1. In Redis
 
-    ```json
+    ```redis
     1) "1693311470682-0"
     2)  1) "operation"
         2) "thing.update_tags"
@@ -1118,7 +1118,7 @@ Whenever thing instance is removed from the system, `things` service will genera
 
 1. In Redis Streams
 
-    ```json
+    ```redis
     1) "1693311470689-0"
     2)  1) "updated_by"
         2) "fe2e5de0-9900-4ac5-b364-eae0c35777fb"
@@ -1172,7 +1172,7 @@ Whenever thing is viewed, `things` service will generate new `view` event. This 
 
 1. In Redis Streams
 
-    ```json
+    ```redis
     1) "1693311470608-0"
     2)  1) "operation"
         2) "thing.view"
@@ -1212,7 +1212,7 @@ Whenever thing list is fetched, `things` service will generate new `list` event.
 
 1. In Redis Streams
 
-    ```json
+    ```redis
     1) "1693311470613-0"
     2)  1) "occurred_at"
         2) "1693311470613173088"
@@ -1246,7 +1246,7 @@ Whenever thing list is fetched, `things` service will generate new `list` event.
 
 Whenever thing list by channel is fetched, `things` service will generate new `list_by_channel` event. This event will have the following format:
 
-```json
+```redis
 1) "1693312322620-0"
 2)  1) "operation"
     2) "thing.list_by_channel"
@@ -1270,7 +1270,7 @@ Whenever thing is identified, `things` service will generate new `identify` even
 
 1. In Redis Streams
 
-    ```json
+    ```redis
     1) "1693312391155-0"
     2) 1) "operation"
         2) "thing.identify"
@@ -1293,7 +1293,7 @@ Whenever channel instance is created, `things` service will generate and publish
 
 1. In Redis Streams
 
-    ```json
+    ```redis
     1)  1) "1693311470584-0"
     2)  1) "owner"
         2) "fe2e5de0-9900-4ac5-b364-eae0c35777fb"
@@ -1332,7 +1332,7 @@ Whenever channel instance is updated, `things` service will generate and publish
 
 1. In Redis Streams  
 
-    ```json
+    ```redis
     1) "1693311470701-0"
     2)  1) "updated_by"
         2) "fe2e5de0-9900-4ac5-b364-eae0c35777fb"
@@ -1378,7 +1378,7 @@ Whenever channel instance is removed from the system, `things` service will gene
 
 1. In Redis Streams
 
-    ```json
+    ```redis
     1) "1693311470708-0"
     2)  1) "status"
         2) "disabled"
@@ -1432,7 +1432,7 @@ Whenever channel is viewed, `things` service will generate new `view` event. Thi
 
 1. In Redis Streams
 
-    ```json
+    ```redis
     1) "1693311470615-0"
     2)  1) "id"
         2) "8a85e2d5-e783-43ee-8bea-d6d0f8039e78"
@@ -1471,7 +1471,7 @@ Whenever channel list is fetched, `things` service will generate new `list` even
 
 1. In Redis
 
-    ```json
+    ```redis
     1) "1693311470619-0"
     2)  1) "limit"
         2) "10"
@@ -1505,7 +1505,7 @@ Whenever channel list is fetched, `things` service will generate new `list` even
 
 Whenever channel list by thing is fetched, `things` service will generate new `list_by_thing` event. This event will have the following format:
 
-```json
+```redis
 1) "1693312299484-0"
 2)  1) "occurred_at"
     2) "1693312299484000183"
@@ -1529,7 +1529,7 @@ Whenever policy is authorized, `things` service will generate new `authorize` ev
 
 1. In Redis Streams
 
-    ```json
+    ```redis
     1) "1693311470724-0"
     2)  1) "entity_type"
         2) "thing"
@@ -1563,7 +1563,7 @@ Whenever policy is added, `things` service will generate new `add` event. This e
 
 1. In Redis Streams
 
-    ```json
+    ```redis
     1) "1693311470721-0"
     2)  1) "operation"
         2) "policies.add"
@@ -1601,7 +1601,7 @@ Whenever policy is updated, `things` service will generate new `update` event. T
 
 1. In Redis Streams
 
-    ```json
+    ```redis
     1) "1693312500101-0"
     2)  1) "updated_at"
         2) "2023-08-29T12:35:00.095028Z"
@@ -1633,7 +1633,7 @@ Whenever policy is removed, `things` service will generate new `remove` event. T
 
 1. In Redis Streams
 
-    ```json
+    ```redis
     1) "1693312590631-0"
     2)  1) "occurred_at"
         2) "1693312590631691388"
@@ -1667,7 +1667,7 @@ Whenever policy list is fetched, `things` service will generate new `list` event
 
 1. In Redis Streams
 
-    ```json
+    ```redis
     1) "1693312633649-0"
     2)  1) "operation"
         2) "policies.list"
@@ -1710,7 +1710,7 @@ Whenever configuration is created, `bootstrap` service will generate and publish
 
 1. In Redis Streams 
 
-    ```json
+    ```redis
     1) "1693313286544-0"
     2)  1) "state"
         2) "0"
@@ -1750,7 +1750,7 @@ Whenever configuration is created, `bootstrap` service will generate and publish
 
 Whenever configuration is updated, `bootstrap` service will generate and publish new `update` event. This event will have the following format:
 
-```json
+```redis
 1) "1693313985263-0"
 2)  1) "state"
     2) "0"
@@ -1770,7 +1770,7 @@ Whenever configuration is updated, `bootstrap` service will generate and publish
 
 Whenever certificate is updated, `bootstrap` service will generate and publish new `update` event. This event will have the following format:
 
-```json
+```redis
 1) "1693313759203-0"
 2)  1) "thing_key"
     2) "dc82d6bf-973b-4582-9806-0230cee11c20"
@@ -1792,7 +1792,7 @@ Whenever configuration list is fetched, `bootstrap` service will generate new `l
 
 1. In Redis Streams
 
-    ```json
+    ```redis
     1) "1693339274766-0"
     2) 1) "occurred_at"
         2) "1693339274766130265"
@@ -1816,7 +1816,7 @@ Whenever configuration list is fetched, `bootstrap` service will generate new `l
 
 Whenever configuration is viewed, `bootstrap` service will generate new `view` event. This event will have the following format:
 
-```json
+```redis
 1) 1) "1693339152105-0"
 2)  1) "thing_id"
     2) "74f00d13-d370-42c0-b528-04fff995275c"
@@ -1846,7 +1846,7 @@ Whenever configuration is removed, `bootstrap` service will generate and publish
 
 1. In Redis Streams 
 
-    ```json
+    ```redis
     1) "1693339203771-0"
     2) 1) "occurred_at"
         2) "1693339203771705590"
@@ -1868,7 +1868,7 @@ Whenever configuration is removed, `bootstrap` service will generate and publish
 
 Whenever a thing is removed, `bootstrap` service will generate and publish new `config.remove_handler` event. This event will have the following format:
 
-```json
+```redis
 1) 1) "1693337955655-0"
 2) 1) "config_id"
     2) "0198b458-573e-415a-aa05-052ddab9709d"
@@ -1882,7 +1882,7 @@ Whenever a thing is removed, `bootstrap` service will generate and publish new `
 
 Whenever thing is bootstrapped, `bootstrap` service will generate and publish new `bootstrap` event. This event will have the following format:
 
-```json
+```redis
 1) 1) "1693339161600-0"
 2)  1) "occurred_at"
     2) "1693339161600369325"
@@ -1913,7 +1913,7 @@ Whenever thing's state changes, `bootstrap` service will generate and publish ne
 
 1. In Redis Streams
 
-    ```json
+    ```redis
     1) "1555405294806-0"
     2) 1) "thing_id"
     2) "63a110d4-2b77-48d2-aa46-2582681eeb82"
@@ -1937,7 +1937,7 @@ Whenever thing's state changes, `bootstrap` service will generate and publish ne
 
 Whenever thing's list of connections is updated, `bootstrap` service will generate and publish new `update connections` event. This event will have the following format:
 
-```json
+```redis
 1) "1555405373360-0"
 2) 1) "operation"
    2) "thing.update_connections"
@@ -1953,7 +1953,7 @@ Whenever thing's list of connections is updated, `bootstrap` service will genera
 
 Whenever channel is updated, `bootstrap` service will generate and publish new `update handler` event. This event will have the following format:
 
-```json
+```redis
 1) "1693339403536-0"
 2)  1) "operation"
     2) "channel.update_handler"
@@ -1971,7 +1971,7 @@ Whenever channel is updated, `bootstrap` service will generate and publish new `
 
 Whenever channel is removed, `bootstrap` service will generate and publish new `remove handler` event. This event will have the following format:
 
-```json
+```redis
 1) "1693339468719-0"
 2) 1) "config_id"
     2) "0198b458-573e-415a-aa05-052ddab9709d"
@@ -1998,7 +1998,7 @@ Examples of connect event:
 
 1. In Redis Streams
 
-    ```json
+    ```redis
     1) 1) "1693312937469-0"
     2) 1) "thing_id"
         1) "76a58221-e319-492a-be3e-b3d15631e92a"
@@ -2022,7 +2022,7 @@ Example of disconnect event:
 
 1. In Redis Streams
 
-    ```json
+    ```redis
     1) 1) "1693312937471-0"
     2) 1) "thing_id"
         2) "76a58221-e319-492a-be3e-b3d15631e92a"
@@ -2044,5 +2044,5 @@ Example of disconnect event:
 
 
 [redis-streams]: https://redis.io/topics/streams-intro
-[mf-docker-compose]: https://github.com/absmach/magistrala/blob/master/docker/docker-compose.yml
-[bootstrap-docker-compose]: https://github.com/absmach/magistrala/blob/master/docker/addons/bootstrap/docker-compose.yml
+[mf-docker-compose]: https://github.com/mainflux/mainflux/blob/master/docker/docker-compose.yml
+[bootstrap-docker-compose]: https://github.com/mainflux/mainflux/blob/master/docker/addons/bootstrap/docker-compose.yml
