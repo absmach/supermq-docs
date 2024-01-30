@@ -2044,4 +2044,5 @@ Example of disconnect event:
 
 
 [redis-streams]: https://redis.io/topics/streams-intro
-[mf-docker-compose]: https://github.com/mainflux/mainflux/blob/master/docker/docker-compose.yml
+[mf-docker-compose]: https://github.com/absmach/magistrala/blob/main/docker/docker-compose.yml
+[bootstrap-docker-compose]: https://github.com/absmach/magistrala/blob/main/docker/addons/bootstrap/docker-compose.yml
