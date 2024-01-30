@@ -1,250 +1,313 @@
 # Authorization
 
+Magistrala allows for fine-grained control over user permissions, taking into account hierarchical relationships between entities domains, groups, channels and things.The structure and functionality of an authorization system implemented using [Spicedb](https://github.com/authzed/spicedb) and its associated [schema language](https://authzed.com/docs/reference/schema-lang). `auth` service backed by SpiceDB manages permissions for users, domains, groups, channels and things.
+
+
+## Domains
+
+### Overview
+In Magistrala, **Things**, **Channels**, and **Groups** are inherently associated with one particular Domain. This means that every **Group**, including its sub-groups, every **Thing**, and every **Channel** is owned by and belongs to a specific Domain. Domain acts like kind of namespace.
+```mermaid
+graph TD
+   Do[Domain]
+   Gr["Groups + Sub Groups"]
+   Th[Things]
+   Ch[Channels]
+
+   Do --->|owns| Gr
+   Do --->|owns| Ch
+   Do --->|owns| Th
+
+```
+
+Entities within domains have relationships with other entities in hierarchical structure.
+
+```mermaid
+graph
+   subgraph Domain
+      direction BT
+      Gr[Group]
+      Th[Thing]
+      SG["Group (Sub Group)"]
+      Ch[Channel]
+
+      Th --->|connects| Ch
+      Ch --->|parent| SG
+      Ch --->|parent| Gr
+      SG --->|parent| Gr
+   end
+style Domain stroke-width:3px,margin-top:10px,margin-bottom:10px
+```
+
+### User Domain Relationship
+
+In Magistrala, when a new user registers, they don't automatically have access to domains.
+The domain administrator must invite the user to the domain and assign them a role, such as administrator, editor, viewer, or member.
+
+Domain Administrator can invite an existing user in Magistrala or invite new users to domain by E-mail ID.
+After User registering to Magistrala, User can accept the invitations to Domain.
+
+All the Users in Magistrala are allowed to create a new Domain.
+Domain creating user becomes domain Administrator by default
+
+
+User can have any one of the following relation with a domain
+
+- **administrator**: Users with administrator relation have full control over all entities (things, channels, groups) within the domain. They can perform actions like creating, updating, and deleting entities created by others. Administrators are also allowed to create their own entities and can view and update the ones they have created.
+- **editor**: Users with editor relation have access to update all entities (things, channels, groups) created by others within the domain. Editor are also allowed to create their own entities and can view and update the ones they have created.
+- **viewer**:  Users with viewer relation have access to view all entities (things, channels, groups) created by others within the domain. Viewer are also allowed to create their own entities and can view and update the ones they have created.
+- **member**: Users with Members relation could not view and no access to entities (things, channels, groups) created by others within the domain. Members are also allowed to create their own entities and can view and update the ones they have created.
+
+
+After User Sign-Up to Magistral, User is allowed to create new Domain or join to an existing domain via invitations, without Domain User could not create create _Things_, _Channels_, _Groups_.
+
+All operations, including creating, updating, and deleting Things, Channels, and Groups, occur at the domain level. For instance, when a user creates a new Thing using an access token, the newly created Thing automatically becomes associated with a specific domain. The domain information is extracted from the access token. When user obtaining a token, user should specify the domain for which they want to operate.
+
+So to do operations on a Domain, An access token for domain is required. This can be obtained by two ways which is explained in [next section](#domain-tokens).
+
+## Domain Tokens
+
+JWT Token are used in Magistrala for Authentication and Authorization. The JWT Token have domain, exp, iat, iss, sub, type and user fields.
+
+Example JWT Token:
+
+```json
+{
+  "domain": "",
+  "exp": 1706544967,
+  "iat": 1706541367,
+  "iss": "magistrala.auth",
+  "sub": "",
+  "type": 0,
+  "user": "266d00f8-2284-4613-b732-3bd16e7cf8f2"
+}
+```
+
+In JWT Token, domain field have **domain ID** and user field have **user ID**.
+
+If the domain field is empty, then with that JWT token following actions are permitted
+
+- User profile Update
+- Domain Creatation & listing,
+- Accept Domain invitations
+
+Actions related creation, updatation, deletion of Things, Channels, Group are not permitted, request will fails in authorization. In Magistrala operation related to Things, Channels, Groups are takes place in Domain Level. So for these kinds of operations, a JWT token with domain field containing operating domain ID is required.
+
+There are two ways to obtain JWT Token for a particular Domain
+
+#### Option 1: Passing domain_id while obatining new token
+
+**Request:**
+
+```bash
+curl --location 'http://localhost/users/tokens/issue' \
+--header 'Content-Type: application/json' \
+--header 'Accept: application/json' \
+--data-raw '{
+        "identity": "user1@example.com",
+        "secret": "12345678",
+        "domain_id": "903f7ede-3308-4206-89c2-e99688b612f7"
+}'
+```
+
+In this request , if domain id is empty or if field is not added, then in response JWT token will have empty domain field.
+
+**Response:**
+
+```json
+{
+    "access_token": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJkb21haW4iOiI5MDNmN2VkZS0zMzA4LTQyMDYtODljMi1lOTk2ODhiNjEyZjciLCJleHAiOjE3MDY2MDM0NDcsImlhdCI6MTcwNjU5OTg0NywiaXNzIjoibWFnaXN0cmFsYS5hdXRoIiwic3ViIjoiOTAzZjdlZGUtMzMwOC00MjA2LTg5YzItZTk5Njg4YjYxMmY3XzU3NDhkZTY5LTJhNjYtNDBkYS1hODI5LTFiNDdmMDJlOWFkYiIsInR5cGUiOjAsInVzZXIiOiI1NzQ4ZGU2OS0yYTY2LTQwZGEtYTgyOS0xYjQ3ZjAyZTlhZGIifQ.c8a8HhVAbkdq_qZnd1DWHtkoNDPQc6XJY6-UcqqCygRR9svjgkwetN3rmIOWPNV5CjPh5lqlzWv1cOLruKBmzw",
+    "refresh_token": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJkb21haW4iOiI5MDNmN2VkZS0zMzA4LTQyMDYtODljMi1lOTk2ODhiNjEyZjciLCJleHAiOjE3MDY2ODYyNDcsImlhdCI6MTcwNjU5OTg0NywiaXNzIjoibWFnaXN0cmFsYS5hdXRoIiwic3ViIjoiOTAzZjdlZGUtMzMwOC00MjA2LTg5YzItZTk5Njg4YjYxMmY3XzU3NDhkZTY5LTJhNjYtNDBkYS1hODI5LTFiNDdmMDJlOWFkYiIsInR5cGUiOjEsInVzZXIiOiI1NzQ4ZGU2OS0yYTY2LTQwZGEtYTgyOS0xYjQ3ZjAyZTlhZGIifQ.SEMvEw2hchsvPYJWqnHMKlUmgjfqAvFcjeCDXyvS2xSGsscEci3bMrUohaJNkNDWzTBiBinV7nEcPrwbxDfPBQ"
+}
+```
+
+#### Option 2: Get new access and refresh token through refresh endpoint by passing domain_id.
+
+In most of the cases user login domain in under determinable. This method will be useful for those kind of cases.
+
+**Step 1: Get token without domain id**
+
+**Request:**
+
+```bash
+curl --location 'http://localhost/users/tokens/issue' \
+--header 'Content-Type: application/json' \
+--header 'Accept: application/json' \
+--data-raw '{
+        "identity": "user1@example.com",
+        "secret": "12345678"
+}'
+```
+
+**Response:**
+
+```json
+{
+    "access_token": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJkb21haW4iOiIiLCJleHAiOjE3MDY2MDM1MjYsImlhdCI6MTcwNjU5OTkyNiwiaXNzIjoibWFnaXN0cmFsYS5hdXRoIiwic3ViIjoiIiwidHlwZSI6MCwidXNlciI6IjU3NDhkZTY5LTJhNjYtNDBkYS1hODI5LTFiNDdmMDJlOWFkYiJ9.Cc2Qj_z3gcUTjDo7lpcUVx9ymnUfClwt28kayHvMhY27eDu1vWMAZb_twQ85pbSlf12juo8P_YJcWKl3rDEokQ",
+    "refresh_token": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJkb21haW4iOiIiLCJleHAiOjE3MDY2ODYzMjYsImlhdCI6MTcwNjU5OTkyNiwiaXNzIjoibWFnaXN0cmFsYS5hdXRoIiwic3ViIjoiIiwidHlwZSI6MSwidXNlciI6IjU3NDhkZTY5LTJhNjYtNDBkYS1hODI5LTFiNDdmMDJlOWFkYiJ9.SiVsctItdR0WFhRbg7omZgR_WDPlLfLF2ov2eqkE1EP8c7RruOEv-KST3xVsohY33t2xevrtorwbjMQsl1YV7Q"
+}
+```
+
+**Decoded Access Token:**
+
+```json
+{
+  "domain": "",
+  "exp": 1706603526,
+  "iat": 1706599926,
+  "iss": "magistrala.auth",
+  "sub": "",
+  "type": 0,
+  "user": "5748de69-2a66-40da-a829-1b47f02e9adb"
+}
+```
+
+**Decoded Refresh Token:**
+
+```json
+{
+  "domain": "",
+  "exp": 1706686326,
+  "iat": 1706599926,
+  "iss": "magistrala.auth",
+  "sub": "",
+  "type": 1,
+  "user": "5748de69-2a66-40da-a829-1b47f02e9adb"
+}
+```
+
+In this tokens, there domain field will be empty. As said earlier, this token can be to for User profile Update, Domain Creatation & listing, Accept Domain invitations
+
+**Step 2: List Domains user have access**
+**Request:**
+
+```bash
+curl --location 'http://localhost/domains' \
+--header 'Authorization: Bearer <ACCESS_TOKEN_FROM_STEP_1>
+```
+
+**Response:**
+
+```json
+{
+    "total": 1,
+    "offset": 0,
+    "limit": 10,
+    "status": "all",
+    "domains": [
+        {
+            "id": "903f7ede-3308-4206-89c2-e99688b612f7",
+            "name": "Domain 1",
+            "alias": "domain_1",
+            "status": "enabled",
+            "permission": "administrator",
+            "created_by": "5748de69-2a66-40da-a829-1b47f02e9adb",
+            "created_at": "2024-01-30T07:30:36.89495Z",
+            "updated_at": "0001-01-01T00:00:00Z"
+        }
+    ]
+}
+```
+
+**Step 3: Send Request to Refresh endpoint with domain id**
+**Request:**
+
+```bash
+curl --location 'http://localhost/users/tokens/refresh' \
+--header 'Content-Type: application/json' \
+--header 'Accept: application/json' \
+--header 'Authorization: Bearer <REFRESH_TOKEN_FROM_STEP_1>' \
+--data '{
+        "domain_id": "903f7ede-3308-4206-89c2-e99688b612f7"
+}'
+```
+!!! note "Note: Same request also used for switching between domains."
+
+**Response:**
+
+```json
+{
+    "access_token": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJkb21haW4iOiI5MDNmN2VkZS0zMzA4LTQyMDYtODljMi1lOTk2ODhiNjEyZjciLCJleHAiOjE3MDY2MDM3MDYsImlhdCI6MTcwNjYwMDEwNiwiaXNzIjoibWFnaXN0cmFsYS5hdXRoIiwic3ViIjoiOTAzZjdlZGUtMzMwOC00MjA2LTg5YzItZTk5Njg4YjYxMmY3XzU3NDhkZTY5LTJhNjYtNDBkYS1hODI5LTFiNDdmMDJlOWFkYiIsInR5cGUiOjAsInVzZXIiOiI1NzQ4ZGU2OS0yYTY2LTQwZGEtYTgyOS0xYjQ3ZjAyZTlhZGIifQ.3_q4F9CWxmBVjItiE8uR01vlm0du_ISl75E-nfEcc-3IMqHEOLbz1WrDvGbaYcPZ-CQufZuP2j-zqR4lShnu2Q",
+    "refresh_token": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJkb21haW4iOiI5MDNmN2VkZS0zMzA4LTQyMDYtODljMi1lOTk2ODhiNjEyZjciLCJleHAiOjE3MDY2ODY1MDYsImlhdCI6MTcwNjYwMDEwNiwiaXNzIjoibWFnaXN0cmFsYS5hdXRoIiwic3ViIjoiOTAzZjdlZGUtMzMwOC00MjA2LTg5YzItZTk5Njg4YjYxMmY3XzU3NDhkZTY5LTJhNjYtNDBkYS1hODI5LTFiNDdmMDJlOWFkYiIsInR5cGUiOjEsInVzZXIiOiI1NzQ4ZGU2OS0yYTY2LTQwZGEtYTgyOS0xYjQ3ZjAyZTlhZGIifQ.KFUEGEx0LZStpokGnQHoMbpPRA5RUH7AR5RHRC46KcBIUoD4EcuWBiSreFwyRc4v-tcbp-CQQaBNGhqYMW4QZw"
+}
+```
+
+**Decoded Access Token:**
+
+```json
+{
+  "domain": "903f7ede-3308-4206-89c2-e99688b612f7",
+  "exp": 1706603706,
+  "iat": 1706600106,
+  "iss": "magistrala.auth",
+  "sub": "903f7ede-3308-4206-89c2-e99688b612f7_5748de69-2a66-40da-a829-1b47f02e9adb",
+  "type": 0,
+  "user": "5748de69-2a66-40da-a829-1b47f02e9adb"
+}
+```
+
+**Decoded Refresh Token:**
+
+```json
+{
+  "domain": "903f7ede-3308-4206-89c2-e99688b612f7",
+  "exp": 1706686506,
+  "iat": 1706600106,
+  "iss": "magistrala.auth",
+  "sub": "903f7ede-3308-4206-89c2-e99688b612f7_5748de69-2a66-40da-a829-1b47f02e9adb",
+  "type": 1,
+  "user": "5748de69-2a66-40da-a829-1b47f02e9adb"
+}
+```
+
+## Assign Users to Domain
+
+Domain creator becomes administator of domain by deafult. Domain Administrator can assign users to domain with following relations administrator, editor, viewer, member. The details about these relations are describe in this [section](#user-domain-relationship)
+
+User can be assigned to domain with endpoint `/domain/<domain_id>/users/assign` with json body like below:
+
+```json
+{
+    "user_ids" : ["05dbd66a-ce38-4928-ac86-c1b44909be0d"],
+    "relation" : "editor"
+}
+```
+
+- **user_ids** : field contains array of users ids
+- **relation** : field contains any one of the following relations **administrator**, **editor**, **viewer**, **member**, The details about these relations are describe in this [section](#user-domain-relationship)
+
+**Example Request:**
+
+```bash
+curl --location 'http://localhost/domains/903f7ede-3308-4206-89c2-e99688b612f7/users/assign' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Bearer <DOMAIN_ACCESS_TOKEN_>' \
+--data '{
+    "user_ids" : ["05dbd66a-ce38-4928-ac86-c1b44909be0d"],
+    "relation" : "editor"
+}'
+```
+
 ## Policies
 
-Magistrala uses policies to control permissions on entities: **users**, **things**, **groups** and **channels**. Under the hood, Magistrala uses its own fine grained access control list. Policies define permissions for the entities. For example, _which user_ has _access_ to _a specific thing_. Such policies have three main components: **subject**, **object**, and **action**.
+Magistrala uses policies to control permissions on entities: **domains**, **things**, **groups** and **channels**. Under the hood, Magistrala uses SpiceDB as policy engine which is OpenSource implementation of Google Zanzibar. Policies define permissions for the entities. For example, _which user_ has _read access_ to _a specific thing_. Such policies have three main components: **subject**, **object** and **relation**.
+
+Policies are
 
 To put it briefly:
 
-**Subject**: As the name suggests, it is the subject that will have the policy such as _users_ or _things_. Magistrala uses entity UUID on behalf of the real entities.
+**Subject**: As the name suggests, it is the subject that will have the policy such as _users_. Magistrala uses entity UUID on behalf of the real entities.
 
-**Object**: Objects are Magistrala entities (e.g. _channels_ or _group_ ) represented by their UUID.
+**Object**: Objects are Magistrala entities (e.g. _channels_ or _group_ or _things_ ) represented by their UUID.
 
-**Action**: This is the action that the subject wants to do on the object. This is one of the supported actions (read, write, update, delete, list or add)
+**Relation**: This is the action that the subject wants to do on the object. This is one of the supported relations (administrator, editor, viewer, member)
 
-Above this we have a domain specifier called **entityType**. This either specific group level access or client level acess. With client entity a client can have an action to another client in the same group. While group entity a client has an action to a group i.e direct association.
 
-All three components create a single policy.
 
-```go
-// Policy represents an argument struct for making policy-related function calls.
 
-type Policy struct {
-    Subject   string    `json:"subject"`
-    Object    string    `json:"object"`
-    Actions   []string  `json:"actions"`
-}
+## User Registration
 
-var examplePolicy = Policy{
-    Subject: userID,
-    Object:  groupID,
-    Actions: []string{groupListAction},
-}
-```
+There are two ways to user get registred to Magistrala , Self Register and Register new user by Super Admin.
+User Registration is self register default which can be changed by following environment varabile:
 
-Policies handling initial implementation are meant to be used on the **Group** level.
-
-There are three types of policies:
-
-- **m\_** Policy for messages i.e read or write action.
-- **g\_** Policy for Group rights i.e add, list, update or delete action.
-- **c\_** Policy for Clients that are group members i.e list, update or delete action.
-
-**m\_** Policy represents client rights to send and receive messages to a channel. Only channel members with corresponding rights can publish or receive messages to/from the channel. **m_read** and **m_write** are the only supported actions. With **m_read** the client can read messages from the channel. With **m_write** the client can write messages to the channel.
-
-**g\_** Policy represents the client's rights to modify the group/channel itself. Only group/channel members with correct rights can modify or update the group/channel, or add/remove members to/from the group. **g_add**, **g_list**, **g_update** and **g_delete** are the only supported actions. With **g_add** the client can add members to the group/channel. With **g_list** the client can list the group/channel and its members. With **g_update** the client can update the group/channel. With **g_delete** the client can delete the group/channel.
-
-Finally, the **c\_** policy represents the rights the member has over other members of the group/channel. Only group/channel members with correct rights can modify or update other members of the group/channel. **c_list**, **c_update**, **c_share** and **c_delete** are the only supported actions. With **c_list** the client can list other members of the group/channel. With **c_update** the client can update other members of the group/channel. With **c_share** the client can share the group/channel with other clients. With **c_delete** the client can delete other members of the group/channel.
-
-By default, mainflux adds listing action to **c\_** and **g\_** policies. This means that all members of the group/channel can list the its members. When adding a new member to a group with **g_add**, **g_update** or **g_delete** action, mainflux will automatically add **g_list** action to the new member's policy. This means that the new member will be able to list the group/channel. When adding a new member to a group/channel with **c_update** or **c_delete** action, mainflux will automatically add **c_list** action to the new member's policy. This means that the new member will be able to list the members of the group/channel.
-
-## Example
-
-The rules are specified in the **policies** association table. The table looks like this:
-
-| subject | object | actions                                     |
-| ------- | ------ | ------------------------------------------- |
-| clientA | groupA | ["g_add", "g_list", "g_update", "g_delete"] |
-| clientB | groupA | ["c_list", "c_update", "c_delete"]          |
-| clientC | groupA | ["c_update"]                                |
-| clientD | groupA | ["c_list"]                                  |
-| clientE | groupB | ["c_list", "c_update", "c_delete"]          |
-| clientF | groupB | ["c_update"]                                |
-| clientD | groupB | ["c_list"]                                  |
-| clientG | groupC | ["m_read"]                                  |
-| clientH | groupC | ["m_read", "m_write"]                       |
-
-Actions such as `c_list`, and `c_update` represent actions that allowed for the client with `client_id` to execute over all the other clients that are members of the group with `gorup_id`. Actions such as `g_update` represent actions allowed for the client with `client_id` to execute against a group with `group_id`.
-
-For the sake of simplicity, all the operations at the moment are executed on the **group level** - the group acts as a namespace in the context of authorization and is required.
-
-1. Actions for `clientA`
-
-   - they can add members to `groupA`
-   - when `clientA` lists groups `groupA` will be listed
-   - `clientA` can list members of `groupA`
-   - they can update `groupA`
-   - they can change the status of `groupA`
-
-2. Actions for `clientB`
-
-   - when they list clients they will list `clientA`, `clientC` and `clientD` since they are connected in the same group `groupA` and they have `c_list` actions.
-   - they can update clients connected to the same group they are connected in i.e they can update `clientA`, `clientC` and `clientD` since they are in the same `groupA`
-   - they can change clients status of clients connected to the same group they are connected in i.e they are able to change the status of `clientA`, `clientC` and `clientD` since they are in the same group `groupA`
-
-3. Actions for `clientC`
-
-   - they can update clients connected to the same group they are connected in i.e they can update `clientA`, `clientB` and `clientD` since they are in the same `groupA`
-
-4. Actions for `clientD`
-
-   - when they list clients they will list `clientA`, `clientB` and `clientC` since they are connected in the same group `groupA` and they have `c_list` actions and also `clientE` and `clientF` since they are connected to the same group `groupB` and they have `c_list` actions
-
-5. Actions for `clientE`
-
-   - when they list clients they will list `clientF` and `clientD` since they are connected in the same group `groupB` and they have `c_list` actions
-   - they can update clients connected to the same group they are connected in i.e they can update `clientF` and `clientD` since they are in the same `groupB`
-   - they can change clients status of clients connected to the same group they are connected in i.e they are able to change the status of `clientF` and `clientD` since they are in the same group `groupB`
-
-6. Actions for `clientF`
-
-   - they can update clients connected to the same group they are connected in i.e they can update `clientE`, and `clientD` since they are in the same `groupB`
-
-7. Actions for `clientG`
-
-   - they can read messages posted in group `groupC`
-
-8. Actions for `clientH`
-
-   - they can read from `groupC` and write messages to `groupC`
-
-If the user has no such policy, the operation will be denied; otherwise, the operation will be allowed.
-
-In order to check whether a user has the policy or not, Magistrala makes a gRPC call to policies API, then policies sub-service handles the checking existence of the policy.
-
-All policies are stored in the Postgres Database. The database responsible for storing all policies is deployed along with the Magistrala.
-
-## Predefined Policies
-
-Magistrala comes with predefined policies.
-
-### Users service related policies
-
-- By default, Magistrala allows anybody to create a user.
-- The admin has a special policy indicating that the user is admin. This is implemented using roles as the following:
-  `<admin_id>` has `admin` role as part of its description.
-
-### Things service related policies
-
-- There are 3 policies regarding `Things`: `c_update`, `c_list`, `c_share` and `c_delete`.
-- When a user creates a thing, the user will have `c_update`, `c_list` and `c_delete` policies on the `Thing` since they are the owner.
-- In order to view a thing, you need `c_list` policy on that thing.
-- In order to update the thing, you need a `c_update` policy on that thing.
-- In order to share a thing, you need a `c_share` policy on that thing.
-- In order to remove a thing, you need a `c_delete` policy on that thing.
-
-### Group entity related policies
-
-- Once the user creates a new group, the user will have a `g_add`, `g_update`, `g_list` and `g_delete` policy on the group.
-
-### Summary of Defined Policies
-
-## Add User Policies
-
-You can add policies as well through an HTTP endpoint. _Only_ admin or member with `g_add` policy to the object can use this endpoint. Therefore, you need an authentication token.
-
-_user_token_ must belong to the user.
-
-> Must-have: user_token, group_id, user_id and policy_actions
-
-```bash
-curl -isSX POST 'http://localhost/users/policies' -H "Content-Type: application/json" -H "Authorization: Bearer <user_token>" -d '{"subject": "<user_id>", "object": "<group_id>", "actions": ["<action_1>", ..., "<action_N>"]}'
-```
-
-For example:
-
-```bash
-curl -isSX POST 'http://localhost/users/policies' -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" -d '{"subject": "0b530292-3c1d-4c7d-aff5-b141b5c5d3e9", "object": "0a4a2c33-2d0e-43df-b51c-d905aba99e17", "actions": ["c_list", "g_list"]}'
-
-HTTP/1.1 201 Created
-Server: nginx/1.23.3
-Date: Wed, 14 Jun 2023 13:40:06 GMT
-Content-Type: application/json
-Content-Length: 0
-Connection: keep-alive
-Access-Control-Expose-Headers: Location
-```
-
-## Updating Policies
-
-> Must-have: user_token, group_id, user_id and policy_actions
-
-```bash
-curl -isSX PUT 'http://localhost/users/policies' -H "Content-Type: application/json" -H "Authorization: Bearer <user_token>" -d '{"subject": "<user_id>", "object": "<group_id>", "actions": ["<action_1>", ..., "<action_N>"]}'
-```
-
-For example:
-
-```bash
-curl -isSX PUT 'http://localhost/users/policies' -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN" -d '{"subject": "0b530292-3c1d-4c7d-aff5-b141b5c5d3e9", "object": "0a4a2c33-2d0e-43df-b51c-d905aba99e17", "actions": ["c_delete"]}'
-
-HTTP/1.1 204 No Content
-Server: nginx/1.23.3
-Date: Wed, 14 Jun 2023 13:41:00 GMT
-Content-Type: application/json
-Connection: keep-alive
-Access-Control-Expose-Headers: Location
-```
-
-## Lisiting Policies
-
-> Must-have: user_token
-
-```bash
-curl -isSX GET 'http://localhost/users/policies' -H "Content-Type: application/json" -H "Authorization: Bearer <user_token>"
-```
-
-For example:
-
-```bash
-curl -isSX GET 'http://localhost/users/policies' -H "Content-Type: application/json" -H "Authorization: Bearer $USER_TOKEN"
-
-HTTP/1.1 200 OK
-Server: nginx/1.23.3
-Date: Wed, 14 Jun 2023 13:41:32 GMT
-Content-Type: application/json
-Content-Length: 305
-Connection: keep-alive
-Access-Control-Expose-Headers: Location
-
-{
-  "limit": 10,
-  "offset": 0,
-  "total": 1,
-  "policies": [
-    {
-      "owner_id": "94939159-d129-4f17-9e4e-cc2d615539d7",
-      "subject": "0b530292-3c1d-4c7d-aff5-b141b5c5d3e9",
-      "object": "0a4a2c33-2d0e-43df-b51c-d905aba99e17",
-      "actions": ["c_delete"],
-      "created_at": "2023-06-14T13:40:06.582315Z",
-      "updated_at": "2023-06-14T13:41:00.636733Z"
-    }
-  ]
-}
-```
-
-## Delete Policies
-
-The admin can delete policies. Only policies defined on [Predefined Policies section](/authorization/#summary-of-the-defined-policies) are allowed.
-
-> Must-have: user_token, object, subjects_ids and policies
-
-```bash
-curl -isSX DELETE -H "Accept: application/json" -H "Authorization: Bearer <user_token>" http://localhost/users/policies -d '{"subject": "user_id", "object": "<group_id>"}'
-```
-
-For example:
-
-```bash
-curl -isSX DELETE -H 'Accept: application/json' -H "Authorization: Bearer $USER_TOKEN" http://localhost/users/policies -d '{"subject": "0b530292-3c1d-4c7d-aff5-b141b5c5d3e9", "object": "0a4a2c33-2d0e-43df-b51c-d905aba99e17"}'
-
-HTTP/1.1 204 No Content
-Server: nginx/1.23.3
-Date: Wed, 14 Jun 2023 13:43:46 GMT
-Content-Type: application/json
-Connection: keep-alive
-Access-Control-Expose-Headers: Location
-```
-
-If you delete policies, the policy will be removed from the policy storage. Further authorization checks related to that policy will fail.
+MG_USERS_ALLOW_SELF_REGISTER=true
