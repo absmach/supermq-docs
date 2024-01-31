@@ -19,6 +19,10 @@ jobs:
       - name: Checkout master
         uses: actions/checkout@v4
 
+      - name: Install mkdocs-drawio-file
+        run: |
+          pip install mkdocs-drawio-file
+
       - name: Deploy docs
         uses: mhausenblas/mkdocs-deploy-gh-pages@master
         # Or use mhausenblas/mkdocs-deploy-gh-pages@nomaterial to build without the mkdocs-material theme
