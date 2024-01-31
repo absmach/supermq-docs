@@ -2,11 +2,12 @@
 
 Magistrala allows for fine-grained control over user permissions, taking into account hierarchical relationships between entities domains, groups, channels and things.The structure and functionality of an authorization system implemented using [Spicedb](https://github.com/authzed/spicedb) and its associated [schema language](https://authzed.com/docs/reference/schema-lang). `auth` service backed by SpiceDB manages permissions for users, domains, groups, channels and things.
 
-
 ## Domains
 
 ### Overview
+
 In Magistrala, **Things**, **Channels**, and **Groups** are inherently associated with one particular Domain. This means that every **Group**, including its sub-groups, every **Thing**, and every **Channel** is owned by and belongs to a specific Domain. Domain acts like kind of namespace.
+
 ```mermaid
 graph TD
    Do[Domain]
@@ -50,7 +51,6 @@ After User registering to Magistrala, User can accept the invitations to Domain.
 All the Users in Magistrala are allowed to create a new Domain.
 Domain creating user becomes domain Administrator by default
 
-
 User can have any one of the following relation with a domain
 
 - **administrator**: Users with administrator relation have full control over all entities (things, channels, groups) within the domain. They can perform actions like creating, updating, and deleting entities created by others. Administrators are also allowed to create their own entities and can view and update the ones they have created.
@@ -58,14 +58,13 @@ User can have any one of the following relation with a domain
 - **viewer**:  Users with viewer relation have access to view all entities (things, channels, groups) created by others within the domain. Viewer are also allowed to create their own entities and can view and update the ones they have created.
 - **member**: Users with Members relation could not view and no access to entities (things, channels, groups) created by others within the domain. Members are also allowed to create their own entities and can view and update the ones they have created.
 
-
 After User Sign-Up to Magistral, User is allowed to create new Domain or join to an existing domain via invitations, without Domain User could not create create _Things_, _Channels_, _Groups_.
 
 All operations, including creating, updating, and deleting Things, Channels, and Groups, occur at the domain level. For instance, when a user creates a new Thing using an access token, the newly created Thing automatically becomes associated with a specific domain. The domain information is extracted from the access token. When user obtaining a token, user should specify the domain for which they want to operate.
 
-So to do operations on a Domain, An access token for domain is required. This can be obtained by two ways which is explained in [next section](#domain-tokens).
+So to do operations on a Domain, An access token for domain is required. This can be obtained by two ways which is explained in [next section](#tokens-and-domain-tokens).
 
-## Domain Tokens
+## Tokens and Domain Tokens
 
 JWT Token are used in Magistrala for Authentication and Authorization. The JWT Token have domain, exp, iat, iss, sub, type and user fields.
 
@@ -95,7 +94,7 @@ Actions related creation, updatation, deletion of Things, Channels, Group are no
 
 There are two ways to obtain JWT Token for a particular Domain
 
-#### Option 1: Passing domain_id while obatining new token
+### Option 1: Passing domain_id while obtaining new token
 
 **Request:**
 
@@ -121,12 +120,11 @@ In this request , if domain id is empty or if field is not added, then in respon
 }
 ```
 
-#### Option 2: Get new access and refresh token through refresh endpoint by passing domain_id.
+### Option 2: Get new access and refresh token through refresh endpoint by passing domain_id
 
 In most of the cases user login domain in under determinable. This method will be useful for those kind of cases.
 
 **Step 1: Get token without domain id**
-
 **Request:**
 
 ```bash
@@ -221,6 +219,7 @@ curl --location 'http://localhost/users/tokens/refresh' \
         "domain_id": "903f7ede-3308-4206-89c2-e99688b612f7"
 }'
 ```
+
 !!! note "Note: Same request also used for switching between domains."
 
 **Response:**
@@ -288,26 +287,175 @@ curl --location 'http://localhost/domains/903f7ede-3308-4206-89c2-e99688b612f7/u
 }'
 ```
 
-## Policies
+## Unassign Users from Domain
 
-Magistrala uses policies to control permissions on entities: **domains**, **things**, **groups** and **channels**. Under the hood, Magistrala uses SpiceDB as policy engine which is OpenSource implementation of Google Zanzibar. Policies define permissions for the entities. For example, _which user_ has _read access_ to _a specific thing_. Such policies have three main components: **subject**, **object** and **relation**.
+User can be unassigned to domain with endpoint `/domain/<domain_id>/users/unassign` with json body like below:
 
-Policies are
+```json
+{
+    "user_ids" : ["05dbd66a-ce38-4928-ac86-c1b44909be0d"],
+    "relation" : "editor"
+}
+```
 
-To put it briefly:
+- **user_ids** : field contains array of users ids
+- **relation** : field contains any one of the following relations **administrator**, **editor**, **viewer**, **member**, The details about these relations are describe in this [section](#user-domain-relationship)
 
-**Subject**: As the name suggests, it is the subject that will have the policy such as _users_. Magistrala uses entity UUID on behalf of the real entities.
+**Example Request:**
 
-**Object**: Objects are Magistrala entities (e.g. _channels_ or _group_ or _things_ ) represented by their UUID.
+```bash
+curl --location 'http://localhost/domains/903f7ede-3308-4206-89c2-e99688b612f7/users/unassign' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Bearer <DOMAIN_ACCESS_TOKEN_>' \
+--data '{
+    "user_ids" : ["05dbd66a-ce38-4928-ac86-c1b44909be0d"],
+    "relation" : "administrator"
+}''
+```
 
-**Relation**: This is the action that the subject wants to do on the object. This is one of the supported relations (administrator, editor, viewer, member)
+## Groups
+
+Groups entities which contains channels, things and Groups (Sub-Groups).
+
+An Example Group with channels, things and groups (sub-groups) within domain.
+
+```mermaid
+graph
+   subgraph Domain_1
+      direction BT
+      Gr1["Group 1"]
+      Gr2["Group 2"]
+
+      Gr11["Group 11 (Sub Group)"]
+      Gr12["Group 12 (Sub Group)"]
+
+      Gr21["Group 21 (Sub Group)"]
+      Gr22["Group 22 (Sub Group)"]
+
+      Th1["Thing 1"]
+      Th2["Thing 2"]
+      Th3["Thing 3"]
+      Th4["Thing 4"]
+      Th5["Thing 5"]
+      Th6["Thing 6"]
 
 
 
+      Ch1["Channel 1"]
+      Ch2["Channel 2"]
+      Ch3["Channel 3"]
+      Ch4["Channel 4"]
+
+      Gr11 --->|parent| Gr1
+      Gr12 --->|parent| Gr1
+
+      Ch1 --->|parent| Gr11
+      Th1 --->|connects| Ch1
+      Th5 --->|connects| Ch1
+
+      Ch2 --->|parent| Gr1
+      Th2 --->|connects| Ch2
+
+      Gr21 --->|parent| Gr2
+      Ch3 --->|parent| Gr21
+      Th3 --->|connects| Ch3
+
+      Gr22 --->|parent| Gr21
+      Ch4 --->|parent| Gr22
+      Th4 --->|connects| Ch4
+      Th6 --->|connects| Ch4
+   end
+```
+
+Another example
+
+```mermaid
+graph
+  subgraph Domain_1
+    direction BT
+
+    Gr1["Group 1"]
+
+    Gr11["Group 11 (Sub Group)"]
+    Gr12["Group 12 (Sub Group)"]
+    Gr13["Group 13 (Sub Group)"]
+
+
+    Th1["Thing 1"]
+    Th11["Thing 11"]
+    Th2["Thing 2"]
+    Th22["Thing 22"]
+    Th3["Thing 3"]
+    Th33["Thing 33"]
+    Th4["Thing 4"]
+
+    Ch1["Channel 1"]
+    Ch2["Channel 2"]
+    Ch3["Channel 3"]
+    Ch4["Channel 4"]
+
+    Gr11 --->|parent| Gr1
+    Ch4 --->|parent| Gr1
+    Gr12 --->|parent| Gr11
+    Gr13 --->|parent| Gr12
+
+    Ch1 --->|parent| Gr11
+    Ch2 --->|parent| Gr12
+    Ch3 --->|parent| Gr13
+
+
+    Th1 --->|connects| Ch1
+    Th11 --->|connects| Ch1
+
+    Th2 --->|connects| Ch2
+    Th22 --->|connects| Ch2
+    Th3 --->|connects| Ch3
+    Th33 --->|connects| Ch3
+    Th4 --->|connects| Ch4
+
+  end
+```
+
+
+
+Groups have parent-child relationships, forming a hierarchy where top-level groups (Group 1 and Group 2) have subgroups (Group 11, Group 12, Group 21, and Group 22) or channels (Channel 2) beneath them.
+Channels are communication topics to which things can publish the messages, Channels can have parent group.
+
+User having access to Domain as Administrator , have all permissions on the entities in the domain
+
+For example:
+
+**User_1** is **administrator** of **Domain_1**. **User_1 able to view all entities created by others and have administrator access all entities in domain**.
+
+![domain_group_users_administrator](diagrams/domain_group_users_administrator.drawio)
+
+
+**User_2** is **editor** of **Domain_1**. **User_2 able to view all entities and have edit access to all entities in domain and also able to create & manage new things,channels & groups**.
+
+![domain_group_users_editor](diagrams/domain_group_users_editor.drawio)
+
+**User_3** is **viewer** of **Domain_1**. **User_3 able to only view all entities in domain and also able to create & manage new things,channels & groups**.
+
+![domain_group_users_viewer](diagrams/domain_group_users_viewer.drawio)
+
+**User_4** is **member** of **Domain_1**. **User_4 able to create & manage new things,channels & groups in domain. User_4 could not view and manage all entities in domain**.
+!!! note "Note: All other users having administrator, editor, viewer relation with domain will also have member relation inherit with domain, which allows them to create new things, channels & groups."
+![domain_group_users_member](diagrams/domain_group_users_member.drawio)
+
+Now lets say **User_4 creates new Thing 5, Channel 5 and Group 3**, The user who creates entity will be administrator of the entity by default.
+So in this case User_4 is administrator of Thing 5, Channel 5 and Group 3
+
+![domain_group_user4_step_1](diagrams/domain_group_user4_step_1.drawio)
+
+Next User_4 can connect Thing 5 to Channel 5 and assign Group 3 as parent for Channel 5
+
+![domain_group_user4_step_2](diagrams/domain_group_user4_step_2.drawio)
 
 ## User Registration
 
 There are two ways to user get registred to Magistrala , Self Register and Register new user by Super Admin.
 User Registration is self register default which can be changed by following environment varabile:
 
+```env
 MG_USERS_ALLOW_SELF_REGISTER=true
+```
