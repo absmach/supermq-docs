@@ -1,10 +1,10 @@
 name: Publish docs via GitHub Pages
 
-# Controls when the action will run.
+# Controls when the action will run
 on:
   push:
     branches:
-      - master
+      - main
       - Pages
 
   # Allows you to run this workflow manually from the Actions tab
