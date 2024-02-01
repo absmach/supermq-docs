@@ -1,0 +1,5 @@
+.md-typeset h5 {
+    color: var(--md-default-fg-color);
+    font-size: large;
+    text-transform: none;
+}

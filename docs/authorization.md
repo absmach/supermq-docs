@@ -4,7 +4,11 @@ Magistrala allows for fine-grained control over user permissions, taking into ac
 
 ## Domains
 
-### Overview
+Domain contains **Things**, **Channels**, and **Groups**. **Users** can be member of Domain with different types of available relation, These relation provides access control to the entities in domain.
+
+### Domain Entities
+
+#### Overview
 
 In Magistrala, **Things**, **Channels**, and **Groups** are inherently associated with one particular Domain. This means that every **Group**, including its sub-groups, every **Thing**, and every **Channel** is owned by and belongs to a specific Domain. Domain acts like kind of namespace.
 
@@ -40,7 +44,261 @@ graph
 style Domain stroke-width:3px,margin-top:10px,margin-bottom:10px
 ```
 
-### User Domain Relationship
+#### Domain Entities Relations
+
+Domain hold all entities such as Groups, Channels and Things.
+The entities created in Domain doesn't creates have hierarchical structure within domain.
+
+Example: In Domain_1 a user creates following entities Group 1, Group_2, Thing 1, Thing 2, Channel 1, Channel 2. By default their will be relation betweens the entities, until user assigns relation between entities
+
+```mermaid
+graph
+   subgraph Domain_1
+      direction TB
+      Gr1["Group 1"]
+      Gr2["Group 2"]
+
+      Th1["Thing 1"]
+      Th2["Thing 2"]
+
+
+      Ch1["Channel 1"]
+      Ch2["Channel 2"]
+
+   end
+```
+
+##### Channel Thing Connect/Disconnect
+
+`Thing` represents devices (or applications) connected to Magistrala that uses the platform for message exchange with other `things`.
+
+`Channel` represents a communication channel. It serves as message topic that can be consumed by all of the things connected to it.
+To Channel communication topics things can publish/Subscribe the messages.
+
+Thing and Channel can be connected to multiple channels using the following API.
+
+```bash
+curl --location 'http://localhost/connect' \
+--header 'Content-Type: application/json' \
+--header 'Accept: application/json' \
+--header 'Authorization: Bearer <DOMAIN_USER_ACCESS_TOKEN>' \
+--data '{
+  "thing_id": "<Thing 1 ID>",
+  "channel_id": "<Channel 1 ID>"
+}'
+```
+
+_*The below diagram shows Thing 1 connect to channel 1 , channel 2 and Thing 2 connect to Thing 2. This relationship can be established using the provided request*_
+
+```mermaid
+graph
+   subgraph Domain_1
+      direction BT
+      Gr1["Group 1"]
+      Gr2["Group 2"]
+
+      Th1["Thing 1"]
+      Th2["Thing 2"]
+
+      Ch1["Channel 1"]
+      Ch2["Channel 2"]
+
+
+      Th1 --->|connect| Ch1
+      Th1 --->|connect| Ch2
+
+      Th2 --->|connect| Ch2
+   end
+```
+
+##### Channel Group Relation
+
+Groups are entities that can be linked as parents to channels.
+
+Assigning a group as the parent of a channel can be achieved through the following request.
+
+```bash
+curl --location 'http://localhost/channels/<Channel 1 ID>/groups/assign' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Bearer <DOMAIN_USER_ACCESS_TOKEN>' \
+--data '{
+    "group_ids" : [ "<Group 2 ID>" ]
+}'
+```
+
+_*The diagram below illustrates the parent relationship between Channel 1 and Channel 2 with Group 2. This relationship can be established using the provided request.*_
+
+```mermaid
+graph
+   subgraph Domain_1
+      direction BT
+      Gr1["Group 1"]
+      Gr2["Group 2"]
+
+      Th1["Thing 1"]
+      Th2["Thing 2"]
+
+      Ch1["Channel 1"]
+      Ch2["Channel 2"]
+
+
+      Th1 --->|connect| Ch1
+      Th1 --->|connect| Ch2
+
+      Th2 --->|connect| Ch2
+
+      Ch1 --->|parent| Gr2
+      Ch2 --->|parent| Gr2
+   end
+```
+
+##### Group Group Relation
+
+Groups can establish a parent-child relationship with other groups. The children groups are SubGroup and they can also children groups in  nested fashion
+
+Assigning a group as the parent to another group can be achieved through the following request.
+
+```bash
+curl --location 'http://localhost/groups/<Parent Group ID>/groups/assign' \
+--header 'Content-Type: application/json' \
+--header 'Accept: application/json' \
+--header 'Authorization: Bearer <DOMAIN_USER_ACCESS_TOKEN>' \
+--data '{
+    "group_ids": ["<Child Group ID>"]
+}'
+```
+
+_*The diagram below illustrates the parent relationship between Group 1 and Group 2. This relationship can be established using the provided request.*_
+
+```mermaid
+graph
+   subgraph Domain_1
+      direction BT
+      Gr1["Group 1"]
+      Gr2["Group 2"]
+
+      Th1["Thing 1"]
+      Th2["Thing 2"]
+
+      Ch1["Channel 1"]
+      Ch2["Channel 2"]
+
+
+      Th1 --->|connect| Ch1
+      Th1 --->|connect| Ch2
+
+      Th2 --->|connect| Ch2
+
+      Ch1 --->|parent| Gr2
+      Ch2 --->|parent| Gr2
+
+      Gr2 --->|parent| Gr1
+   end
+```
+
+##### Domain Entities Relation Examples
+
+An Example Group with channels, things and groups (sub-groups) within domain.
+Groups have parent-child relationships, forming a hierarchy where top-level Groups (Group 1 and Group 2) have Groups  (Sub Groups - Group 11, Group 12, Group 21, and Group 22) or Channels (Channel 2) beneath them.
+
+```mermaid
+graph
+   subgraph Domain_1
+      direction BT
+      Gr1["Group 1"]
+      Gr2["Group 2"]
+
+      Gr11["Group 11 (Sub Group)"]
+      Gr12["Group 12 (Sub Group)"]
+
+      Gr21["Group 21 (Sub Group)"]
+      Gr22["Group 22 (Sub Group)"]
+
+      Th1["Thing 1"]
+      Th2["Thing 2"]
+      Th3["Thing 3"]
+      Th4["Thing 4"]
+      Th5["Thing 5"]
+      Th6["Thing 6"]
+
+
+
+      Ch1["Channel 1"]
+      Ch2["Channel 2"]
+      Ch3["Channel 3"]
+      Ch4["Channel 4"]
+
+      Gr11 --->|parent| Gr1
+      Gr12 --->|parent| Gr1
+
+      Ch1 --->|parent| Gr11
+      Th1 --->|connects| Ch1
+      Th5 --->|connects| Ch1
+
+      Ch2 --->|parent| Gr1
+      Th2 --->|connects| Ch2
+
+      Gr21 --->|parent| Gr2
+      Ch3 --->|parent| Gr21
+      Th3 --->|connects| Ch3
+
+      Gr22 --->|parent| Gr21
+      Ch4 --->|parent| Gr22
+      Th4 --->|connects| Ch4
+      Th6 --->|connects| Ch4
+   end
+```
+
+Another example
+
+```mermaid
+graph
+  subgraph Domain_1
+    direction BT
+
+    Gr1["Group 1"]
+
+    Gr11["Group 11 (Sub Group)"]
+    Gr12["Group 12 (Sub Group)"]
+    Gr13["Group 13 (Sub Group)"]
+
+
+    Th1["Thing 1"]
+    Th11["Thing 11"]
+    Th2["Thing 2"]
+    Th22["Thing 22"]
+    Th3["Thing 3"]
+    Th33["Thing 33"]
+    Th4["Thing 4"]
+
+    Ch1["Channel 1"]
+    Ch2["Channel 2"]
+    Ch3["Channel 3"]
+    Ch4["Channel 4"]
+
+    Gr11 --->|parent| Gr1
+    Ch4 --->|parent| Gr1
+    Gr12 --->|parent| Gr11
+    Gr13 --->|parent| Gr12
+
+    Ch1 --->|parent| Gr11
+    Ch2 --->|parent| Gr12
+    Ch3 --->|parent| Gr13
+
+
+    Th1 --->|connects| Ch1
+    Th11 --->|connects| Ch1
+
+    Th2 --->|connects| Ch2
+    Th22 --->|connects| Ch2
+    Th3 --->|connects| Ch3
+    Th33 --->|connects| Ch3
+    Th4 --->|connects| Ch4
+
+  end
+```
+
+## User Domain Relationship
 
 In Magistrala, when a new user registers, they don't automatically have access to domains.
 The domain administrator must invite the user to the domain and assign them a role, such as administrator, editor, viewer, or member.
@@ -53,12 +311,50 @@ Domain creating user becomes domain Administrator by default
 
 User can have any one of the following relation with a domain
 
-- **administrator**: Users with administrator relation have full control over all entities (things, channels, groups) within the domain. They can perform actions like creating, updating, and deleting entities created by others. Administrators are also allowed to create their own entities and can view and update the ones they have created.
-- **editor**: Users with editor relation have access to update all entities (things, channels, groups) created by others within the domain. Editor are also allowed to create their own entities and can view and update the ones they have created.
-- **viewer**:  Users with viewer relation have access to view all entities (things, channels, groups) created by others within the domain. Viewer are also allowed to create their own entities and can view and update the ones they have created.
-- **member**: Users with Members relation could not view and no access to entities (things, channels, groups) created by others within the domain. Members are also allowed to create their own entities and can view and update the ones they have created.
+- [Administrator](#domain-administrator)
+- [Editor](#domain-editor)
+- [Viewer](#domain-viewer)
+- [Member](#domain-member)
 
-After User Sign-Up to Magistral, User is allowed to create new Domain or join to an existing domain via invitations, without Domain User could not create create _Things_, _Channels_, _Groups_.
+### Domain Administrator
+
+Users with administrator relation have full control over all entities (things, channels, groups) within the domain. They can perform actions like creating, updating, and deleting entities created by others. Administrators are also allowed to create their own entities and can view and update the ones they have created.
+
+**Example:**  
+**User_1** is **administrator** of **Domain_1**. **User_1 able to view all entities created by others and have administrator access all entities in domain**.
+
+![domain_users_administrator](diagrams/domain_users_administrator.drawio)
+
+### Domain Editor
+
+Users with editor relation have access to update all entities (things, channels, groups) created by others within the domain. Editor are also allowed to create their own entities and can view and update the ones they have created.
+
+**Example:**  
+**User_2** is **editor** of **Domain_1**. **User_2 able to view all entities and have edit access to all entities in domain and also able to create & manage new things,channels & groups**.
+
+![domain_users_editor](diagrams/domain_users_editor.drawio)
+
+### Domain Viewer
+
+Users with viewer relation have access to view all entities (things, channels, groups) created by others within the domain. Viewer are also allowed to create their own entities and can view and update the ones they have created.
+
+**Example:**  
+**User_3** is **viewer** of **Domain_1**. **User_3 able to only view entities which are created by others in domain and <span style="color:blue"> also able to create & manage new things,channels & groups** </span>
+
+![domain_users_viewer](diagrams/domain_users_viewer.drawio)
+
+### Domain Member
+
+Users with Members relation could not view and no access to entities (things, channels, groups) created by others within the domain. Members are also allowed to create their own entities and can view and update the ones they have created.  
+Domain Members will not have access by default to any of the entities in Domain 1, access shall be granted for specific entities by domain administrator or individual entity administrator.  
+
+**Example:**
+**User_4 , User_5, User_6, User_7, User_8, User_9** is **member** of **Domain_1**. **These Member relation users can able to create & manage new things,channels & groups in domain. The can have access the entities to which they have relation in domain. They could not view and manage other entities to which they don't have any relation in domain**.
+!!! note "Note: All other users having administrator, editor, viewer relation with domain will also have member relation inherit with domain, which allows them to create new things, channels & groups."
+
+![domain_users_member](diagrams/domain_users_member.drawio)
+
+After User Sign-Up to Magistrala, User is allowed to create new Domain or join to an existing domain via invitations, without Domain User could not create create _Things_, _Channels_, _Groups_.
 
 All operations, including creating, updating, and deleting Things, Channels, and Groups, occur at the domain level. For instance, when a user creates a new Thing using an access token, the newly created Thing automatically becomes associated with a specific domain. The domain information is extracted from the access token. When user obtaining a token, user should specify the domain for which they want to operate.
 
@@ -313,143 +609,149 @@ curl --location 'http://localhost/domains/903f7ede-3308-4206-89c2-e99688b612f7/u
 }''
 ```
 
-## Groups
+## User Entities Relationship
 
-Groups entities which contains channels, things and Groups (Sub-Groups).
+Users assigned to domain with any relationship (Administrator , Editor, Viewer, Member ) will have access to create entities (Things, Groups, Channels).
 
-An Example Group with channels, things and groups (sub-groups) within domain.
+Domain administrator or individual entity administrator shall grant access to Domain Member for specific entities.
 
-```mermaid
-graph
-   subgraph Domain_1
-      direction BT
-      Gr1["Group 1"]
-      Gr2["Group 2"]
+## Groups Relations
 
-      Gr11["Group 11 (Sub Group)"]
-      Gr12["Group 12 (Sub Group)"]
+Like Domain, Groups also have four types of relations
 
-      Gr21["Group 21 (Sub Group)"]
-      Gr22["Group 22 (Sub Group)"]
+- [Administrator](#group-administrator)
+- [Editor](#group-editor)
+- [Viewer](#group-viewer)
+- [Member](#group-member)
 
-      Th1["Thing 1"]
-      Th2["Thing 2"]
-      Th3["Thing 3"]
-      Th4["Thing 4"]
-      Th5["Thing 5"]
-      Th6["Thing 6"]
+### Group Administrator
 
+From the [previous viewer example](#domain-viewer), lets take **User_3** who has **viewer relation** with **Domain_1**, which means **User_3 will be able to view all the entities created by others but cannot make any edits or updates on them.** ***<span style="color:blue">User_3 will have access to create entities in Domain_1 </span>***
 
+**User_3 creates new Thing 101, Channel 101 and Group 101**.  
 
-      Ch1["Channel 1"]
-      Ch2["Channel 2"]
-      Ch3["Channel 3"]
-      Ch4["Channel 4"]
+**User_3 Request to Create Thing 101:**
 
-      Gr11 --->|parent| Gr1
-      Gr12 --->|parent| Gr1
-
-      Ch1 --->|parent| Gr11
-      Th1 --->|connects| Ch1
-      Th5 --->|connects| Ch1
-
-      Ch2 --->|parent| Gr1
-      Th2 --->|connects| Ch2
-
-      Gr21 --->|parent| Gr2
-      Ch3 --->|parent| Gr21
-      Th3 --->|connects| Ch3
-
-      Gr22 --->|parent| Gr21
-      Ch4 --->|parent| Gr22
-      Th4 --->|connects| Ch4
-      Th6 --->|connects| Ch4
-   end
+```bash
+curl --location 'http://localhost/things' \
+--header 'Content-Type: application/json' \
+--header 'Accept: application/json' \
+--header 'Authorization: Bearer <USER_3_DOMAIN_ACCESS_TOKEN>' \
+--data '{
+    "credentials": {
+        "secret": "a1ca33c0-367e-402b-a239-ff1255fdc440"
+    },
+    "name": "Thing 101"
+}'
 ```
 
-Another example
+**User_3 Request to Create Channel 101:**
 
-```mermaid
-graph
-  subgraph Domain_1
-    direction BT
-
-    Gr1["Group 1"]
-
-    Gr11["Group 11 (Sub Group)"]
-    Gr12["Group 12 (Sub Group)"]
-    Gr13["Group 13 (Sub Group)"]
-
-
-    Th1["Thing 1"]
-    Th11["Thing 11"]
-    Th2["Thing 2"]
-    Th22["Thing 22"]
-    Th3["Thing 3"]
-    Th33["Thing 33"]
-    Th4["Thing 4"]
-
-    Ch1["Channel 1"]
-    Ch2["Channel 2"]
-    Ch3["Channel 3"]
-    Ch4["Channel 4"]
-
-    Gr11 --->|parent| Gr1
-    Ch4 --->|parent| Gr1
-    Gr12 --->|parent| Gr11
-    Gr13 --->|parent| Gr12
-
-    Ch1 --->|parent| Gr11
-    Ch2 --->|parent| Gr12
-    Ch3 --->|parent| Gr13
-
-
-    Th1 --->|connects| Ch1
-    Th11 --->|connects| Ch1
-
-    Th2 --->|connects| Ch2
-    Th22 --->|connects| Ch2
-    Th3 --->|connects| Ch3
-    Th33 --->|connects| Ch3
-    Th4 --->|connects| Ch4
-
-  end
+```bash
+curl --location 'http://localhost/channels' \
+--header 'Content-Type: application/json' \
+--header 'Accept: application/json' \
+--header 'Authorization: Bearer <USER_3_DOMAIN_ACCESS_TOKEN>' \
+--data '{
+    "name": "Chanel 101"
+}'
 ```
 
+**User_3 Request to Create Group 101:**
 
+```bash
+curl --location 'http://localhost/groups' \
+--header 'Content-Type: application/json' \
+--header 'Accept: application/json' \
+--header 'Authorization: Bearer <USER_3_DOMAIN_ACCESS_TOKEN>' \
+--data '{
+    "name": "Group 101"
+}'
+```
 
-Groups have parent-child relationships, forming a hierarchy where top-level groups (Group 1 and Group 2) have subgroups (Group 11, Group 12, Group 21, and Group 22) or channels (Channel 2) beneath them.
-Channels are communication topics to which things can publish the messages, Channels can have parent group.
+The user who creates entity will be administrator of the entity by default.  
+So  **User_3** is **administrator** of **Thing 101, Channel 101 and Group 101.**  
 
-User having access to Domain as Administrator , have all permissions on the entities in the domain
+![group_users_administrator_1](diagrams/group_users_administrator_1.drawio)
 
-For example:
+!!! Note "User_3 will also have Domain Viewer relation to Thing 101, Channel 101 and Group 101"
 
-**User_1** is **administrator** of **Domain_1**. **User_1 able to view all entities created by others and have administrator access all entities in domain**.
+User_3 can make these entities (Thing 101, Channel 101, Group 101) in hierarchical structure by assigning relations between entities  
+Example: Connect Thing 101 & Channel 101, Assign Group 101 as parent of Channel 101.  
 
-![domain_group_users_administrator](diagrams/domain_group_users_administrator.drawio)
+**User_3 Request for Connect Thing 101 & Channel 101:**
 
+```bash
+curl --location 'http://localhost/connect' \
+--header 'Content-Type: application/json' \
+--header 'Accept: application/json' \
+--header 'Authorization: Bearer <USER_3_DOMAIN_ACCESS_TOKEN>' \
+--data '{
+  "thing_id": "<Thing 101 ID>",
+  "channel_id": "<Channel 101 ID>"
+}'
+```
 
-**User_2** is **editor** of **Domain_1**. **User_2 able to view all entities and have edit access to all entities in domain and also able to create & manage new things,channels & groups**.
+**User_3 Request for Assign Group 101 as parent of Channel 101:**
 
-![domain_group_users_editor](diagrams/domain_group_users_editor.drawio)
+```bash
+curl --location 'http://localhost/channels/<Channel 101 ID>/groups/assign' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Bearer <USER_3_DOMAIN_ACCESS_TOKEN>' \
+--data '{
+    "group_ids" : [ "<Group 101 ID>" ]
+}'
+```
 
-**User_3** is **viewer** of **Domain_1**. **User_3 able to only view all entities in domain and also able to create & manage new things,channels & groups**.
+![group_users_administrator_2](diagrams/group_users_administrator_2.drawio)
 
-![domain_group_users_viewer](diagrams/domain_group_users_viewer.drawio)
+***Members of Domain 1 will not have access by default to any of the entities in Domain 1, access shall be granted for specific entities by domain administrator or individual entity administrator.***
 
-**User_4** is **member** of **Domain_1**. **User_4 able to create & manage new things,channels & groups in domain. User_4 could not view and manage all entities in domain**.
-!!! note "Note: All other users having administrator, editor, viewer relation with domain will also have member relation inherit with domain, which allows them to create new things, channels & groups."
-![domain_group_users_member](diagrams/domain_group_users_member.drawio)
+**Administrator of Group 101 (User_3), assigns User_4 with Administrator relation.**  
+**When Domain Member User_4 becomes as Administrator of Group 101, User_4 can able to update, delete, assign,unassign to Group 101. Since Group 101 have Channel 101 and Thing 101 as child. The User_5 have Administrator access on Group 101 child entities Channel 101 and Thing 101.**  
 
-Now lets say **User_4 creates new Thing 5, Channel 5 and Group 3**, The user who creates entity will be administrator of the entity by default.
-So in this case User_4 is administrator of Thing 5, Channel 5 and Group 3
+**User_3 Request for Assign User_4 as administrator for Group 101:**
 
-![domain_group_user4_step_1](diagrams/domain_group_user4_step_1.drawio)
+```bash
+curl --location 'http://localhost/domains/<DOMINA_1 ID>/users/assign' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Bearer <USER_3_DOMAIN_ACCESS_TOKEN>' \
+--data '{
+    "user_ids" : ["<User_4 ID>"],
+    "relation" : "administrator"
+}'
+```
 
-Next User_4 can connect Thing 5 to Channel 5 and assign Group 3 as parent for Channel 5
+![group_users_administrator_3](diagrams/group_users_administrator_3.drawio)
 
-![domain_group_user4_step_2](diagrams/domain_group_user4_step_2.drawio)
+### Group Editor
+
+**Administrator of Group 101 (User_3/User_4), assigns User_5 with Editor relation.**  
+**When Domain Member User_5 becomes as Editor of Group 101, User_5 can able to update,assign,unassign to Group 101. Since Group 101 have Channel 101 and Thing 101 as child. The User_5 have Editor access on Group 101 child entities Channel 101 and Thing 101.**  
+
+![group_users_editor](diagrams/group_users_editor.drawio)
+
+### Group Viewer
+
+**When Domain Member User_6 becomes as Viewer of Group 101, User_6 can able to view all the child and nested child entities in Group 101. User_6 can able assign child entities under Group 101 and also able assign child entities under any other Group and Channels which are child of Group 101.**  
+
+![group_users_viewer](diagrams/group_users_viewer.drawio)
+
+### Group Member
+
+**When Domain Member User_7 becomes as Member of Group 101, User_6 can able to view and list only Group 101 and assign child entities only under Group 101. Could not able to view/assign any other child entities under Group 101.**  
+
+![group_users_member_1](diagrams/group_users_member_1.drawio)
+
+**Example:**  
+
+User_7 creates new Channel and Thing with name Channel 201 Thing 201 respectively and connects both Channel 201 and Thing 201.
+
+![group_users_member_2](diagrams/group_users_member_2.drawio)
+
+Now User_7 can able to assign Group 101 as parent for Channel 201
+
+![group_users_member_3](diagrams/group_users_member_3.drawio)
 
 ## User Registration
 
