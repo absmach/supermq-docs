@@ -316,6 +316,10 @@ User can have any one of the following relation with a domain
 - [Viewer](#domain-viewer)
 - [Member](#domain-member)
 
+**Lets take the below Domain_1 with entities for explaning about User Domain Relationship.**
+
+![domain_users](diagrams/domain_users.drawio)
+
 ### Domain Administrator
 
 Users with administrator relation have full control over all entities (things, channels, groups) within the domain. They can perform actions like creating, updating, and deleting entities created by others. Administrators are also allowed to create their own entities and can view and update the ones they have created.
@@ -330,7 +334,7 @@ Users with administrator relation have full control over all entities (things, c
 Users with editor relation have access to update all entities (things, channels, groups) created by others within the domain. Editor are also allowed to create their own entities and can view and update the ones they have created.
 
 **Example:**  
-**User_2** is **editor** of **Domain_1**. **User_2 able to view all entities and have edit access to all entities in domain and also able to create & manage new things,channels & groups**.
+**User_2** is **editor** of **Domain_1**. **User_2 able to view all entities and have edit access to groups and channel entities, view access to thing entities in domain and also able to create & manage new thing ,channels & groups**.
 
 ![domain_users_editor](diagrams/domain_users_editor.drawio)
 
@@ -346,7 +350,7 @@ Users with viewer relation have access to view all entities (things, channels, g
 ### Domain Member
 
 Users with Members relation could not view and no access to entities (things, channels, groups) created by others within the domain. Members are also allowed to create their own entities and can view and update the ones they have created.  
-Domain Members will not have access by default to any of the entities in Domain 1, access shall be granted for specific entities by domain administrator or individual entity administrator.  
+Domain Members will not have access by default to any of the entities in Domain, access shall be granted for specific entities by domain administrator or individual entity administrator.  
 
 **Example:**
 **User_4 , User_5, User_6, User_7, User_8, User_9** is **member** of **Domain_1**. **These Member relation users can able to create & manage new things,channels & groups in domain. The can have access the entities to which they have relation in domain. They could not view and manage other entities to which they don't have any relation in domain**.
@@ -622,9 +626,10 @@ Like Domain, Groups also have four types of relations
 - [Administrator](#group-administrator)
 - [Editor](#group-editor)
 - [Viewer](#group-viewer)
-- [Member](#group-member)
 
 ### Group Administrator
+
+Group Administrator user have access to update,delete,assign,unassing to group and also have access to update,delete,assign,unassing all of its child entities
 
 From the [previous viewer example](#domain-viewer), lets take **User_3** who has **viewer relation** with **Domain_1**, which means **User_3 will be able to view all the entities created by others but cannot make any edits or updates on them.** ***<span style="color:blue">User_3 will have access to create entities in Domain_1 </span>***
 
@@ -726,32 +731,58 @@ curl --location 'http://localhost/domains/<DOMINA_1 ID>/users/assign' \
 
 ### Group Editor
 
+Group Editor user have access to view,update,assign,unassign to group and also have access to view,update,assign,unassign all of its child Channel and Group entities, Group Editor have only view access to child Thing entities in Group
+
 **Administrator of Group 101 (User_3/User_4), assigns User_5 with Editor relation.**  
-**When Domain Member User_5 becomes as Editor of Group 101, User_5 can able to update,assign,unassign to Group 101. Since Group 101 have Channel 101 and Thing 101 as child. The User_5 have Editor access on Group 101 child entities Channel 101 and Thing 101.**  
+**When Domain Member User_5 becomes as Editor of Group 101, User_5 can able to update,assign,unassign to Group 101. Since Group 101 have Channel 101 and Thing 101 as child. The User_5 have Editor access to the Group child entities Channels,Things and Groups , In this case User_5 have editor access to Group 101 , also have edit access to its child entities Channel 101 and Thing 101**  
 
 ![group_users_editor](diagrams/group_users_editor.drawio)
 
 ### Group Viewer
 
+Group Viewer user have access to view group and also have access to view all of its child entities
+
 **When Domain Member User_6 becomes as Viewer of Group 101, User_6 can able to view all the child and nested child entities in Group 101. User_6 can able assign child entities under Group 101 and also able assign child entities under any other Group and Channels which are child of Group 101.**  
 
 ![group_users_viewer](diagrams/group_users_viewer.drawio)
 
-### Group Member
+## Examples
 
-**When Domain Member User_7 becomes as Member of Group 101, User_6 can able to view and list only Group 101 and assign child entities only under Group 101. Could not able to view/assign any other child entities under Group 101.**  
+### Domain viewer with Channel & Thing
 
-![group_users_member_1](diagrams/group_users_member_1.drawio)
+User_6 creates new  Channel and Thing with names Channel 201 Thing 201 respectively. Then connects both Channel 201 and Thing 201.
 
-**Example:**  
+![group_users_viewer_1](diagrams/group_users_viewer_1.drawio)
 
-User_7 creates new Channel and Thing with name Channel 201 Thing 201 respectively and connects both Channel 201 and Thing 201.
+Now User_5 can able to assign Group 101 as parent for Channel 201
 
-![group_users_member_2](diagrams/group_users_member_2.drawio)
+![group_users_viewer_2](diagrams/group_users_viewer_2.drawio)
 
-Now User_7 can able to assign Group 101 as parent for Channel 201
+When Channel 201 was assigned as child of Group 101, all the administrator,editor and viewer of Group 101 get same access on Channel 201 and Thing 201
 
-![group_users_member_3](diagrams/group_users_member_3.drawio)
+![group_users_viewer_3](diagrams/group_users_viewer_3.drawio)
+
+### Multiple Domain members with Group, Channel & Thing
+
+User_8 creates new group with name Group 301
+User_9 creates new thing and channel with names Thing 301 and channel 301 respectively, then connects both thing and channel.
+![group_users_member_11](diagrams/group_users_member_11.drawio)  
+  
+User_8 can able to assign Channel 301 as child of Group 301
+![group_users_member_12](diagrams/group_users_member_12.drawio)
+When Channel 301 is assigned as child of Group 301, then administrator, editor and viewer of Group 301 becomes gets the same respective access to Channel 301 ,
+Administrator, editor and viewer of Channel 301 gets the same respective access to Thing 301.
+So here User_8 becomes administrator of both Channel 301 and Thing 301
+  
+User_5 can able to assign Group 301 as child of Group 101
+![group_users_member_13](diagrams/group_users_member_13.drawio)
+
+When Group 301 becomes child of Group 101, then administrator, editor and viewer of Group 101 becomes gets the same respective access to Group 301.
+Administrator, editor and viewer of Group 301 gets the same respective access to Channel 301.
+Administrator, editor and viewer of Channel 301 gets the same respective access to Thing 301.
+So here User_5 becomes editor of Group 301,Channel 301 and Thing 301, User_4 becomes administrator of Group 301,Channel 301 and Thing 301.
+User_8 have administrator access only to Group 301 and its child entities Channel 301 and Thing 301.
+![group_users_member_14](diagrams/group_users_member_14.drawio)
 
 ## User Registration
 
