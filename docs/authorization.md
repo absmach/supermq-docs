@@ -1,16 +1,16 @@
 # Authorization
 
-Magistrala allows for fine-grained control over user permissions, taking into account hierarchical relationships between entities domains, groups, channels and things.The structure and functionality of an authorization system implemented using [SpiceDB](https://github.com/authzed/spicedb) and its associated [schema language](https://authzed.com/docs/reference/schema-lang). `auth` service backed by SpiceDB manages permissions for users, domains, groups, channels and things.
+Magistrala allows for fine-grained control over user permissions, taking into account hierarchical relationships between entities domains, groups, channels, and things. The structure and functionality of an authorization system implemented using [SpiceDB](https://github.com/authzed/spicedb) and its associated [schema language](https://authzed.com/docs/reference/schema-lang). `auth` service backed by SpiceDB manages permissions for users, domains, groups, channels, and things.
 
 ## Domains
 
-Domain contains **Things**, **Channels**, and **Groups**. **Users** can be member of Domain with different types of available relation, These relation provides access control to the entities in domain.
+Domain contains **Things**, **Channels**, and **Groups**. **Users** can be a member of a Domain with different types of available relations, These relation provides access control to the entities in the domain.
 
 ### Domain Entities
 
 #### Overview
 
-In Magistrala, **Things**, **Channels**, and **Groups** are inherently associated with one particular Domain. This means that every **Group**, including its sub-groups, every **Thing**, and every **Channel** is owned by and belongs to a specific Domain. Domain acts like kind of namespace.
+In Magistrala, **Things**, **Channels**, and **Groups** are inherently associated with one particular Domain. This means that every **Group**, including its sub-groups, every **Thing**, and every **Channel** is owned by and belongs to a specific Domain. Domain acts like a kind of namespace.
 
 ```mermaid
 graph TD
@@ -46,10 +46,10 @@ style Domain stroke-width:3px,margin-top:10px,margin-bottom:10px
 
 #### Domain Entities Relations
 
-Domain holds entities such as Groups, Channels and Things.
-The entities created in Domain doesn't have any hierarchical structure between them.
+Domain holds entities such as Groups, Channels, and Things.
+The entities created in Domain don't have any hierarchical structure between them.
 
-Example: In Domain_1 a user creates following entities Group 1, Group_2, Thing 1, Thing 2, Channel 1, Channel 2. By default their is no relation betweens the entities, until user assigns relation between entities
+Example: In Domain_1 a user creates the following entities Group 1, Group_2, Thing 1, Thing 2, Channel 1, Channel 2. By default, there is no relation between the entities, until the user assigns a relation between the entities
 
 ```mermaid
 graph
@@ -72,7 +72,7 @@ graph
 
 `Thing` represents a device (or applications) connected to Magistrala that uses the platform for message exchange with other `things`.
 
-`Channel` as a message conduit between things connected to it. It serves as message topic that can be consumed by all of the things connected to it.
+`Channel` is a message conduit between things connected to it. It serves as a message topic that can be consumed by all of the things connected to it.
 Things can publish or subscribe to the Channel.
 
 Thing and Channel can be connected to multiple channels using the following API.
@@ -154,7 +154,7 @@ graph
 
 ##### Group Group Relation
 
-Groups can establish a parent-child relationship with other groups. The children groups are SubGroup and they can also children groups in  nested fashion
+Groups can establish a parent-child relationship with other groups. The children groups are SubGroup and they can also have children groups in  nested fashion
 
 Assigning a group as the parent to another group can be achieved through the following request.
 
@@ -198,7 +198,7 @@ graph
 
 ##### Domain Entities Relation Examples
 
-An Example Group with channels, things and groups (sub-groups) within domain.
+An Example Group with channels, things, and groups (sub-groups) within the domain.
 Groups have parent-child relationships, forming a hierarchy where top-level Groups (Group 1 and Group 2) have Groups  (Sub Groups - Group 11, Group 12, Group 21, and Group 22) or Channels (Channel 2) beneath them.
 
 ```mermaid
@@ -303,70 +303,70 @@ graph
 In Magistrala, when a new user registers, they don't automatically have access to domains.
 The domain administrator must invite the user to the domain and assign them a role, such as administrator, editor, viewer, or member.
 
-Domain Administrator can invite an existing user in Magistrala or invite new users to domain by E-mail ID.
-After User registering to Magistrala, User can accept the invitations to Domain.
+Domain Administrator can invite an existing user in Magistrala or invite new users to the domain by E-mail ID.
+After the User registers with Magistrala, the User can accept the invitations to the Domain.
 
 All the Users in Magistrala are allowed to create a new Domain.
-Domain creating user becomes domain Administrator by default
+The user who creates a domain automatically becomes the domain administrator.
 
-User can have any one of the following relation with a domain
+Users can have any one of the following relations with a domain
 
 - [Administrator](#domain-administrator)
 - [Editor](#domain-editor)
 - [Viewer](#domain-viewer)
 - [Member](#domain-member)
 
-**Lets take the below Domain_1 with entities for explaining about User Domain Relationship.**
+**Let's take the below Domain_1 with entities for explaining about User Domain Relationship.**
 
 ![domain_users](diagrams/domain_users.drawio)
 
 ### Domain Administrator
 
-Users with administrator relation have full control over all entities (things, channels, groups) within the domain. They can perform actions like creating, updating, and deleting entities created by others. Administrators are also allowed to create their own entities and can view and update the ones they have created.
+Users with administrator relations have full control over all entities (things, channels, groups) within the domain. They can perform actions like creating, updating, and deleting entities created by others. Administrators are also allowed to create their own entities and can view and update the ones they have created.
 
 **Example:**  
-**User_1** is **administrator** of **Domain_1**. **User_1 able to view all entities created by others and have administrator access all entities in domain**.
+**User_1** is **administrator** of **Domain_1**. **User_1 can view all entities created by others and have administrator access to all entities in the domain**.
 
 ![domain_users_administrator](diagrams/domain_users_administrator.drawio)
 
 ### Domain Editor
 
-Users with editor relation have access to update all entities (things, channels, groups) created by others within the domain. Editor are also allowed to create their own entities and can view and update the ones they have created.
+Users with editor relations have access to update all entities (things, channels, groups) created by others within the domain. Editor are also allowed to create their own entities and can view and update the ones they have created.
 
 **Example:**  
-**User_2** is **editor** of **Domain_1**. **User_2 able to view all entities and have edit access to groups and channel entities, view access to thing entities in domain and also able to create & manage new thing ,channels & groups**.
+**User_2** is **editor** of **Domain_1**. **User_2 can view all entities and have edit access to groups and channel entities, view access to thing entities in the domain, and also able to create & manage new things, channels & groups**.
 
 ![domain_users_editor](diagrams/domain_users_editor.drawio)
 
 ### Domain Viewer
 
-Users with viewer relation have access to view all entities (things, channels, groups) created by others within the domain. Viewer are also allowed to create their own entities and can view and update the ones they have created.
+Users with viewer relations have access to view all entities (things, channels, groups) created by others within the domain. Viewer are also allowed to create their own entities and can view and update the ones they have created.
 
 **Example:**  
-**User_3** is **viewer** of **Domain_1**. **User_3 able to only view entities which are created by others in domain and <span style="color:blue"> also able to create & manage new things,channels & groups** </span>
+**User_3** is **viewer** of **Domain_1**. **User_3 can only view entities that are created by others in the domain and <span style="color:blue"> also able to create & manage new things, channels & groups** </span>
 
 ![domain_users_viewer](diagrams/domain_users_viewer.drawio)
 
 ### Domain Member
 
-Users with Members relation could not view and no access to entities (things, channels, groups) created by others within the domain. Members are also allowed to create their own entities and can view and update the ones they have created.  
-Domain Members will not have access by default to any of the entities in Domain, access shall be granted for specific entities by domain administrator or individual entity administrator.  
+Users with Member relations could not view and no access to entities (things, channels, groups) created by others within the domain. Members are also allowed to create their own entities and can view and update the ones they have created.  
+Domain Members will not have access by default to any of the entities in the Domain, access shall be granted for specific entities by the domain administrator or individual entity administrator.  
 
 **Example:**
-**User_4 , User_5, User_6, User_7, User_8, User_9** is **member** of **Domain_1**. **These Member relation users can able to create & manage new things,channels & groups in domain. The can have access the entities to which they have relation in domain. They could not view and manage other entities to which they don't have any relation in domain**.
+**User_4 , User_5, User_6, User_7, User_8, User_9** is **member** of **Domain_1**. **These Member relation users can able to create & manage new things, channels & groups in the domain. They can have access to the entities to which they have a relation in the domain. They could not view and manage other entities to which they don't have any relation in domain**.
 !!! note "Note: All other users having administrator, editor, viewer relation with domain will also have member relation inherit with domain, which allows them to create new things, channels & groups."
 
 ![domain_users_member](diagrams/domain_users_member.drawio)
 
-After User Sign-Up to Magistrala, User is allowed to create new Domain or join to an existing domain via invitations, without Domain User could not create create _Things_, _Channels_, _Groups_.
+After the User Sign-Up to Magistrala, the User is allowed to create a new Domain or join an existing domain via invitations, without Domain User could not create _Things_, _Channels_, _Groups_.
 
-All operations, including creating, updating, and deleting Things, Channels, and Groups, occur at the domain level. For instance, when a user creates a new Thing using an access token, the newly created Thing automatically becomes associated with a specific domain. The domain information is extracted from the access token. When user obtaining a token, user should specify the domain for which they want to operate.
+All operations, including creating, updating, and deleting Things, Channels, and Groups, occur at the domain level. For instance, when a user creates a new Thing using an access token, the newly created Thing automatically becomes associated with a specific domain. The domain information is extracted from the access token. When the user obtains a token, the user should specify the domain for which they want to operate.
 
-So to do operations on a Domain, An access token for domain is required. This can be obtained by two ways which is explained in [next section](#tokens-and-domain-tokens).
+So to do operations on a Domain, An access token for the domain is required. This can be obtained in two ways which is explained in [next section](#tokens-and-domain-tokens).
 
 ## Tokens and Domain Tokens
 
-JWT Token are used in Magistrala for Authentication and Authorization. The JWT Token have domain, exp, iat, iss, sub, type and user fields.
+JWT Token are used in Magistrala for Authentication and Authorization. The JWT Token has domain, exp, iat, iss, sub, type, and user fields.
 
 Example JWT Token:
 
@@ -382,7 +382,7 @@ Example JWT Token:
 }
 ```
 
-In JWT Token, domain field have **domain ID** and user field have **user ID**.
+In JWT Token, the domain field has **domain ID** and the user field has **user ID**.
 
 If the domain field is empty, then with that JWT token following actions are permitted
 
@@ -390,7 +390,7 @@ If the domain field is empty, then with that JWT token following actions are per
 - Domain Creation & listing,
 - Accept Domain invitations
 
-Actions related creation, updation, deletion of Things, Channels, Group are not permitted, request will fails in authorization. In Magistrala operation related to Things, Channels, Groups are takes place in Domain Level. So for these kinds of operations, a JWT token with domain field containing operating domain ID is required.
+Actions related to the creation, updation, and deletion of Things, Channels, and Groups are not permitted, requests will fail in authorization. In Magistrala operations related to Things, Channels, and Groups take place in Domain Level. So for these kinds of operations, a JWT token with a domain field containing the operating domain ID is required.
 
 There are two ways to obtain JWT Token for a particular Domain
 
@@ -409,7 +409,7 @@ curl --location 'http://localhost/users/tokens/issue' \
 }'
 ```
 
-In this request , if domain id is empty or if field is not added, then in response JWT token will have empty domain field.
+In this request, if the domain ID is empty or if the field is not added, then in response JWT token will have an empty domain field.
 
 **Response:**
 
@@ -420,11 +420,11 @@ In this request , if domain id is empty or if field is not added, then in respon
 }
 ```
 
-### Option 2: Get new access and refresh token through refresh endpoint by passing domain_id
+### Option 2: Get new access and refresh token through the refresh endpoint by passing domain_id
 
-In most of the cases user login domain in under determinable. This method will be useful for those kind of cases.
+In most of the cases user login domain is under determinable. This method will be useful for those kind of cases.
 
-**Step 1: Get token without domain id**
+**Step 1: Get token without domain ID**
 **Request:**
 
 ```bash
@@ -474,9 +474,9 @@ curl --location 'http://localhost/users/tokens/issue' \
 }
 ```
 
-In this tokens, there domain field will be empty. As said earlier, this token can be to for User profile Update, Domain Creatation & listing, Accept Domain invitations
+In these tokens, the domain field will be empty. As said earlier, this token can be to for User profile Update, Domain creation & listing, Accept Domain invitations
 
-**Step 2: List Domains user have access**
+**Step 2: List Domains users have access**
 **Request:**
 
 ```bash
@@ -561,9 +561,9 @@ curl --location 'http://localhost/users/tokens/refresh' \
 
 ## Assign Users to Domain
 
-Domain creator becomes administrator of domain by default. Domain Administrator can assign users to domain with following relations administrator, editor, viewer, member. The details about these relations are describe in this [section](#user-domain-relationship)
+Domain creator becomes administrator of the domain by default. Domain Administrator can assign users to a domain with the following relations administrator, editor, viewer, member. The details about these relations are described in this [section](#user-domain-relationship)
 
-User can be assigned to domain with endpoint `/domain/<domain_id>/users/assign` with json body like below:
+User can be assigned to domain with endpoint `/domain/<domain_id>/users/assign` with JSON body like below:
 
 ```json
 {
@@ -572,8 +572,8 @@ User can be assigned to domain with endpoint `/domain/<domain_id>/users/assign` 
 }
 ```
 
-- **user_ids** : field contains array of users ids
-- **relation** : field contains any one of the following relations **administrator**, **editor**, **viewer**, **member**, The details about these relations are describe in this [section](#user-domain-relationship)
+- **user_ids** : field contains an array of users' IDs
+- **relation** : field contains any one of the following relations **administrator**, **editor**, **viewer**, **member**, The details about these relations are described in this [section](#user-domain-relationship)
 
 **Example Request:**
 
@@ -589,7 +589,7 @@ curl --location 'http://localhost/domains/903f7ede-3308-4206-89c2-e99688b612f7/u
 
 ## Unassign Users from Domain
 
-User can be unassigned to domain with endpoint `/domain/<domain_id>/users/unassign` with json body like below:
+User can be unassigned to domain with endpoint `/domain/<domain_id>/users/unassign` with JSON body like below:
 
 ```json
 {
@@ -598,8 +598,8 @@ User can be unassigned to domain with endpoint `/domain/<domain_id>/users/unassi
 }
 ```
 
-- **user_ids** : field contains array of users ids
-- **relation** : field contains any one of the following relations **administrator**, **editor**, **viewer**, **member**, The details about these relations are describe in this [section](#user-domain-relationship)
+- **user_ids** : field contains an array of users' IDs
+- **relation** : field contains any one of the following relations **administrator**, **editor**, **viewer**, **member**, The details about these relations are described in this [section](#user-domain-relationship)
 
 **Example Request:**
 
@@ -615,13 +615,13 @@ curl --location 'http://localhost/domains/903f7ede-3308-4206-89c2-e99688b612f7/u
 
 ## User Entities Relationship
 
-Users assigned to domain with any relationship (Administrator , Editor, Viewer, Member ) will have access to create entities (Things, Groups, Channels).
+Users assigned to a domain with any relationship (Administrator, Editor, Viewer, Member ) will have access to create entities (Things, Groups, Channels).
 
 Domain administrator or individual entity administrator shall grant access to Domain Member for specific entities.
 
 ## Groups Relations
 
-Like Domain, Groups also have four types of relations
+Like Domains, Groups also have four types of relations
 
 - [Administrator](#group-administrator)
 - [Editor](#group-editor)
@@ -629,11 +629,11 @@ Like Domain, Groups also have four types of relations
 
 ### Group Administrator
 
-Group Administrator user have access to update,delete,assign,unassign to group and also have access to update,delete,assign,unassign all of its child entities
+Group Administrator users have access to update, delete, assign, and unassign to the group and also have access to update, delete, assign, and unassign all of its child entities
 
-From the [previous viewer example](#domain-viewer), lets take **User_3** who has **viewer relation** with **Domain_1**, which means **User_3 will be able to view all the entities created by others but cannot make any edits or updates on them.** ***<span style="color:blue">User_3 will have access to create entities in Domain_1 </span>***
+From the [previous viewer example](#domain-viewer), let's take **User_3** who has **viewer relation** with **Domain_1**, which means **User_3 will be able to view all the entities created by others but cannot make any edits or updates on them.** ***<span style="color:blue">User_3 will have access to create entities in Domain_1 </span>***
 
-**User_3 creates new Thing 101, Channel 101 and Group 101**.  
+**User_3 creates new Thing 101, Channel 101, and Group 101**.  
 
 **User_3 Request to Create Thing 101:**
 
@@ -674,14 +674,14 @@ curl --location 'http://localhost/groups' \
 }'
 ```
 
-The user who creates entity will be administrator of the entity by default.  
+The user who creates the entity will be the administrator of the entity by default.  
 So  **User_3** is **administrator** of **Thing 101, Channel 101 and Group 101.**  
 
 ![group_users_administrator_1](diagrams/group_users_administrator_1.drawio)
 
-!!! Note "User_3 will also have Domain Viewer relation to Thing 101, Channel 101 and Group 101"
+!!! Note "User_3 will also have Domain Viewer relation to Thing 101, Channel 101, and Group 101"
 
-User_3 can make these entities (Thing 101, Channel 101, Group 101) in hierarchical structure by assigning relations between entities  
+User_3 can make these entities (Thing 101, Channel 101, Group 101) in a hierarchical structure by assigning relations between entities  
 Example: Connect Thing 101 & Channel 101, Assign Group 101 as parent of Channel 101.  
 
 **User_3 Request for Connect Thing 101 & Channel 101:**
@@ -713,7 +713,7 @@ curl --location 'http://localhost/channels/<Channel 101 ID>/groups/assign' \
 ***Members of Domain 1 will not have access by default to any of the entities in Domain 1, access shall be granted for specific entities by domain administrator or individual entity administrator.***
 
 **Administrator of Group 101 (User_3), assigns User_4 with Administrator relation.**  
-**When Domain Member User_4 becomes as Administrator of Group 101, User_4 can able to update, delete, assign,unassign to Group 101. Since Group 101 have Channel 101 and Thing 101 as child. The User_5 have Administrator access on Group 101 child entities Channel 101 and Thing 101.**  
+**When Domain Member User_4 becomes an Administrator of Group 101, User_4 can able to update, delete, assign, and unassign to Group 101. Since Group 101 has Channel 101 and Thing 101 as children. The User_5 has Administrator access on Group 101 child entities Channel 101 and Thing 101.**  
 
 **User_3 Request for Assign User_4 as administrator for Group 101:**
 
@@ -731,18 +731,18 @@ curl --location 'http://localhost/domains/<DOMINA_1 ID>/users/assign' \
 
 ### Group Editor
 
-Group Editor user have access to view,update,assign,unassign to group and also have access to view,update,assign,unassign all of its child Channel and Group entities, Group Editor have only view access to child Thing entities in Group
+Group Editor users have access to view, update, assign, and unassign to the group and also have access to view, update, assign, and unassign all of its child Channel and Group entities, Group Editor have only view access to child Thing entities in Group
 
 **Administrator of Group 101 (User_3/User_4), assigns User_5 with Editor relation.**  
-**When Domain Member User_5 becomes as Editor of Group 101, User_5 can able to update,assign,unassign to Group 101. Since Group 101 have Channel 101 and Thing 101 as child. The User_5 have Editor access to the Group child entities Channels,Things and Groups , In this case User_5 have editor access to Group 101 , also have edit access to its child entities Channel 101 and Thing 101**  
+**When Domain Member User_5 becomes an Editor of Group 101, User_5 can able to update, assign, and unassign to Group 101. Since Group 101 has Channel 101 and Thing 101 as children. The User_5 has Editor access to the Group child entities Channels, Things, and Groups. In this case, User_5 has editor access to Group 101, and also has edit access to its child entities Channel 101 and Thing 101**  
 
 ![group_users_editor](diagrams/group_users_editor.drawio)
 
 ### Group Viewer
 
-Group Viewer user have access to view group and also have access to view all of its child entities
+Group Viewer users have access to view group and also have access to view all of its child entities
 
-**When Domain Member User_6 becomes as Viewer of Group 101, User_6 can able to view all the child and nested child entities in Group 101. User_6 can able assign child entities under Group 101 and also able assign child entities under any other Group and Channels which are child of Group 101.**  
+**When Domain Member User_6 becomes a Viewer of Group 101, User_6 can able to view all the child and nested child entities in Group 101. User_6 can assign child entities under Group 101 and also assign child entities under any other Group and Channels that are children of Group 101.**  
 
 ![group_users_viewer](diagrams/group_users_viewer.drawio)
 
@@ -750,43 +750,43 @@ Group Viewer user have access to view group and also have access to view all of 
 
 ### Domain viewer with Channel & Thing
 
-User_6 creates new  Channel and Thing with names Channel 201 Thing 201 respectively. Then connects both Channel 201 and Thing 201.
+User_6 creates new  Channel and Thing with the names Channel 201 and Thing 201 respectively. Then connects both Channel 201 and Thing 201.
 
 ![group_users_viewer_1](diagrams/group_users_viewer_1.drawio)
 
-Now User_5 can able to assign Group 101 as parent for Channel 201
+Now User_5 can able to assign Group 101 as a parent for Channel 201
 
 ![group_users_viewer_2](diagrams/group_users_viewer_2.drawio)
 
-When Channel 201 was assigned as child of Group 101, all the administrator,editor and viewer of Group 101 get same access on Channel 201 and Thing 201
+When Channel 201 was assigned as a child of Group 101, all the administrators, editors, and viewers of Group 101 got the same access (relation) to Channel 201 and Thing 201
 
 ![group_users_viewer_3](diagrams/group_users_viewer_3.drawio)
 
 ### Multiple Domain members with Group, Channel & Thing
 
-User_8 creates new group with name Group 301
-User_9 creates new thing and channel with names Thing 301 and channel 301 respectively, then connects both thing and channel.
+User_8 creates a new group with the name Group 301
+User_9 creates a new thing and channel with the names Thing 301 and Channel 301 respectively, then connects both thing and channel.
 ![group_users_member_11](diagrams/group_users_member_11.drawio)  
   
-User_8 can able to assign Channel 301 as child of Group 301
+User_8 can able to assign Channel 301 as a child of Group 301
 ![group_users_member_12](diagrams/group_users_member_12.drawio)
-When Channel 301 is assigned as child of Group 301, then administrator, editor and viewer of Group 301 becomes gets the same respective access to Channel 301 ,
-Administrator, editor and viewer of Channel 301 gets the same respective access to Thing 301.
-So here User_8 becomes administrator of both Channel 301 and Thing 301
+When Channel 301 is assigned as a child of Group 301, then the administrators, editors, and viewers of Group 301 get the same respective access to Channel 301.
+The administrator, editor, and viewer of Channel 301 get the same respective access to Thing 301.
+So here User_8 becomes the administrator of both Channel 301 and Thing 301
   
-User_5 can able to assign Group 301 as child of Group 101
+User_5 can able to assign Group 301 as a child of Group 101
 ![group_users_member_13](diagrams/group_users_member_13.drawio)
 
-When Group 301 becomes child of Group 101, then administrator, editor and viewer of Group 101 becomes gets the same respective access to Group 301.
-Administrator, editor and viewer of Group 301 gets the same respective access to Channel 301.
-Administrator, editor and viewer of Channel 301 gets the same respective access to Thing 301.
-So here User_5 becomes editor of Group 301,Channel 301 and Thing 301, User_4 becomes administrator of Group 301,Channel 301 and Thing 301.
-User_8 have administrator access only to Group 301 and its child entities Channel 301 and Thing 301.
+When Group 301 becomes a child of Group 101, then the administrator, editor, and viewer of Group 101 get the same respective access to Group 301.
+The administrator, editor, and viewer of Group 301 get the same respective access to Channel 301.
+The administrator, editor, and viewer of Channel 301 get the same respective access to Thing 301.
+So here User_5 becomes the editor of Group 301, Channel 301, and Thing 301, User_4 becomes administrator of Group 301, Channel 301, and Thing 301.
+User_8 has administrator access only to Group 301 and its child entities Channel 301 and Thing 301.
 ![group_users_member_14](diagrams/group_users_member_14.drawio)
 
 ## User Registration
 
-There are two ways to user get registered to Magistrala , Self Register and Register new user by Super Admin.
+There are two ways to user get registered to Magistrala, Self Register and Register new users by Super Admin.
 User Registration is self register default which can be changed by following environment variable:
 
 ```env
