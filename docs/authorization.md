@@ -786,7 +786,7 @@ User_8 has administrator access only to Group 301 and its child entities Channel
 
 ## User Registration
 
-There are two ways to user get registered to Magistrala, Self Register and Register new users by Super Admin.
+There are two ways to user get registered to Magistrala, Self-register and Register new users by Super Admin.
 User Registration is self register default which can be changed by following environment variable:
 
 ```env
