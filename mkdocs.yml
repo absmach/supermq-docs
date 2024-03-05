@@ -61,3 +61,5 @@ nav:
   - Developer's Guide: dev-guide.md
   - Kubernetes: kubernetes.md
   - Benchmark: benchmark.md
+  # Blogs
+  - Blogs: /blogs/
