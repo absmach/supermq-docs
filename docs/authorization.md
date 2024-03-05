@@ -1,6 +1,6 @@
 # Authorization
 
-Magistrala allows for fine-grained control over user permissions, taking into account hierarchical relationships between entities domains, groups, channels and things.The structure and functionality of an authorization system implemented using [Spicedb](https://github.com/authzed/spicedb) and its associated [schema language](https://authzed.com/docs/reference/schema-lang). `auth` service backed by SpiceDB manages permissions for users, domains, groups, channels and things.
+Magistrala allows for fine-grained control over user permissions, taking into account hierarchical relationships between entities domains, groups, channels and things.The structure and functionality of an authorization system implemented using [SpiceDB](https://github.com/authzed/spicedb) and its associated [schema language](https://authzed.com/docs/reference/schema-lang). `auth` service backed by SpiceDB manages permissions for users, domains, groups, channels and things.
 
 ## Domains
 
@@ -46,10 +46,10 @@ style Domain stroke-width:3px,margin-top:10px,margin-bottom:10px
 
 #### Domain Entities Relations
 
-Domain hold all entities such as Groups, Channels and Things.
-The entities created in Domain doesn't creates have hierarchical structure within domain.
+Domain holds entities such as Groups, Channels and Things.
+The entities created in Domain doesn't have any hierarchical structure between them.
 
-Example: In Domain_1 a user creates following entities Group 1, Group_2, Thing 1, Thing 2, Channel 1, Channel 2. By default their will be relation betweens the entities, until user assigns relation between entities
+Example: In Domain_1 a user creates following entities Group 1, Group_2, Thing 1, Thing 2, Channel 1, Channel 2. By default their is no relation betweens the entities, until user assigns relation between entities
 
 ```mermaid
 graph
@@ -70,10 +70,10 @@ graph
 
 ##### Channel Thing Connect/Disconnect
 
-`Thing` represents devices (or applications) connected to Magistrala that uses the platform for message exchange with other `things`.
+`Thing` represents a device (or applications) connected to Magistrala that uses the platform for message exchange with other `things`.
 
-`Channel` represents a communication channel. It serves as message topic that can be consumed by all of the things connected to it.
-To Channel communication topics things can publish/Subscribe the messages.
+`Channel` as a message conduit between things connected to it. It serves as message topic that can be consumed by all of the things connected to it.
+Things can publish or subscribe to the Channel.
 
 Thing and Channel can be connected to multiple channels using the following API.
 
@@ -113,7 +113,7 @@ graph
 
 ##### Channel Group Relation
 
-Groups are entities that can be linked as parents to channels.
+A Group serves as a parent entity that can contain both child Groups and Channels. Child Groups, in turn, can consist of further child Groups or Channels, forming a nested hierarchy. Notably, Channels, which are distinct entities, cannot have child Channels but can connect to multiple Things. The concept of parentage signifies the relationship between higher-level entities and their subordinate components. Ancestors in this system refer to entities higher up in the hierarchy, and while a child group can have multiple ancestors, a Channel can only belong to a single parent Group. This hierarchical arrangement provides a structured and organized framework for managing information within the Magistrala.
 
 Assigning a group as the parent of a channel can be achieved through the following request.
 
@@ -316,7 +316,7 @@ User can have any one of the following relation with a domain
 - [Viewer](#domain-viewer)
 - [Member](#domain-member)
 
-**Lets take the below Domain_1 with entities for explaning about User Domain Relationship.**
+**Lets take the below Domain_1 with entities for explaining about User Domain Relationship.**
 
 ![domain_users](diagrams/domain_users.drawio)
 
@@ -387,10 +387,10 @@ In JWT Token, domain field have **domain ID** and user field have **user ID**.
 If the domain field is empty, then with that JWT token following actions are permitted
 
 - User profile Update
-- Domain Creatation & listing,
+- Domain Creation & listing,
 - Accept Domain invitations
 
-Actions related creation, updatation, deletion of Things, Channels, Group are not permitted, request will fails in authorization. In Magistrala operation related to Things, Channels, Groups are takes place in Domain Level. So for these kinds of operations, a JWT token with domain field containing operating domain ID is required.
+Actions related creation, updation, deletion of Things, Channels, Group are not permitted, request will fails in authorization. In Magistrala operation related to Things, Channels, Groups are takes place in Domain Level. So for these kinds of operations, a JWT token with domain field containing operating domain ID is required.
 
 There are two ways to obtain JWT Token for a particular Domain
 
@@ -561,7 +561,7 @@ curl --location 'http://localhost/users/tokens/refresh' \
 
 ## Assign Users to Domain
 
-Domain creator becomes administator of domain by deafult. Domain Administrator can assign users to domain with following relations administrator, editor, viewer, member. The details about these relations are describe in this [section](#user-domain-relationship)
+Domain creator becomes administrator of domain by default. Domain Administrator can assign users to domain with following relations administrator, editor, viewer, member. The details about these relations are describe in this [section](#user-domain-relationship)
 
 User can be assigned to domain with endpoint `/domain/<domain_id>/users/assign` with json body like below:
 
@@ -629,7 +629,7 @@ Like Domain, Groups also have four types of relations
 
 ### Group Administrator
 
-Group Administrator user have access to update,delete,assign,unassing to group and also have access to update,delete,assign,unassing all of its child entities
+Group Administrator user have access to update,delete,assign,unassign to group and also have access to update,delete,assign,unassign all of its child entities
 
 From the [previous viewer example](#domain-viewer), lets take **User_3** who has **viewer relation** with **Domain_1**, which means **User_3 will be able to view all the entities created by others but cannot make any edits or updates on them.** ***<span style="color:blue">User_3 will have access to create entities in Domain_1 </span>***
 
@@ -786,8 +786,8 @@ User_8 have administrator access only to Group 301 and its child entities Channe
 
 ## User Registration
 
-There are two ways to user get registred to Magistrala , Self Register and Register new user by Super Admin.
-User Registration is self register default which can be changed by following environment varabile:
+There are two ways to user get registered to Magistrala , Self Register and Register new user by Super Admin.
+User Registration is self register default which can be changed by following environment variable:
 
 ```env
 MG_USERS_ALLOW_SELF_REGISTER=true
