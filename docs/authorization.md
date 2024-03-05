@@ -4,7 +4,7 @@ Magistrala allows for fine-grained control over user permissions, taking into ac
 
 ## Domains
 
-Domain contains **Things**, **Channels**, and **Groups**. **Users** can be a member of a Domain with different types of available relations, These relation provides access control to the entities in the domain.
+Domain contains **Things**, **Channels**, and **Groups**. A **User** can be a member of a Domain with different types of available relations, These relation provides access control to the entities in the domain.
 
 ### Domain Entities
 
@@ -47,30 +47,30 @@ style Domain stroke-width:3px,margin-top:10px,margin-bottom:10px
 #### Domain Entities Relations
 
 Domain holds entities such as Groups, Channels, and Things.
-The entities created in Domain don't have any hierarchical structure between them.
+The entities created in a domain don't have any hierarchical structure between them.
 
-Example: In Domain_1 a user creates the following entities Group 1, Group_2, Thing 1, Thing 2, Channel 1, Channel 2. By default, there is no relation between the entities, until the user assigns a relation between the entities
+Example: In domain_1 a user creates the following entities `group_1`, `group_2`, `thing_1`, `thing_2`, `channel_1`, `channel_2`. By default, there is no relation between the entities, until the user assigns a relation between the entities
 
 ```mermaid
 graph
    subgraph Domain_1
       direction TB
-      Gr1["Group 1"]
-      Gr2["Group 2"]
+      Gr1["group_1"]
+      Gr2["group_2"]
 
-      Th1["Thing 1"]
-      Th2["Thing 2"]
+      Th1["thing_1"]
+      Th2["thing_2"]
 
 
-      Ch1["Channel 1"]
-      Ch2["Channel 2"]
+      Ch1["channel_1"]
+      Ch2["channel_2"]
 
    end
 ```
 
 ##### Channel Thing Connect/Disconnect
 
-`Thing` represents a device (or applications) connected to Magistrala that uses the platform for message exchange with other `things`.
+`Thing` represents a device (or an application) connected to Magistrala that uses the platform for message exchange with other `things`.
 
 `Channel` is a message conduit between things connected to it. It serves as a message topic that can be consumed by all of the things connected to it.
 Things can publish or subscribe to the Channel.
@@ -78,30 +78,28 @@ Things can publish or subscribe to the Channel.
 Thing and Channel can be connected to multiple channels using the following API.
 
 ```bash
-curl --location 'http://localhost/connect' \
---header 'Content-Type: application/json' \
---header 'Accept: application/json' \
---header 'Authorization: Bearer <DOMAIN_USER_ACCESS_TOKEN>' \
---data '{
-  "thing_id": "<Thing 1 ID>",
-  "channel_id": "<Channel 1 ID>"
-}'
+curl -sSiX POST http://localhost/connect -H "Content-Type: application/json" -H "Authorization: Bearer <domain_user_access_token>" -d @- << EOF  
+{  
+  "thing_id": "<thing_id>",  
+  "channel_id": "<channel_id>"  
+}  
+EOF 
 ```
 
-_*The below diagram shows Thing 1 connect to channel 1 , channel 2 and Thing 2 connect to Thing 2. This relationship can be established using the provided request*_
+_*The below diagram shows `thing_1` is connected to `channel_1` and `channel_2` , then `thing_2` is connected to `channel_2`. This relationship can be established using the provided request*_
 
 ```mermaid
 graph
    subgraph Domain_1
       direction BT
-      Gr1["Group 1"]
-      Gr2["Group 2"]
+      Gr1["group_1"]
+      Gr2["group_2"]
 
-      Th1["Thing 1"]
-      Th2["Thing 2"]
+      Th1["thing_1"]
+      Th2["thing_2"]
 
-      Ch1["Channel 1"]
-      Ch2["Channel 2"]
+      Ch1["channel_1"]
+      Ch2["channel_2"]
 
 
       Th1 --->|connect| Ch1
@@ -113,33 +111,32 @@ graph
 
 ##### Channel Group Relation
 
-A Group serves as a parent entity that can contain both child Groups and Channels. Child Groups, in turn, can consist of further child Groups or Channels, forming a nested hierarchy. Notably, Channels, which are distinct entities, cannot have child Channels but can connect to multiple Things. The concept of parentage signifies the relationship between higher-level entities and their subordinate components. Ancestors in this system refer to entities higher up in the hierarchy, and while a child group can have multiple ancestors, a Channel can only belong to a single parent Group. This hierarchical arrangement provides a structured and organized framework for managing information within the Magistrala.
+A Group serves as a parent entity that can contain both groups and channels as children. Child Groups, in turn, can consist of further child Groups or Channels, forming a nested hierarchy. Notably, Channels, which are distinct entities, cannot have child Channels but can connect to multiple Things. The concept of parentage signifies the relationship between higher-level entities and their subordinate components. Ancestors in this system refer to entities higher up in the hierarchy, and while a child group can have multiple ancestors, a Channel can only belong to a single parent Group. This hierarchical arrangement provides a structured and organized framework for managing information within the Magistrala.
 
 Assigning a group as the parent of a channel can be achieved through the following request.
 
 ```bash
-curl --location 'http://localhost/channels/<Channel 1 ID>/groups/assign' \
---header 'Content-Type: application/json' \
---header 'Authorization: Bearer <DOMAIN_USER_ACCESS_TOKEN>' \
---data '{
-    "group_ids" : [ "<Group 2 ID>" ]
-}'
+curl -sSiX POST 'http://localhost/channels/<channel_id>/groups/assign' -H "Content-Type: application/json" -H "Authorization: Bearer <domain_user_access_token>" -d @- << EOF  
+{
+    "group_ids" : [ "<group_id_1>", "<group_id_2>" ]
+}
+EOF
 ```
 
-_*The diagram below illustrates the parent relationship between Channel 1 and Channel 2 with Group 2. This relationship can be established using the provided request.*_
+_*The diagram below illustrates the parent relationship between `channel_1` and `channel_2` with `group_2`. This relationship can be established using the provided request.*_
 
 ```mermaid
 graph
    subgraph Domain_1
       direction BT
-      Gr1["Group 1"]
-      Gr2["Group 2"]
+      Gr1["group_1"]
+      Gr2["group_2"]
 
-      Th1["Thing 1"]
-      Th2["Thing 2"]
+      Th1["thing_1"]
+      Th2["thing_2"]
 
-      Ch1["Channel 1"]
-      Ch2["Channel 2"]
+      Ch1["channel_1"]
+      Ch2["channel_2"]
 
 
       Th1 --->|connect| Ch1
@@ -159,13 +156,10 @@ Groups can establish a parent-child relationship with other groups. The children
 Assigning a group as the parent to another group can be achieved through the following request.
 
 ```bash
-curl --location 'http://localhost/groups/<Parent Group ID>/groups/assign' \
---header 'Content-Type: application/json' \
---header 'Accept: application/json' \
---header 'Authorization: Bearer <DOMAIN_USER_ACCESS_TOKEN>' \
---data '{
-    "group_ids": ["<Child Group ID>"]
-}'
+curl -sSiX POST 'http://localhost/groups/<parent_group_id>/groups/assign'  -H "Content-Type: application/json" -H "Authorization: Bearer <domain_user_access_token>" -d @- << EOF  
+{
+    "group_ids": ["<child_group_id_1>","<child_group_id_2>"]
+}
 ```
 
 _*The diagram below illustrates the parent relationship between Group 1 and Group 2. This relationship can be established using the provided request.*_
@@ -174,14 +168,14 @@ _*The diagram below illustrates the parent relationship between Group 1 and Grou
 graph
    subgraph Domain_1
       direction BT
-      Gr1["Group 1"]
-      Gr2["Group 2"]
+      Gr1["group_1"]
+      Gr2["group_2"]
 
-      Th1["Thing 1"]
-      Th2["Thing 2"]
+      Th1["thing_1"]
+      Th2["thing_2"]
 
-      Ch1["Channel 1"]
-      Ch2["Channel 2"]
+      Ch1["channel_1"]
+      Ch2["channel_2"]
 
 
       Th1 --->|connect| Ch1
@@ -199,34 +193,34 @@ graph
 ##### Domain Entities Relation Examples
 
 An Example Group with channels, things, and groups (sub-groups) within the domain.
-Groups have parent-child relationships, forming a hierarchy where top-level Groups (Group 1 and Group 2) have Groups  (Sub Groups - Group 11, Group 12, Group 21, and Group 22) or Channels (Channel 2) beneath them.
+Groups have parent-child relationships, forming a hierarchy where top-level Groups (`group_1` and `group_2`) have Groups  (Sub Groups - `group_11`, `group_12`, `group_21`, and `group_22`) or Channels (`channel_2`) beneath them.
 
 ```mermaid
 graph
    subgraph Domain_1
       direction BT
-      Gr1["Group 1"]
-      Gr2["Group 2"]
+      Gr1["group_1"]
+      Gr2["group_2"]
 
-      Gr11["Group 11 (Sub Group)"]
-      Gr12["Group 12 (Sub Group)"]
+      Gr11["group_11 (Sub Group)"]
+      Gr12["group_12 (Sub Group)"]
 
-      Gr21["Group 21 (Sub Group)"]
-      Gr22["Group 22 (Sub Group)"]
+      Gr21["group_21 (Sub Group)"]
+      Gr22["group_22 (Sub Group)"]
 
-      Th1["Thing 1"]
-      Th2["Thing 2"]
-      Th3["Thing 3"]
-      Th4["Thing 4"]
-      Th5["Thing 5"]
-      Th6["Thing 6"]
+      Th1["thing_1"]
+      Th2["thing_2"]
+      Th3["thing_3"]
+      Th4["thing_4"]
+      Th5["thing_5"]
+      Th6["thing_6"]
 
 
 
-      Ch1["Channel 1"]
-      Ch2["Channel 2"]
-      Ch3["Channel 3"]
-      Ch4["Channel 4"]
+      Ch1["channel_1"]
+      Ch2["channel_2"]
+      Ch3["channel_3"]
+      Ch4["channel_4"]
 
       Gr11 --->|parent| Gr1
       Gr12 --->|parent| Gr1
@@ -256,25 +250,25 @@ graph
   subgraph Domain_1
     direction BT
 
-    Gr1["Group 1"]
+    Gr1["group_1"]
 
-    Gr11["Group 11 (Sub Group)"]
-    Gr12["Group 12 (Sub Group)"]
-    Gr13["Group 13 (Sub Group)"]
+    Gr11["group_11 (Sub Group)"]
+    Gr12["group_12 (Sub Group)"]
+    Gr13["group_13 (Sub Group)"]
 
 
-    Th1["Thing 1"]
-    Th11["Thing 11"]
-    Th2["Thing 2"]
-    Th22["Thing 22"]
-    Th3["Thing 3"]
-    Th33["Thing 33"]
-    Th4["Thing 4"]
+    Th1["thing_1"]
+    Th2["thing_2"]
+    Th3["thing_3"]
+    Th4["thing_4"]
+    Th11["thing_11"]
+    Th22["thing_22"]
+    Th33["thing_33"]
 
-    Ch1["Channel 1"]
-    Ch2["Channel 2"]
-    Ch3["Channel 3"]
-    Ch4["Channel 4"]
+    Ch1["channel_1"]
+    Ch2["channel_2"]
+    Ch3["channel_3"]
+    Ch4["channel_4"]
 
     Gr11 --->|parent| Gr1
     Ch4 --->|parent| Gr1
