@@ -53,7 +53,7 @@ Example: In domain_1 a user creates the following entities `group_1`, `group_2`,
 
 ```mermaid
 graph
-   subgraph Domain_1
+   subgraph domain_1
       direction TB
       Gr1["group_1"]
       Gr2["group_2"]
@@ -78,7 +78,7 @@ Things can publish or subscribe to the Channel.
 Thing and Channel can be connected to multiple channels using the following API.
 
 ```bash
-curl -sSiX POST http://localhost/connect -H "Content-Type: application/json" -H "Authorization: Bearer <domain_user_access_token>" -d @- << EOF  
+curl -sSiX POST http://localhost/connect -H "Content-Type: application/json" -H "Authorization: Bearer <domain_user_access_token>" -d @- << EOF
 {  
   "thing_id": "<thing_id>",  
   "channel_id": "<channel_id>"  
@@ -90,7 +90,7 @@ _*The below diagram shows `thing_1` is connected to `channel_1` and `channel_2` 
 
 ```mermaid
 graph
-   subgraph Domain_1
+   subgraph domain_1
       direction BT
       Gr1["group_1"]
       Gr2["group_2"]
@@ -116,7 +116,7 @@ A Group serves as a parent entity that can contain both groups and channels as c
 Assigning a group as the parent of a channel can be achieved through the following request.
 
 ```bash
-curl -sSiX POST 'http://localhost/channels/<channel_id>/groups/assign' -H "Content-Type: application/json" -H "Authorization: Bearer <domain_user_access_token>" -d @- << EOF  
+curl -sSiX POST 'http://localhost/channels/<channel_id>/groups/assign' -H "Content-Type: application/json" -H "Authorization: Bearer <domain_user_access_token>" -d @- << EOF
 {
     "group_ids" : [ "<group_id_1>", "<group_id_2>" ]
 }
@@ -127,7 +127,7 @@ _*The diagram below illustrates the parent relationship between `channel_1` and 
 
 ```mermaid
 graph
-   subgraph Domain_1
+   subgraph domain_1
       direction BT
       Gr1["group_1"]
       Gr2["group_2"]
@@ -156,17 +156,18 @@ Groups can establish a parent-child relationship with other groups. The children
 Assigning a group as the parent to another group can be achieved through the following request.
 
 ```bash
-curl -sSiX POST 'http://localhost/groups/<parent_group_id>/groups/assign'  -H "Content-Type: application/json" -H "Authorization: Bearer <domain_user_access_token>" -d @- << EOF  
+curl -sSiX POST 'http://localhost/groups/<parent_group_id>/groups/assign'  -H "Content-Type: application/json" -H "Authorization: Bearer <domain_user_access_token>" -d @- << EOF
 {
     "group_ids": ["<child_group_id_1>","<child_group_id_2>"]
 }
+EOF
 ```
 
-_*The diagram below illustrates the parent relationship between Group 1 and Group 2. This relationship can be established using the provided request.*_
+_*The diagram below illustrates the parent relationship between `group_1` and `group_2`. This relationship can be established using the provided request.*_
 
 ```mermaid
 graph
-   subgraph Domain_1
+   subgraph domain_1
       direction BT
       Gr1["group_1"]
       Gr2["group_2"]
@@ -197,7 +198,7 @@ Groups have parent-child relationships, forming a hierarchy where top-level Grou
 
 ```mermaid
 graph
-   subgraph Domain_1
+   subgraph domain_1
       direction BT
       Gr1["group_1"]
       Gr2["group_2"]
@@ -247,7 +248,7 @@ Another example
 
 ```mermaid
 graph
-  subgraph Domain_1
+  subgraph domain_1
     direction BT
 
     Gr1["group_1"]
@@ -310,7 +311,7 @@ Users can have any one of the following relations with a domain
 - [Viewer](#domain-viewer)
 - [Member](#domain-member)
 
-**Let's take the below Domain_1 with entities for explaining about User Domain Relationship.**
+**Let's take the below domain_1 with entities for explaining about User Domain Relationship.**
 
 ![domain_users](diagrams/domain_users.drawio)
 
@@ -318,8 +319,8 @@ Users can have any one of the following relations with a domain
 
 Users with administrator relations have full control over all entities (things, channels, groups) within the domain. They can perform actions like creating, updating, and deleting entities created by others. Administrators are also allowed to create their own entities and can view and update the ones they have created.
 
-**Example:**  
-**User_1** is **administrator** of **Domain_1**. **User_1 can view all entities created by others and have administrator access to all entities in the domain**.
+**Example:**
+**user_1** is **administrator** of **domain_1**. **user_1 can view all entities created by others and have administrator access to all entities in the domain**.
 
 ![domain_users_administrator](diagrams/domain_users_administrator.drawio)
 
@@ -327,8 +328,8 @@ Users with administrator relations have full control over all entities (things, 
 
 Users with editor relations have access to update all entities (things, channels, groups) created by others within the domain. Editor are also allowed to create their own entities and can view and update the ones they have created.
 
-**Example:**  
-**User_2** is **editor** of **Domain_1**. **User_2 can view all entities and have edit access to groups and channel entities, view access to thing entities in the domain, and also able to create & manage new things, channels & groups**.
+**Example:**
+**user_2** is **editor** of **domain_1**. **user_2 can view all entities and have edit access to groups and channel entities, view access to thing entities in the domain, and also able to create & manage new things, channels & groups**.
 
 ![domain_users_editor](diagrams/domain_users_editor.drawio)
 
@@ -336,18 +337,18 @@ Users with editor relations have access to update all entities (things, channels
 
 Users with viewer relations have access to view all entities (things, channels, groups) created by others within the domain. Viewer are also allowed to create their own entities and can view and update the ones they have created.
 
-**Example:**  
-**User_3** is **viewer** of **Domain_1**. **User_3 can only view entities that are created by others in the domain and <span style="color:blue"> also able to create & manage new things, channels & groups** </span>
+**Example:**
+**user_3** is **viewer** of **domain_1**. **user_3 can only view entities that are created by others in the domain and <span style="color:blue"> also able to create & manage new things, channels & groups** </span>
 
 ![domain_users_viewer](diagrams/domain_users_viewer.drawio)
 
 ### Domain Member
 
-Users with Member relations could not view and no access to entities (things, channels, groups) created by others within the domain. Members are also allowed to create their own entities and can view and update the ones they have created.  
-Domain Members will not have access by default to any of the entities in the Domain, access shall be granted for specific entities by the domain administrator or individual entity administrator.  
+Users with Member relations could not view and no access to entities (things, channels, groups) created by others within the domain. Members are also allowed to create their own entities and can view and update the ones they have created.
+Domain Members will not have access by default to any of the entities in the Domain, access shall be granted for specific entities by the domain administrator or individual entity administrator.
 
 **Example:**
-**User_4 , User_5, User_6, User_7, User_8, User_9** is **member** of **Domain_1**. **These Member relation users can able to create & manage new things, channels & groups in the domain. They can have access to the entities to which they have a relation in the domain. They could not view and manage other entities to which they don't have any relation in domain**.
+**user_4 , user_5, user_6, user_7, user_8, user_9** is **member** of **domain_1**. **These Member relation users can able to create & manage new things, channels & groups in the domain. They can have access to the entities to which they have a relation in the domain. They could not view and manage other entities to which they don't have any relation in domain**.
 !!! note "Note: All other users having administrator, editor, viewer relation with domain will also have member relation inherit with domain, which allows them to create new things, channels & groups."
 
 ![domain_users_member](diagrams/domain_users_member.drawio)
@@ -393,14 +394,13 @@ There are two ways to obtain JWT Token for a particular Domain
 **Request:**
 
 ```bash
-curl --location 'http://localhost/users/tokens/issue' \
---header 'Content-Type: application/json' \
---header 'Accept: application/json' \
---data-raw '{
-        "identity": "user1@example.com",
-        "secret": "12345678",
-        "domain_id": "903f7ede-3308-4206-89c2-e99688b612f7"
-}'
+curl -sSiX POST 'http://localhost/users/tokens/issue'  -H "Content-Type: application/json" -H "Authorization: Bearer <domain_user_access_token>" -d @- << EOF
+{
+  "identity": "user1@example.com",
+  "secret": "12345678",
+  "domain_id": "903f7ede-3308-4206-89c2-e99688b612f7"
+}
+EOF
 ```
 
 In this request, if the domain ID is empty or if the field is not added, then in response JWT token will have an empty domain field.
@@ -409,8 +409,8 @@ In this request, if the domain ID is empty or if the field is not added, then in
 
 ```json
 {
-    "access_token": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJkb21haW4iOiI5MDNmN2VkZS0zMzA4LTQyMDYtODljMi1lOTk2ODhiNjEyZjciLCJleHAiOjE3MDY2MDM0NDcsImlhdCI6MTcwNjU5OTg0NywiaXNzIjoibWFnaXN0cmFsYS5hdXRoIiwic3ViIjoiOTAzZjdlZGUtMzMwOC00MjA2LTg5YzItZTk5Njg4YjYxMmY3XzU3NDhkZTY5LTJhNjYtNDBkYS1hODI5LTFiNDdmMDJlOWFkYiIsInR5cGUiOjAsInVzZXIiOiI1NzQ4ZGU2OS0yYTY2LTQwZGEtYTgyOS0xYjQ3ZjAyZTlhZGIifQ.c8a8HhVAbkdq_qZnd1DWHtkoNDPQc6XJY6-UcqqCygRR9svjgkwetN3rmIOWPNV5CjPh5lqlzWv1cOLruKBmzw",
-    "refresh_token": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJkb21haW4iOiI5MDNmN2VkZS0zMzA4LTQyMDYtODljMi1lOTk2ODhiNjEyZjciLCJleHAiOjE3MDY2ODYyNDcsImlhdCI6MTcwNjU5OTg0NywiaXNzIjoibWFnaXN0cmFsYS5hdXRoIiwic3ViIjoiOTAzZjdlZGUtMzMwOC00MjA2LTg5YzItZTk5Njg4YjYxMmY3XzU3NDhkZTY5LTJhNjYtNDBkYS1hODI5LTFiNDdmMDJlOWFkYiIsInR5cGUiOjEsInVzZXIiOiI1NzQ4ZGU2OS0yYTY2LTQwZGEtYTgyOS0xYjQ3ZjAyZTlhZGIifQ.SEMvEw2hchsvPYJWqnHMKlUmgjfqAvFcjeCDXyvS2xSGsscEci3bMrUohaJNkNDWzTBiBinV7nEcPrwbxDfPBQ"
+  "access_token": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJkb21haW4iOiI5MDNmN2VkZS0zMzA4LTQyMDYtODljMi1lOTk2ODhiNjEyZjciLCJleHAiOjE3MDY2MDM0NDcsImlhdCI6MTcwNjU5OTg0NywiaXNzIjoibWFnaXN0cmFsYS5hdXRoIiwic3ViIjoiOTAzZjdlZGUtMzMwOC00MjA2LTg5YzItZTk5Njg4YjYxMmY3XzU3NDhkZTY5LTJhNjYtNDBkYS1hODI5LTFiNDdmMDJlOWFkYiIsInR5cGUiOjAsInVzZXIiOiI1NzQ4ZGU2OS0yYTY2LTQwZGEtYTgyOS0xYjQ3ZjAyZTlhZGIifQ.c8a8HhVAbkdq_qZnd1DWHtkoNDPQc6XJY6-UcqqCygRR9svjgkwetN3rmIOWPNV5CjPh5lqlzWv1cOLruKBmzw",
+  "refresh_token": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJkb21haW4iOiI5MDNmN2VkZS0zMzA4LTQyMDYtODljMi1lOTk2ODhiNjEyZjciLCJleHAiOjE3MDY2ODYyNDcsImlhdCI6MTcwNjU5OTg0NywiaXNzIjoibWFnaXN0cmFsYS5hdXRoIiwic3ViIjoiOTAzZjdlZGUtMzMwOC00MjA2LTg5YzItZTk5Njg4YjYxMmY3XzU3NDhkZTY5LTJhNjYtNDBkYS1hODI5LTFiNDdmMDJlOWFkYiIsInR5cGUiOjEsInVzZXIiOiI1NzQ4ZGU2OS0yYTY2LTQwZGEtYTgyOS0xYjQ3ZjAyZTlhZGIifQ.SEMvEw2hchsvPYJWqnHMKlUmgjfqAvFcjeCDXyvS2xSGsscEci3bMrUohaJNkNDWzTBiBinV7nEcPrwbxDfPBQ"
 }
 ```
 
@@ -422,21 +422,20 @@ In most of the cases user login domain is under determinable. This method will b
 **Request:**
 
 ```bash
-curl --location 'http://localhost/users/tokens/issue' \
---header 'Content-Type: application/json' \
---header 'Accept: application/json' \
---data-raw '{
-        "identity": "user1@example.com",
-        "secret": "12345678"
-}'
+curl -sSiX POST 'http://localhost/users/tokens/issue'  -H "Content-Type: application/json" -H "Authorization: Bearer <domain_user_access_token>" -d @- << EOF
+{
+  "identity": "user1@example.com",
+  "secret": "12345678"
+}
+EOF
 ```
 
 **Response:**
 
 ```json
 {
-    "access_token": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJkb21haW4iOiIiLCJleHAiOjE3MDY2MDM1MjYsImlhdCI6MTcwNjU5OTkyNiwiaXNzIjoibWFnaXN0cmFsYS5hdXRoIiwic3ViIjoiIiwidHlwZSI6MCwidXNlciI6IjU3NDhkZTY5LTJhNjYtNDBkYS1hODI5LTFiNDdmMDJlOWFkYiJ9.Cc2Qj_z3gcUTjDo7lpcUVx9ymnUfClwt28kayHvMhY27eDu1vWMAZb_twQ85pbSlf12juo8P_YJcWKl3rDEokQ",
-    "refresh_token": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJkb21haW4iOiIiLCJleHAiOjE3MDY2ODYzMjYsImlhdCI6MTcwNjU5OTkyNiwiaXNzIjoibWFnaXN0cmFsYS5hdXRoIiwic3ViIjoiIiwidHlwZSI6MSwidXNlciI6IjU3NDhkZTY5LTJhNjYtNDBkYS1hODI5LTFiNDdmMDJlOWFkYiJ9.SiVsctItdR0WFhRbg7omZgR_WDPlLfLF2ov2eqkE1EP8c7RruOEv-KST3xVsohY33t2xevrtorwbjMQsl1YV7Q"
+  "access_token": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJkb21haW4iOiIiLCJleHAiOjE3MDY2MDM1MjYsImlhdCI6MTcwNjU5OTkyNiwiaXNzIjoibWFnaXN0cmFsYS5hdXRoIiwic3ViIjoiIiwidHlwZSI6MCwidXNlciI6IjU3NDhkZTY5LTJhNjYtNDBkYS1hODI5LTFiNDdmMDJlOWFkYiJ9.Cc2Qj_z3gcUTjDo7lpcUVx9ymnUfClwt28kayHvMhY27eDu1vWMAZb_twQ85pbSlf12juo8P_YJcWKl3rDEokQ",
+  "refresh_token": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJkb21haW4iOiIiLCJleHAiOjE3MDY2ODYzMjYsImlhdCI6MTcwNjU5OTkyNiwiaXNzIjoibWFnaXN0cmFsYS5hdXRoIiwic3ViIjoiIiwidHlwZSI6MSwidXNlciI6IjU3NDhkZTY5LTJhNjYtNDBkYS1hODI5LTFiNDdmMDJlOWFkYiJ9.SiVsctItdR0WFhRbg7omZgR_WDPlLfLF2ov2eqkE1EP8c7RruOEv-KST3xVsohY33t2xevrtorwbjMQsl1YV7Q"
 }
 ```
 
@@ -474,30 +473,29 @@ In these tokens, the domain field will be empty. As said earlier, this token can
 **Request:**
 
 ```bash
-curl --location 'http://localhost/domains' \
---header 'Authorization: Bearer <ACCESS_TOKEN_FROM_STEP_1>
+curl -sSiX GET 'http://localhost/domains' -H "Authorization: Bearer <ACCESS_TOKEN_FROM_STEP_1>"
 ```
 
 **Response:**
 
 ```json
 {
-    "total": 1,
-    "offset": 0,
-    "limit": 10,
-    "status": "all",
-    "domains": [
-        {
-            "id": "903f7ede-3308-4206-89c2-e99688b612f7",
-            "name": "Domain 1",
-            "alias": "domain_1",
-            "status": "enabled",
-            "permission": "administrator",
-            "created_by": "5748de69-2a66-40da-a829-1b47f02e9adb",
-            "created_at": "2024-01-30T07:30:36.89495Z",
-            "updated_at": "0001-01-01T00:00:00Z"
-        }
-    ]
+  "total": 1,
+  "offset": 0,
+  "limit": 10,
+  "status": "all",
+  "domains": [
+    {
+      "id": "903f7ede-3308-4206-89c2-e99688b612f7",
+      "name": "Domain 1",
+      "alias": "domain_1",
+      "status": "enabled",
+      "permission": "administrator",
+      "created_by": "5748de69-2a66-40da-a829-1b47f02e9adb",
+      "created_at": "2024-01-30T07:30:36.89495Z",
+      "updated_at": "0001-01-01T00:00:00Z"
+    }
+  ]
 }
 ```
 
@@ -505,13 +503,11 @@ curl --location 'http://localhost/domains' \
 **Request:**
 
 ```bash
-curl --location 'http://localhost/users/tokens/refresh' \
---header 'Content-Type: application/json' \
---header 'Accept: application/json' \
---header 'Authorization: Bearer <REFRESH_TOKEN_FROM_STEP_1>' \
---data '{
-        "domain_id": "903f7ede-3308-4206-89c2-e99688b612f7"
-}'
+curl -sSiX POST 'http://localhost/users/tokens/refresh' -H "Content-Type: application/json" -H "Authorization: Bearer <REFRESH_TOKEN_FROM_STEP_1>" -d @- << EOF
+{
+  "domain_id": "903f7ede-3308-4206-89c2-e99688b612f7"
+}
+EOF
 ```
 
 !!! note "Note: Same request also used for switching between domains."
@@ -520,8 +516,8 @@ curl --location 'http://localhost/users/tokens/refresh' \
 
 ```json
 {
-    "access_token": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJkb21haW4iOiI5MDNmN2VkZS0zMzA4LTQyMDYtODljMi1lOTk2ODhiNjEyZjciLCJleHAiOjE3MDY2MDM3MDYsImlhdCI6MTcwNjYwMDEwNiwiaXNzIjoibWFnaXN0cmFsYS5hdXRoIiwic3ViIjoiOTAzZjdlZGUtMzMwOC00MjA2LTg5YzItZTk5Njg4YjYxMmY3XzU3NDhkZTY5LTJhNjYtNDBkYS1hODI5LTFiNDdmMDJlOWFkYiIsInR5cGUiOjAsInVzZXIiOiI1NzQ4ZGU2OS0yYTY2LTQwZGEtYTgyOS0xYjQ3ZjAyZTlhZGIifQ.3_q4F9CWxmBVjItiE8uR01vlm0du_ISl75E-nfEcc-3IMqHEOLbz1WrDvGbaYcPZ-CQufZuP2j-zqR4lShnu2Q",
-    "refresh_token": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJkb21haW4iOiI5MDNmN2VkZS0zMzA4LTQyMDYtODljMi1lOTk2ODhiNjEyZjciLCJleHAiOjE3MDY2ODY1MDYsImlhdCI6MTcwNjYwMDEwNiwiaXNzIjoibWFnaXN0cmFsYS5hdXRoIiwic3ViIjoiOTAzZjdlZGUtMzMwOC00MjA2LTg5YzItZTk5Njg4YjYxMmY3XzU3NDhkZTY5LTJhNjYtNDBkYS1hODI5LTFiNDdmMDJlOWFkYiIsInR5cGUiOjEsInVzZXIiOiI1NzQ4ZGU2OS0yYTY2LTQwZGEtYTgyOS0xYjQ3ZjAyZTlhZGIifQ.KFUEGEx0LZStpokGnQHoMbpPRA5RUH7AR5RHRC46KcBIUoD4EcuWBiSreFwyRc4v-tcbp-CQQaBNGhqYMW4QZw"
+  "access_token": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJkb21haW4iOiI5MDNmN2VkZS0zMzA4LTQyMDYtODljMi1lOTk2ODhiNjEyZjciLCJleHAiOjE3MDY2MDM3MDYsImlhdCI6MTcwNjYwMDEwNiwiaXNzIjoibWFnaXN0cmFsYS5hdXRoIiwic3ViIjoiOTAzZjdlZGUtMzMwOC00MjA2LTg5YzItZTk5Njg4YjYxMmY3XzU3NDhkZTY5LTJhNjYtNDBkYS1hODI5LTFiNDdmMDJlOWFkYiIsInR5cGUiOjAsInVzZXIiOiI1NzQ4ZGU2OS0yYTY2LTQwZGEtYTgyOS0xYjQ3ZjAyZTlhZGIifQ.3_q4F9CWxmBVjItiE8uR01vlm0du_ISl75E-nfEcc-3IMqHEOLbz1WrDvGbaYcPZ-CQufZuP2j-zqR4lShnu2Q",
+  "refresh_token": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJkb21haW4iOiI5MDNmN2VkZS0zMzA4LTQyMDYtODljMi1lOTk2ODhiNjEyZjciLCJleHAiOjE3MDY2ODY1MDYsImlhdCI6MTcwNjYwMDEwNiwiaXNzIjoibWFnaXN0cmFsYS5hdXRoIiwic3ViIjoiOTAzZjdlZGUtMzMwOC00MjA2LTg5YzItZTk5Njg4YjYxMmY3XzU3NDhkZTY5LTJhNjYtNDBkYS1hODI5LTFiNDdmMDJlOWFkYiIsInR5cGUiOjEsInVzZXIiOiI1NzQ4ZGU2OS0yYTY2LTQwZGEtYTgyOS0xYjQ3ZjAyZTlhZGIifQ.KFUEGEx0LZStpokGnQHoMbpPRA5RUH7AR5RHRC46KcBIUoD4EcuWBiSreFwyRc4v-tcbp-CQQaBNGhqYMW4QZw"
 }
 ```
 
@@ -561,8 +557,8 @@ User can be assigned to domain with endpoint `/domain/<domain_id>/users/assign` 
 
 ```json
 {
-    "user_ids" : ["05dbd66a-ce38-4928-ac86-c1b44909be0d"],
-    "relation" : "editor"
+  "user_ids" : ["<user_id>"],
+  "relation" : "editor"
 }
 ```
 
@@ -572,13 +568,12 @@ User can be assigned to domain with endpoint `/domain/<domain_id>/users/assign` 
 **Example Request:**
 
 ```bash
-curl --location 'http://localhost/domains/903f7ede-3308-4206-89c2-e99688b612f7/users/assign' \
---header 'Content-Type: application/json' \
---header 'Authorization: Bearer <DOMAIN_ACCESS_TOKEN_>' \
---data '{
-    "user_ids" : ["05dbd66a-ce38-4928-ac86-c1b44909be0d"],
-    "relation" : "editor"
-}'
+curl -sSiX POST 'http://localhost/domains/903f7ede-3308-4206-89c2-e99688b612f7/users/assign'  -H "Content-Type: application/json" -H "Authorization: Bearer <DOMAIN_ACCESS_TOKEN_>"  -d @- << EOF
+{
+  "user_ids" : ["05dbd66a-ce38-4928-ac86-c1b44909be0d"],
+  "relation" : "editor"
+}
+EOF
 ```
 
 ## Unassign Users from Domain
@@ -587,8 +582,8 @@ User can be unassigned to domain with endpoint `/domain/<domain_id>/users/unassi
 
 ```json
 {
-    "user_ids" : ["05dbd66a-ce38-4928-ac86-c1b44909be0d"],
-    "relation" : "editor"
+  "user_ids" : ["<user_id>"],
+  "relation" : "editor"
 }
 ```
 
@@ -598,13 +593,12 @@ User can be unassigned to domain with endpoint `/domain/<domain_id>/users/unassi
 **Example Request:**
 
 ```bash
-curl --location 'http://localhost/domains/903f7ede-3308-4206-89c2-e99688b612f7/users/unassign' \
---header 'Content-Type: application/json' \
---header 'Authorization: Bearer <DOMAIN_ACCESS_TOKEN_>' \
---data '{
-    "user_ids" : ["05dbd66a-ce38-4928-ac86-c1b44909be0d"],
-    "relation" : "administrator"
-}''
+curl -sSiX POST 'http://localhost/domains/903f7ede-3308-4206-89c2-e99688b612f7/users/unassign' -H "Content-Type: application/json" -H "Authorization: Bearer <DOMAIN_ACCESS_TOKEN_>" -d @- << EOF
+{
+  "user_ids" : ["05dbd66a-ce38-4928-ac86-c1b44909be0d"],
+  "relation" : "administrator"
+}
+EOF
 ```
 
 ## User Entities Relationship
@@ -625,100 +619,89 @@ Like Domains, Groups also have four types of relations
 
 Group Administrator users have access to update, delete, assign, and unassign to the group and also have access to update, delete, assign, and unassign all of its child entities
 
-From the [previous viewer example](#domain-viewer), let's take **User_3** who has **viewer relation** with **Domain_1**, which means **User_3 will be able to view all the entities created by others but cannot make any edits or updates on them.** ***<span style="color:blue">User_3 will have access to create entities in Domain_1 </span>***
+From the [previous viewer example](#domain-viewer), let's take **user_3** who has **viewer relation** with **domain_1**, which means **user_3 will be able to view all the entities created by others but cannot make any edits or updates on them.** ***<span style="color:blue">user_3 will have access to create entities in domain_1 </span>***
 
-**User_3 creates new Thing 101, Channel 101, and Group 101**.  
+**user_3 creates new thing_101, channel_101, and group_101**.
 
-**User_3 Request to Create Thing 101:**
-
-```bash
-curl --location 'http://localhost/things' \
---header 'Content-Type: application/json' \
---header 'Accept: application/json' \
---header 'Authorization: Bearer <USER_3_DOMAIN_ACCESS_TOKEN>' \
---data '{
-    "credentials": {
-        "secret": "a1ca33c0-367e-402b-a239-ff1255fdc440"
-    },
-    "name": "Thing 101"
-}'
-```
-
-**User_3 Request to Create Channel 101:**
+**user_3 Request to Create thing_101:**
 
 ```bash
-curl --location 'http://localhost/channels' \
---header 'Content-Type: application/json' \
---header 'Accept: application/json' \
---header 'Authorization: Bearer <USER_3_DOMAIN_ACCESS_TOKEN>' \
---data '{
-    "name": "Chanel 101"
-}'
+curl -sSiX POST 'http://localhost/things' -H "Content-Type: application/json" -H "Authorization: Bearer <DOMAIN_ACCESS_TOKEN_>"  -d @- << EOF
+{
+  "credentials": {
+    "secret": "a1ca33c0-367e-402b-a239-ff1255fdc440"
+  },
+  "name": "thing_101"
+}
+EOF
 ```
 
-**User_3 Request to Create Group 101:**
+**user_3 Request to Create channel_101:**
 
 ```bash
-curl --location 'http://localhost/groups' \
---header 'Content-Type: application/json' \
---header 'Accept: application/json' \
---header 'Authorization: Bearer <USER_3_DOMAIN_ACCESS_TOKEN>' \
---data '{
-    "name": "Group 101"
-}'
+curl -sSiX POST 'http://localhost/channels' -H "Content-Type: application/json" -H "Authorization: Bearer <DOMAIN_ACCESS_TOKEN_>"  -d @- << EOF
+{
+  "name": "chanel_101"
+}
+EOF
 ```
 
-The user who creates the entity will be the administrator of the entity by default.  
-So  **User_3** is **administrator** of **Thing 101, Channel 101 and Group 101.**  
+**user_3 Request to Create group_101:**
+
+```bash
+curl -sSiX POST 'http://localhost/groups' -H "Content-Type: application/json" -H "Authorization: Bearer <DOMAIN_ACCESS_TOKEN_>"  -d @- << EOF
+{
+  "name": "group_101"
+}
+EOF
+```
+
+The user who creates the entity will be the administrator of the entity by default.
+So  **user_3** is **administrator** of **thing_101, channel_101 and group_101.**
 
 ![group_users_administrator_1](diagrams/group_users_administrator_1.drawio)
 
-!!! Note "User_3 will also have Domain Viewer relation to Thing 101, Channel 101, and Group 101"
+!!! Note "user_3 will also have Domain Viewer relation to thing_101, channel_101, and group_101"
 
-User_3 can make these entities (Thing 101, Channel 101, Group 101) in a hierarchical structure by assigning relations between entities  
-Example: Connect Thing 101 & Channel 101, Assign Group 101 as parent of Channel 101.  
+user_3 can make these entities (thing_101, channel_101, group_101) in a hierarchical structure by assigning relations between entities
+Example: Connect thing_101 & channel_101, Assign group_101 as parent of channel_101.
 
-**User_3 Request for Connect Thing 101 & Channel 101:**
+**user_3 Request for Connect thing_101 & channel_101:**
 
 ```bash
-curl --location 'http://localhost/connect' \
---header 'Content-Type: application/json' \
---header 'Accept: application/json' \
---header 'Authorization: Bearer <USER_3_DOMAIN_ACCESS_TOKEN>' \
---data '{
-  "thing_id": "<Thing 101 ID>",
-  "channel_id": "<Channel 101 ID>"
-}'
+curl -sSiX POST 'http://localhost/connect' -H "Content-Type: application/json" -H "Authorization: Bearer <DOMAIN_ACCESS_TOKEN_>"  -d @- << EOF
+{
+  "thing_id": "<thing_101_id>",
+  "channel_id": "<channel_101_id>"
+}
+EOF
 ```
 
-**User_3 Request for Assign Group 101 as parent of Channel 101:**
+**user_3 Request for Assign group_101 as parent of channel_101:**
 
 ```bash
-curl --location 'http://localhost/channels/<Channel 101 ID>/groups/assign' \
---header 'Content-Type: application/json' \
---header 'Authorization: Bearer <USER_3_DOMAIN_ACCESS_TOKEN>' \
---data '{
-    "group_ids" : [ "<Group 101 ID>" ]
-}'
+curl -sSiX POST 'http://localhost/channels/<channel_101_id>/groups/assign' -H "Content-Type: application/json" -H "Authorization: Bearer <DOMAIN_ACCESS_TOKEN_>"  -d @- << EOF
+{
+  "group_ids" : [ "<group_101_id>" ]
+}
+EOF
 ```
 
 ![group_users_administrator_2](diagrams/group_users_administrator_2.drawio)
 
 ***Members of Domain 1 will not have access by default to any of the entities in Domain 1, access shall be granted for specific entities by domain administrator or individual entity administrator.***
 
-**Administrator of Group 101 (User_3), assigns User_4 with Administrator relation.**  
-**When Domain Member User_4 becomes an Administrator of Group 101, User_4 can able to update, delete, assign, and unassign to Group 101. Since Group 101 has Channel 101 and Thing 101 as children. The User_5 has Administrator access on Group 101 child entities Channel 101 and Thing 101.**  
+**Administrator of group_101 (user_3), assigns user_4 with Administrator relation.**
+**When Domain Member user_4 becomes an Administrator of group_101, user_4 can able to update, delete, assign, and unassign to group_101. Since group_101 has channel_101 and thing_101 as children. The user_5 has Administrator access on group_101 child entities channel_101 and thing_101.**
 
-**User_3 Request for Assign User_4 as administrator for Group 101:**
+**user_3 Request for Assign user_4 as administrator for group_101:**
 
 ```bash
-curl --location 'http://localhost/domains/<DOMINA_1 ID>/users/assign' \
---header 'Content-Type: application/json' \
---header 'Authorization: Bearer <USER_3_DOMAIN_ACCESS_TOKEN>' \
---data '{
-    "user_ids" : ["<User_4 ID>"],
-    "relation" : "administrator"
-}'
+curl -sSiX POST 'http://localhost/domains/<DOMINA_1_ID>/users/assign'  -H "Content-Type: application/json" -H "Authorization: Bearer <DOMAIN_ACCESS_TOKEN_>"  -d @- << EOF
+{
+  "user_ids" : ["<user_4 ID>"],
+  "relation" : "administrator"
+}
 ```
 
 ![group_users_administrator_3](diagrams/group_users_administrator_3.drawio)
@@ -727,8 +710,8 @@ curl --location 'http://localhost/domains/<DOMINA_1 ID>/users/assign' \
 
 Group Editor users have access to view, update, assign, and unassign to the group and also have access to view, update, assign, and unassign all of its child Channel and Group entities, Group Editor have only view access to child Thing entities in Group
 
-**Administrator of Group 101 (User_3/User_4), assigns User_5 with Editor relation.**  
-**When Domain Member User_5 becomes an Editor of Group 101, User_5 can able to update, assign, and unassign to Group 101. Since Group 101 has Channel 101 and Thing 101 as children. The User_5 has Editor access to the Group child entities Channels, Things, and Groups. In this case, User_5 has editor access to Group 101, and also has edit access to its child entities Channel 101 and Thing 101**  
+**Administrator of group_101 (user_3/user_4), assigns user_5 with Editor relation.**
+**When Domain Member user_5 becomes an Editor of group_101, user_5 can able to update, assign, and unassign to group_101. Since group_101 has channel_101 and thing_101 as children. The user_5 has Editor access to the Group child entities Channels, Things, and Groups. In this case, user_5 has editor access to group_101, and also has edit access to its child entities channel_101 and thing_101**
 
 ![group_users_editor](diagrams/group_users_editor.drawio)
 
@@ -736,7 +719,7 @@ Group Editor users have access to view, update, assign, and unassign to the grou
 
 Group Viewer users have access to view group and also have access to view all of its child entities
 
-**When Domain Member User_6 becomes a Viewer of Group 101, User_6 can able to view all the child and nested child entities in Group 101. User_6 can assign child entities under Group 101 and also assign child entities under any other Group and Channels that are children of Group 101.**  
+**When Domain Member user_6 becomes a Viewer of group_101, user_6 can able to view all the child and nested child entities in group_101. user_6 can assign child entities under group_101 and also assign child entities under any other Group and Channels that are children of group_101.**
 
 ![group_users_viewer](diagrams/group_users_viewer.drawio)
 
@@ -744,38 +727,38 @@ Group Viewer users have access to view group and also have access to view all of
 
 ### Domain viewer with Channel & Thing
 
-User_6 creates new  Channel and Thing with the names Channel 201 and Thing 201 respectively. Then connects both Channel 201 and Thing 201.
+user_6 creates new  Channel and Thing with the names channel_201 and thing_201 respectively. Then connects both channel_201 and thing_201.
 
 ![group_users_viewer_1](diagrams/group_users_viewer_1.drawio)
 
-Now User_5 can able to assign Group 101 as a parent for Channel 201
+Now user_5 can able to assign group_101 as a parent for channel_201
 
 ![group_users_viewer_2](diagrams/group_users_viewer_2.drawio)
 
-When Channel 201 was assigned as a child of Group 101, all the administrators, editors, and viewers of Group 101 got the same access (relation) to Channel 201 and Thing 201
+When channel_201 was assigned as a child of group_101, all the administrators, editors, and viewers of group_101 got the same access (relation) to channel_201 and thing_201
 
 ![group_users_viewer_3](diagrams/group_users_viewer_3.drawio)
 
 ### Multiple Domain members with Group, Channel & Thing
 
-User_8 creates a new group with the name Group 301
-User_9 creates a new thing and channel with the names Thing 301 and Channel 301 respectively, then connects both thing and channel.
-![group_users_member_11](diagrams/group_users_member_11.drawio)  
-  
-User_8 can able to assign Channel 301 as a child of Group 301
+user_8 creates a new group with the name group_301
+user_9 creates a new thing and channel with the names thing_301 and channel_301 respectively, then connects both thing and channel.
+![group_users_member_11](diagrams/group_users_member_11.drawio)
+
+user_8 can able to assign channel_301 as a child of group_301
 ![group_users_member_12](diagrams/group_users_member_12.drawio)
-When Channel 301 is assigned as a child of Group 301, then the administrators, editors, and viewers of Group 301 get the same respective access to Channel 301.
-The administrator, editor, and viewer of Channel 301 get the same respective access to Thing 301.
-So here User_8 becomes the administrator of both Channel 301 and Thing 301
-  
-User_5 can able to assign Group 301 as a child of Group 101
+When channel_301 is assigned as a child of group_301, then the administrators, editors, and viewers of group_301 get the same respective access to channel_301.
+The administrator, editor, and viewer of channel_301 get the same respective access to thing_301.
+So here user_8 becomes the administrator of both channel_301 and thing_301
+
+user_5 can able to assign group_301 as a child of group_101
 ![group_users_member_13](diagrams/group_users_member_13.drawio)
 
-When Group 301 becomes a child of Group 101, then the administrator, editor, and viewer of Group 101 get the same respective access to Group 301.
-The administrator, editor, and viewer of Group 301 get the same respective access to Channel 301.
-The administrator, editor, and viewer of Channel 301 get the same respective access to Thing 301.
-So here User_5 becomes the editor of Group 301, Channel 301, and Thing 301, User_4 becomes administrator of Group 301, Channel 301, and Thing 301.
-User_8 has administrator access only to Group 301 and its child entities Channel 301 and Thing 301.
+When group_301 becomes a child of group_101, then the administrator, editor, and viewer of group_101 get the same respective access to group_301.
+The administrator, editor, and viewer of group_301 get the same respective access to channel_301.
+The administrator, editor, and viewer of channel_301 get the same respective access to thing_301.
+So here user_5 becomes the editor of group_301, channel_301, and thing_301, user_4 becomes administrator of group_301, channel_301, and thing_301.
+user_8 has administrator access only to group_301 and its child entities channel_301 and thing_301.
 ![group_users_member_14](diagrams/group_users_member_14.drawio)
 
 ## User Registration
