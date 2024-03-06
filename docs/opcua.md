@@ -63,7 +63,7 @@ To forward OPC-UA messages the opcua-adapter subscribes to the Node ID of an OPC
 
 ### Sample Use Case
 
-OPC-UA can be used in an industrial setup to monitor process values from the different industrial devices and machines within the industry setup. The industrial devices which are controlled by controllers such as PLCs (Programmable Logic Controllers) send data to the OPC-UA server over TCP/IP. From the OPC-UA server, data is sent to and from Magistrala cloud using the OPC-UA adapter in Magistrala. The devices, known as nodes, are associated with things on Magistrala and the Service URIs are associated with Channels on Magistrala. Data (Messages) received on the channels can be sent to the writers on Magistrala to make it available to the end user.
+OPC-UA can be used in an industrial setup to monitor process values from the different industrial devices and machines within the industry setup. The industrial devices which are controlled by controllers such as PLCs (Programmable Logic Controllers) send data to the OPC-UA server over TCP/IP. From the OPC-UA server, data is sent to and from Magistrala cloud using the OPC-UA adapter in Magistrala. The devices, known as nodes, are associated with things on Magistrala and the Service URIs are associated with Channels on Magistrala. Through the OPC-UA adapter, messages are published through NATS to the readers and writers while subscriptions are stored in the redis DB. Channel and thing events such as channel creation, thing creation, channel connection and removal are are sent to the NATS events store.
 
 |       ![OPC-UA][opcua-diagram]      |
 | :---------------------------------: |
