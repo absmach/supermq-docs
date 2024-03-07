@@ -4,7 +4,7 @@ Magistrala allows for fine-grained control over user permissions, taking into ac
 
 ## Domains
 
-Domain contains **Things**, **Channels**, and **Groups**. A **User** can be a member of a Domain with different types of available relations, These relation provides access control to the entities in the domain.
+Domain contains **Things**, **Channels**, and **Groups**. A **User** can be a member of a Domain with different types of available relations. This relation provides access control to the entities in the domain.
 
 ### Domain Entities
 
@@ -49,7 +49,7 @@ style Domain stroke-width:3px,margin-top:10px,margin-bottom:10px
 Domain holds entities such as Groups, Channels, and Things.
 The entities created in a domain don't have any hierarchical structure between them.
 
-Example: In domain_1 a user creates the following entities `group_1`, `group_2`, `thing_1`, `thing_2`, `channel_1`, `channel_2`. By default, there is no relation between the entities, until the user assigns a relation between the entities
+Example: In `domain_1` a user creates the following entities `group_1`, `group_2`, `thing_1`, `thing_2`, `channel_1`, `channel_2`. By default, there is no relation between the entities, until the user assigns a relation between the entities
 
 ```mermaid
 graph

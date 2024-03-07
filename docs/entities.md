@@ -65,6 +65,9 @@ For grouping Magistrala entities there are `groups` object in the `users` servic
 
 ## Things service
 
+Things Service manages `things` and `channel`. `Thing` represents a device (or an application) connected to Magistrala that uses the platform for message exchange with other `things`.
+`Channel` is a message conduit between things connected to it. It serves as a message topic that can be consumed by all of the things connected to it. Things can publish or subscribe to the Channel.
+
 ### Things
 
 - The API endpoint for interacting with things are described in the [things API][things-api].
