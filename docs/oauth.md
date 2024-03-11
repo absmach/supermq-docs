@@ -1,6 +1,6 @@
 # Integrating OAuth2.0 with Magistrala
 
-Over the past months, we have been working on integrating OAuth2.0 with Magistrala. We are happy to announce that we have completed the integration and it is [now available](https://github.com/absmach/magistrala/pull/2103). We believe that this will open up a lot of possibilities for magistrala and we are very excited about the future of magistrala. We are planning to add more features to the OAuth2.0 integration in future releases. We are also planning to add support for more OAuth2.0 providers. This will enable users to use their preferred OAuth2.0 provider to authenticate with magistrala.
+Over the past months, we have been working on integrating OAuth2.0 with Magistrala. We are happy to announce that we have completed the integration and it is [now available](https://github.com/absmach/magistrala/pull/2103). We believe that this will open up a lot of possibilities for Magistrala and we are very excited about the future of Magistrala. We are planning to add more features to the OAuth2.0 integration in future releases. We are also planning to add support for more OAuth2.0 providers. This will enable users to use their preferred OAuth2.0 provider to authenticate with Magistrala.
 
 [OAuth2.0](https://datatracker.ietf.org/doc/html/rfc6749) is an authorization framework that facilitates a third-party application to gain restricted access to another HTTP service. This can occur either by mediating an approval process between the resource owner and the HTTP service or by enabling the third-party application to autonomously acquire access. In OAuth2.0, a client requests access to a resource controlled by the resource owner and hosted by the resource server and is issued a different set of credentials than those of the resource owner. Instead of using the resource owner's credentials to access the resource, the client obtains an access token - a string representing the grant issued to the client by the resource owner. The client uses the access token to access the protected resources hosted by the resource server.
 
@@ -31,12 +31,12 @@ This flow is demonstrated in the following diagram:
 
 ![Generic OAuth2.0 flow](img/genericflow.png)
 
-Magistrala can now be the resource server and Google as one of the authorization servers. We have implemented the OAuth2.0 [authorization code flow](https://datatracker.ietf.org/doc/html/rfc6749#section-4.1). The authorization code flow is used to obtain an access and refresh token to authorize API requests. The UI client initiates the flow by redirecting the user to the authorization server(google). The user authenticates and authorizes the client(Magistrala). The authorization server(google) redirects the user back to the client(Magistrala users service) with an authorization code. The client(Magistrala users service) exchanges the authorization code for an access token and a refresh token. The access token is used to authenticate API requests(get user details). The refresh token is used to obtain a new access token when the current access token becomes invalid or expires. This flow is demonstrated in the following diagram:
+Magistrala can now be the resource server and Google as one of the authorization servers. We have implemented the OAuth2.0 [authorization code flow](https://datatracker.ietf.org/doc/html/rfc6749#section-4.1). The authorization code flow is used to obtain an access and refresh token to authorize API requests. The UI client initiates the flow by redirecting the user to the authorization server(Google). The user authenticates and authorizes the client(Magistrala). The authorization server(Google) redirects the user back to the client(Magistrala users service) with an authorization code. The client(Magistrala users service) exchanges the authorization code for an access token and a refresh token. The access token is used to authenticate API requests(get user details). The refresh token is used to obtain a new access token when the current access token becomes invalid or expires. This flow is demonstrated in the following diagram:
 
 ![authorization code flow](img/codeflow.png)
 _The authorization code flow(from https://medium.com/javarevisited/oauth-2-0-authorization-code-flow-in-spring-boot-d8ff393f316d)_
 
-There are different grant types in OAuth2.0. The grant type is a string representing the authorization grant type that the client is using to request the access token. The grant type is included in the request to the token endpoint. The grant type is used to specify the method of obtaining the access token. The grant type is a required parameter in the request to the token endpoint. The grant types are:
+There are different grant types in OAuth2.0. The grant type is a string representing the authorization grant type that the client is using to request the access token. It is included in the request to the token endpoint. It is used to specify the method of obtaining the access token. It is a required parameter in the request to the token endpoint. The grant types are:
 
 - **Authorization code**: The authorization code grant type is used to obtain both access and refresh tokens and is optimized for confidential clients.
 - **Implicit**: The implicit grant type is used to obtain access tokens and is optimized for public clients known to operate a particular redirection URI. These clients are typically implemented in a browser using a scripting language such as JavaScript.
@@ -78,7 +78,7 @@ This is split into two parts:
 
 ### 1. Magistrala UI service
 
-The UI service is the client in the OAuth2.0 flow. The UI service initiates the flow by redirecting the user to the authorization server(google).
+The UI service is the client in the OAuth2.0 flow. The UI service initiates the flow by redirecting the user to the authorization server(Google).
 
 ```go
 // Name returns the name of the provider.
@@ -154,7 +154,7 @@ func (cfg *config) generateURL(state string) (string, error) {
 }
 ```
 
-The above functions are used to generate the URL for the sign-in and sign-up flows. The `generateURL` function is used to generate the URL for the provider. The URLs are used to redirect the user to the authorization server(google).
+The above functions are used to generate the URL for the sign-in and sign-up flows. The `generateURL` function is used to generate the URL for the provider. The URLs are used to redirect the user to the authorization server(Google).
 
 ```go
 for _, provider := range providers {
@@ -194,7 +194,7 @@ func oauth2Handler(state oauth2.State, provider oauth2.Provider) http.HandlerFun
 
 ### 2. Magistrala users service
 
-The users service is the resource server in the OAuth2.0 flow. The users service receives the authorization code from the authorization server(google) and exchanges the authorization code for an access and refresh token. The users service then uses the access token to obtain the user's details.
+The users service is the resource server in the OAuth2.0 flow. The users service receives the authorization code from the authorization server(Google) and exchanges the authorization code for an access and refresh token. The users service then uses the access token to obtain the user's details.
 
 ```go
 // State returns the state of the provider.
