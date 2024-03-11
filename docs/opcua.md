@@ -17,6 +17,14 @@ Execute the following command from Magistrala project root to run the opcua-adap
 docker-compose -f docker/addons/opcua-adapter/docker-compose.yml up -d
 ```
 
+### Architecture
+
+|       ![OPC-UA][opcua-diagram]           |
+| :--------------------------------------: |
+| Figure 1 - OPC-UA Adapter Architecture   |
+
+The OPC-UA adapter is structured to receive browse and subscribe instructions from the OPC-UA server, where devices send and receive data. The devices, known as nodes, are associated with things on Magistrala and the Service URIs are associated with Channels on Magistrala. Through the OPC-UA adapter, messages are published through NATS to the readers and writers while subscriptions are stored in the redis DB. Channel and thing events such as channel creation, thing creation, channel connection and removal are are sent to the NATS events store.
+
 ### Route Map
 
 The opcua-adapter uses [Redis][redis] database to create a route-map between Magistrala and an OPC-UA Server. As Magistrala uses Things and Channels IDs to sign messages, OPC-UA uses node ID (node namespace and node identifier combination) and server URI. The adapter route-map associates a `Thing ID` with a `Node ID` and a `Channel ID` with a `Server URI`.
@@ -63,11 +71,7 @@ To forward OPC-UA messages the opcua-adapter subscribes to the Node ID of an OPC
 
 ### Sample Use Case
 
-OPC-UA can be used in an industrial setup to monitor process values from the different industrial devices and machines within the industry setup. The industrial devices which are controlled by controllers such as PLCs (Programmable Logic Controllers) send data to the OPC-UA server over TCP/IP. From the OPC-UA server, data is sent to and from Magistrala cloud using the OPC-UA adapter in Magistrala. The devices, known as nodes, are associated with things on Magistrala and the Service URIs are associated with Channels on Magistrala. Through the OPC-UA adapter, messages are published through NATS to the readers and writers while subscriptions are stored in the redis DB. Channel and thing events such as channel creation, thing creation, channel connection and removal are are sent to the NATS events store.
-
-|       ![OPC-UA][opcua-diagram]      |
-| :---------------------------------: |
-| Figure 1 - OPC-UA Sample use case   |
+OPC-UA can be used in an industrial setup to monitor process values from the different industrial devices and machines within the industry setup. The industrial devices which are controlled by controllers such as PLCs (Programmable Logic Controllers) send data to the OPC-UA server over TCP/IP. From the OPC-UA server, data is sent to and from Magistrala cloud using the OPC-UA adapter in Magistrala. 
 
 [opcua-adapter]: https://github.com/absmach/magistrala/tree/main/opcua
 [opcua-arch]: https://en.wikipedia.org/wiki/OPC_Unified_Architecture
