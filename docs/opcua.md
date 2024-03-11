@@ -4,7 +4,6 @@ OPC Unified Architecture (OPC-UA) is a communication protocol and framework that
 
 Bridging with an OPC-UA Server can be done over the [opcua-adapter][opcua-adapter]. This service sits between Magistrala and an [OPC-UA Server][opcua-arch] and just forwards the messages from one system to another.
 
-
 ## Run OPC-UA Server
 
 The OPC-UA Server is used for connectivity layer. It allows various methods to read information from the OPC-UA server and its nodes. The current version of the opcua-adapter still experimental and only `Browse` and `Subscribe` methods are implemented. [Public OPC-UA test servers][public-opcua] are available for testing of OPC-UA clients and can be used for development and test purposes.
@@ -23,7 +22,7 @@ docker-compose -f docker/addons/opcua-adapter/docker-compose.yml up -d
 | :--------------------------------------: |
 | Figure 1 - OPC-UA Adapter Architecture   |
 
-The OPC-UA adapter is structured to receive browse and subscribe instructions from the OPC-UA server, where devices send and receive data. The devices, known as nodes, are associated with things on Magistrala and the Service URIs are associated with Channels on Magistrala. Through the OPC-UA adapter, messages are published through NATS to the readers and writers while subscriptions are stored in the redis DB. Channel and thing events such as channel creation, thing creation, channel connection and removal are are sent to the NATS events store.
+The OPC-UA adapter exposes the Browse and Subscribe endpoints that are used to interact with the OPC-UA server. The Browse endpoint gives the server access to info concerning the channels and things connected to the channel. The subscribe endpoint allows the OPC-UA adapter to subscribe to the OPC-UA server and forward the messages to the Magistrala message broker, NATS. The adapter subscribes to events from the things service from the events store and updates the route map. The route map is used to map the OPC-UA server URI and the node ID to the channel ID and the thing ID. The adapter uses the route map to forward the messages to the Magistrala message broker.
 
 ### Route Map
 
