@@ -13,7 +13,7 @@ go get github.com/absmach/magistrala
 Build the magistrala-cli
 
 ```bash
-make magistrala-cli
+make cli
 ```
 
 which will build `magistrala-cli` in `<project_root>/build` folder.
@@ -64,7 +64,7 @@ Flags:
 Use "magistrala-cli [command] --help" for more information about a command.
 ```
 
-It is also possible to use the docker image `magistrala/magistrala-cli` to execute CLI command:
+It is also possible to use the docker image `magistrala/cli` to execute CLI command:
 
 ```bash
 docker run -it --rm magistrala/cli -u http://<IP_SERVER> [command]
@@ -612,7 +612,7 @@ magistrala-cli bootstrap bootstrap <external_id> <external_key> -b <bootstrap-ur
 Magistrala CLI tool supports configuration files that contain some of the basic settings so you don't have to specify them through flags. Once you set the settings, they remain stored locally.
 
 ```bash
-magistrala-cl config <parameter> <value>
+magistrala-cli config <parameter> <value>
 ```
 
 Response should look like this:
