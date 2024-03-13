@@ -13,7 +13,7 @@ go get github.com/absmach/magistrala
 Build the magistrala-cli
 
 ```bash
-make magistrala-cli
+make cli
 ```
 
 which will build `magistrala-cli` in `<project_root>/build` folder.
