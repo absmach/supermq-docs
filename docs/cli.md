@@ -25,41 +25,46 @@ Usage:
   magistrala-cli [command]
 
 Available Commands:
-  bootstrap     Bootstrap management
-  certs         Certificates management
-  channels      Channels management
-  completion    Generate the autocompletion script for the specified shell
-  groups        Groups management
-  health        Health Check
-  help          Help about any command
-  messages      Send or read messages
-  policies      Policies management
-  provision     Provision things and channels from a config file
-  subscription  Subscription management
-  things        Things management
-  users         Users management
+  bootstrap    Bootstrap management
+  certs        Certificates management
+  channels     Channels management
+  completion   Generate the autocompletion script for the specified shell
+  config       CLI local config
+  domains      Domains management
+  groups       Groups management
+  health       Health Check
+  help         Help about any command
+  invitations  Invitations management
+  messages     Send or read messages
+  provision    Provision things and channels from a config file
+  subscription Subscription management
+  things       Things management
+  users        Users management
 
 Flags:
-  -b, --bootstrap-url string   Bootstrap service URL (default "http://localhost")
-  -s, --certs-url string       Certs service URL (default "http://localhost")
-  -c, --config string          Config path
-  -C, --contact string         Subscription contact query parameter
-  -y, --content-type string    Message content type (default "application/senml+json")
-  -e, --email string           User email query parameter
-  -h, --help                   help for magistrala-cli
-  -p, --http-url string        HTTP adapter URL (default "http://localhost/http")
-  -i, --insecure               Do not check for TLS cert
-  -l, --limit uint             Limit query parameter (default 10)
-  -m, --metadata string        Metadata query parameter
-  -n, --name string            Name query parameter
-  -o, --offset uint            Offset query parameter
-  -r, --raw                    Enables raw output mode for easier parsing of output
-  -R, --reader-url string      Reader URL (default "http://localhost")
-  -z, --state string           Bootstrap state query parameter
-  -S, --status string          User status query parameter
-  -t, --things-url string      Things service URL (default "http://localhost")
-  -T, --topic string           Subscription topic query parameter
-  -u, --users-url string       Users service URL (default "http://localhost")
+  -b, --bootstrap-url string     Bootstrap service URL (default "http://localhost:9013")
+  -s, --certs-url string         Certs service URL (default "http://localhost:9019")
+  -c, --config string            Config path
+  -C, --contact string           Subscription contact query parameter
+  -y, --content-type string      Message content type (default "application/senml+json")
+  -d, --domains-url string       Domains service URL (default "http://localhost:8189")
+  -h, --help                     help for magistrala-cli
+  -H, --host-url string          Host URL (default "http://localhost")
+  -p, --http-url string          HTTP adapter URL (default "http://localhost/http")
+  -I, --identity string          User identity query parameter
+  -i, --insecure                 Do not check for TLS cert
+  -v, --invitations-url string   Inivitations URL (default "http://localhost:9020")
+  -l, --limit uint               Limit query parameter (default 10)
+  -m, --metadata string          Metadata query parameter
+  -n, --name string              Name query parameter
+  -o, --offset uint              Offset query parameter
+  -r, --raw                      Enables raw output mode for easier parsing of output
+  -R, --reader-url string        Reader URL (default "http://localhost")
+  -z, --state string             Bootstrap state query parameter
+  -S, --status string            User status query parameter
+  -t, --things-url string        Things service URL (default "http://localhost:9000")
+  -T, --topic string             Subscription topic query parameter
+  -u, --users-url string         Users service URL (default "http://localhost:9002")
 
 Use "magistrala-cli [command] --help" for more information about a command.
 ```
@@ -97,38 +102,44 @@ Usage:
   magistrala-cli channels [command]
 
 Available Commands:
+  assign      Assign users or groups to a channel
   connections Connections list
   create      Create channel
+  delete      Delete channel
   disable     Change channel status to disabled
   enable      Change channel status to enabled
   get         Get channel
+  groups      List groups
+  unassign    Unassign users or groups from a channel
   update      Update channel
+  users       List users
 
 Flags:
   -h, --help   help for channels
 
 Global Flags:
-  -b, --bootstrap-url string   Bootstrap service URL (default "http://localhost")
-  -s, --certs-url string       Certs service URL (default "http://localhost")
-  -c, --config string          Config path
-  -C, --contact string         Subscription contact query parameter
-  -y, --content-type string    Message content type (default "application/senml+json")
-  -e, --email string           User email query parameter
-  -h, --help                   help for magistrala-cli
-  -p, --http-url string        HTTP adapter URL (default "http://localhost/http")
-  -i, --insecure               Do not check for TLS cert
-  -l, --limit uint             Limit query parameter (default 10)
-  -m, --metadata string        Metadata query parameter
-  -n, --name string            Name query parameter
-  -o, --offset uint            Offset query parameter
-  -r, --raw                    Enables raw output mode for easier parsing of output
-  -R, --reader-url string      Reader URL (default "http://localhost")
-  -z, --state string           Bootstrap state query parameter
-  -S, --status string          User status query parameter
-  -t, --things-url string      Things service URL (default "http://localhost")
-  -T, --topic string           Subscription topic query parameter
-  -u, --users-url string       Users service URL (default "http://localhost")
-
+  -b, --bootstrap-url string     Bootstrap service URL (default "http://localhost:9013")
+  -s, --certs-url string         Certs service URL (default "http://localhost:9019")
+  -c, --config string            Config path
+  -C, --contact string           Subscription contact query parameter
+  -y, --content-type string      Message content type (default "application/senml+json")
+  -d, --domains-url string       Domains service URL (default "http://localhost:8189")
+  -H, --host-url string          Host URL (default "http://localhost")
+  -p, --http-url string          HTTP adapter URL (default "http://localhost/http")
+  -I, --identity string          User identity query parameter
+  -i, --insecure                 Do not check for TLS cert
+  -v, --invitations-url string   Inivitations URL (default "http://localhost:9020")
+  -l, --limit uint               Limit query parameter (default 10)
+  -m, --metadata string          Metadata query parameter
+  -n, --name string              Name query parameter
+  -o, --offset uint              Offset query parameter
+  -r, --raw                      Enables raw output mode for easier parsing of output
+  -R, --reader-url string        Reader URL (default "http://localhost")
+  -z, --state string             Bootstrap state query parameter
+  -S, --status string            User status query parameter
+  -t, --things-url string        Things service URL (default "http://localhost:9000")
+  -T, --topic string             Subscription topic query parameter
+  -u, --users-url string         Users service URL (default "http://localhost:9002")
 
 Use "magistrala-cli channels [command] --help" for more information about a command.
 ```
@@ -145,11 +156,11 @@ For "things" service, the response should look like this:
 
 ```json
 {
-  "build_time": "2023-06-26_13:16:16",
-  "commit": "8589ad58f4ac30a198c101a7b8aa7ac2c54b2d05",
+  "build_time": "2024-03-13_16:12:26",
+  "commit": "3bf59689fb74388415d2655eb43b5d736ac82fc2",
   "description": "things service",
   "status": "pass",
-  "version": "0.13.0"
+  "version": "v0.14.0"
 }
 ```
 
