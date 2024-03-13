@@ -135,13 +135,15 @@ Use "cli channels [command] --help" for more information about a command.
 
 ## Service
 
-### Get Magistrala Things services health check
+Magistrala has two services: users and things.
+
+### Get Magistrala services health check
 
 ```bash
-mainflux-cli health
+cli health [service]
 ```
 
-Response should look like this:
+For "things" service, the response should look like this:
 
 ```json
 {
