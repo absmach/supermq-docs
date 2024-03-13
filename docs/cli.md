@@ -4,25 +4,25 @@ Magistrala CLI makes it easy to manage users, things, channels and messages.
 
 CLI can be downloaded as separate asset from [project realeses][releases] or it can be built with `GNU Make` tool:
 
-Get the mainflux code
+Get the magistrala code
 
 ```bash
 go get github.com/absmach/magistrala
 ```
 
-Build the mainflux-cli
+Build the magistrala-cli
 
 ```bash
-make cli
+make magistrala-cli
 ```
 
-which will build `mainflux-cli` in `<project_root>/build` folder.
+which will build `magistrala-cli` in `<project_root>/build` folder.
 
-Executing `build/mainflux-cli` without any arguments will output help with all available commands and flags:
+Executing `build/magistrala-cli` without any arguments will output help with all available commands and flags:
 
 ```bash
 Usage:
-  cli [command]
+  magistrala-cli [command]
 
 Available Commands:
   bootstrap     Bootstrap management
@@ -46,7 +46,7 @@ Flags:
   -C, --contact string         Subscription contact query parameter
   -y, --content-type string    Message content type (default "application/senml+json")
   -e, --email string           User email query parameter
-  -h, --help                   help for mainflux-cli
+  -h, --help                   help for magistrala-cli
   -p, --http-url string        HTTP adapter URL (default "http://localhost/http")
   -i, --insecure               Do not check for TLS cert
   -l, --limit uint             Limit query parameter (default 10)
@@ -61,19 +61,19 @@ Flags:
   -T, --topic string           Subscription topic query parameter
   -u, --users-url string       Users service URL (default "http://localhost")
 
-Use "cli [command] --help" for more information about a command.
+Use "magistrala-cli [command] --help" for more information about a command.
 ```
 
-It is also possible to use the docker image `mainflux/cli` to execute CLI command:
+It is also possible to use the docker image `magistrala/magistrala-cli` to execute CLI command:
 
 ```bash
-docker run -it --rm mainflux/cli -u http://<IP_SERVER> [command]
+docker run -it --rm magistrala/cli -u http://<IP_SERVER> [command]
 ```
 
 For example:
 
 ```bash
-docker run -it --rm mainflux/cli -u http://192.168.160.1 users token admin@example.com 12345678
+docker run -it --rm magistrala/cli -u http://192.168.160.1 users token admin@example.com 12345678
 
 {
   "access_token": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODA2MjEzMDcsImlhdCI6MTY4MDYyMDQwNywiaWRlbnRpdHkiOiJhZG1pbkBleGFtcGxlLmNvbSIsImlzcyI6ImNsaWVudHMuYXV0aCIsInN1YiI6ImYxZTA5Y2YxLTgzY2UtNDE4ZS1iZDBmLWU3M2I3M2MxNDM2NSIsInR5cGUiOiJhY2Nlc3MifQ.iKdBv3Ko7PKuhjTC6Xs-DvqfKScjKted3ZMorTwpXCd4QrRSsz6NK_lARG6LjpE0JkymaCMVMZlzykyQ6ZgwpA",
@@ -85,7 +85,7 @@ docker run -it --rm mainflux/cli -u http://192.168.160.1 users token admin@examp
 You can execute each command with `-h` flag for more information about that command, e.g.
 
 ```bash
-cli channels -h
+magistrala-cli channels -h
 ```
 
 Response should look like this:
@@ -94,7 +94,7 @@ Response should look like this:
 Channels management: create, get, update or delete Channel and get list of Things connected or not connected to a Channel
 
 Usage:
-  cli channels [command]
+  magistrala-cli channels [command]
 
 Available Commands:
   connections Connections list
@@ -114,7 +114,7 @@ Global Flags:
   -C, --contact string         Subscription contact query parameter
   -y, --content-type string    Message content type (default "application/senml+json")
   -e, --email string           User email query parameter
-  -h, --help                   help for mainflux-cli
+  -h, --help                   help for magistrala-cli
   -p, --http-url string        HTTP adapter URL (default "http://localhost/http")
   -i, --insecure               Do not check for TLS cert
   -l, --limit uint             Limit query parameter (default 10)
@@ -130,17 +130,15 @@ Global Flags:
   -u, --users-url string       Users service URL (default "http://localhost")
 
 
-Use "cli channels [command] --help" for more information about a command.
+Use "magistrala-cli channels [command] --help" for more information about a command.
 ```
 
 ## Service
 
-Magistrala has two services: users and things.
-
 ### Get Magistrala services health check
 
 ```bash
-cli health [service]
+magistrala-cli health [service]
 ```
 
 For "things" service, the response should look like this:
@@ -162,81 +160,81 @@ For "things" service, the response should look like this:
 Magistrala has two options for user creation. Either the `<user_token>` is provided or not. If the `<user_token>` is provided then the created user will be owned by the user identified by the `<user_token>`. Otherwise, when the token is not used, since everybody can create new users, the user will not have an owner. However, the token is still required, in order to be consistent. For more details, please see [Authorization page](authorization.md).
 
 ```bash
-cli users create <user_name> <user_email> <user_password>
+magistrala-cli users create <user_name> <user_email> <user_password>
 
-cli users create <user_name> <user_email> <user_password> <user_token>
+magistrala-cli users create <user_name> <user_email> <user_password> <user_token>
 ```
 
 #### Login User
 
 ```bash
-cli users token <user_email> <user_password>
+magistrala-cli users token <user_email> <user_password>
 ```
 
 #### Get User Token From Refresh Token
 
 ```bash
-cli users refreshtoken <refresh_token>
+magistrala-cli users refreshtoken <refresh_token>
 ```
 
 #### Get User
 
 ```bash
-cli users get <user_id> <user_token>
+magistrala-cli users get <user_id> <user_token>
 ```
 
 #### Get Users
 
 ```bash
-cli users get all <user_token>
+magistrala-cli users get all <user_token>
 ```
 
 #### Update User Metadata
 
 ```bash
-cli users update <user_id> '{"name":"value1", "metadata":{"value2": "value3"}}' <user_token>
+magistrala-cli users update <user_id> '{"name":"value1", "metadata":{"value2": "value3"}}' <user_token>
 ```
 
 #### Update User Tags
 
 ```bash
-cli users update tags <user_id> '["tag1", "tag2"]' <user_token>
+magistrala-cli users update tags <user_id> '["tag1", "tag2"]' <user_token>
 ```
 
 #### Update User Identity
 
 ```bash
-cli users update identity <user_id> <user_email> <user_token>
+magistrala-cli users update identity <user_id> <user_email> <user_token>
 ```
 
 #### Update User Owner
 
 ```bash
-cli users update owner <user_id> <owner_id> <user_token>
+magistrala-cli users update owner <user_id> <owner_id> <user_token>
 ```
 
 #### Update User Password
 
 ```bash
-cli users password <old_password> <password> <user_token>
+magistrala-cli users password <old_password> <password> <user_token>
 ```
 
 #### Enable User
 
 ```bash
-cli users enable <user_id> <user_token>
+magistrala-cli users enable <user_id> <user_token>
 ```
 
 #### Disable User
 
 ```bash
-cli users disable <user_id> <user_token>
+magistrala-cli users disable <user_id> <user_token>
 ```
 
 #### Get Profile of the User identified by the token
 
 ```bash
-cli users profile <user_token>
+magistrala-cli users profile <user_token>
 ```
 
 ### Groups management
@@ -244,61 +242,61 @@ cli users profile <user_token>
 #### Create Group
 
 ```bash
-cli groups create '{"name":"<group_name>","description":"<description>","parentID":"<parent_id>","metadata":"<metadata>"}' <user_token>
+magistrala-cli groups create '{"name":"<group_name>","description":"<description>","parentID":"<parent_id>","metadata":"<metadata>"}' <user_token>
 ```
 
 #### Get Group
 
 ```bash
-cli groups get <group_id> <user_token>
+magistrala-cli groups get <group_id> <user_token>
 ```
 
 #### Get Groups
 
 ```bash
-cli groups get all <user_token>
+magistrala-cli groups get all <user_token>
 ```
 
 #### Update Group
 
 ```bash
-cli groups update '{"id":"<group_id>","name":"<group_name>","description":"<description>","metadata":"<metadata>"}' <user_token>
+magistrala-cli groups update '{"id":"<group_id>","name":"<group_name>","description":"<description>","metadata":"<metadata>"}' <user_token>
 ```
 
 #### Get Group Members
 
 ```bash
-cli groups members <group_id> <user_token>
+magistrala-cli groups members <group_id> <user_token>
 ```
 
 #### Get Memberships
 
 ```bash
-cli groups membership <member_id> <user_token>
+magistrala-cli groups membership <member_id> <user_token>
 ```
 
 #### Assign Members to Group
 
 ```bash
-cli groups assign <member_ids> <member_type> <group_id> <user_token>
+magistrala-cli groups assign <member_ids> <member_type> <group_id> <user_token>
 ```
 
 #### Unassign Members to Group
 
 ```bash
-cli groups unassign <member_ids> <group_id>  <user_token>
+magistrala-cli groups unassign <member_ids> <group_id>  <user_token>
 ```
 
 #### Enable Group
 
 ```bash
-cli groups enable <group_id> <user_token>
+magistrala-cli groups enable <group_id> <user_token>
 ```
 
 #### Disable Group
 
 ```bash
-cli groups disable <group_id> <user_token>
+magistrala-cli groups disable <group_id> <user_token>
 ```
 
 ### Things management
@@ -306,19 +304,19 @@ cli groups disable <group_id> <user_token>
 #### Create Thing
 
 ```bash
-cli things create '{"name":"myThing"}' <user_token>
+magistrala-cli things create '{"name":"myThing"}' <user_token>
 ```
 
 #### Create Thing with metadata
 
 ```bash
-cli things create '{"name":"myThing", "metadata": {"key1":"value1"}}' <user_token>
+magistrala-cli things create '{"name":"myThing", "metadata": {"key1":"value1"}}' <user_token>
 ```
 
 #### Bulk Provision Things
 
 ```bash
-cli provision things <file> <user_token>
+magistrala-cli provision things <file> <user_token>
 ```
 
 - `file` - A CSV or JSON file containing thing names (must have extension `.csv` or `.json`)
@@ -362,67 +360,67 @@ With JSON you can be able to specify more fields of the channels you want to cre
 #### Update Thing
 
 ```bash
-cli things update <thing_id> '{"name":"value1", "metadata":{"key1": "value2"}}' <user_token>
+magistrala-cli things update <thing_id> '{"name":"value1", "metadata":{"key1": "value2"}}' <user_token>
 ```
 
 #### Update Thing Tags
 
 ```bash
-cli things update tags <thing_id> '["tag1", "tag2"]' <user_token>
+magistrala-cli things update tags <thing_id> '["tag1", "tag2"]' <user_token>
 ```
 
 #### Update Thing Owner
 
 ```bash
-cli things update owner <thing_id> <owner_id> <user_token>
+magistrala-cli things update owner <thing_id> <owner_id> <user_token>
 ```
 
 #### Update Thing Secret
 
 ```bash
-cli things update secret <thing_id> <secet> <user_token>
+magistrala-cli things update secret <thing_id> <secet> <user_token>
 ```
 
 #### Identify Thing
 
 ```bash
-cli things identify <thing_secret>
+magistrala-cli things identify <thing_secret>
 ```
 
 #### Enable Thing
 
 ```bash
-cli things enable <thing_id> <user_token>
+magistrala-cli things enable <thing_id> <user_token>
 ```
 
 #### Disable Thing
 
 ```bash
-cli things disable <thing_id> <user_token>
+magistrala-cli things disable <thing_id> <user_token>
 ```
 
 #### Get Thing
 
 ```bash
-cli things get <thing_id> <user_token>
+magistrala-cli things get <thing_id> <user_token>
 ```
 
 #### Get Things
 
 ```bash
-cli things get all <user_token>
+magistrala-cli things get all <user_token>
 ```
 
 #### Get a subset list of provisioned Things
 
 ```bash
-cli things get all --offset=1 --limit=5 <user_token>
+magistrala-cli things get all --offset=1 --limit=5 <user_token>
 ```
 
 #### Share Thing
 
 ```bash
-cli things share <channel_id> <user_id> <allowed_actions> <user_token>
+magistrala-cli things share <channel_id> <user_id> <allowed_actions> <user_token>
 ```
 
 ### Channels management
@@ -430,13 +428,13 @@ cli things share <channel_id> <user_id> <allowed_actions> <user_token>
 #### Create Channel
 
 ```bash
-cli channels create '{"name":"myChannel"}' <user_token>
+magistrala-cli channels create '{"name":"myChannel"}' <user_token>
 ```
 
 #### Bulk Provision Channels
 
 ```bash
-cli provision channels <file> <user_token>
+magistrala-cli provision channels <file> <user_token>
 ```
 
 - `file` - A CSV or JSON file containing channel names (must have extension `.csv` or `.json`)
@@ -479,49 +477,49 @@ With JSON you can be able to specify more fields of the channels you want to cre
 #### Update Channel
 
 ```bash
-cli channels update '{"id":"<channel_id>","name":"myNewName"}' <user_token>
+magistrala-cli channels update '{"id":"<channel_id>","name":"myNewName"}' <user_token>
 ```
 
 #### Enable Channel
 
 ```bash
-cli channels enable <channel_id> <user_token>
+magistrala-cli channels enable <channel_id> <user_token>
 ```
 
 #### Disable Channel
 
 ```bash
-cli channels disable <channel_id> <user_token>
+magistrala-cli channels disable <channel_id> <user_token>
 ```
 
 #### Get Channel
 
 ```bash
-cli channels get <channel_id> <user_token>
+magistrala-cli channels get <channel_id> <user_token>
 ```
 
 #### Get Channels
 
 ```bash
-cli channels get all <user_token>
+magistrala-cli channels get all <user_token>
 ```
 
 #### Get a subset list of provisioned Channels
 
 ```bash
-cli channels get all --offset=1 --limit=5 <user_token>
+magistrala-cli channels get all --offset=1 --limit=5 <user_token>
 ```
 
 #### Connect Thing to Channel
 
 ```bash
-cli things connect <thing_id> <channel_id> <user_token>
+magistrala-cli things connect <thing_id> <channel_id> <user_token>
 ```
 
 #### Bulk Connect Things to Channels
 
 ```bash
-cli provision connect <file> <user_token>
+magistrala-cli provision connect <file> <user_token>
 ```
 
 - `file` - A CSV or JSON file containing thing and channel ids (must have extension `.csv` or `.json`)
@@ -548,19 +546,19 @@ A comparable JSON file would be
 #### Disconnect Thing from Channel
 
 ```bash
-cli things disconnect <thing_id> <channel_id> <user_token>
+magistrala-cli things disconnect <thing_id> <channel_id> <user_token>
 ```
 
 #### Get a subset list of Channels connected to Thing
 
 ```bash
-cli things connections <thing_id> <user_token>
+magistrala-cli things connections <thing_id> <user_token>
 ```
 
 #### Get a subset list of Things connected to Channel
 
 ```bash
-cli channels connections <channel_id> <user_token>
+magistrala-cli channels connections <channel_id> <user_token>
 ```
 
 ### Messaging
@@ -568,13 +566,13 @@ cli channels connections <channel_id> <user_token>
 #### Send a message over HTTP
 
 ```bash
-cli messages send <channel_id> '[{"bn":"Dev1","n":"temp","v":20}, {"n":"hum","v":40}, {"bn":"Dev2", "n":"temp","v":20}, {"n":"hum","v":40}]' <thing_secret>
+magistrala-cli messages send <channel_id> '[{"bn":"Dev1","n":"temp","v":20}, {"n":"hum","v":40}, {"bn":"Dev2", "n":"temp","v":20}, {"n":"hum","v":40}]' <thing_secret>
 ```
 
 #### Read messages over HTTP
 
 ```bash
-cli messages read <channel_id> <user_token> -R <reader_url>
+magistrala-cli messages read <channel_id> <user_token> -R <reader_url>
 ```
 
 ### Bootstrap
@@ -582,31 +580,31 @@ cli messages read <channel_id> <user_token> -R <reader_url>
 #### Add configuration
 
 ```bash
-cli bootstrap create '{"external_id": "myExtID", "external_key": "myExtKey", "name": "myName", "content": "myContent"}' <user_token> -b <bootstrap-url>
+magistrala-cli bootstrap create '{"external_id": "myExtID", "external_key": "myExtKey", "name": "myName", "content": "myContent"}' <user_token> -b <bootstrap-url>
 ```
 
 #### View configuration
 
 ```bash
-cli bootstrap get <thing_id> <user_token> -b <bootstrap-url>
+magistrala-cli bootstrap get <thing_id> <user_token> -b <bootstrap-url>
 ```
 
 #### Update configuration
 
 ```bash
-cli bootstrap update '{"mainflux_id":"<thing_id>", "name": "newName", "content": "newContent"}' <user_token> -b <bootstrap-url>
+magistrala-cli bootstrap update '{"magistrala_id":"<thing_id>", "name": "newName", "content": "newContent"}' <user_token> -b <bootstrap-url>
 ```
 
 #### Remove configuration
 
 ```bash
-cli bootstrap remove <thing_id> <user_token> -b <bootstrap-url>
+magistrala-cli bootstrap remove <thing_id> <user_token> -b <bootstrap-url>
 ```
 
 #### Bootstrap configuration
 
 ```bash
-cli bootstrap bootstrap <external_id> <external_key> -b <bootstrap-url>
+magistrala-cli bootstrap bootstrap <external_id> <external_key> -b <bootstrap-url>
 ```
 
 ## Config
@@ -614,7 +612,7 @@ cli bootstrap bootstrap <external_id> <external_key> -b <bootstrap-url>
 Magistrala CLI tool supports configuration files that contain some of the basic settings so you don't have to specify them through flags. Once you set the settings, they remain stored locally.
 
 ```bash
-cli config <parameter> <value>
+magistrala-cl config <parameter> <value>
 ```
 
 Response should look like this:
@@ -626,7 +624,7 @@ Response should look like this:
 This command is used to set the flags to be used by CLI in a local TOML file. The default location of the TOML file is in the same directory as the CLI binary. To change the location of the TOML file you can run the command:
 
 ```
-  mainflux-cli config <parameter> <value> -c "cli/file_name.toml"
+  magistrala-cli config <parameter> <value> -c "cli/file_name.toml"
 ```
 
 The possible parameters that can be set using the config command are:
