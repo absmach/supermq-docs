@@ -72,7 +72,7 @@ access-control-allow-headers: *
 }
 ```
 
-For more information about the Users service API, please check out the [API documentation](https://api.magistrala.io/?urls.primaryName=users.yml).
+For more information about the Users service API, please check out the [API documentation](https://api.mainflux.io/?urls.primaryName=users.yml).
 
 ### System Provisioning
 
@@ -521,7 +521,7 @@ date: Tue, 04 Apr 2023 09:57:53 GMT
 access-control-expose-headers: Location
 ```
 
-For more information about the Things service API, please check out the [API documentation](https://api.magistrala.io/?urls.primaryName=things.yml).
+For more information about the Things service API, please check out the [API documentation](https://api.mainflux.io/?urls.primaryName=things.yml).
 
 ## Provision Service
 
@@ -741,7 +741,7 @@ Response contains created things, channels and certificates if any:
 Deploy Magistrala UI docker composition as it contains all the required services for provisioning to work ( `certs`, `bootstrap` and Magistrala core)
 
 ```bash
-git clone https://github.com/magistrala/ui
+git clone https://github.com/absmach/magistrala-ui
 cd ui
 docker-compose -f docker/docker-compose.yml up
 ```
@@ -749,10 +749,10 @@ docker-compose -f docker/docker-compose.yml up
 Create user and obtain access token
 
 ```bash
-magistrala-cli -m https://magistrala.com users create john.doe@email.com 12345678
+magistrala-cli -m https://mainflux.com users create john.doe@email.com 12345678
 
 # Retrieve token
-magistrala-cli -m https://magistrala.com users token john.doe@email.com 12345678
+magistrala-cli -m https://mainflux.com users token john.doe@email.com 12345678
 
 created: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1OTY1ODU3MDUsImlhdCI6MTU5NjU0OTcwNSwiaXNzIjoibWFpbmZsdXguYXV0aG4iLCJzdWIiOiJtaXJrYXNoQGdtYWlsLmNvbSIsInR5cGUiOjB9._vq0zJzFc9tQqc8x74kpn7dXYefUtG9IB0Cb-X2KMK8
 ```
@@ -790,13 +790,13 @@ For more information about the Provision service API, please check out the [API 
 
 [magistrala]: https://github.com/absmach/magistrala
 [bootstrap]: https://github.com/absmach/magistrala/terr/main/bootstrap
-[agent]: https://github.com/magistrala/agent
+[agent]: https://github.com/mainflux/agent
 [mfxui]: https://github.com/absmach/magistrala/ui
 [config]: https://github.com/absmach/magistrala/terr/main/provision#configuration
 [env]: https://github.com/absmach/magistrala/blob/master/.env
 [conftoml]: https://github.com/absmach/magistrala/blob/master/docker/addons/provision/configs/config.toml
 [users]: https://github.com/absmach/magistrala/blob/master/users/README.md
-[exp]: https://github.com/magistrala/export
+[exp]: https://github.com/mainflux/export
 [cli]: https://github.com/absmach/magistrala/terr/main/cli
 [auth]: authentication.md
-[provision-api]: https://api.magistrala.io/?urls.primaryName=provision.yml
+[provision-api]: https://api.mainflux.io/?urls.primaryName=provision.yml

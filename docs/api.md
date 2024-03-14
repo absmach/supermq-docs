@@ -2704,5 +2704,5 @@ Connection: keep-alive
 Access-Control-Expose-Headers: Location
 ```
 
-[api]: https://api.magistrala.io
+[api]: https://api.mainflux.io
 [predefined-policies]: /authorization/#summary-of-defined-policies

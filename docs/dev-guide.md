@@ -297,7 +297,7 @@ Please assure that MQTT microservice has `node_modules` installed, as explained 
 
 > N.B. `make rundev` actually calls helper script `scripts/run.sh`, so you can inspect this script for the details.
 
-[magistrala-repo]: https://github.com/Magistrala/magistrala
+[magistrala-repo]: https://github.com/absmach/magistrala
 [protocol-buffers]: https://developers.google.com/protocol-buffers/
 [golang-protobuf]: https://github.com/golang/protobuf
 [protobuf-install]: https://github.com/golang/protobuf#installation

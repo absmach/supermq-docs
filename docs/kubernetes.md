@@ -242,14 +242,14 @@ Now you can test sending mqtt message with this parameters:
 mosquitto_pub -d -L mqtts://<thing_id>:<thing_secret>@example.com:8883/channels/<channel_id>/messages  --cert  thing.crt --key thing.key --cafile ca.crt  -m "test-message"
 ```
 
-[devops-repo]: https://github.com/magistrala/devops
+[devops-repo]: https://github.com/mainflux/devops
 [kubernetes-setup]: https://kubernetes.io/docs/setup/
 [kubectl-setup]: https://kubernetes.io/docs/tasks/tools/install-kubectl/
 [helm-setup]: https://helm.sh/docs/intro/install/
 [nginx-ingress]: https://kubernetes.github.io/ingress-nginx/deploy/
-[ingress-yaml]: https://github.com/magistrala/devops/blob/master/charts/magistrala/templates/ingress.yaml#L141
+[ingress-yaml]: https://github.com/mainflux/devops/blob/master/charts/mainflux/templates/ingress.yaml#L141
 [ingress-controller-args]: https://kubernetes.github.io/ingress-nginx/user-guide/cli-arguments/
 [ingress-controller-tcp-udp]: https://kubernetes.github.io/ingress-nginx/user-guide/exposing-tcp-udp-services/
 [authentication]: /authentication
 [makefile]: https://github.com/absmach/magistrala/blob/master/docker/ssl/Makefile
-[secrets]: https://github.com/magistrala/devops/blob/master/charts/magistrala/secrets/secrets.sh
+[secrets]: https://github.com/mainflux/devops/blob/master/charts/mainflux/secrets/secrets.sh
