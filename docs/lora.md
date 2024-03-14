@@ -44,7 +44,7 @@ docker-compose -f docker/addons/lora-adapter/docker-compose.yml up -d
 
 **Troubleshouting:** The lora-adapter subscribes to the LoRa Server MQTT broker and will fail if the connection is not established. You must ensure that the environment variable `MF_LORA_ADAPTER_MESSAGES_URL` is propertly configured.
 
-**Remark:** By defaut, `MF_LORA_ADAPTER_MESSAGES_URL` is set as `tcp://lora.mqtt.mainflux.io:1883` in the [docker-compose.yml][lora-docker-compose] file of the adapter. If you run the composition without configure this variable you will start to receive messages from our demo server.
+**Remark:** By defaut, `MF_LORA_ADAPTER_MESSAGES_URL` is set as `tcp://lora.mqtt.magistrala.io:1883` in the [docker-compose.yml][lora-docker-compose] file of the adapter. If you run the composition without configure this variable you will start to receive messages from our demo server.
 
 ### Route Map
 

@@ -28,11 +28,11 @@ Jaeger uses 5 ports within the Magistrala framework. These ports can be edited i
 | MF_JAEGER_FRONTEND  | UI port                                           | 16686       |
 | MF_JAEGER_COLLECTOR | Collector for jaeger.thrift directly from clients | 14268       |
 | MF_JAEGER_CONFIGS   | Configuration server                              | 5778        |
-| MF_JAEGER_URL       | Jaeger access from within Magistrala                | jaeger:6831 |
+| MF_JAEGER_URL       | Jaeger access from within Magistrala              | jaeger:6831 |
 
 ## Message Tracing
 
-Magistrala provides for tracing of messages ingested into the mainflux platform. The message metadata such as topic, sub-topic, subscriber and publisher is also included in traces. ![HTTP Message Publishing trace][message-trace].
+Magistrala provides for tracing of messages ingested into the magistrala platform. The message metadata such as topic, sub-topic, subscriber and publisher is also included in traces. ![HTTP Message Publishing trace][message-trace].
 
 The messages are tracked from end to end from the point they are published to the consumers where they are stored. ![Influx DB consumer trace][consumer-trace]
 

@@ -118,7 +118,7 @@ Those new services will take some additional ports:
 - 8086 by InfluxDB
 - 9006 by InfluxDB writer service
 
-To access Influx-UI, navigate to `http://localhost:8086` and login with: `mainflux`, password: `mainflux`
+To access Influx-UI, navigate to `http://localhost:8086` and login with: `magistrala`, password: `magistrala`
 
 ### Cassandra and Cassandra Writer
 

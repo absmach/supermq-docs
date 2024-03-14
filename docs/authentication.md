@@ -32,13 +32,13 @@ MF_USERS_UI_REDIRECT_URL=http://localhost:9090
 2. `MF_USERS_GOOGLE_CLIENT_SECRET` - Google OAuth 2.0 client secret
 3. `MF_UI_GOOGLE_REDIRECT_URL` - Google OAuth 2.0 redirect URL to handle callback after successful authentication. This URL must be registered in the Google Cloud Platform.
 4. `MF_USERS_GOOGLE_STATE` - Random string used to protect against cross-site request forgery attacks.
-5. `MF_USERS_UI_REDIRECT_URL` - URL to redirect user after successful authentication. This can be your mainflux UI URL.
+5. `MF_USERS_UI_REDIRECT_URL` - URL to redirect user after successful authentication. This can be your magistrala UI URL.
 
-Magistrala handles the authentication callback at `<MF_BASE_URL>/google-callback` endpoint, where `<MF_BASE_URL>` is the base URL of your Magistrala instance. This endpoint needs to be registered in the Google Cloud Platform and it must match the value of `MF_UI_GOOGLE_REDIRECT_URL` environment variable. From the UI, `google state` is prefixed with the `signin` or `signup` operation to be able to distinguish between sign-in and sign-up operations. For example, if a user is not signed up, the UI will display an error message and a button to sign-up. The error message is sent from the backend using a cookie with the name `error`. The UI will read the error message from the cookie and display it to the user. This cookie expires in 1 second. When a user signs up, mainflux creates a local copy of the user with an ID provided by Google, the name and email address provided by Google and the password is left empty as the user is authenticated using Google, i.e. external user. The user can be created only once, so if the user already exists, the error will be sent to the UI via the error cookie. Finally, the user is redirected to the URL provided in `MF_USERS_UI_REDIRECT_URL` environment variable upon successful authentication. This should be the base URL of your UI.
+Magistrala handles the authentication callback at `<MF_BASE_URL>/google-callback` endpoint, where `<MF_BASE_URL>` is the base URL of your Magistrala instance. This endpoint needs to be registered in the Google Cloud Platform and it must match the value of `MF_UI_GOOGLE_REDIRECT_URL` environment variable. From the UI, `google state` is prefixed with the `signin` or `signup` operation to be able to distinguish between sign-in and sign-up operations. For example, if a user is not signed up, the UI will display an error message and a button to sign-up. The error message is sent from the backend using a cookie with the name `error`. The UI will read the error message from the cookie and display it to the user. This cookie expires in 1 second. When a user signs up, magistrala creates a local copy of the user with an ID provided by Google, the name and email address provided by Google and the password is left empty as the user is authenticated using Google, i.e. external user. The user can be created only once, so if the user already exists, the error will be sent to the UI via the error cookie. Finally, the user is redirected to the URL provided in `MF_USERS_UI_REDIRECT_URL` environment variable upon successful authentication. This should be the base URL of your UI.
 
 The `MF_USERS_GOOGLE_CLIENT_ID`, `MF_USERS_GOOGLE_CLIENT_SECRET`, `MF_UI_GOOGLE_REDIRECT_URL` and `MF_USERS_GOOGLE_STATE` environment variables should be the same for the UI and users service. The `MF_USERS_UI_REDIRECT_URL` environment variable should be the URL of your UI which is used to redirect the user after successful authentication.
 
-Magistrala uses the `access_token` provided by Google only to fetch user information which includes user id, name, given name, family name, picture and locale. The `access_token` is not stored in the database and it's not used for any other purpose. The `id_token` is not used as it presents challenges on refreshing it, thus mainflux issues its own `access_token` and `refresh_token` stored in the HTTP-only cookie and it's used to authenticate the user in the subsequent requests.
+Magistrala uses the `access_token` provided by Google only to fetch user information which includes user id, name, given name, family name, picture and locale. The `access_token` is not stored in the database and it's not used for any other purpose. The `id_token` is not used as it presents challenges on refreshing it, thus magistrala issues its own `access_token` and `refresh_token` stored in the HTTP-only cookie and it's used to authenticate the user in the subsequent requests.
 
 ## Authentication with Magistrala keys
 
@@ -71,8 +71,8 @@ These commands use [OpenSSL][openssl] tool, so please make sure that you have it
 CRT_LOCATION = certs
 THING_SECRET = d7cc2964-a48b-4a6e-871a-08da28e7883d
 O = Magistrala
-OU = mainflux
-EA = info@mainflux.com
+OU = magistrala
+EA = info@magistrala.com
 CN = localhost
 CRT_FILE_NAME = thing
 ```

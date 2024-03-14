@@ -4,17 +4,17 @@
 
 Magistrala IoT platform is comprised of the following services:
 
-| Service                        | Description                                                                             |
-| :----------------------------- | :-------------------------------------------------------------------------------------- |
-| [users][users-service]         | Manages platform's users and auth concerns in regards to users and groups               |
-| [things][things-service]       | Manages platform's things, channels and auth concerns in regards to things and channels |
-| [http-adapter][http-adapter]   | Provides an HTTP interface for sending messages via HTTP                                |
-| [mqtt-adapter][mqtt-adapter]   | Provides an MQTT and MQTT over WS interface for sending and receiving messages via MQTT |
-| [ws-adapter][ws-adapter]       | Provides a WebSocket interface for sending and receiving messages via WS                |
-| [coap-adapter][coap-adapter]   | Provides a CoAP interface for sending and receiving messages via CoAP                   |
-| [opcua-adapter][opcua-adapter] | Provides an OPC-UA interface for sending and receiving messages via OPC-UA              |
-| [lora-adapter][lora-adapter]   | Provides a LoRa Server forwarder for sending and receiving messages via LoRa            |
-| [mainflux-cli][mainflux-cli]   | Command line interface                                                                  |
+| Service                          | Description                                                                             |
+| :------------------------------- | :-------------------------------------------------------------------------------------- |
+| [users][users-service]           | Manages platform's users and auth concerns in regards to users and groups               |
+| [things][things-service]         | Manages platform's things, channels and auth concerns in regards to things and channels |
+| [http-adapter][http-adapter]     | Provides an HTTP interface for sending messages via HTTP                                |
+| [mqtt-adapter][mqtt-adapter]     | Provides an MQTT and MQTT over WS interface for sending and receiving messages via MQTT |
+| [ws-adapter][ws-adapter]         | Provides a WebSocket interface for sending and receiving messages via WS                |
+| [coap-adapter][coap-adapter]     | Provides a CoAP interface for sending and receiving messages via CoAP                   |
+| [opcua-adapter][opcua-adapter]   | Provides an OPC-UA interface for sending and receiving messages via OPC-UA              |
+| [lora-adapter][lora-adapter]     | Provides a LoRa Server forwarder for sending and receiving messages via LoRa            |
+| [magistrala-cli][magistrala-cli] | Command line interface                                                                  |
 
 ![arch][architecture]
 
@@ -55,7 +55,7 @@ Running Magistrala on gateway moves computation from cloud towards the edge thus
 [ws-adapter]: https://github.com/absmach/magistrala/terr/main/ws
 [opcua-adapter]: https://github.com/absmach/magistrala/terr/main/opcua
 [lora-adapter]: https://github.com/absmach/magistrala/terr/main/lora
-[mainflux-cli]: https://github.com/absmach/magistrala/terr/main/cli
+[magistrala-cli]: https://github.com/absmach/magistrala/terr/main/cli
 [architecture]: img/architecture.jpg
 [nats]: https://nats.io/
 [rabbitmq]: https://www.rabbitmq.com/

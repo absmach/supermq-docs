@@ -4,7 +4,6 @@
 [build][build]
 [![Build](https://github.com/absmach/magistrala-docs/actions/workflows/pages.yaml/badge.svg?branch=main)](https://github.com/absmach/magistrala-docs/actions/workflows/pages.yaml)
 
-
 This repo collects the collaborative work on Magistrala documentation.
 The official documentation is hosted at [Magistrala Docs page][docs].
 Documentation is auto-generated from Markdown files in this repo.
@@ -56,7 +55,7 @@ Thank you for your interest in Magistrala and the desire to contribute!
 
 [Apache-2.0](LICENSE)
 
-[matrix]: https://matrix.to/#/#Mainflux_mainflux:gitter.im
+[matrix]: https://matrix.to/#/#magistrala_magistrala:gitter.im
 [license]: https://img.shields.io/badge/license-Apache%20v2.0-blue.svg
 [blog]: https://medium.com/abstract-machines-blog
 [twitter]: https://twitter.com/absmach

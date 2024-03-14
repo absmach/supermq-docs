@@ -8,7 +8,7 @@ API reference in the Swagger UI can be found at: [https://api.magistrala.abstrac
 
 ### Create User
 
-To start working with the Mainflux system, you need to create a user account.
+To start working with the magistrala system, you need to create a user account.
 
 > Identity, which can be email-address (this must be unique as it identifies the user) and secret (password must contain at least 8 characters).
 
@@ -97,7 +97,7 @@ Access-Control-Expose-Headers: Location
 
 ### Create Token
 
-To log in to the Mainflux system, you need to create a `user_token`.
+To log in to the magistrala system, you need to create a `user_token`.
 
 ```bash
 curl -sSiX POST http://localhost/users/tokens/issue -H "Content-Type: application/json" -d @- << EOF
@@ -682,9 +682,9 @@ Access-Control-Expose-Headers: Location
 
 ### Create Thing with External ID
 
-It is often the case that the user will want to integrate the existing solutions, e.g. an asset management system, with the Mainflux platform. To simplify the integration between the systems and avoid artificial cross-platform reference, such as special fields in Mainflux Things metadata, it is possible to set Mainflux Thing ID with an existing unique ID while create the Thing. This way, the user can set the existing ID as the Thing ID of a newly created Thing to keep reference between Thing and the asset that Thing represents.
+It is often the case that the user will want to integrate the existing solutions, e.g. an asset management system, with the magistrala platform. To simplify the integration between the systems and avoid artificial cross-platform reference, such as special fields in magistrala Things metadata, it is possible to set magistrala Thing ID with an existing unique ID while create the Thing. This way, the user can set the existing ID as the Thing ID of a newly created Thing to keep reference between Thing and the asset that Thing represents.
 
-The limitation is that the existing ID has to be unique in the Mainflux domain.
+The limitation is that the existing ID has to be unique in the magistrala domain.
 
 To create a thing with an external ID, you need to provide the ID together with thing name, and other fields as well as a `user_token`
 
@@ -720,8 +720,8 @@ Access-Control-Expose-Headers: Location
 
 ### Create Thing with External Secret
 
-It is often the case that the user will want to integrate the existing solutions, e.g. an asset management system, with the Mainflux platform. To simplify the integration between the systems and avoid artificial cross-platform reference, such as special fields in Mainflux Things metadata, it is possible to set Mainflux Thing secret with an existing unique secret when creating the Thing. This way, the user can set the existing secret as the Thing secret of a newly created Thing to keep reference between Thing and the asset that Thing represents.
-The limitation is that the existing secret has to be unique in the Mainflux domain.
+It is often the case that the user will want to integrate the existing solutions, e.g. an asset management system, with the magistrala platform. To simplify the integration between the systems and avoid artificial cross-platform reference, such as special fields in magistrala Things metadata, it is possible to set magistrala Thing secret with an existing unique secret when creating the Thing. This way, the user can set the existing secret as the Thing secret of a newly created Thing to keep reference between Thing and the asset that Thing represents.
+The limitation is that the existing secret has to be unique in the magistrala domain.
 
 To create a thing with an external secret, you need to provide the secret together with thing name, and other fields as well as a `user_token`
 
@@ -1357,7 +1357,7 @@ Access-Control-Expose-Headers: Location
 
 ### Create Channel with external ID
 
-Channel is a group of things that could represent a special category in existing systems, e.g. a building level channel could represent the level of a smarting building system. For helping to keep the reference, it is possible to set an existing ID while creating the Mainflux channel. There are two limitations - the existing ID has to be in UUID V4 format and it has to be unique in the Mainflux domain.
+Channel is a group of things that could represent a special category in existing systems, e.g. a building level channel could represent the level of a smarting building system. For helping to keep the reference, it is possible to set an existing ID while creating the magistrala channel. There are two limitations - the existing ID has to be in UUID V4 format and it has to be unique in the magistrala domain.
 
 To create a channel with external ID, the user needs to provide a UUID v4 format unique ID, and a `user_token`
 
@@ -2704,5 +2704,5 @@ Connection: keep-alive
 Access-Control-Expose-Headers: Location
 ```
 
-[api]: https://api.mainflux.io
+[api]: https://api.magistrala.io
 [predefined-policies]: /authorization/#summary-of-defined-policies

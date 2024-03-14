@@ -72,7 +72,7 @@ access-control-allow-headers: *
 }
 ```
 
-For more information about the Users service API, please check out the [API documentation](https://api.mainflux.io/?urls.primaryName=users.yml).
+For more information about the Users service API, please check out the [API documentation](https://api.magistrala.io/?urls.primaryName=users.yml).
 
 ### System Provisioning
 
@@ -521,7 +521,7 @@ date: Tue, 04 Apr 2023 09:57:53 GMT
 access-control-expose-headers: Location
 ```
 
-For more information about the Things service API, please check out the [API documentation](https://api.mainflux.io/?urls.primaryName=things.yml).
+For more information about the Things service API, please check out the [API documentation](https://api.magistrala.io/?urls.primaryName=things.yml).
 
 ## Provision Service
 
@@ -529,13 +529,13 @@ Provisioning is a process of configuration of an IoT platform in which system op
 
 Provision service provides an HTTP API to interact with [Magistrala][provision-api].
 
-For gateways to communicate with [Magistrala][mainflux] configuration is required (MQTT host, thing, channels, certificates...). Gateway will send a request to [Bootstrap][bootstrap] service providing `<external_id>` and `<external_key>` in HTTP request to get the configuration. To make a request to [Bootstrap][bootstrap] service you can use [Agent][agent] service on a gateway.
+For gateways to communicate with [Magistrala][magistrala] configuration is required (MQTT host, thing, channels, certificates...). Gateway will send a request to [Bootstrap][bootstrap] service providing `<external_id>` and `<external_key>` in HTTP request to get the configuration. To make a request to [Bootstrap][bootstrap] service you can use [Agent][agent] service on a gateway.
 
 To create bootstrap configuration you can use [Bootstrap][bootstrap] or `Provision` service. [Magistrala UI][mfxui] uses [Bootstrap][bootstrap] service for creating gateway configurations. `Provision` service should provide an easy way of provisioning your gateways i.e creating bootstrap configuration and as many things and channels that your setup requires.
 
 Also, you may use provision service to create certificates for each thing. Each service running on gateway may require more than one thing and channel for communication.
 If, for example, you are using services [Agent][agent] and [Export][exp] on a gateway you will need two channels for `Agent` (`data` and `control`) and one thing for `Export`.
-Additionally, if you enabled mTLS each service will need its own thing and certificate for access to [Magistrala][mainflux].
+Additionally, if you enabled mTLS each service will need its own thing and certificate for access to [Magistrala][magistrala].
 Your setup could require any number of things and channels, this kind of setup we can call `provision layout`.
 
 Provision service provides a way of specifying this `provision layout` and creating a setup according to that layout by serving requests on `/mapping` endpoint. Provision layout is configured in [config.toml][conftoml].
@@ -667,7 +667,7 @@ MF_PROVISION_BS_SVC_URL=http://localhost:9013/things \
 MF_PROVISION_THINGS_LOCATION=http://localhost:9000 \
 MF_PROVISION_USERS_LOCATION=http://localhost:9002 \
 MF_PROVISION_CONFIG_FILE=docker/addons/provision/configs/config.toml \
-build/mainflux-provision
+build/magistrala-provision
 ```
 
 Docker composition:
@@ -741,7 +741,7 @@ Response contains created things, channels and certificates if any:
 Deploy Magistrala UI docker composition as it contains all the required services for provisioning to work ( `certs`, `bootstrap` and Magistrala core)
 
 ```bash
-git clone https://github.com/mainflux/ui
+git clone https://github.com/magistrala/ui
 cd ui
 docker-compose -f docker/docker-compose.yml up
 ```
@@ -749,10 +749,10 @@ docker-compose -f docker/docker-compose.yml up
 Create user and obtain access token
 
 ```bash
-mainflux-cli -m https://mainflux.com users create john.doe@email.com 12345678
+magistrala-cli -m https://magistrala.com users create john.doe@email.com 12345678
 
 # Retrieve token
-mainflux-cli -m https://mainflux.com users token john.doe@email.com 12345678
+magistrala-cli -m https://magistrala.com users token john.doe@email.com 12345678
 
 created: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1OTY1ODU3MDUsImlhdCI6MTU5NjU0OTcwNSwiaXNzIjoibWFpbmZsdXguYXV0aG4iLCJzdWIiOiJtaXJrYXNoQGdtYWlsLmNvbSIsInR5cGUiOjB9._vq0zJzFc9tQqc8x74kpn7dXYefUtG9IB0Cb-X2KMK8
 ```
@@ -766,37 +766,37 @@ TOKEN=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1OTY1ODU3MDUsImlhdCI6MTU5N
 Make a call to provision endpoint
 
 ```bash
-curl -s -S  -X POST  http://mainflux.com:9016/mapping -H "Authorization: Bearer $TOKEN" -H 'Content-Type: application/json'   -d '{"name":"edge-gw",  "external_id" : "gateway", "external_key":"external_key" }'
+curl -s -S  -X POST  http://magistrala.com:9016/mapping -H "Authorization: Bearer $TOKEN" -H 'Content-Type: application/json'   -d '{"name":"edge-gw",  "external_id" : "gateway", "external_key":"external_key" }'
 ```
 
 To check the results you can make a call to bootstrap endpoint
 
 ```bash
-curl -s -S -X GET http://mainflux.com:9013/things/bootstrap/gateway -H "Authorization: Thing external_key" -H 'Content-Type: application/json'
+curl -s -S -X GET http://magistrala.com:9013/things/bootstrap/gateway -H "Authorization: Thing external_key" -H 'Content-Type: application/json'
 ```
 
 Or you can start `Agent` with:
 
 ```bash
-git clone https://github.com/mainflux/agent
+git clone https://github.com/magistrala/agent
 cd agent
 make
-MF_AGENT_BOOTSTRAP_ID=gateway MF_AGENT_BOOTSTRAP_KEY=external_key MF_AGENT_BOOTSTRAP_URL=http://mainflux.ccom:9013/things/bootstrap build/mainflux-agent
+MF_AGENT_BOOTSTRAP_ID=gateway MF_AGENT_BOOTSTRAP_KEY=external_key MF_AGENT_BOOTSTRAP_URL=http://magistrala.ccom:9013/things/bootstrap build/magistrala-agent
 ```
 
 Agent will retrieve connections parameters and connect to Magistrala cloud.
 
 For more information about the Provision service API, please check out the [API documentation](https://github.com/absmach/magistrala/blob/master/api/provision.yml).
 
-[mainflux]: https://github.com/absmach/magistrala
+[magistrala]: https://github.com/absmach/magistrala
 [bootstrap]: https://github.com/absmach/magistrala/terr/main/bootstrap
-[agent]: https://github.com/mainflux/agent
+[agent]: https://github.com/magistrala/agent
 [mfxui]: https://github.com/absmach/magistrala/ui
 [config]: https://github.com/absmach/magistrala/terr/main/provision#configuration
 [env]: https://github.com/absmach/magistrala/blob/master/.env
 [conftoml]: https://github.com/absmach/magistrala/blob/master/docker/addons/provision/configs/config.toml
 [users]: https://github.com/absmach/magistrala/blob/master/users/README.md
-[exp]: https://github.com/mainflux/export
+[exp]: https://github.com/magistrala/export
 [cli]: https://github.com/absmach/magistrala/terr/main/cli
 [auth]: authentication.md
-[provision-api]: https://api.mainflux.io/?urls.primaryName=provision.yml
+[provision-api]: https://api.magistrala.io/?urls.primaryName=provision.yml

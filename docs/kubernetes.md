@@ -51,8 +51,8 @@ helm install ingress-nginx ingress-nginx/ingress-nginx --version 3.26.0 --create
 Get Helm charts from [Magistrala DevOps GitHub repository][devops-repo]:
 
 ```bash
-git clone https://github.com/mainflux/devops.git
-cd devops/charts/mainflux
+git clone https://github.com/magistrala/devops.git
+cd devops/charts/magistrala
 ```
 
 Update the on-disk dependencies to mirror Chart.yaml:
@@ -67,10 +67,10 @@ If you didn't already have namespace created you should do it with:
 kubectl create namespace mf
 ```
 
-Deploying release named `mainflux` in namespace named `mf` is done with just:
+Deploying release named `magistrala` in namespace named `mf` is done with just:
 
 ```bash
-helm install mainflux . -n mf
+helm install magistrala . -n mf
 ```
 
 Magistrala is now deployed on your Kubernetes.
@@ -80,13 +80,13 @@ Magistrala is now deployed on your Kubernetes.
 You can override default values while installing with `--set` option. For example, if you want to specify ingress hostname and pull `latest` tag of `users` image:
 
 ```bash
-helm install mainflux -n mf --set ingress.hostname='example.com' --set users.image.tag='latest'
+helm install magistrala -n mf --set ingress.hostname='example.com' --set users.image.tag='latest'
 ```
 
 Or if release is already installed, you can update it:
 
 ```bash
-helm upgrade mainflux -n mf --set ingress.hostname='example.com' --set users.image.tag='latest'
+helm upgrade magistrala -n mf --set ingress.hostname='example.com' --set users.image.tag='latest'
 ```
 
 The following table lists the configurable parameters and their default values.
@@ -95,7 +95,7 @@ The following table lists the configurable parameters and their default values.
 | ---------------------------------- | ----------------------------------------------------------------------------------------------- | ---------------- |
 | defaults.logLevel                  | Log level                                                                                       | debug            |
 | defaults.image.pullPolicy          | Docker Image Pull Policy                                                                        | IfNotPresent     |
-| defaults.image.repository          | Docker Image Repository                                                                         | mainflux         |
+| defaults.image.repository          | Docker Image Repository                                                                         | magistrala       |
 | defaults.image.tag                 | Docker Image Tag                                                                                | 0.13.0           |
 | defaults.replicaCount              | Replicas of MQTT adapter, Things, Envoy and Authn                                               | 3                |
 | defaults.messageBrokerUrl          | Message broker URL, the default is NATS Url                                                     | nats://nats:4222 |
@@ -212,8 +212,8 @@ you should get in `certs` folder these certificates that we will use for setting
 ca.crt
 ca.key
 ca.srl
-mainflux-server.crt
-mainflux-server.key
+magistrala-server.crt
+magistrala-server.key
 thing.crt
 thing.key
 ```
@@ -221,7 +221,7 @@ thing.key
 Create kubernetes secrets using those certificates with running commands from [secrets script][secrets]. In this example secrets are created in `mf` namespace:
 
 ```bash
-kubectl -n mf create secret tls mainflux-server --key mainflux-server.key --cert mainflux-server.crt
+kubectl -n mf create secret tls magistrala-server --key magistrala-server.key --cert magistrala-server.crt
 
 kubectl -n mf create secret generic ca --from-file=ca.crt
 ```
@@ -232,9 +232,9 @@ You can check if they are succesfully created:
 kubectl get secrets -n mf
 ```
 
-And now set ingress.hostname, ingress.tls.hostname to your hostname and ingress.tls.secret to `mainflux-server` and after helm update you have secured ingress with TLS certificate.
+And now set ingress.hostname, ingress.tls.hostname to your hostname and ingress.tls.secret to `magistrala-server` and after helm update you have secured ingress with TLS certificate.
 
-For mTLS you need to set `nginx_internal.mtls.tls="mainflux-server"` and `nginx_internal.mtls.intermediate_crt="ca"`.
+For mTLS you need to set `nginx_internal.mtls.tls="magistrala-server"` and `nginx_internal.mtls.intermediate_crt="ca"`.
 
 Now you can test sending mqtt message with this parameters:
 
@@ -242,14 +242,14 @@ Now you can test sending mqtt message with this parameters:
 mosquitto_pub -d -L mqtts://<thing_id>:<thing_secret>@example.com:8883/channels/<channel_id>/messages  --cert  thing.crt --key thing.key --cafile ca.crt  -m "test-message"
 ```
 
-[devops-repo]: https://github.com/mainflux/devops
+[devops-repo]: https://github.com/magistrala/devops
 [kubernetes-setup]: https://kubernetes.io/docs/setup/
 [kubectl-setup]: https://kubernetes.io/docs/tasks/tools/install-kubectl/
 [helm-setup]: https://helm.sh/docs/intro/install/
 [nginx-ingress]: https://kubernetes.github.io/ingress-nginx/deploy/
-[ingress-yaml]: https://github.com/mainflux/devops/blob/master/charts/mainflux/templates/ingress.yaml#L141
+[ingress-yaml]: https://github.com/magistrala/devops/blob/master/charts/magistrala/templates/ingress.yaml#L141
 [ingress-controller-args]: https://kubernetes.github.io/ingress-nginx/user-guide/cli-arguments/
 [ingress-controller-tcp-udp]: https://kubernetes.github.io/ingress-nginx/user-guide/exposing-tcp-udp-services/
 [authentication]: /authentication
 [makefile]: https://github.com/absmach/magistrala/blob/master/docker/ssl/Makefile
-[secrets]: https://github.com/mainflux/devops/blob/master/charts/mainflux/secrets/secrets.sh
+[secrets]: https://github.com/magistrala/devops/blob/master/charts/magistrala/secrets/secrets.sh

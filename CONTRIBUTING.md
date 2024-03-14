@@ -1,11 +1,11 @@
 # Contributing to Magistrala
 
 The following is a set of guidelines to contribute to Magistrala and its libraries, which are
-hosted on the [Magistrala Organization](https://github.com/mainflux) on GitHub.
+hosted on the [Magistrala Organization](https://github.com/magistrala) on GitHub.
 
 This project adheres to the [Contributor Covenant 1.2](http://contributor-covenant.org/version/1/2/0).
 By participating, you are expected to uphold this code. Please report unacceptable behavior to
-[abuse@mainflux.com](mailto:abuse@mainflux.com).
+[abuse@magistrala.com](mailto:abuse@magistrala.com).
 
 ## Reporting issues
 
@@ -13,7 +13,7 @@ Reporting issues are a great way to contribute to the project. We are perpetuall
 thorough bug report.
 
 Before raising a new issue, check [our issue
-list](https://github.com/mainflux/docs/issues) to determine if it already contains the
+list](https://github.com/magistrala/docs/issues) to determine if it already contains the
 problem that you are facing.
 
 A good bug report shouldn't leave others needing to chase you for more information. Please be as detailed as possible. The following questions might serve as a template for writing a detailed
@@ -43,7 +43,7 @@ clone your fork repository and configure the remotes:
 ```
 git clone https://github.com/<your-username>/docs.git
 cd docs
-git remote add upstream https://github.com/mainflux/docs.git
+git remote add upstream https://github.com/magistrala/docs.git
 ```
 
 If your cloned repository is behind the upstream commits, then get the latest changes from upstream:

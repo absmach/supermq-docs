@@ -6,7 +6,7 @@ Services that can be used on gateway to enable data and control plane for edge:
 
 - [Agent][agent]
 - [Export][export]
-- [Magistrala][mainflux]
+- [Magistrala][magistrala]
 
 |       ![Edge1][edge-diagram]        |
 | :---------------------------------: |
@@ -35,7 +35,7 @@ Before running agent we need to provision a thing and DATA and CONTROL channel. 
 When you provisioned gateway as described in [provision][provision] you can check results
 
 ```bash
-curl -s -S -X GET http://mainflux-domain.com:9013/things/bootstrap/<external_id> -H "Authorization: Thing <external_key>" -H 'Content-Type: application/json' |jq
+curl -s -S -X GET http://magistrala-domain.com:9013/things/bootstrap/<external_id> -H "Authorization: Thing <external_key>" -H 'Content-Type: application/json' |jq
 ```
 
 ```json
@@ -65,26 +65,26 @@ curl -s -S -X GET http://mainflux-domain.com:9013/things/bootstrap/<external_id>
       }
     }
   ],
-  "content": "{\"agent\":{\"edgex\":{\"url\":\"http://localhost:48090/api/v1/\"},\"heartbeat\":{\"interval\":\"30s\"},\"log\":{\"level\":\"debug\"},\"mqtt\":{\"mtls\":false,\"qos\":0,\"retain\":false,\"skip_tls_ver\":true,\"url\":\"tcp://mainflux-domain.com:1883\"},\"server\":{\"nats_url\":\"localhost:4222\",\"port\":\"9000\"},\"terminal\":{\"session_timeout\":\"30s\"}},\"export\":{\"exp\":{\"cache_db\":\"0\",\"cache_pass\":\"\",\"cache_url\":\"localhost:6379\",\"log_level\":\"debug\",\"nats\":\"nats://localhost:4222\",\"port\":\"8172\"},\"mqtt\":{\"ca_path\":\"ca.crt\",\"cert_path\":\"thing.crt\",\"channel\":\"\",\"host\":\"tcp://mainflux-domain.com:1883\",\"mtls\":false,\"password\":\"\",\"priv_key_path\":\"thing.key\",\"qos\":0,\"retain\":false,\"skip_tls_ver\":false,\"username\":\"\"},\"routes\":[{\"mqtt_topic\":\"\",\"nats_topic\":\"channels\",\"subtopic\":\"\",\"type\":\"mfx\",\"workers\":10},{\"mqtt_topic\":\"\",\"nats_topic\":\"export\",\"subtopic\":\"\",\"type\":\"default\",\"workers\":10}]}}"
+  "content": "{\"agent\":{\"edgex\":{\"url\":\"http://localhost:48090/api/v1/\"},\"heartbeat\":{\"interval\":\"30s\"},\"log\":{\"level\":\"debug\"},\"mqtt\":{\"mtls\":false,\"qos\":0,\"retain\":false,\"skip_tls_ver\":true,\"url\":\"tcp://magistrala-domain.com:1883\"},\"server\":{\"nats_url\":\"localhost:4222\",\"port\":\"9000\"},\"terminal\":{\"session_timeout\":\"30s\"}},\"export\":{\"exp\":{\"cache_db\":\"0\",\"cache_pass\":\"\",\"cache_url\":\"localhost:6379\",\"log_level\":\"debug\",\"nats\":\"nats://localhost:4222\",\"port\":\"8172\"},\"mqtt\":{\"ca_path\":\"ca.crt\",\"cert_path\":\"thing.crt\",\"channel\":\"\",\"host\":\"tcp://magistrala-domain.com:1883\",\"mtls\":false,\"password\":\"\",\"priv_key_path\":\"thing.key\",\"qos\":0,\"retain\":false,\"skip_tls_ver\":false,\"username\":\"\"},\"routes\":[{\"mqtt_topic\":\"\",\"nats_topic\":\"channels\",\"subtopic\":\"\",\"type\":\"mfx\",\"workers\":10},{\"mqtt_topic\":\"\",\"nats_topic\":\"export\",\"subtopic\":\"\",\"type\":\"default\",\"workers\":10}]}}"
 }
 ```
 
 - `external_id` is usually MAC address, but anything that suits applications requirements can be used
 - `external_key` is key that will be provided to agent process
-- `thing_id` is mainflux thing id
+- `thing_id` is magistrala thing id
 - `channels` is 2-element array where first channel is CONTROL and second is DATA, both channels should be assigned to thing
 - `content` is used for configuring parameters of agent and export service.
 
 Then to start the agent service you can do it like this
 
 ```bash
-git clone https://github.com/mainflux/agent
+git clone https://github.com/magistrala/agent
 make
 cd build
 
 MF_AGENT_LOG_LEVEL=debug \
 MF_AGENT_BOOTSTRAP_KEY=edged \
-MF_AGENT_BOOTSTRAP_ID=34:e1:2d:e6:cf:03 ./mainflux-agent
+MF_AGENT_BOOTSTRAP_ID=34:e1:2d:e6:cf:03 ./magistrala-agent
 
 {"level":"info","message":"Requesting config for 34:e1:2d:e6:cf:03 from http://localhost:9013/things/bootstrap","ts":"2019-12-05T04:47:24.98411512Z"}
 {"level":"info","message":"Getting config for 34:e1:2d:e6:cf:03 from http://localhost:9013/things/bootstrap succeeded","ts":"2019-12-05T04:47:24.995465239Z"}
@@ -100,9 +100,9 @@ MF_AGENT_BOOTSTRAP_ID=34:e1:2d:e6:cf:03 ./mainflux-agent
 
 ```bash
 # Set connection parameters as environment variables in shell
-CH=`curl -s -S -X GET http://some-domain-name:9013/things/bootstrap/34:e1:2d:e6:cf:03 -H "Authorization: Thing <BOOTSTRAP_KEY>" -H 'Content-Type: application/json' | jq -r '.mainflux_channels[0].id'`
-TH=`curl -s  -S -X GET http://some-domain-name:9013/things/bootstrap/34:e1:2d:e6:cf:03 -H "Authorization: Thing <BOOTSTRAP_KEY>" -H 'Content-Type: application/json' | jq -r .mainflux_id`
-KEY=`curl -s  -S -X GET http://some-domain-name:9013/things/bootstrap/34:e1:2d:e6:cf:03 -H "Authorization: Thing <BOOTSTRAP_KEY>" -H 'Content-Type: application/json' | jq -r .mainflux_key`
+CH=`curl -s -S -X GET http://some-domain-name:9013/things/bootstrap/34:e1:2d:e6:cf:03 -H "Authorization: Thing <BOOTSTRAP_KEY>" -H 'Content-Type: application/json' | jq -r '.magistrala_channels[0].id'`
+TH=`curl -s  -S -X GET http://some-domain-name:9013/things/bootstrap/34:e1:2d:e6:cf:03 -H "Authorization: Thing <BOOTSTRAP_KEY>" -H 'Content-Type: application/json' | jq -r .magistrala_id`
+KEY=`curl -s  -S -X GET http://some-domain-name:9013/things/bootstrap/34:e1:2d:e6:cf:03 -H "Authorization: Thing <BOOTSTRAP_KEY>" -H 'Content-Type: application/json' | jq -r .magistrala_key`
 
 # Subscribe for response
 mosquitto_sub -d -u $TH -P $KEY  -t "channels/${CH}/messages/res/#" -h some-domain-name -p 1883
@@ -212,8 +212,8 @@ Magistrala Export service can send message from one Magistrala cloud to another 
 Get the code:
 
 ```bash
-go get github.com/mainflux/export
-cd $GOPATH/github.com/mainflux/export
+go get github.com/magistrala/export
+cd $GOPATH/github.com/magistrala/export
 ```
 
 Make:
@@ -226,7 +226,7 @@ make
 
 ```bash
 cd build
-./mainflux-export
+./magistrala-export
 ```
 
 ### Configuration
@@ -251,7 +251,7 @@ By default `Export` service looks for config file at [`../configs/config.toml`][
   priv_key = "thing.key"
   retain = "false"
   skip_tls_ver = "false"
-  url = "tcp://mainflux.com:1883"
+  url = "tcp://magistrala.com:1883"
 
 [[routes]]
   mqtt_topic = "channel/<channel_id>/messages"
@@ -289,7 +289,7 @@ MF_EXPORT_MQTT_CA=ca.crt \
 MF_EXPORT_MQTT_CLIENT_CERT=thing.crt \
 MF_EXPORT_MQTT_CLIENT_PK=thing.key \
 MF_EXPORT_CONFIG_FILE=export.toml \
-../build/mainflux-export&
+../build/magistrala-export&
 ```
 
 Values from environment variables will be used to populate export.toml
@@ -327,23 +327,23 @@ Routes are being used for specifying which subscriber's topic(subject) goes to w
 - `workers` - specifies number of workers that will be used for message forwarding.
 - `type` - specifies message transformation:
   - `default` is for sending messages as they are received on the Message Broker with no transformation (so they should be in SenML or JSON format if we want to persist them in Magistrala in cloud). If you don't want to persist messages in Magistrala or you are not exporting to Magistrala cloud - message format can be anything that suits your application as message passes untransformed.
-  - `mfx` is for messages that are being picked up on internal Magistrala Message Broker bus. When using `Export` along with Magistrala deployed on gateway ([Fig. 1][back-to-edge]) messages coming from MQTT broker that are published to the Message Broker bus are [Magistrala message][protomsg]. Using `mfx` type will extract payload and `export` will publish it to `mqtt_topic`. Extracted payload is SenML or JSON if we want to persist messages. `nats_topic` in this case must be `channels`, or if you want to pick messages from a specific channel in local Magistrala instance to be exported to cloud you can put `channels.<local_mainflux_channel_id>`.
+  - `mfx` is for messages that are being picked up on internal Magistrala Message Broker bus. When using `Export` along with Magistrala deployed on gateway ([Fig. 1][back-to-edge]) messages coming from MQTT broker that are published to the Message Broker bus are [Magistrala message][protomsg]. Using `mfx` type will extract payload and `export` will publish it to `mqtt_topic`. Extracted payload is SenML or JSON if we want to persist messages. `nats_topic` in this case must be `channels`, or if you want to pick messages from a specific channel in local Magistrala instance to be exported to cloud you can put `channels.<local_magistrala_channel_id>`.
 
 Before running `Export` service edit `configs/config.toml` and provide `username`, `password` and `url`
 
 - `username` - matches `thing_id` in Magistrala cloud instance
 - `password` - matches `thing_secret`
-- `channel` - MQTT part of the topic where to publish MQTT data (`channel/<channel_id>/messages` is format of mainflux MQTT topic) and plays a part in authorization.
+- `channel` - MQTT part of the topic where to publish MQTT data (`channel/<channel_id>/messages` is format of magistrala MQTT topic) and plays a part in authorization.
 
 If Magistrala and Export service are deployed on same gateway `Export` can be configured to send messages from Magistrala internal Message Broker bus to Magistrala in a cloud. In order for `Export` service to listen on Magistrala Message Broker deployed on the same machine Message Broker port must be exposed. Edit Magistrala [docker-compose.yml][docker-compose]. Default Message Broker, NATS, section must look like below:
 
 ```yaml
 nats:
   image: nats:2.2.4
-  container_name: mainflux-nats
+  container_name: magistrala-nats
   restart: on-failure
   networks:
-    - mainflux-base-net
+    - magistrala-base-net
   ports:
     - 4222:4222
 ```
@@ -365,7 +365,7 @@ payload := base64.StdEncoding.EncodeToString(b)
 
 ### Using configure script
 
-There is a `configuration.sh` script in a `scripts` directory that can be used for automatic configuration and start up of remotely deployed `export`. For this to work it is presumed that `mainflux-export` and `scripts/export_start` are placed in executable path on remote device. Additionally this script requires that remote device is provisioned following the steps described for [provision][provision] service.
+There is a `configuration.sh` script in a `scripts` directory that can be used for automatic configuration and start up of remotely deployed `export`. For this to work it is presumed that `magistrala-export` and `scripts/export_start` are placed in executable path on remote device. Additionally this script requires that remote device is provisioned following the steps described for [provision][provision] service.
 
 To run it first edit script to set parameters
 
@@ -373,12 +373,12 @@ To run it first edit script to set parameters
 MTLS=false
 EXTERNAL_KEY='raspberry'
 EXTERNAL_ID='pi'
-MAINFLUX_HOST='mainflux.com'
-MAINFLUX_USER_EMAIL='edge@email.com'
-MAINFLUX_USER_PASSWORD='12345678'
+magistrala_HOST='magistrala.com'
+magistrala_USER_EMAIL='edge@email.com'
+magistrala_USER_PASSWORD='12345678'
 ```
 
-`EXTERNAL_KEY` and `EXTERNAL_ID` are parameters posted to `/mapping` endpoint of `provision` service, `MAINFLUX_HOST` is location of cloud instance of Magistrala that `export` should connect to and `MAINFLUX_USER_EMAIL` and `MAINFLUX_USER_PASSWORD` are users credentials in the cloud.
+`EXTERNAL_KEY` and `EXTERNAL_ID` are parameters posted to `/mapping` endpoint of `provision` service, `magistrala_HOST` is location of cloud instance of Magistrala that `export` should connect to and `magistrala_USER_EMAIL` and `magistrala_USER_PASSWORD` are users credentials in the cloud.
 
 ## Example deployment
 
@@ -409,13 +409,13 @@ docker-compose -f docker/addons/provision/docker-compose.yml up
 Create user:
 
 ```bash
-mainflux-cli -m http://localhost:9002 users create test test@email.com 12345678
+magistrala-cli -m http://localhost:9002 users create test test@email.com 12345678
 ```
 
 Obtain user token:
 
 ```bash
-mainflux-cli -m http://localhost:9002 users token test@email.com 12345678
+magistrala-cli -m http://localhost:9002 users token test@email.com 12345678
 
 {
   "access_token": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODY3NTEzNTIsImlhdCI6MTY4Njc1MDQ1MiwiaWRlbnRpdHkiOiJqb2huLmRvZUBlbWFpbC5jb20iLCJpc3MiOiJjbGllbnRzLmF1dGgiLCJzdWIiOiI5NDkzOTE1OS1kMTI5LTRmMTctOWU0ZS1jYzJkNjE1NTM5ZDciLCJ0eXBlIjoiYWNjZXNzIn0.AND1sm6mN2wgUxVkDhpipCoNa87KPMghGaS5-4dU0iZaqGIUhWScrEJwOahT9ts1TZSd1qEcANTIffJ_y2Pbsg",
@@ -479,7 +479,7 @@ gnatsd
 MF_AGENT_BOOTSTRAP_ID=54:FG:66:DC:43 \
 MF_AGENT_BOOTSTRAP_KEY="223334fw2" \
 MF_AGENT_BOOTSTRAP_URL=http://localhost:9013/things/bootstrap \
-build/mainflux-agent
+build/magistrala-agent
 {"level":"info","message":"Requesting config for 54:FG:66:DC:43 from http://localhost:9013/things/bootstrap","ts":"2020-05-07T15:50:58.041145096Z"}
 {"level":"info","message":"Getting config for 54:FG:66:DC:43 from http://localhost:9013/things/bootstrap succeeded","ts":"2020-05-07T15:50:58.120779415Z"}
 {"level":"info","message":"Saving export config file /configs/export/config.toml","ts":"2020-05-07T15:50:58.121602229Z"}
@@ -491,7 +491,7 @@ build/mainflux-agent
 ### Export service
 
 ```bash
-git clone https://github.com/mainflux/export
+git clone https://github.com/magistrala/export
 make
 ```
 
@@ -531,7 +531,7 @@ Edit the `configs/config.toml` setting
 
 ```bash
 cd build
-./mainflux-export
+./magistrala-export
 2020/05/07 17:36:57 Configuration loaded from file ../configs/config.toml
 {"level":"info","message":"Export service started, exposed port :8170","ts":"2020-05-07T15:36:57.528398548Z"}
 {"level":"debug","message":"Client export-88529fb2-6c1e-4b60-b9ab-73b5d89f7404 connected","ts":"2020-05-07T15:36:57.528405818Z"}
@@ -540,7 +540,7 @@ cd build
 #### Testing Export
 
 ```bash
-git clone https://github.com/mainflux/agent
+git clone https://github.com/magistrala/agent
 go run ./examples/publish/main.go -s http://localhost:4222 export.test "[{\"bn\":\"test\"}]";
 ```
 
@@ -555,21 +555,21 @@ In terminal where export is started you should see following message:
 In Magistrala `mqtt` service:
 
 ```log
-mainflux-mqtt   | {"level":"info","message":"Publish - client ID export-88529fb2-6c1e-4b60-b9ab-73b5d89f7404 to the topic: channels/e2adcfa6-96b2-425d-8cd4-ff8cb9c056ce/messages/export/test","ts":"2020-05-08T15:16:02.999684791Z"}
+magistrala-mqtt   | {"level":"info","message":"Publish - client ID export-88529fb2-6c1e-4b60-b9ab-73b5d89f7404 to the topic: channels/e2adcfa6-96b2-425d-8cd4-ff8cb9c056ce/messages/export/test","ts":"2020-05-08T15:16:02.999684791Z"}
 ```
 
 [agent]: /edge/#agent
 [export]: /edge/#export
-[mainflux]: /architecture/
+[magistrala]: /architecture/
 [edge-diagram]: img/edge/edge.png
 [bootstrap]: /bootstrap/
 [bootstraping]: /bootstrap/#bootstrapping
 [provision]: /provision/
 [edgex-repo]: https://github.com/edgexfoundry/edgex-go
 [edgex-raml]: https://github.com/edgexfoundry/edgex-go/blob/master/api/raml/system-agent.raml
-[conftoml]: https://github.com/mainflux/export/blob/master/configs/config.toml
+[conftoml]: https://github.com/magistrala/export/blob/master/configs/config.toml
 [docker-compose]: https://github.com/absmach/magistrala/docker/docker-compose.yml
-[env]: https://github.com/mainflux/export#environmet-variables
+[env]: https://github.com/magistrala/export#environmet-variables
 [mutual-tls]: /authentication/#mutual-tls-authentication-with-x509-certificates
 [certs-service]: /certs/#certs-service
 [protomsg]: https://github.com/absmach/magistrala/blob/master/pkg/messaging/message.proto

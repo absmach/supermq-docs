@@ -2,11 +2,11 @@
 
 ## Getting Magistrala
 
-Magistrala source can be found in the official [Magistrala GitHub repository][mainflux-repo]. You should fork this repository in order to make changes to the project. The forked version of the repository should be cloned using the following:
+Magistrala source can be found in the official [Magistrala GitHub repository][magistrala-repo]. You should fork this repository in order to make changes to the project. The forked version of the repository should be cloned using the following:
 
 ```bash
-git clone <forked repository> $SOMEPATH/mainflux
-cd $SOMEPATH/mainflux
+git clone <forked repository> $SOMEPATH/magistrala
+cd $SOMEPATH/magistrala
 ```
 
 **Note:** If your `$SOMEPATH` is equal to `$GOPATH/src/github.com/absmach/magistrala`, make sure that your `$GOROOT` and `$GOPATH` do not overlap (otherwise, go modules won't work).
@@ -171,8 +171,8 @@ Depending on your use case, MQTT topics, message size, the number of clients and
 Up until now it has been noticed that in case of high load, big messages and many clients it can happen that the MQTT microservice crashes with the following error:
 
 ```bash
-mainflux-mqtt   | FATAL ERROR: CALL_AND_RETRY_LAST Allocation failed - JavaScript heap out of memory
-mainflux-mqtt exited with code 137
+magistrala-mqtt   | FATAL ERROR: CALL_AND_RETRY_LAST Allocation failed - JavaScript heap out of memory
+magistrala-mqtt exited with code 137
 ```
 
 This problem is caused the default allowed memory in node (V8). [V8 gives the user 1.7GB per default][increase-nodes-memory]. To fix the problem you should add the following environment variable `NODE_OPTIONS:--max-old-space-size=SPACE_IN_MB` in the [environment section][mf-aedes] of the aedes.yml configuration. To find the right value for the `--max-old-space-size` parameter you'll have to experiment a bit depending on your needs.
@@ -277,8 +277,8 @@ sudo -u postgres createdb things
 # Set-up Postgres roles
 sudo su - postgres
 psql -U postgres
-postgres=# CREATE ROLE mainflux WITH LOGIN ENCRYPTED PASSWORD 'mainflux';
-postgres=# ALTER USER mainflux WITH LOGIN ENCRYPTED PASSWORD 'mainflux';
+postgres=# CREATE ROLE magistrala WITH LOGIN ENCRYPTED PASSWORD 'magistrala';
+postgres=# ALTER USER magistrala WITH LOGIN ENCRYPTED PASSWORD 'magistrala';
 ```
 
 ### Magistrala Services
@@ -297,7 +297,7 @@ Please assure that MQTT microservice has `node_modules` installed, as explained 
 
 > N.B. `make rundev` actually calls helper script `scripts/run.sh`, so you can inspect this script for the details.
 
-[mainflux-repo]: https://github.com/Magistrala/mainflux
+[magistrala-repo]: https://github.com/Magistrala/magistrala
 [protocol-buffers]: https://developers.google.com/protocol-buffers/
 [golang-protobuf]: https://github.com/golang/protobuf
 [protobuf-install]: https://github.com/golang/protobuf#installation
@@ -306,7 +306,7 @@ Please assure that MQTT microservice has `node_modules` installed, as explained 
 [go-install]: https://golang.org/doc/install
 [mf-ci-scripts]: https://github.com/absmach/magistrala/blob/master/scripts/ci.sh
 [scratch-docker]: https://hub.docker.com/_/scratch/
-[cleanup-docker]: #cleaning-up-your-dockerized-mainflux-setup
+[cleanup-docker]: #cleaning-up-your-dockerized-magistrala-setup
 [docker-compose-ref]: https://docs.docker.com/compose/reference/overview/
 [docker-compose-extend]: https://docs.docker.com/compose/extends/
 [increase-nodes-memory]: https://medium.com/tomincode/increasing-nodes-memory-337dfb1a60dd
