@@ -72,7 +72,7 @@ access-control-allow-headers: *
 }
 ```
 
-For more information about the Users service API, please check out the [API documentation](https://api.magistrala.io/?urls.primaryName=users.yml).
+For more information about the Users service API, please check out the [API documentation](https://api.mainflux.io/?urls.primaryName=users.yml).
 
 ### System Provisioning
 
@@ -521,7 +521,7 @@ date: Tue, 04 Apr 2023 09:57:53 GMT
 access-control-expose-headers: Location
 ```
 
-For more information about the Things service API, please check out the [API documentation](https://api.magistrala.io/?urls.primaryName=things.yml).
+For more information about the Things service API, please check out the [API documentation](https://api.mainflux.io/?urls.primaryName=things.yml).
 
 ## Provision Service
 
@@ -799,4 +799,4 @@ For more information about the Provision service API, please check out the [API 
 [exp]: https://github.com/absmach/export
 [cli]: https://github.com/absmach/magistrala/tree/main/cli
 [auth]: authentication.md
-[provision-api]: https://api.magistrala.io/?urls.primaryName=provision.yml
+[provision-api]: https://api.mainflux.io/?urls.primaryName=provision.yml

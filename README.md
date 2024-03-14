@@ -55,7 +55,7 @@ Thank you for your interest in Magistrala and the desire to contribute!
 
 [Apache-2.0](LICENSE)
 
-[matrix]: https://matrix.to/#/#magistrala_magistrala:gitter.im
+[matrix]: https://matrix.to/#/#Mainflux_mainflux:gitter.im
 [license]: https://img.shields.io/badge/license-Apache%20v2.0-blue.svg
 [blog]: https://medium.com/abstract-machines-blog
 [twitter]: https://twitter.com/absmach
