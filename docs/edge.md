@@ -78,7 +78,7 @@ curl -s -S -X GET http://magistrala-domain.com:9013/things/bootstrap/<external_i
 Then to start the agent service you can do it like this
 
 ```bash
-git clone https://github.com/mainflux/agent
+git clone https://github.com/absmach/agent.git
 make
 cd build
 
@@ -491,7 +491,7 @@ build/magistrala-agent
 ### Export service
 
 ```bash
-git clone https://github.com/mainflux/export
+git clone https://github.com/absmach/export.git
 make
 ```
 
@@ -540,7 +540,7 @@ cd build
 #### Testing Export
 
 ```bash
-git clone https://github.com/mainflux/agent
+git clone https://github.com/absmach/agent.git
 go run ./examples/publish/main.go -s http://localhost:4222 export.test "[{\"bn\":\"test\"}]";
 ```
 
@@ -567,9 +567,9 @@ magistrala-mqtt   | {"level":"info","message":"Publish - client ID export-88529f
 [provision]: /provision/
 [edgex-repo]: https://github.com/edgexfoundry/edgex-go
 [edgex-raml]: https://github.com/edgexfoundry/edgex-go/blob/master/api/raml/system-agent.raml
-[conftoml]: https://github.com/mainflux/export/blob/master/configs/config.toml
-[docker-compose]: https://github.com/absmach/magistrala/docker/docker-compose.yml
-[env]: https://github.com/mainflux/export#environmet-variables
+[conftoml]: https://github.com/absmach/export/blob/master/configs/config.toml
+[docker-compose]: https://github.com/absmach/magistrala/blob/main/docker/docker-compose.yml
+[env]: https://github.com/absmach/export#environmet-variables
 [mutual-tls]: /authentication/#mutual-tls-authentication-with-x509-certificates
 [certs-service]: /certs/#certs-service
 [protomsg]: https://github.com/absmach/magistrala/blob/master/pkg/messaging/message.proto

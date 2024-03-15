@@ -83,7 +83,7 @@ The lora-adapter uses the matadata of provision events emitted by Magistrala sys
 
 To forward LoRa messages the lora-adapter subscribes to topics `applications/+/devices/+` of the LoRa Server MQTT broker. It verifies the `app_id` and the `dev_eui` of received messages. If the mapping exists it uses corresponding `Channel ID` and `Thing ID` to sign and forwards the content of the LoRa message to the Magistrala message broker.
 
-[lora-adapter]: https://github.com/absmach/magistrala/terr/main/lora
+[lora-adapter]: https://github.com/absmach/magistrala/tree/main/lora
 [lora-server]: https://www.loraserver.io
 [lora-gateway]: https://www.loraserver.io/lora-gateway-bridge/overview/
 [semtech]: https://github.com/Lora-net/packet_forwarder/blob/master/PROTOCOL.TXT

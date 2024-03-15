@@ -302,7 +302,7 @@ Please assure that MQTT microservice has `node_modules` installed, as explained 
 [golang-protobuf]: https://github.com/golang/protobuf
 [protobuf-install]: https://github.com/golang/protobuf#installation
 [protobuf]: https://github.com/google/protobuf
-[google-protobuf]: "google.golang.org/protobuf/proto"
+[google-protobuf]: https://google.golang.org/protobuf/proto
 [go-install]: https://golang.org/doc/install
 [mf-ci-scripts]: https://github.com/absmach/magistrala/blob/master/scripts/ci.sh
 [scratch-docker]: https://hub.docker.com/_/scratch/
@@ -314,7 +314,7 @@ Please assure that MQTT microservice has `node_modules` installed, as explained 
 [aedes-mqtt-broker]: https://github.com/mcollina/aedes
 [go-cross-compile]: https://dave.cheney.net/2015/08/22/cross-compilation-with-go-1-5
 [go-arm]: https://www.alexruf.net/golang/arm/raspberrypi/2016/01/16/cross-compile-with-go-1-5-for-raspberry-pi.html
-[wiki-go-arm]: https://github.com/golang/go/wiki/GoArm
+[wiki-go-arm]: https://go.dev/wiki/GoArm
 [nats]: https://www.nats.io/
 [postgresql]: https://www.postgresql.org/
 [rabbitmq]: https://www.rabbitmq.com/download.html

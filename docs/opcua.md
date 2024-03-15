@@ -58,7 +58,7 @@ To create an OPC-UA subscription, user should connect the Thing to the Channel. 
 
 To forward OPC-UA messages the opcua-adapter subscribes to the Node ID of an OPC-UA Server URI. It verifies the `server_uri` and the `node_id` of received messages. If the mapping exists it uses corresponding `Channel ID` and `Thing ID` to sign and forwards the content of the OPC-UA message to the Magistrala message broker. If the mapping or the connection between the Thing and the Channel don't exist the subscription stops.
 
-[opcua-adapter]: https://github.com/absmach/magistrala/terr/main/opcua
+[opcua-adapter]: https://github.com/absmach/magistrala/tree/main/opcua
 [opcua-arch]: https://en.wikipedia.org/wiki/OPC_Unified_Architecture
 [public-opcua]: https://github.com/node-opcua/node-opcua/wiki/publicly-available-OPC-UA-Servers-and-Clients
 [redis]: https://redis.io/

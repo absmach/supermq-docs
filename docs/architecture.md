@@ -47,15 +47,15 @@ Magistrala platform can be run on the edge as well. Deploying Magistrala on a ga
 
 Running Magistrala on gateway moves computation from cloud towards the edge thus decentralizing IoT system. Since we can deploy same Magistrala code on gateway and in the cloud there are many benefits but the biggest one is easy deployment and adoption - once engineers understand how to deploy and maintain the platform, they will be able to apply those same skills to any part of the edge-fog-cloud continuum. This is because the platform is designed to be consistent, making it easy for engineers to move between them. This consistency will save engineers time and effort, and it will also help to improve the reliability and security of the platform. Same set of tools can be used, same patches and bug fixes can be applied. The whole system is much easier to reason about, and the maintenance is much easier and less costly.
 
-[users-service]: https://github.com/absmach/magistrala/terr/main/users
-[things-service]: https://github.com/absmach/magistrala/terr/main/things
-[http-adapter]: https://github.com/absmach/magistrala/terr/main/http
-[mqtt-adapter]: https://github.com/absmach/magistrala/terr/main/mqtt
-[coap-adapter]: https://github.com/absmach/magistrala/terr/main/coap
-[ws-adapter]: https://github.com/absmach/magistrala/terr/main/ws
-[opcua-adapter]: https://github.com/absmach/magistrala/terr/main/opcua
-[lora-adapter]: https://github.com/absmach/magistrala/terr/main/lora
-[magistrala-cli]: https://github.com/absmach/magistrala/terr/main/cli
+[users-service]: https://github.com/absmach/magistrala/tree/main/users
+[things-service]: https://github.com/absmach/magistrala/tree/main/things
+[http-adapter]: https://github.com/absmach/magistrala/tree/main/http
+[mqtt-adapter]: https://github.com/absmach/magistrala/tree/main/mqtt
+[coap-adapter]: https://github.com/absmach/magistrala/tree/main/coap
+[ws-adapter]: https://github.com/absmach/magistrala/tree/main/ws
+[opcua-adapter]: https://github.com/absmach/magistrala/tree/main/opcua
+[lora-adapter]: https://github.com/absmach/magistrala/tree/main/lora
+[magistrala-cli]: https://github.com/absmach/magistrala/tree/main/cli
 [architecture]: img/architecture.jpg
 [nats]: https://nats.io/
 [rabbitmq]: https://www.rabbitmq.com/

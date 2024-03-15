@@ -742,7 +742,7 @@ Deploy Magistrala UI docker composition as it contains all the required services
 
 ```bash
 git clone https://github.com/absmach/magistrala-ui
-cd ui
+cd magistrala-ui
 docker-compose -f docker/docker-compose.yml up
 ```
 
@@ -778,7 +778,7 @@ curl -s -S -X GET http://magistrala.com:9013/things/bootstrap/gateway -H "Author
 Or you can start `Agent` with:
 
 ```bash
-git clone https://github.com/magistrala/agent
+git clone https://github.com/absmach/agent.git
 cd agent
 make
 MF_AGENT_BOOTSTRAP_ID=gateway MF_AGENT_BOOTSTRAP_KEY=external_key MF_AGENT_BOOTSTRAP_URL=http://magistrala.ccom:9013/things/bootstrap build/magistrala-agent
@@ -789,14 +789,14 @@ Agent will retrieve connections parameters and connect to Magistrala cloud.
 For more information about the Provision service API, please check out the [API documentation](https://github.com/absmach/magistrala/blob/master/api/provision.yml).
 
 [magistrala]: https://github.com/absmach/magistrala
-[bootstrap]: https://github.com/absmach/magistrala/terr/main/bootstrap
-[agent]: https://github.com/mainflux/agent
-[mfxui]: https://github.com/absmach/magistrala/ui
-[config]: https://github.com/absmach/magistrala/terr/main/provision#configuration
+[bootstrap]: https://github.com/absmach/magistrala/tree/main/bootstrap
+[agent]: https://github.com/absmach/agent
+[mgui]: https://github.com/absmach/magistrala-ui
+[config]: https://github.com/absmach/magistrala/tree/main/provision#configuration
 [env]: https://github.com/absmach/magistrala/blob/master/.env
 [conftoml]: https://github.com/absmach/magistrala/blob/master/docker/addons/provision/configs/config.toml
 [users]: https://github.com/absmach/magistrala/blob/master/users/README.md
-[exp]: https://github.com/mainflux/export
-[cli]: https://github.com/absmach/magistrala/terr/main/cli
+[exp]: https://github.com/absmach/export
+[cli]: https://github.com/absmach/magistrala/tree/main/cli
 [auth]: authentication.md
 [provision-api]: https://api.mainflux.io/?urls.primaryName=provision.yml

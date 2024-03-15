@@ -429,9 +429,9 @@ For more information and examples checkout [official nats.io documentation][nats
 [mosquitto]: https://mosquitto.org
 [paho]: https://www.eclipse.org/paho/
 [rfc7252]: https://tools.ietf.org/html/rfc7252
-[coap-cli]: https://github.com/mainflux/coap-cli
+[coap-cli]: https://github.com/absmach/coap-cli
 [rfc7641]: https://tools.ietf.org/html/rfc7641#page-18
-[coap]: https://www.github.com/absmach/magistrala/terr/main/coap/README.md
+[coap]: https://www.github.com/absmach/magistrala/tree/main/coap/README.md
 [mqtt-over-websockets]: https://www.hivemq.com/blog/mqtt-essentials-special-mqtt-over-websockets/#:~:text=In%20MQTT%20over%20WebSockets%2C%20the,(WebSockets%20also%20leverage%20TCP).
 [paho-js]: https://www.eclipse.org/paho/index.php?page=clients/js/index.php
 [mqttjs]: https://github.com/mqttjs/MQTT.js
