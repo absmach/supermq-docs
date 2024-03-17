@@ -4,7 +4,7 @@ Magistrala CLI makes it easy to manage users, things, channels and messages.
 
 CLI can be downloaded as separate asset from [project realeses][releases] or it can be built with `GNU Make` tool:
 
-Get the magistrala code
+Get the Magistrala code
 
 ```bash
 go get github.com/absmach/magistrala

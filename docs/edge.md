@@ -71,7 +71,7 @@ curl -s -S -X GET http://magistrala-domain.com:9013/things/bootstrap/<external_i
 
 - `external_id` is usually MAC address, but anything that suits applications requirements can be used
 - `external_key` is key that will be provided to agent process
-- `thing_id` is magistrala thing id
+- `thing_id` is Magistrala thing id
 - `channels` is 2-element array where first channel is CONTROL and second is DATA, both channels should be assigned to thing
 - `content` is used for configuring parameters of agent and export service.
 
@@ -373,12 +373,12 @@ To run it first edit script to set parameters
 MTLS=false
 EXTERNAL_KEY='raspberry'
 EXTERNAL_ID='pi'
-magistrala_HOST='magistrala.com'
-magistrala_USER_EMAIL='edge@email.com'
-magistrala_USER_PASSWORD='12345678'
+MAGISTRALA_HOST='magistrala.com'
+MAGISTRALA_USER_EMAIL='edge@email.com'
+MAGISTRALA_USER_PASSWORD='12345678'
 ```
 
-`EXTERNAL_KEY` and `EXTERNAL_ID` are parameters posted to `/mapping` endpoint of `provision` service, `magistrala_HOST` is location of cloud instance of Magistrala that `export` should connect to and `magistrala_USER_EMAIL` and `magistrala_USER_PASSWORD` are users credentials in the cloud.
+`EXTERNAL_KEY` and `EXTERNAL_ID` are parameters posted to `/mapping` endpoint of `provision` service, `MAGISTRALA_HOST` is location of cloud instance of Magistrala that `export` should connect to and `MAGISTRALA_USER_EMAIL` and `MAGISTRALA_USER_PASSWORD` are users credentials in the cloud.
 
 ## Example deployment
 

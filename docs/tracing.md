@@ -32,7 +32,7 @@ Jaeger uses 5 ports within the Magistrala framework. These ports can be edited i
 
 ## Message Tracing
 
-Magistrala provides for tracing of messages ingested into the magistrala platform. The message metadata such as topic, sub-topic, subscriber and publisher is also included in traces. ![HTTP Message Publishing trace][message-trace].
+Magistrala provides for tracing of messages ingested into the Magistrala platform. The message metadata such as topic, sub-topic, subscriber and publisher is also included in traces. ![HTTP Message Publishing trace][message-trace].
 
 The messages are tracked from end to end from the point they are published to the consumers where they are stored. ![Influx DB consumer trace][consumer-trace]
 
