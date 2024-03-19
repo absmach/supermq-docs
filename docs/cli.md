@@ -149,7 +149,7 @@ Use "magistrala-cli channels [command] --help" for more information about a comm
 ### Get Magistrala services health check
 
 ```bash
-magistrala-cli health [service]
+magistrala-cli health <service>
 ```
 
 For "things" service, the response should look like this:
