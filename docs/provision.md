@@ -749,10 +749,10 @@ docker-compose -f docker/docker-compose.yml up
 Create user and obtain access token
 
 ```bash
-magistrala-cli -m https://mainflux.com users create john.doe@email.com 12345678
+magistrala-cli users create john.doe@email.com 12345678
 
 # Retrieve token
-magistrala-cli -m https://mainflux.com users token john.doe@email.com 12345678
+magistrala-cli users token john.doe@email.com 12345678
 
 created: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1OTY1ODU3MDUsImlhdCI6MTU5NjU0OTcwNSwiaXNzIjoibWFpbmZsdXguYXV0aG4iLCJzdWIiOiJtaXJrYXNoQGdtYWlsLmNvbSIsInR5cGUiOjB9._vq0zJzFc9tQqc8x74kpn7dXYefUtG9IB0Cb-X2KMK8
 ```
