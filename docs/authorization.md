@@ -385,7 +385,7 @@ If the domain field is empty, then with that JWT token following actions are per
 - Domain creation & listing,
 - Accept domain invitations
 
-Actions related to the creation, update, and deletion of things, channels, and groups are not permitted, requests will fail in authorization. In Magistrala operations related to things, channels, and groups take place in domain level. So for these kinds of operations, a JWT token with a domain field containing the operating domain ID is required.
+Actions related to the creation, update, and deletion of things, channels, and groups are not permitted, requests will fail in authorization. Magistrala operations related to things, channels, and groups take place in domain level. So for these kinds of operations, a JWT token with a domain field containing the operating domain ID is required.
 
 There are two ways to obtain JWT token for a particular domain
 
