@@ -308,7 +308,8 @@ curl -sSiX PATCH http://localhost/users/<user_id> -H "Content-Type: application/
 {
   "name": "[new_name]",
   "metadata": {
-    "[key]": "[value]",
+    "[key1]": "[value1]",
+    "[key2]": "[value2]"
   }
 }
 EOF
@@ -321,7 +322,7 @@ curl -sSiX PATCH http://localhost/users/1890c034-7ef9-4cde-83df-d78ea1d4d281 -H 
 {
   "name": "Jane Doe",
   "metadata": {
-    "location": "london",
+    "location": "london"
   }
 }
 EOF
