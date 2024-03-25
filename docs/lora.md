@@ -18,7 +18,7 @@ Once everything is installed, execute the following command from the LoRa Server
 docker-compose up
 ```
 
-**Troubleshouting:** Magistrala and LoRa Server use their own MQTT brokers which by default occupy MQTT port `1883`. If both are ran on the same machine different ports must be used. You can fix this on Magistrala side by configuring the environment variable `MF_MQTT_ADAPTER_MQTT_PORT`.
+**Troubleshouting:** Magistrala and LoRa Server use their own MQTT brokers which by default occupy MQTT port `1883`. If both are ran on the same machine different ports must be used. You can fix this on Magistrala side by configuring the environment variable `MG_MQTT_ADAPTER_MQTT_PORT`.
 
 ## Setup LoRa Server
 
@@ -42,9 +42,9 @@ Once everything is running and the LoRa Server is provisioned, execute the follo
 docker-compose -f docker/addons/lora-adapter/docker-compose.yml up -d
 ```
 
-**Troubleshouting:** The lora-adapter subscribes to the LoRa Server MQTT broker and will fail if the connection is not established. You must ensure that the environment variable `MF_LORA_ADAPTER_MESSAGES_URL` is propertly configured.
+**Troubleshouting:** The lora-adapter subscribes to the LoRa Server MQTT broker and will fail if the connection is not established. You must ensure that the environment variable `MG_LORA_ADAPTER_MESSAGES_URL` is propertly configured.
 
-**Remark:** By defaut, `MF_LORA_ADAPTER_MESSAGES_URL` is set as `tcp://lora.mqtt.magistrala.io:1883` in the [docker-compose.yml][lora-docker-compose] file of the adapter. If you run the composition without configure this variable you will start to receive messages from our demo server.
+**Remark:** By defaut, `MG_LORA_ADAPTER_MESSAGES_URL` is set as `tcp://lora.mqtt.magistrala.io:1883` in the [docker-compose.yml][lora-docker-compose] file of the adapter. If you run the composition without configure this variable you will start to receive messages from our demo server.
 
 ### Route Map
 

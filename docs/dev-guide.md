@@ -231,11 +231,11 @@ nats-server
 ```
 
 If you want to change the default message broker to [RabbitMQ][rabbitmq], [VerneMQ][vernemq] or [Kafka][kafka] you need to install it on the local system.
-To run using a different broker you need to set the `MF_BROKER_TYPE` env variable to `nats`, `rabbitmq` or `vernemq` during make and run process.
+To run using a different broker you need to set the `MG_BROKER_TYPE` env variable to `nats`, `rabbitmq` or `vernemq` during make and run process.
 
 ```bash
-MF_BROKER_TYPE=<broker-type> make
-MF_BROKER_TYPE=<broker-type> make run
+MG_BROKER_TYPE=<broker-type> make
+MG_BROKER_TYPE=<broker-type> make run
 ```
 
 #### PostgreSQL

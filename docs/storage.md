@@ -16,7 +16,7 @@ In order to run these services, core services, as well as the network from the c
 
 ## Writers
 
-Writers provide an implementation of various `message writers`. Message writers are services that consume Magistrala messages, transform them to desired format and store them in specific data store. The path of the configuration file can be set using the following environment variables: `MF_CASSANDRA_WRITER_CONFIG_PATH`, `MF_POSTGRES_WRITER_CONFIG_PATH`, `MF_INFLUX_WRITER_CONFIG_PATH`, `MF_MONGO_WRITER_CONFIG_PATH` and `MF_TIMESCALE_WRITER_CONFIG_PATH`.
+Writers provide an implementation of various `message writers`. Message writers are services that consume Magistrala messages, transform them to desired format and store them in specific data store. The path of the configuration file can be set using the following environment variables: `MG_CASSANDRA_WRITER_CONFIG_PATH`, `MG_POSTGRES_WRITER_CONFIG_PATH`, `MG_INFLUX_WRITER_CONFIG_PATH`, `MG_MONGO_WRITER_CONFIG_PATH` and `MG_TIMESCALE_WRITER_CONFIG_PATH`.
 
 ### Subscriber config
 

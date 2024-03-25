@@ -652,8 +652,8 @@ To provide authentication credentials to the provision service you can pass it i
 
 Additionally, users or API token can be passed in Authorization header, this authentication takes precedence over others.
 
-- `username`, `password` - (`MF_PROVISION_USER`, `MF_PROVISION_PASSWORD` in [.env][env], `mf_user`, `mf_pass` in [config.toml][conftoml]
-- API Key - (`MF_PROVISION_API_KEY` in [.env][env] or [config.toml][conftoml]
+- `username`, `password` - (`MG_PROVISION_USER`, `MG_PROVISION_PASSWORD` in [.env][env], `MG_user`, `MG_pass` in [config.toml][conftoml]
+- API Key - (`MG_PROVISION_API_KEY` in [.env][env] or [config.toml][conftoml]
 - `Authorization: Bearer Token|ApiKey` - request authorization header containing users token. Check [auth][auth].
 
 ### Running
@@ -663,10 +663,10 @@ Provision service can be run as a standalone or in docker composition as addon t
 Standalone:
 
 ```bash
-MF_PROVISION_BS_SVC_URL=http://localhost:9013/things \
-MF_PROVISION_THINGS_LOCATION=http://localhost:9000 \
-MF_PROVISION_USERS_LOCATION=http://localhost:9002 \
-MF_PROVISION_CONFIG_FILE=docker/addons/provision/configs/config.toml \
+MG_PROVISION_BS_SVC_URL=http://localhost:9013/things \
+MG_PROVISION_THINGS_LOCATION=http://localhost:9000 \
+MG_PROVISION_USERS_LOCATION=http://localhost:9002 \
+MG_PROVISION_CONFIG_FILE=docker/addons/provision/configs/config.toml \
 build/magistrala-provision
 ```
 
@@ -781,7 +781,7 @@ Or you can start `Agent` with:
 git clone https://github.com/absmach/agent.git
 cd agent
 make
-MF_AGENT_BOOTSTRAP_ID=gateway MF_AGENT_BOOTSTRAP_KEY=external_key MF_AGENT_BOOTSTRAP_URL=http://magistrala.ccom:9013/things/bootstrap build/magistrala-agent
+MG_AGENT_BOOTSTRAP_ID=gateway MG_AGENT_BOOTSTRAP_KEY=external_key MG_AGENT_BOOTSTRAP_URL=http://magistrala.ccom:9013/things/bootstrap build/magistrala-agent
 ```
 
 Agent will retrieve connections parameters and connect to Magistrala cloud.

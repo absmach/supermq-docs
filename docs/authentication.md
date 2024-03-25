@@ -21,22 +21,22 @@ The following actions are supported:
 Federated authentication is a process of authenticating users using external identity providers. Magistrala supports federated authentication using [OpenID Connect][oidc] protocol. Magistrala is a resource provider and it uses [Google Identity Platform][google-identity-platform] as an identity provider. To use federated authentication, you need to create a project in Google Cloud Platform and enable Google Identity Platform API. After that, you need to create OAuth 2.0 credentials and configure the consent screen. This can be done by following Google's [documentation][google-identity-platform-docs]. Once you have created OAuth 2.0 credentials, you need to set the following environment variables:
 
 ```bash
-MF_USERS_GOOGLE_CLIENT_ID=985229335584-m2mft8lqbgfn5gfw9ftrm3r2sgu4tsrw.apps.googleusercontent.com
-MF_USERS_GOOGLE_CLIENT_SECRET=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YUIpw
-MF_UI_GOOGLE_REDIRECT_URL=http://localhost/google-callback
-MF_USERS_GOOGLE_STATE=pGXVNhEeKfycuBzk5InlSfMlEU9UrhlkTUOSqhsgDzXP2Y4RsN
-MF_USERS_UI_REDIRECT_URL=http://localhost:9090
+MG_USERS_GOOGLE_CLIENT_ID=985229335584-m2mft8lqbgfn5gfw9ftrm3r2sgu4tsrw.apps.googleusercontent.com
+MG_USERS_GOOGLE_CLIENT_SECRET=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YUIpw
+MG_UI_GOOGLE_REDIRECT_URL=http://localhost/google-callback
+MG_USERS_GOOGLE_STATE=pGXVNhEeKfycuBzk5InlSfMlEU9UrhlkTUOSqhsgDzXP2Y4RsN
+MG_USERS_UI_REDIRECT_URL=http://localhost:9090
 ```
 
-1. `MF_USERS_GOOGLE_CLIENT_ID` - Google OAuth 2.0 client ID
-2. `MF_USERS_GOOGLE_CLIENT_SECRET` - Google OAuth 2.0 client secret
-3. `MF_UI_GOOGLE_REDIRECT_URL` - Google OAuth 2.0 redirect URL to handle callback after successful authentication. This URL must be registered in the Google Cloud Platform.
-4. `MF_USERS_GOOGLE_STATE` - Random string used to protect against cross-site request forgery attacks.
-5. `MF_USERS_UI_REDIRECT_URL` - URL to redirect user after successful authentication. This can be your Magistrala UI URL.
+1. `MG_USERS_GOOGLE_CLIENT_ID` - Google OAuth 2.0 client ID
+2. `MG_USERS_GOOGLE_CLIENT_SECRET` - Google OAuth 2.0 client secret
+3. `MG_UI_GOOGLE_REDIRECT_URL` - Google OAuth 2.0 redirect URL to handle callback after successful authentication. This URL must be registered in the Google Cloud Platform.
+4. `MG_USERS_GOOGLE_STATE` - Random string used to protect against cross-site request forgery attacks.
+5. `MG_USERS_UI_REDIRECT_URL` - URL to redirect user after successful authentication. This can be your Magistrala UI URL.
 
-Magistrala handles the authentication callback at `<MF_BASE_URL>/google-callback` endpoint, where `<MF_BASE_URL>` is the base URL of your Magistrala instance. This endpoint needs to be registered in the Google Cloud Platform and it must match the value of `MF_UI_GOOGLE_REDIRECT_URL` environment variable. From the UI, `google state` is prefixed with the `signin` or `signup` operation to be able to distinguish between sign-in and sign-up operations. For example, if a user is not signed up, the UI will display an error message and a button to sign-up. The error message is sent from the backend using a cookie with the name `error`. The UI will read the error message from the cookie and display it to the user. This cookie expires in 1 second. When a user signs up, Magistrala creates a local copy of the user with an ID provided by Google, the name and email address provided by Google and the password is left empty as the user is authenticated using Google, i.e. external user. The user can be created only once, so if the user already exists, the error will be sent to the UI via the error cookie. Finally, the user is redirected to the URL provided in `MF_USERS_UI_REDIRECT_URL` environment variable upon successful authentication. This should be the base URL of your UI.
+Magistrala handles the authentication callback at `<MG_BASE_URL>/google-callback` endpoint, where `<MG_BASE_URL>` is the base URL of your Magistrala instance. This endpoint needs to be registered in the Google Cloud Platform and it must match the value of `MG_UI_GOOGLE_REDIRECT_URL` environment variable. From the UI, `google state` is prefixed with the `signin` or `signup` operation to be able to distinguish between sign-in and sign-up operations. For example, if a user is not signed up, the UI will display an error message and a button to sign-up. The error message is sent from the backend using a cookie with the name `error`. The UI will read the error message from the cookie and display it to the user. This cookie expires in 1 second. When a user signs up, Magistrala creates a local copy of the user with an ID provided by Google, the name and email address provided by Google and the password is left empty as the user is authenticated using Google, i.e. external user. The user can be created only once, so if the user already exists, the error will be sent to the UI via the error cookie. Finally, the user is redirected to the URL provided in `MG_USERS_UI_REDIRECT_URL` environment variable upon successful authentication. This should be the base URL of your UI.
 
-The `MF_USERS_GOOGLE_CLIENT_ID`, `MF_USERS_GOOGLE_CLIENT_SECRET`, `MF_UI_GOOGLE_REDIRECT_URL` and `MF_USERS_GOOGLE_STATE` environment variables should be the same for the UI and users service. The `MF_USERS_UI_REDIRECT_URL` environment variable should be the URL of your UI which is used to redirect the user after successful authentication.
+The `MG_USERS_GOOGLE_CLIENT_ID`, `MG_USERS_GOOGLE_CLIENT_SECRET`, `MG_UI_GOOGLE_REDIRECT_URL` and `MG_USERS_GOOGLE_STATE` environment variables should be the same for the UI and users service. The `MG_USERS_UI_REDIRECT_URL` environment variable should be the URL of your UI which is used to redirect the user after successful authentication.
 
 Magistrala uses the `access_token` provided by Google only to fetch user information which includes user id, name, given name, family name, picture and locale. The `access_token` is not stored in the database and it's not used for any other purpose. The `id_token` is not used as it presents challenges on refreshing it, thus Magistrala issues its own `access_token` and `refresh_token` stored in the HTTP-only cookie and it's used to authenticate the user in the subsequent requests.
 

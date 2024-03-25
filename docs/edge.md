@@ -82,9 +82,9 @@ git clone https://github.com/absmach/agent.git
 make
 cd build
 
-MF_AGENT_LOG_LEVEL=debug \
-MF_AGENT_BOOTSTRAP_KEY=edged \
-MF_AGENT_BOOTSTRAP_ID=34:e1:2d:e6:cf:03 ./magistrala-agent
+MG_AGENT_LOG_LEVEL=debug \
+MG_AGENT_BOOTSTRAP_KEY=edged \
+MG_AGENT_BOOTSTRAP_ID=34:e1:2d:e6:cf:03 ./magistrala-agent
 
 {"level":"info","message":"Requesting config for 34:e1:2d:e6:cf:03 from http://localhost:9013/things/bootstrap","ts":"2019-12-05T04:47:24.98411512Z"}
 {"level":"info","message":"Getting config for 34:e1:2d:e6:cf:03 from http://localhost:9013/things/bootstrap succeeded","ts":"2019-12-05T04:47:24.995465239Z"}
@@ -93,8 +93,8 @@ MF_AGENT_BOOTSTRAP_ID=34:e1:2d:e6:cf:03 ./magistrala-agent
 {"level":"info","message":"Subscribed to MQTT broker","ts":"2019-12-05T04:47:25.012930443Z"}
 ```
 
-- `MF_AGENT_BOOTSTRAP_KEY` - is `external_key` in bootstrap configuration.
-- `MF_AGENT_BOOSTRAP_ID` - is `external_id` in bootstrap configuration.
+- `MG_AGENT_BOOTSTRAP_KEY` - is `external_key` in bootstrap configuration.
+- `MG_AGENT_BOOSTRAP_ID` - is `external_id` in bootstrap configuration.
 
 #### Remote execution of commands via Agent
 
@@ -270,25 +270,25 @@ By default `Export` service looks for config file at [`../configs/config.toml`][
 
 ### Environment variables
 
-Service will first look for `MF_EXPORT_CONFIG_FILE` for configuration and if not found it will be configured with env variables and new config file specified with `MF_EXPORT_CONFIG_FILE` (default value will be used if none specified) will be saved with values populated from env vars. The service is configured using the [environment variables][env] as presented in the table. Note that any unset variables will be replaced with their default values.
+Service will first look for `MG_EXPORT_CONFIG_FILE` for configuration and if not found it will be configured with env variables and new config file specified with `MG_EXPORT_CONFIG_FILE` (default value will be used if none specified) will be saved with values populated from env vars. The service is configured using the [environment variables][env] as presented in the table. Note that any unset variables will be replaced with their default values.
 
-For values in environment variables to take effect make sure that there is no `MF_EXPORT_CONFIG_FILE` file.
+For values in environment variables to take effect make sure that there is no `MG_EXPORT_CONFIG_FILE` file.
 
 If you run with environment variables you can create config file:
 
 ```bash
-MF_EXPORT_PORT=8178 \
-MF_EXPORT_LOG_LEVEL=debug \
-MF_EXPORT_MQTT_HOST=tcp://localhost:1883 \
-MF_EXPORT_MQTT_USERNAME=<thing_id> \
-MF_EXPORT_MQTT_PASSWORD=<thing_secret> \
-MF_EXPORT_MQTT_CHANNEL=<channel_id> \
-MF_EXPORT_MQTT_SKIP_TLS=true \
-MF_EXPORT_MQTT_MTLS=false \
-MF_EXPORT_MQTT_CA=ca.crt \
-MF_EXPORT_MQTT_CLIENT_CERT=thing.crt \
-MF_EXPORT_MQTT_CLIENT_PK=thing.key \
-MF_EXPORT_CONFIG_FILE=export.toml \
+MG_EXPORT_PORT=8178 \
+MG_EXPORT_LOG_LEVEL=debug \
+MG_EXPORT_MQTT_HOST=tcp://localhost:1883 \
+MG_EXPORT_MQTT_USERNAME=<thing_id> \
+MG_EXPORT_MQTT_PASSWORD=<thing_secret> \
+MG_EXPORT_MQTT_CHANNEL=<channel_id> \
+MG_EXPORT_MQTT_SKIP_TLS=true \
+MG_EXPORT_MQTT_MTLS=false \
+MG_EXPORT_MQTT_CA=ca.crt \
+MG_EXPORT_MQTT_CLIENT_CERT=thing.crt \
+MG_EXPORT_MQTT_CLIENT_PK=thing.key \
+MG_EXPORT_CONFIG_FILE=export.toml \
 ../build/magistrala-export&
 ```
 
@@ -315,7 +315,7 @@ Additionally, you will need MQTT client certificates if you enable mTLS. To obta
 
 #### MTLS
 
-To setup `MTLS` connection `Export` service requires client certificate and `mtls` in config or `MF_EXPORT_MQTT_MTLS` must be set to `true`. Client certificate can be provided in a file, `client_cert_path` and `client_cert_key_path` are used for specifying path to certificate files. If MTLS is used and no certificate file paths are specified then `Export` will look in `client_cert` and `client_cert_key` of config file expecting certificate content stored as string.
+To setup `MTLS` connection `Export` service requires client certificate and `mtls` in config or `MG_EXPORT_MQTT_MTLS` must be set to `true`. Client certificate can be provided in a file, `client_cert_path` and `client_cert_key_path` are used for specifying path to certificate files. If MTLS is used and no certificate file paths are specified then `Export` will look in `client_cert` and `client_cert_key` of config file expecting certificate content stored as string.
 
 #### Routes
 
@@ -476,9 +476,9 @@ Start the [NATS][nats] and [Agent][agent] service:
 
 ```bash
 gnatsd
-MF_AGENT_BOOTSTRAP_ID=54:FG:66:DC:43 \
-MF_AGENT_BOOTSTRAP_KEY="223334fw2" \
-MF_AGENT_BOOTSTRAP_URL=http://localhost:9013/things/bootstrap \
+MG_AGENT_BOOTSTRAP_ID=54:FG:66:DC:43 \
+MG_AGENT_BOOTSTRAP_KEY="223334fw2" \
+MG_AGENT_BOOTSTRAP_URL=http://localhost:9013/things/bootstrap \
 build/magistrala-agent
 {"level":"info","message":"Requesting config for 54:FG:66:DC:43 from http://localhost:9013/things/bootstrap","ts":"2020-05-07T15:50:58.041145096Z"}
 {"level":"info","message":"Getting config for 54:FG:66:DC:43 from http://localhost:9013/things/bootstrap succeeded","ts":"2020-05-07T15:50:58.120779415Z"}

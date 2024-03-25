@@ -24,11 +24,11 @@ Jaeger uses 5 ports within the Magistrala framework. These ports can be edited i
 
 | Variable            | Description                                       | Default     |
 | ------------------- | ------------------------------------------------- | ----------- |
-| MF_JAEGER_PORT      | Agent port for compact jaeger.thrift protocol     | 6831        |
-| MF_JAEGER_FRONTEND  | UI port                                           | 16686       |
-| MF_JAEGER_COLLECTOR | Collector for jaeger.thrift directly from clients | 14268       |
-| MF_JAEGER_CONFIGS   | Configuration server                              | 5778        |
-| MF_JAEGER_URL       | Jaeger access from within Magistrala              | jaeger:6831 |
+| MG_JAEGER_PORT      | Agent port for compact jaeger.thrift protocol     | 6831        |
+| MG_JAEGER_FRONTEND  | UI port                                           | 16686       |
+| MG_JAEGER_COLLECTOR | Collector for jaeger.thrift directly from clients | 14268       |
+| MG_JAEGER_CONFIGS   | Configuration server                              | 5778        |
+| MG_JAEGER_URL       | Jaeger access from within Magistrala              | jaeger:6831 |
 
 ## Message Tracing
 
