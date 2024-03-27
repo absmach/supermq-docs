@@ -21,7 +21,7 @@ Make sure that you have [Protocol Buffers][protocol-buffers] (version 21.12) com
 
 A copy of [Go][go-install] (version 1.19.4) and docker template (version 3.7) will also need to be installed on your system.
 
-If any of these versions seem outdated, the latest can always be found in our [CI script][mf-ci-scripts].
+If any of these versions seem outdated, the latest can always be found in our [CI script][mg-ci-scripts].
 
 ### Build All Services
 
@@ -279,7 +279,7 @@ Please assure that MQTT microservice has `node_modules` installed, as explained 
 [protobuf]: https://github.com/google/protobuf
 [google-protobuf]: https://google.golang.org/protobuf/proto
 [go-install]: https://golang.org/doc/install
-[mf-ci-scripts]: https://github.com/absmach/magistrala/blob/master/scripts/ci.sh
+[mg-ci-scripts]: https://github.com/absmach/magistrala/blob/master/scripts/ci.sh
 [scratch-docker]: https://hub.docker.com/_/scratch/
 [cleanup-docker]: #cleaning-up-your-dockerized-magistrala-setup
 [docker-compose-ref]: https://docs.docker.com/compose/reference/overview/

@@ -64,13 +64,13 @@ helm dependency update
 If you didn't already have namespace created you should do it with:
 
 ```bash
-kubectl create namespace mf
+kubectl create namespace mg
 ```
 
-Deploying release named `magistrala` in namespace named `mf` is done with just:
+Deploying release named `magistrala` in namespace named `mg` is done with just:
 
 ```bash
-helm install magistrala . -n mf
+helm install magistrala . -n mg
 ```
 
 Magistrala is now deployed on your Kubernetes.
@@ -80,13 +80,13 @@ Magistrala is now deployed on your Kubernetes.
 You can override default values while installing with `--set` option. For example, if you want to specify ingress hostname and pull `latest` tag of `users` image:
 
 ```bash
-helm install magistrala -n mf --set ingress.hostname='example.com' --set users.image.tag='latest'
+helm install magistrala -n mg --set ingress.hostname='example.com' --set users.image.tag='latest'
 ```
 
 Or if release is already installed, you can update it:
 
 ```bash
-helm upgrade magistrala -n mf --set ingress.hostname='example.com' --set users.image.tag='latest'
+helm upgrade magistrala -n mg --set ingress.hostname='example.com' --set users.image.tag='latest'
 ```
 
 The following table lists the configurable parameters and their default values.
@@ -218,18 +218,18 @@ thing.crt
 thing.key
 ```
 
-Create kubernetes secrets using those certificates with running commands from [secrets script][secrets]. In this example secrets are created in `mf` namespace:
+Create kubernetes secrets using those certificates with running commands from [secrets script][secrets]. In this example secrets are created in `mg` namespace:
 
 ```bash
-kubectl -n mf create secret tls magistrala-server --key magistrala-server.key --cert magistrala-server.crt
+kubectl -n mg create secret tls magistrala-server --key magistrala-server.key --cert magistrala-server.crt
 
-kubectl -n mf create secret generic ca --from-file=ca.crt
+kubectl -n mg create secret generic ca --from-file=ca.crt
 ```
 
 You can check if they are succesfully created:
 
 ```bash
-kubectl get secrets -n mf
+kubectl get secrets -n mg
 ```
 
 And now set ingress.hostname, ingress.tls.hostname to your hostname and ingress.tls.secret to `magistrala-server` and after helm update you have secured ingress with TLS certificate.

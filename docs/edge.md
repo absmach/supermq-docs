@@ -143,7 +143,7 @@ Payload is up to the application and service itself.
 
 ### EdgeX
 
-[Edgex][edgex-repo] control messages are sent and received over control channel. MF sends a control SenML of the following form:
+[Edgex][edgex-repo] control messages are sent and received over control channel. MG sends a control SenML of the following form:
 
 ```bash
 [{"bn":"<uuid>:", "n":"control", "vs":"<cmd>, <param>, edgexsvc1, edgexsvc2, …, edgexsvcN"}}]

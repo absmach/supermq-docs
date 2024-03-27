@@ -55,7 +55,7 @@ Note that if you are installing MZBench on external server (i.e. Digital Ocean d
 - change default value for `network_interface` from `127.0.0.1` to `0.0.0.0` in configuration file. Default configuration file location is `~/.config/mzbench/server.config`, create it from sample configuration file `~/.config/mzbench/server.config.example`
 - open port `4800` with `ufw allow 4800`
 
-MZBench can run your test scenarios on many nodes, simultaneously. For now, you are able to run tests locally, so your nodes will be virtual nodes on machine where MZBench server is installed (your PC or DO droplet). You can try one of our [MQTT scenarios][mf-benchmark] that uses [vmq_mzbench][vmq_mzbench] worker. Copy-paste scenario in MZBench dashboard, click button _Environmental variables_ -> _Add from script_ and add appropriate values. Because it's running locally, you should try with smaller values, for example for fan-in scenario use 100 publishers on 2 nodes. Try this before moving forward in setting up Amazon EC2 plugin.
+MZBench can run your test scenarios on many nodes, simultaneously. For now, you are able to run tests locally, so your nodes will be virtual nodes on machine where MZBench server is installed (your PC or DO droplet). You can try one of our [MQTT scenarios][mg-benchmark] that uses [vmq_mzbench][vmq_mzbench] worker. Copy-paste scenario in MZBench dashboard, click button _Environmental variables_ -> _Add from script_ and add appropriate values. Because it's running locally, you should try with smaller values, for example for fan-in scenario use 100 publishers on 2 nodes. Try this before moving forward in setting up Amazon EC2 plugin.
 
 ### Setting up Amazon EC2 plugin
 
@@ -135,6 +135,6 @@ TBD
 [satori]: https://github.com/satori-com/mzbench
 [mzbench-cli]: https://github.com/mzbench/mzbench/blob/master/doc/cli.md
 [mzbench-dashboard]: https://github.com/mzbench/mzbench/blob/master/doc/dashboard.md
-[mf-benchmark]: https://github.com/mainflux/benchmark/tree/master/mzbench
+[mg-benchmark]: https://github.com/mainflux/benchmark/tree/master/mzbench
 [mzbench-architecture-running]: https://github.com/mzbench/mzbench/raw/master/doc/images/scheme_2.png
 [mzbench-scenarios]: https://github.com/mzbench/mzbench/blob/master/scenarios/spec.md#pre_hook-and-post_hook

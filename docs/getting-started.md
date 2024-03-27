@@ -17,7 +17,7 @@ This will start Magistrala docker composition, which will output the logs from t
 
 ## Step 2 - Install the CLI
 
-Open a new terminal from which you can interact with the running Magistrala system. The easiest way to do this is by using the Magistrala CLI, which can be downloaded as a tarball from GitHub (here we use release `0.14.0` but be sure to use the [latest CLI release][mf-releases]):
+Open a new terminal from which you can interact with the running Magistrala system. The easiest way to do this is by using the Magistrala CLI, which can be downloaded as a tarball from GitHub (here we use release `0.14.0` but be sure to use the [latest CLI release][mg-releases]):
 
 ```bash
 wget -O- https://github.com/absmach/magistrala/releases/download/0.14.0/magistrala-cli_0.14.0_linux-amd64.tar.gz | tar xvz -C $GOBIN
@@ -164,6 +164,6 @@ This proves that messages have been correctly sent through the system via the pr
 
 [docker]: https://docs.docker.com/install/
 [docker-compose]: https://docs.docker.com/compose/install/
-[mf-releases]: https://github.com/absmach/magistrala/releases
+[mg-releases]: https://github.com/absmach/magistrala/releases
 [cli]: cli.md
 [provisioning]: /provision/#platform-management

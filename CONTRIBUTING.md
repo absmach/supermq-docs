@@ -53,11 +53,11 @@ git checkout master
 git pull --rebase upstream master
 ```
 
-Create a new topic branch from `master` using the naming convention `MF-[issue-number]`
+Create a new topic branch from `master` using the naming convention `MG-[issue-number]`
 to help us keep track of your contribution scope:
 
 ```
-git checkout -b MF-[issue-number]
+git checkout -b MG-[issue-number]
 ```
 
 Commit your changes in logical chunks. When you are ready to commit, make sure
@@ -80,7 +80,7 @@ git pull --rebase upstream master
 Push your topic branch up to your fork:
 
 ```
-git push origin MF-[issue-number]
+git push origin MG-[issue-number]
 ```
 
 [Open a Pull Request](https://help.github.com/articles/using-pull-requests/) with a clear title
