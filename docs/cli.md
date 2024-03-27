@@ -312,29 +312,150 @@ magistrala-cli groups disable <group_id> <user_token>
 
 ### Domain management
 
-#### Create Domain
+#### Creating a New Domain
 
 ```bash
-magistrala-cli domains create <name> <alias> <user_token>
+magistrala-cli domains create <domain_name> <domain_alias> <user_token>
+```
+
+In this command:
+
+- `<domain_name>` is the name you want to give to the new domain.
+- `<domain_alias>` is the alias for the new domain.
+- `<user_token>` is your user token.
+
+Here's an example creating a new domain with the name `mydomain` and the alias `myalias` with the user access token stored in the `ADMIN_ACCESS` environment variable:
+
+```bash
+magistrala-cli domains create "mydomain" "myalias" $ADMIN_ACCESS
+```
+
+After running the command, you should see output similar to this:
+
+```bash
+{
+  "alias": "myalias",
+  "created_at": "2024-03-27T09:35:03.61728Z",
+  "created_by": "f905b21e-3755-4f73-8444-0fd6db6b96e3",
+  "id": "6fcfec51-423d-4f69-b5c5-1ed1c9ae547c",
+  "name": "mydomain",
+  "status": "enabled",
+  "updated_at": "0001-01-01T00:00:00Z"
+}
 ```
 
 #### Get domains
 
-```bash
-magistrala-cli domains get [all | <domain_id> ] <user_token>
+For a single domain
 
+```bash
+magistrala-cli domains get <domain_id> <user_token>
 ```
 
-#### Update domains
+where:
+
+- `<domain_id>` is the unique identifier of the domain you want to retrieve information about.
+- `<user_token>` is your user token.
+
+For example
 
 ```bash
-magistrala-cli domains update <domain_id> <JSON_string> <user_token>
+magistrala-cli domains get "6fcfec51-423d-4f69-b5c5-1ed1c9ae547c" $ADMIN_ACCESS
 ```
 
-#### Enable a domain
+The ouptut should look like
 
 ```bash
-magistrala-cli domains enable <domain_id> <user_token>
+{
+  "alias": "myalias",
+  "created_at": "2024-03-27T09:35:03.61728Z",
+  "created_by": "f905b21e-3755-4f73-8444-0fd6db6b96e3",
+  "id": "6fcfec51-423d-4f69-b5c5-1ed1c9ae547c",
+  "name": "mydomain",
+  "status": "enabled",
+  "updated_at": "0001-01-01T00:00:00Z"
+}
+```
+
+For all domains
+
+```bash
+magistrala-cli domains get all <user_token>
+```
+
+For example
+
+```bash
+magistrala-cli domains get all $ADMIN_ACCESS
+```
+
+After running this command, you will receive information about all domains. The output should look something like this:
+
+```bash
+{
+  "domains": [
+    {
+      "alias": "myalias",
+      "created_at": "2024-03-27T09:35:03.61728Z",
+      "created_by": "f905b21e-3755-4f73-8444-0fd6db6b96e3",
+      "id": "6fcfec51-423d-4f69-b5c5-1ed1c9ae547c",
+      "name": "mydomain",
+      "status": "enabled",
+      "updated_at": "0001-01-01T00:00:00Z"
+    },
+    {
+      "alias": "mydomain",
+      "created_at": "2024-03-21T07:57:50.320928Z",
+      "created_by": "3d57bf0e-409b-42ee-9adb-abcfb3d4b710",
+      "id": "5b6d3cf9-14fc-4283-9ff9-fdd6127ef402",
+      "name": "mydomain",
+      "permission": "administrator",
+      "status": "enabled",
+      "updated_at": "0001-01-01T00:00:00Z"
+    }
+  ],
+  "limit": 10,
+  "offset": 0,
+  "total": 2
+}
+```
+
+#### Updating Domains
+
+```bash
+magistrala-cli domains update <domain_id> '{"name" : "<new_domain_name>", "alias" : "<new_domain_alias>", "metadata" : "<new_metadata>"}' <user_token>
+```
+
+In this command:
+
+- `<domain_id>` is the unique identifier of the domain you want to update.
+- `<new_domain_name>` is the new name you want to give to the domain.
+- `<new_domain_alias>` is the new alias for the domain.
+- `<new_metadata>` is the new metadata for the domain.
+- `<user_token>` is your user token.
+
+Here's an example in which we're updating the domain with the ID `6fcfec51-423d-4f69-b5c5-1ed1c9ae547c` to have the name `domain_name` instead of `mydomain`, the alias `domain_alias` instead of `myalias`, and adding new metadata `{"location" : "london"}`.
+
+```bash
+magistrala-cli domains update "6fcfec51-423d-4f69-b5c5-1ed1c9ae547c" '{"name" : "domain_name", "alias" : "domain_alias", "metadata" : {"location" : "london"}}' $ADMIN_ACCESS
+```
+
+After running the command, you should see an output similar to this:
+
+```bash
+{
+  "alias": "domain_alias",
+  "created_at": "2024-03-27T09:35:03.61728Z",
+  "created_by": "f905b21e-3755-4f73-8444-0fd6db6b96e3",
+  "id": "6fcfec51-423d-4f69-b5c5-1ed1c9ae547c",
+  "metadata": {
+    "location": "london"
+  },
+  "name": "domain_name",
+  "status": "enabled",
+  "updated_at": "2024-03-27T09:56:43.66215Z",
+  "updated_by": "f905b21e-3755-4f73-8444-0fd6db6b96e3"
+}
 ```
 
 #### Disable a domain
@@ -343,10 +464,51 @@ magistrala-cli domains enable <domain_id> <user_token>
 magistrala-cli domains disable <domain_id> <user_token>
 ```
 
-#### Assign users to a domain
+In this command:
+
+- `<domain_id>` is the unique identifier of the domain you want to disable.
+- `<user_token>` is your user token.
+
+For example,
+
+```bash
+magistrala-cli domains disable "6fcfec51-423d-4f69-b5c5-1ed1c9ae547c" $ADMIN_ACCESS
+```
+
+#### Enable a domain
+
+```bash
+magistrala-cli domains enable <domain_id> <user_token>
+```
+
+In this command:
+
+- `<domain_id>` is the unique identifier of the domain you want to enable.
+- `<user_token>` is your user token.
+
+For example,
+
+```bash
+magistrala-cli domains enable "6fcfec51-423d-4f69-b5c5-1ed1c9ae547c" $ADMIN_ACCESS
+```
+
+#### Assigning Users to a Domain
 
 ```bash
 magistrala-cli domains assign users <relation> <user_ids> <domain_id> <user_token>
+```
+
+In this command:
+
+- `<relation>` is the relationship of the user to the domain (for example, 'Administrator', 'Editor', 'Viewer', or 'Member').
+- `<user_ids>` is a list of user IDs that you want to assign to the domain.
+- `<domain_id>` is the unique identifier of the domain to which you want to assign the users.
+- `<user_token>` is your user token.
+
+For example,
+
+```bash
+magistrala-cli domains assign users "member" "6a8c0864-1d95-4053-a335-a6399c0ccb0a" "6fcfec51-423d-4f69-b5c5-1ed1c9ae547c" $ADMIN_ACCESS
 ```
 
 #### List Domain users
@@ -355,10 +517,63 @@ magistrala-cli domains assign users <relation> <user_ids> <domain_id> <user_toke
 magistrala-cli domains users <domain_id>  <user_token>
 ```
 
+For example, if your domain ID is `6fcfec51-423d-4f69-b5c5-1ed1c9ae547c` and your user token is stored in the `ADMIN_ACCESS` environment variable, you would type:
+
+```bash
+magistrala-cli domains users "6fcfec51-423d-4f69-b5c5-1ed1c9ae547c" $ADMIN_ACCESS
+```
+
+After you run this command, the system will show you a list of users in the domain, like this:
+
+```bash
+{
+  "limit": 10,
+  "offset": 0,
+  "total": 2,
+  "users": [
+    {
+      "created_at": "2024-03-21T08:06:55.232067Z",
+      "credentials": {
+        "identity": "user1@email.com"
+      },
+      "id": "6a8c0864-1d95-4053-a335-a6399c0ccb0a",
+      "metadata": {
+        "location": "london"
+      },
+      "name": "user1",
+      "status": "enabled",
+      "tags": [
+        "male",
+        "developer"
+      ],
+      "updated_at": "2024-03-25T10:31:26.557439Z"
+    },
+    {
+      "created_at": "2024-03-25T09:21:03.821017Z",
+      "credentials": {
+        "identity": "user3@example.com"
+      },
+      "id": "78411c55-adfe-4940-bbbf-e973d60a4e14",
+      "name": "user3",
+      "status": "enabled",
+      "updated_at": "0001-01-01T00:00:00Z"
+    }
+  ]
+}
+```
+
+This output tells you that there are currently 2 users in the domain.
+
 #### Unassign users from a domain
 
 ```bash
 magistrala-cli domains unassign users <relation> <user_ids> <domain_id> <user_token>
+```
+
+For example, if you want to remove a user with the ID `6a8c0864-1d95-4053-a335-a6399c0ccb0a` from a domain with the ID `6fcfec51-423d-4f69-b5c5-1ed1c9ae547c`, and the user is a member of the domain, you would type:
+
+```bash
+magistrala-cli domains unassign users "member" "6a8c0864-1d95-4053-a335-a6399c0ccb0a" "6fcfec51-423d-4f69-b5c5-1ed1c9ae547c" $ADMIN_ACCESS
 ```
 
 ### Things management
