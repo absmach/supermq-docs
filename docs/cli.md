@@ -182,6 +182,13 @@ magistrala-cli users create <user_name> <user_email> <user_password> <user_token
 magistrala-cli users token <user_email> <user_password>
 ```
 
+Since v0.14.0, Magistrala supports domains. Domains are used to separate different tenants, and almost all the activities in Magistrala happen under a particular domain. Only two types of actions do not happen within a domain: login where you get to list domains and log in to them, and invitations management to accept domain membership sent by other users.
+An access token with a domain is required for all the other actions on Things, Channels, and Groups. To obtain token within the domain, use the following command:
+
+```bash
+magistrala-cli users token <user_email> <user_password> <domain_id>
+```
+
 #### Get User Token From Refresh Token
 
 ```bash
