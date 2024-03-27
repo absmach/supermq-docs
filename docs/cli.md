@@ -310,6 +310,57 @@ magistrala-cli groups enable <group_id> <user_token>
 magistrala-cli groups disable <group_id> <user_token>
 ```
 
+### Domain management
+
+#### Create Domain
+
+```bash
+magistrala-cli domains create <name> <alias> <user_token>
+```
+
+#### Get domains
+
+```bash
+magistrala-cli domains get [all | <domain_id> ] <user_token>
+
+```
+
+#### Update domains
+
+```bash
+magistrala-cli domains update <domain_id> <JSON_string> <user_token>
+```
+
+#### Enable a domain
+
+```bash
+magistrala-cli domains enable <domain_id> <user_token>
+```
+
+#### Disable a domain
+
+```bash
+magistrala-cli domains disable <domain_id> <user_token>
+```
+
+#### Assign users to a domain
+
+```bash
+magistrala-cli domains assign users <relation> <user_ids> <domain_id> <user_token>
+```
+
+#### List Domain users
+
+```bash
+magistrala-cli domains users <domain_id>  <user_token>
+```
+
+#### Unassign users from a domain
+
+```bash
+magistrala-cli domains unassign users <relation> <user_ids> <domain_id> <user_token>
+```
+
 ### Things management
 
 #### Create Thing
