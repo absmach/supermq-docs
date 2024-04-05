@@ -4,3 +4,4 @@ This section contains a list of blogs that are related to Magistrala. They have 
 
 - [What's New in Magistrala v0.14.0](./v0-14-0-release.md)
 - [Extending Magistrala Users Repository](./kratos.md)
+- [Integrating OAuth2.0 with Magistrala](./oauth.md)
