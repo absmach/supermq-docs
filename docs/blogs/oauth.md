@@ -15,7 +15,7 @@ In the context of Magistrala, the resource owner is the user, the resource serve
 
 In OAuth2.0, there are different scopes. A scope is a mechanism in OAuth2.0 to limit an application's access to a user's account. A scope is a string that represents the access level that the application is requesting. The scope is included in the request to the authorization server. The scope is used to specify the access level that the application is requesting. The scope is a required parameter in the request to the authorization server.
 
-With Google as the authorization server, we use userinfo.email and userinfo.profile as the scopes. The userinfo.email scope is used to access the user's email address. The userinfo.profile scope is used to access the user's profile information. The user's email address is used to uniquely identify the user. The user's profile information is used to display the user's name and profile picture in the UI.
+With Google as the authorization server, we use `userinfo.email` and `userinfo.profile` as the scopes. The `userinfo.email` scope is used to access the user's email address. The `userinfo.profile` scope is used to access the user's profile information. The user's email address is used to uniquely identify the user. The user's profile information is used to display the user's name and profile picture in the UI.
 
 The abstract OAuth2.0 flow is as follows:
 
@@ -29,11 +29,11 @@ The abstract OAuth2.0 flow is as follows:
 
 This flow is demonstrated in the following diagram:
 
-![Generic OAuth2.0 flow](img/genericflow.png)
+![Generic OAuth2.0 flow](../img/blogs/oauth/genericflow.png)
 
 Magistrala can now be the resource server and Google as one of the authorization servers. We have implemented the OAuth2.0 [authorization code flow](https://datatracker.ietf.org/doc/html/rfc6749#section-4.1). The authorization code flow is used to obtain an access and refresh token to authorize API requests. The UI client initiates the flow by redirecting the user to the authorization server(Google). The user authenticates and authorizes the client(Magistrala). The authorization server(Google) redirects the user back to the client(Magistrala users service) with an authorization code. The client(Magistrala users service) exchanges the authorization code for an access token and a refresh token. The access token is used to authenticate API requests(get user details). The refresh token is used to obtain a new access token when the current access token becomes invalid or expires. This flow is demonstrated in the following diagram:
 
-![authorization code flow](img/codeflow.png)
+![authorization code flow](../img/blogs/oauth/codeflow.png)
 _The authorization code flow(from https://medium.com/javarevisited/oauth-2-0-authorization-code-flow-in-spring-boot-d8ff393f316d)_
 
 There are different grant types in OAuth2.0. The grant type is a string representing the authorization grant type that the client is using to request the access token. It is included in the request to the token endpoint. It is used to specify the method of obtaining the access token. It is a required parameter in the request to the token endpoint. The grant types are:
@@ -76,7 +76,7 @@ Here is an example of the OAuth2.0 authorization code flow with Google as the au
 
 This is split into two parts:
 
-### 1. Magistrala UI service
+### 1. Magistrala UI Service
 
 The UI service is the client in the OAuth2.0 flow. The UI service initiates the flow by redirecting the user to the authorization server(Google).
 
@@ -192,7 +192,7 @@ func oauth2Handler(state oauth2.State, provider oauth2.Provider) http.HandlerFun
 }
 ```
 
-### 2. Magistrala users service
+### 2. Magistrala Users Service
 
 The users service is the resource server in the OAuth2.0 flow. The users service receives the authorization code from the authorization server(Google) and exchanges the authorization code for an access and refresh token. The users service then uses the access token to obtain the user's details.
 
@@ -244,7 +244,7 @@ func oauth2CallbackHandler(oauth oauth2.Provider, svc users.Service) http.Handle
             state = strings.Split(r.FormValue("state"), "-")[1]
             flow, err = oauth2.ToState(strings.Split(r.FormValue("state"), "-")[0])
             if err != nil {
-                http.Redirect(w, r, oauth.ErrorURL()+"?error="+err.Error(), http.StatusSeeOther)
+                http.Redirect(w, r, oauth.ErrorURL()+"?error="+err.Error(), http.StatusSeeOther) //nolint:goconst
                 return
             }
         }
@@ -255,13 +255,19 @@ func oauth2CallbackHandler(oauth oauth2.Provider, svc users.Service) http.Handle
         }
 
         if code := r.FormValue("code"); code != "" {
-            client, token, err := oauth.UserDetails(r.Context(), code)
+            token, err := oauth.Exchange(r.Context(), code)
             if err != nil {
                 http.Redirect(w, r, oauth.ErrorURL()+"?error="+err.Error(), http.StatusSeeOther)
                 return
             }
 
-            jwt, err := svc.OAuthCallback(r.Context(), oauth.Name(), flow, token, client)
+            client, err := oauth.UserInfo(token.AccessToken)
+            if err != nil {
+                http.Redirect(w, r, oauth.ErrorURL()+"?error="+err.Error(), http.StatusSeeOther)
+                return
+            }
+
+            jwt, err := svc.OAuthCallback(r.Context(), flow, client)
             if err != nil {
                 http.Redirect(w, r, oauth.ErrorURL()+"?error="+err.Error(), http.StatusSeeOther)
                 return
@@ -294,28 +300,20 @@ func oauth2CallbackHandler(oauth oauth2.Provider, svc users.Service) http.Handle
 The oauth2CallbackHandler is a http.HandlerFunc that handles OAuth2 callbacks. The handler verifies the integrity of the response from the authorization server and redirects the user to the URL when the OAuth2.0 flow is complete or when an error occurs. The handler also sets the access and refresh tokens in the user's session.
 
 ```go
-func (cfg *config) UserDetails(ctx context.Context, code string) (mfclients.Client, oauth2.Token, error) {
-    token, err := cfg.config.Exchange(ctx, code)
+func (cfg *config) UserInfo(accessToken string) (mfclients.Client, error) {
+    resp, err := http.Get(userInfoURL + url.QueryEscape(accessToken))
     if err != nil {
-        return mfclients.Client{}, oauth2.Token{}, err
-    }
-    if token.RefreshToken == "" {
-        return mfclients.Client{}, oauth2.Token{}, svcerr.ErrAuthentication
-    }
-
-    resp, err := http.Get(userInfoURL + url.QueryEscape(token.AccessToken))
-    if err != nil {
-        return mfclients.Client{}, oauth2.Token{}, err
+        return mfclients.Client{}, err
     }
     defer resp.Body.Close()
 
     if resp.StatusCode != http.StatusOK {
-        return mfclients.Client{}, oauth2.Token{}, svcerr.ErrAuthentication
+        return mfclients.Client{}, svcerr.ErrAuthentication
     }
 
     data, err := io.ReadAll(resp.Body)
     if err != nil {
-        return mfclients.Client{}, oauth2.Token{}, err
+        return mfclients.Client{}, err
     }
 
     var user struct {
@@ -325,11 +323,11 @@ func (cfg *config) UserDetails(ctx context.Context, code string) (mfclients.Clie
         Picture string `json:"picture"`
     }
     if err := json.Unmarshal(data, &user); err != nil {
-        return mfclients.Client{}, oauth2.Token{}, err
+        return mfclients.Client{}, err
     }
 
     if user.ID == "" || user.Name == "" || user.Email == "" {
-        return mfclients.Client{}, oauth2.Token{}, svcerr.ErrAuthentication
+        return mfclients.Client{}, svcerr.ErrAuthentication
     }
 
     client := mfclients.Client{
@@ -345,14 +343,14 @@ func (cfg *config) UserDetails(ctx context.Context, code string) (mfclients.Clie
         Status: mfclients.EnabledStatus,
     }
 
-    return client, *token, nil
-    }
+    return client, nil
+}
 ```
 
-The UserDetails function is used to obtain the user's details. The function exchanges the authorization code for an access and refresh token. The function then uses the access token to obtain the user's details. The user's details are used to uniquely identify the user and to display the user's name and profile picture in the UI.
+The `UserInfo` function is used to obtain the user's details. The function then uses the access token to obtain the user's details. The user's details are used to uniquely identify the user and to display the user's name and profile picture in the UI.
 
 ```go
-func (svc service) OAuthCallback(ctx context.Context, provider string, state mgoauth2.State, token oauth2.Token, client mgclients.Client) (*magistrala.Token, error) {
+func (svc service) OAuthCallback(ctx context.Context, state mgoauth2.State, client mgclients.Client) (*magistrala.Token, error) {
     switch state {
     case mgoauth2.SignIn:
         rclient, err := svc.clients.RetrieveByIdentity(ctx, client.Credentials.Identity)
@@ -363,11 +361,8 @@ func (svc service) OAuthCallback(ctx context.Context, provider string, state mgo
             return &magistrala.Token{}, err
         }
         claims := &magistrala.IssueReq{
-            UserId:            rclient.ID,
-            Type:              0,
-            OauthProvider:     provider,
-            OauthAccessToken:  token.AccessToken,
-            OauthRefreshToken: token.RefreshToken,
+            UserId: rclient.ID,
+            Type:   uint32(auth.AccessKey),
         }
         return svc.auth.Issue(ctx, claims)
     case mgoauth2.SignUp:
@@ -379,11 +374,8 @@ func (svc service) OAuthCallback(ctx context.Context, provider string, state mgo
             return &magistrala.Token{}, err
         }
         claims := &magistrala.IssueReq{
-            UserId:            rclient.ID,
-            Type:              0,
-            OauthProvider:     provider,
-            OauthAccessToken:  token.AccessToken,
-            OauthRefreshToken: token.RefreshToken,
+            UserId: rclient.ID,
+            Type:   uint32(auth.AccessKey),
         }
         return svc.auth.Issue(ctx, claims)
     default:
@@ -392,69 +384,9 @@ func (svc service) OAuthCallback(ctx context.Context, provider string, state mgo
 }
 ```
 
-The OAuthCallback function is used to handle the OAuth2.0 callback. The function issues a token to the user and sets the access and refresh tokens in the user's session. Depending on the state, the function either signs in the user or signs up the user.
+The `OAuthCallback` function is used to handle the OAuth2.0 callback. The function issues a token to the user and sets the access and refresh tokens in the user's session. Depending on the state, the function either signs in the user or signs up the user.
 
-Since we store the access and refresh tokens in the user's session, we need to ensure that the session is authenticated and authorized. We use the access token to authenticate the user and the refresh token to obtain a new access token when the current access token becomes invalid or expires.
-
-```go
-// Validate validates the access token.
-func (cfg *config) Validate(ctx context.Context, token string) error {
-    client := &http.Client{
-        Timeout: defTimeout,
-    }
-    req, err := http.NewRequest(http.MethodGet, tokenInfoURL+token, http.NoBody)
-    if err != nil {
-        return svcerr.ErrAuthentication
-    }
-    res, err := client.Do(req)
-    if err != nil {
-        return svcerr.ErrAuthentication
-    }
-    defer res.Body.Close()
-
-    if res.StatusCode != http.StatusOK {
-        return svcerr.ErrAuthentication
-    }
-
-    return nil
-}
-
-```
-
-```go
-// Refresh refreshes the access token.
-func (cfg *config) Refresh(ctx context.Context, token string) (oauth2.Token, error) {
-    payload := strings.NewReader(fmt.Sprintf("grant_type=refresh_token&refresh_token=%s&client_id=%s&client_secret=%s", token, cfg.config.ClientID, cfg.config.ClientSecret))
-    client := &http.Client{
-        Timeout: defTimeout,
-    }
-    req, err := http.NewRequest(http.MethodPost, cfg.config.Endpoint.TokenURL, payload)
-    if err != nil {
-        return oauth2.Token{}, err
-    }
-    req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
-
-    res, err := client.Do(req)
-    if err != nil {
-        return oauth2.Token{}, err
-    }
-    defer res.Body.Close()
-
-    body, err := io.ReadAll(res.Body)
-    if err != nil {
-        return oauth2.Token{}, err
-    }
-    var tokenData oauth2.Token
-    if err := json.Unmarshal(body, &tokenData); err != nil {
-        return oauth2.Token{}, err
-    }
-    tokenData.RefreshToken = token
-
-    return tokenData, nil
-}
-```
-
-Since Google offers one refresh token per user session, we need to ensure we store the refresh token which we can subsequently use to obtain a new access token when the current access token becomes invalid or expires.
+We don't store the access token or refresh token since they are only used once to obtain the user's details. The access token is used to authenticate the user.
 
 ## Conclusion
 
