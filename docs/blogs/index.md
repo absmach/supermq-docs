@@ -1,5 +1,5 @@
 # Blogs
 
-This section contains a list of blogs that are related to Magistrala.
+This section contains a list of blogs that are related to Magistrala. They have been published to the [official Abstract Machines blog in medium](https://medium.com/abstract-machines-blog).
 
 ## [- Extending Magistrala Users Repository](./kratos.md)
