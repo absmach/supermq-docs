@@ -2,33 +2,33 @@
 
 We're thrilled to announce the release of Magistrala v0.14.0, packed with exciting new features and improvements that elevate your experience! This update marks a significant leap forward, making Magistrala even more powerful and versatile. Here are some of the highlights:
 
-- Switch to Google Zanzibar Access control approach with SpiceDB
-- Implement Domains for access control
+- Switched to Google Zanzibar Access control approach with SpiceDB
+- Implemented Domains for access control
 - Added UI as a separate service
-- Return Websocket support
-- Add Invitation service
-- Added support for multiple MQTT message brokers
-- Added support for multiple event stores
+- Returned Websocket support
+- Added Invitation service
+- Expanded compatibility across various MQTT brokers
+- Added support for numerous event stores
 - Enable Jetstream for NATS as the default event store and message broker
 - Added support for gRPC mTLS
-- Add graceful-stop for HTTP and gRPC servers
+- Added graceful-stop for HTTP and gRPC servers
 - Logical and hard entity deletion
-- Improve tracing
-- Improve event sourcing
+- Improved tracing
+- Improved event sourcing
 - Added telemetry
-- Add prometheus and grafana for metrics
-- Upgrade InfluxDB from 1.x to 2.x
-- Upgrade Postgres to 16.1
+- Added prometheus and grafana for metrics
+- Upgraded InfluxDB from 1.x to 2.x
+- Upgraded Postgres to 16.1
 
 This is just a glimpse of the extensive changes in v0.14.0. For a complete list, check out the detailed changelog [here](https://github.com/absmach/magistrala/compare/0.13.0...v0.14.0) for this [release](https://github.com/absmach/magistrala/releases/tag/v0.14.0).
 
 ## New Features
 
-### Switch to Google Zanzibar Access control approach with SpiceDB
+### Switched to Google Zanzibar Access control approach with SpiceDB
 
 We migrated our access control system from Ory Keto to [SpiceDB](https://github.com/authzed/spicedb). SpiceDB is an open-source, [Google Zanzibar](https://authzed.com/blog/what-is-zanzibar/)-inspired database system for real-time, security-critical application permissions. Initially, we attempted to build our access control system. However, we quickly recognized the inherent complexity of this task and the importance of domain expertise. We are confident that SpiceDB is the superior solution for our requirements. The PR for this change can be found [here](https://github.com/absmach/magistrala/pull/1919).
 
-### Implement Domains for access control
+### Implemented Domains for access control
 
 Magistrala now supports multi-tenancy with the introduction of domains! This exciting new feature allows for the separation of data and resources between different users or organizations. While we're still working on further refinements in future releases, we believe this marks a significant step forward for Magistrala. You can find the commit for this change on [GitHub](https://github.com/absmach/magistrala/commit/c294e84d2446f8b99d22e24211da171462ecdd41).
 
@@ -38,17 +38,17 @@ With great enthusiasm, we present a significant upgrade to the Magistrala user i
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/psTSFMoa4f4?si=Gx-Fi0hpe3RBv3jK" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
-### Return Websocket support
+### Returned Websocket support
 
-Remember web sockets? We are ecstatic to reveal its return to Magistrala, built from scratch for improved performance and exciting possibilities. This isn't just a revival – we're actively planning future features and even UI integration, allowing your interface to receive real-time messages directly. This opens doors for dynamic and efficient real-time communication, and we can't wait to see what you build! The PR for this change can be found [here](https://github.com/absmach/magistrala/pull/1625).
+Remember the WebSocket adapter? We are happy to reveal its return to Magistrala, built from scratch for improved performance and exciting possibilities. This isn't just a revival – we're actively planning future features and even UI integration, allowing your interface to receive real-time messages directly. This opens doors for dynamic and efficient real-time communication, and we can't wait to see what you build! The PR for this change can be found [here](https://github.com/absmach/magistrala/pull/1625).
 
-### Add Invitation service
+### Added Invitation service
 
-Invitation service is a new feature in Magistrala. This service is responsible for sending invitations to users to join a domain. This is a very important feature for multi-tenancy. We currently don't support email invitations but we are planning to add it in future releases. This is because the invitation services need to talk to the users service to get the email of the user and we don't have the communication between services yet. We are planning to add this in future releases. The commit for this change can be found [here](https://github.com/absmach/magistrala/commit/a07aabe78328d99c176f6bf6034339ce5256f13f)
+Invitation service is a new feature in Magistrala. This service is responsible for sending invitations to users to join a domain. This is an essential feature for multi-tenancy. We currently don't support email invitations but we are planning to add it in future releases. This is because the Invitation services need to talk to the Users service to get the email of the user and we don't have the communication between services yet. We are planning to add this in future releases. The commit for this change can be found [here](https://github.com/absmach/magistrala/commit/a07aabe78328d99c176f6bf6034339ce5256f13f)
 
-### Added support for multiple MQTT message brokers
+### Expanded compatibility across various MQTT brokers
 
-The MQTT message broker is responsible for handling MQTT messages. We added support for multiple MQTT message brokers. You can either use VerneMQ or NATS as the MQTT message broker. VerneMQ is a very popular MQTT message broker and was initially the only supported MQTT message broker. We decided to add support for NATS as the MQTT message broker because we believe that it is a great message broker and is very easy to use. Using NATS as an MQTT message broker you can simplify your infrastructure since it can be used as both the event store and the message broker. The PR for this change can be found [here](https://github.com/absmach/magistrala/pull/1904).
+The MQTT message broker is responsible for handling MQTT messages. We Expanded compatibility across various MQTT brokers. You can either use VerneMQ or NATS as the MQTT message broker. VerneMQ is a very popular MQTT message broker and was initially the only supported MQTT message broker. We decided to add support for NATS as the MQTT message broker because we believe that it is a great message broker and is very easy to use. Using NATS as an MQTT message broker you can simplify your infrastructure since it can be used as both the event store and the message broker. The PR for this change can be found [here](https://github.com/absmach/magistrala/pull/1904).
 
 ### Added support for multiple event stores
 
@@ -60,7 +60,7 @@ gRPC is a modern open-source high-performance Remote Procedure Call (RPC) framew
 
 In TLS, the client verifies the server's certificate to ensure that it is connecting to the correct server. The server doesn't verify the client's certificate. Anyone who has the server's certificate can connect to the server. Mutual TLS or mTLS is a form of transport security that requires both the client and the server to present certificates to verify their identity. This is a more secure form of transport security than traditional TLS, which only requires the server to present a certificate. mTLS is a good choice for securing communication between services in a microservices architecture, where you want to ensure that both the client and the server are who they say they are. The PR for this change can be found [here](https://github.com/absmach/magistrala/pull/1848). This is enabled out-of-the-box and you don't need to do anything to enable it.
 
-### Add graceful-stop for HTTP and GRPC servers
+### Added graceful-stop for HTTP and GRPC servers
 
 We added a graceful stop for HTTP and GRPC servers. This means that when you stop the server it will wait for all the requests to finish before it stops. This is a very important feature and we are very happy to have it in Magistrala. The PR for this change can be found [here](https://github.com/absmach/magistrala/pull/1548)
 
@@ -68,7 +68,7 @@ We added a graceful stop for HTTP and GRPC servers. This means that when you sto
 
 Logical deletion is a way to mark an entity as deleted without actually deleting it. This is done by changing its status to disabled. Hard deletion is a way to delete an entity from the database. We added support for both logical and hard entity deletion.
 
-### Improve tracing
+### Improved tracing
 
 Distributed tracing is a way to trace a request as it goes through the system. We enhanced support for distributed tracing in Magistrala. We added support for distributed tracing over NATS and gRPC.
 
@@ -76,12 +76,12 @@ Distributed tracing is a way to trace a request as it goes through the system. W
 
 ![Tracing update group operation](../img/blogs/v0-14-0-release/tracing2.png)
 
-### Improve event sourcing
+### Improved event sourcing
 
 Event sourcing is a way to store data as events instead of the current state of the system in an append-only log. We improved support for event sourcing in Magistrala by:
 
 - Adding event sourcing package which can be used to implement event sourcing in the different services. This package is used to store events in the event store and to retrieve events from the event store. This change can be found [here](https://github.com/absmach/magistrala/pull/1897).
-- Emitting events from [users service](https://github.com/absmach/magistrala/pull/1835) and [twins service](https://github.com/absmach/magistrala/pull/1852).
+- Emitting events from [Users service](https://github.com/absmach/magistrala/pull/1835) and [twins service](https://github.com/absmach/magistrala/pull/1852).
 - Reliably emitting events to the event store. This is by storing the events in a buffer if the event store is not available and then emitting the events to the event store when it becomes available. This change can be found [here](https://github.com/absmach/magistrala/pull/1836). This was for NATS since the library we were using for NATS did not support this feature.
 
 ### Added telemetry
@@ -99,7 +99,7 @@ We take your privacy and data security seriously. All data collected is handled 
 
 Data collection is on by default and can be disabled by setting the env variable: `MG_SEND_TELEMETRY=false`.
 
-### Add prometheus and grafana for metrics
+### Added prometheus and grafana for metrics
 
 Prometheus is an open-source monitoring and alerting toolkit. Grafana is the open-source analytics and monitoring solution for every database. We added support for Prometheus and grafana for metrics. Prometheus is used to collect metrics from the different services and grafana is used to visualize the metrics. The PR for this change can be found [here](https://github.com/absmach/magistrala/pull/1753)
 
