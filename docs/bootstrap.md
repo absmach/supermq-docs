@@ -240,12 +240,12 @@ func main() {
 To use Magistrala CLI for the secure bootstrap configuration, use the following command:
 
 ```bash
-magistrala_cli bootstrap secure <external_id> <external_key> <crypto_key>
+magistrala-cli bootstrap secure <external_id> <external_key> <crypto_key>
 ```
 for example
 
 ```bash
-cli bootstrap bootstrap secure '09:6:0:sb:sa' 'key' 'v7aT0HGxJxt2gULzr3RHwf4WIf6DusPp'
+magistrala-cli bootstrap bootstrap secure '09:6:0:sb:sa' 'key' 'v7aT0HGxJxt2gULzr3RHwf4WIf6DusPp'
 ```
 
 
