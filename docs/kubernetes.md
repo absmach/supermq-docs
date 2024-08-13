@@ -260,11 +260,15 @@ This ensures that your services scale appropriately for your environment.
 
 ### Additional Steps to Configure Ingress Controller
 
-To send MQTT messages to your host on ports `1883` and `8883` some additional steps are required in configuring NGINX Ingress Controller.
+To allow your host to send MQTT messages on ports `1883` and `8883`, you need to configure the NGINX Ingress Controller with some additional steps.
 
-NGINX Ingress Controller uses ConfigMap to expose TCP and UDP services. That ConfigMaps are included in helm chart in [ingress.yaml][ingress-yaml] file assuming that location of ConfigMaps should be `ingress-nginx/tcp-services` and `ingress-nginx/udp-services`. These locations was set with `--tcp-services-configmap` and `--udp-services-configmap` flags and you can check it in deployment of Ingress Controller or add it there in [args section for nginx-ingress-controller][ingress-controller-args] if it's not already specified. This is explained in [NGINX Ingress documentation][ingress-controller-tcp-udp]
+#### Step 1: Configure TCP and UDP Services
 
-Also, these three ports need to be exposed in the Service defined for the Ingress. You can do that with command that edit your service:
+The NGINX Ingress Controller uses ConfigMaps to expose TCP and UDP services. The necessary ConfigMaps are included in the Helm chart in the [ingress.yaml][ingress-yaml] file assuming that location of ConfigMaps should be `ingress-nginx/tcp-services` and `ingress-nginx/udp-services`. These locations are set with `--tcp-services-configmap` and `--udp-services-configmap` flags and you can check it in deployment of Ingress Controller or add it there in [args section for nginx-ingress-controller][ingress-controller-args] if it's not already specified. This is explained in [NGINX Ingress documentation][ingress-controller-tcp-udp]
+
+#### Step 2: Expose the Required Ports in the Ingress Service
+
+You need to expose the MQTT ports (`1883` for unencrypted and `8883` for encrypted messages) and the CoAP port (`5683` for UDP) in the NGINX Ingress Controller service. You can do that with the follwoing command that edits your service:
 
 `kubectl edit svc -n ingress-nginx nginx-ingress-ingress-nginx-controller`
 
@@ -285,9 +289,11 @@ and add in spec->ports:
   targetPort: 5683
 ```
 
-## TLS & mTLS
+## Configuring TLS & mTLS
 
-For testing purposes you can generate certificates as explained in detail in [authentication][authentication] chapter of this document. So, you can use [this script][makefile] and after replacing all `localhost` with your hostname, run:
+### Generating Certificates
+
+For testing purposes, you can generate the necessary TLS certificates. Detailed instructions are provided in the [authentication][authentication] chapter of this document. You can use [this script][makefile] to generate the certificates. After replacing all instances of `localhost` with your actual hostname, run the following commands:
 
 ```bash
 make ca
@@ -295,7 +301,7 @@ make server_cert
 make thing_cert KEY=<thing_secret>
 ```
 
-you should get in `certs` folder these certificates that we will use for setting up TLS and mTLS:
+This will generate the following certificates in the `certs` folder, which you’ll use to set up TLS and mTLS:
 
 ```bash
 ca.crt
@@ -307,7 +313,9 @@ thing.crt
 thing.key
 ```
 
-Create kubernetes secrets using those certificates with running commands from [secrets script][secrets]. In this example secrets are created in `mg` namespace:
+### Creating Kubernetes Secrets
+
+Create kubernetes secrets using those certificates by running commands from [secrets script][secrets]. In this example secrets are created in `mg` namespace:
 
 ```bash
 kubectl -n mg create secret tls magistrala-server --key magistrala-server.key --cert magistrala-server.crt
@@ -321,11 +329,23 @@ You can check if they are succesfully created:
 kubectl get secrets -n mg
 ```
 
-And now set ingress.hostname, ingress.tls.hostname to your hostname and ingress.tls.secret to `magistrala-server` and after helm update you have secured ingress with TLS certificate.
+### Configuring Ingress for TLS
+
+To secure your ingress with a TLS certificate, set the following values in your Helm configuration:
+
+- `ingress.hostname` to your hostname
+- `ingress.tls.hostname` to your hostname
+- `ingress.tls.secret` to `magistrala-server`
+
+After updating your Helm chart, your ingress will be secured with the TLS certificate.
+
+### Configuring Ingress for mTLS
 
 For mTLS you need to set `nginx_internal.mtls.tls="magistrala-server"` and `nginx_internal.mtls.intermediate_crt="ca"`.
 
-Now you can test sending mqtt message with this parameters:
+### Testing MQTT with mTLS
+
+You can test sending an MQTT message with the following command:
 
 ```bash
 mosquitto_pub -d -L mqtts://<thing_id>:<thing_secret>@example.com:8883/channels/<channel_id>/messages  --cert  thing.crt --key thing.key --cafile ca.crt  -m "test-message"
