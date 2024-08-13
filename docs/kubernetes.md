@@ -67,7 +67,7 @@ If you encounter the following error during the `helm dependency update` command
 Error: no repository definition for @nats, @jaegertracing, @hashicorp. Please add them via 'helm repo add'
 ```
 
-It means that Helm is trying to download dependencies from repositories that are not yet added to your Helm setup. Add the missing repositories with the following commands:
+Add the missing repositories with the following commands:
 
 ```bash
 helm repo add nats https://nats-io.github.io/k8s/helm/charts/
@@ -88,20 +88,6 @@ kubectl create namespace mg
 
 ### Deploy Magistrala
 
-Deploy Magistrala with a release named `magistrala` in the `mg` namespace:
-
-```bash
-helm install magistrala . -n mg
-```
-
-Magistrala is now deployed on your Kubernetes cluster.
-
-Here's the updated documentation with a section addressing the potential error and its solution:
-
----
-
-### Deploy Magistrala
-
 Deploy Magistrala with a release named `magistrala` in the `mg` namespace by running:
 
 ```bash
@@ -115,9 +101,7 @@ Error: INSTALLATION FAILED: 4 errors occurred:
         * admission webhook "validate.nginx.ingress.kubernetes.io" denied the request: nginx.ingress.kubernetes.io/configuration-snippet annotation cannot be used. Snippet directives are disabled by the Ingress administrator
 ```
 
-This error occurs because the Nginx Ingress Controller has disabled the use of `nginx.ingress.kubernetes.io/configuration-snippet` annotations by default.
-
-To resolve the issue, enable snippet annotations in the Nginx Ingress Controller by running the following command:
+Enable snippet annotations in the Nginx Ingress Controller by running the following command:
 
 ```bash
 helm upgrade ingress-nginx ingress-nginx/ingress-nginx -n ingress-nginx --set controller.allowSnippetAnnotations=true
