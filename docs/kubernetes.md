@@ -129,23 +129,35 @@ Make sure `ingress-nginx` repository is added to your Helm repositories. If not,
 helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
 ```
 
-Once the repository is added, you can run the upgrade command again. After enabling snippet annotations and adding the repository, try deploying Magistrala again. Magistrala should now deploy successfully on your Kubernetes cluster.
+Once the repository is added, you can run the upgrade command again. After enabling snippet annotations and adding the repository, try deploying Magistrala again. Magistrala should now deploy successfully on your Kubernetes cluster. You should see an output similar to:
 
-### Customizing Installation
+```bash
+NAME: magistrala
+LAST DEPLOYED: Tue Aug 13 15:49:29 2024
+NAMESPACE: mg
+STATUS: deployed
+REVISION: 1
+```
 
-You can override default values while installing with `--set` option. For example, if you want to specify ingress hostname and pull `latest` tag of `users` image:
+### Customizing a New Installation
+
+You can easily customize Magistrala during installtion by overriding the default settings using the `--set` option in Helm.
+
+For example, if you want to set a custom hostname for the ingress (like `example.com`) and ensure you're using the latest version of the `users` image, you can do this during installation with the following command:
 
 ```bash
 helm install magistrala -n mg --set ingress.hostname='example.com' --set users.image.tag='latest'
 ```
 
-Or if release is already installed, you can update it:
+#### Updating an Existing Installation
+
+If Magistrala is already installed and you want to update it with new settings (for example, changing the ingress hostname or image tag), you can use the `helm upgrade` command:
 
 ```bash
 helm upgrade magistrala -n mg --set ingress.hostname='example.com' --set users.image.tag='latest'
 ```
 
-The following table lists the configurable parameters and their default values.
+This will apply your changes to the existing installation. The following table lists the configurable parameters and their default values.
 
 | Parameter                          | Description                                                                                     | Default          |
 | ---------------------------------- | ----------------------------------------------------------------------------------------------- | ---------------- |
@@ -201,9 +213,13 @@ The following table lists the configurable parameters and their default values.
 | twins.httpPort                     | Twins service HTTP port                                                                         | 9021             |
 | twins.redisCachePort               | Twins service Redis Cache port                                                                  | 6379             |
 
-All Magistrala services (both core and add-ons) can have their `logLevel`, `image.pullPolicy`, `image.repository` and `image.tag` overridden.
+### Customizing Magistrala Services
 
-Magistrala Core is a minimalistic set of required Magistrala services. They are all installed by default:
+You can customize the `logLevel`, `image.pullPolicy`, `image.repository`, and `image.tag` for all Magistrala services, including both core and add-ons.
+
+#### Magistrala Core
+
+The Magistrala Core includes the essential services that are installed by default:
 
 - authn
 - users
@@ -213,8 +229,17 @@ Magistrala Core is a minimalistic set of required Magistrala services. They are 
 - adapter_coap
 - ui
 
-Magistrala Add-ons are optional services that are disabled by default. Find in Configuration table parameters for enabling them, i.e. to enable influxdb reader & writer you should run `helm install` with `--set influxdb=true`.
-List of add-ons services in charts:
+These are the minimum required services to run Magistrala.
+
+#### Magistrala Add-ons
+
+Magistrala Add-ons are optional services that are not installed by default. To enable an add-on, you need to specify it during installation. For example, to enable the InfluxDB reader and writer, you would use the following command:
+
+```bash
+helm install magistrala . -n mg --set influxdb=true
+```
+
+Here’s a list of available add-ons:
 
 - bootstrap
 - influxdb.writer
@@ -223,7 +248,15 @@ List of add-ons services in charts:
 - adapter_lora
 - twins
 
-By default scale of MQTT adapter, Things, Envoy, Authn and the Message Broker will be set to 3. It's recommended that you set this values to number of your nodes in Kubernetes cluster, i.e. `--set defaults.replicaCount=3 --set messageBroker.replicaCount=3`
+#### Scaling Services
+
+By default, the MQTT adapter, Things, Envoy, Authn, and the Message Broker services are set to scale with a replica count of 3. It’s recommended to set these values according to the number of nodes in your Kubernetes cluster. For example, you can adjust the replica count with the following command:
+
+```bash
+helm install magistrala . -n mg --set defaults.replicaCount=3 --set messageBroker.replicaCount=3
+```
+
+This ensures that your services scale appropriately for your environment.
 
 ### Additional Steps to Configure Ingress Controller
 
