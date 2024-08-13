@@ -123,7 +123,13 @@ To resolve the issue, enable snippet annotations in the Nginx Ingress Controller
 helm upgrade ingress-nginx ingress-nginx/ingress-nginx -n ingress-nginx --set controller.allowSnippetAnnotations=true
 ```
 
-After enabling snippet annotations, try deploying Magistrala again. Magistrala should now deploy successfully on your Kubernetes cluster.
+Make sure `ingress-nginx` repository is added to your Helm repositories. If not, add the repository with the following command:
+
+```bash
+helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
+```
+
+Once the repository is added, you can run the upgrade command again. After enabling snippet annotations and adding the repository, try deploying Magistrala again. Magistrala should now deploy successfully on your Kubernetes cluster.
 
 ### Customizing Installation
 
