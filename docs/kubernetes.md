@@ -4,11 +4,11 @@ Magistrala can be easily deployed on Kubernetes platform by using Helm Chart fro
 
 ## Prerequisites
 
-- Kubernetes
-- kubectl
-- Helm v3
-- Stable Helm repository
-- Nginx Ingress Controller
+- Kubernetes: This is the platform where you'll run your applications
+- kubectl: A command-line tool for interacting with your Kubernetes cluster
+- Helm v3: A package manager for Kubernetes that helps you install and manage applications
+- Stable Helm repository: A collection of Helm charts you can use, which you can add to your Helm setup
+- Nginx Ingress Controller: A component that manages external access to your services in Kubernetes
 
 ### Kubernetes
 
@@ -48,32 +48,53 @@ helm install ingress-nginx ingress-nginx/ingress-nginx --version 3.26.0 --create
 
 ## Deploying Magistrala
 
-Get Helm charts from [Magistrala DevOps GitHub repository][devops-repo]:
+Get Helm charts from the [Magistrala DevOps GitHub repository][devops-repo]:
 
 ```bash
 git clone https://github.com/absmach/devops.git
 cd devops/charts/mainflux
 ```
 
-Update the on-disk dependencies to mirror Chart.yaml:
+Update the on-disk dependencies to match the `Chart.yaml` file:
 
 ```bash
 helm dependency update
 ```
 
-If you didn't already have namespace created you should do it with:
+If you encounter the following error during the `helm dependency update` command:
+
+```
+Error: no repository definition for @nats, @jaegertracing, @hashicorp. Please add them via 'helm repo add'
+```
+
+It means that Helm is trying to download dependencies from repositories that are not yet added to your Helm setup. Add the missing repositories with the following commands:
+
+```bash
+helm repo add nats https://nats-io.github.io/k8s/helm/charts/
+helm repo add jaegertracing https://jaegertracing.github.io/helm-charts
+helm repo add hashicorp https://helm.releases.hashicorp.com
+helm repo update
+```
+
+After adding the repositories, run the `helm dependency update` command again.
+
+### Create a Namespace (if needed)
+
+If you haven't already created a namespace, do so with:
 
 ```bash
 kubectl create namespace mg
 ```
 
-Deploying release named `magistrala` in namespace named `mg` is done with just:
+### Deploy Magistrala
+
+Deploy Magistrala with a release named `magistrala` in the `mg` namespace:
 
 ```bash
 helm install magistrala . -n mg
 ```
 
-Magistrala is now deployed on your Kubernetes.
+Magistrala is now deployed on your Kubernetes cluster.
 
 ### Customizing Installation
 
