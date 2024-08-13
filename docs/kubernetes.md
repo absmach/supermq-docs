@@ -96,6 +96,35 @@ helm install magistrala . -n mg
 
 Magistrala is now deployed on your Kubernetes cluster.
 
+Here's the updated documentation with a section addressing the potential error and its solution:
+
+---
+
+### Deploy Magistrala
+
+Deploy Magistrala with a release named `magistrala` in the `mg` namespace by running:
+
+```bash
+helm install magistrala . -n mg
+```
+
+If you encounter the following error during deployment:
+
+```
+Error: INSTALLATION FAILED: 4 errors occurred:
+        * admission webhook "validate.nginx.ingress.kubernetes.io" denied the request: nginx.ingress.kubernetes.io/configuration-snippet annotation cannot be used. Snippet directives are disabled by the Ingress administrator
+```
+
+This error occurs because the Nginx Ingress Controller has disabled the use of `nginx.ingress.kubernetes.io/configuration-snippet` annotations by default.
+
+To resolve the issue, enable snippet annotations in the Nginx Ingress Controller by running the following command:
+
+```bash
+helm upgrade ingress-nginx ingress-nginx/ingress-nginx -n ingress-nginx --set controller.allowSnippetAnnotations=true
+```
+
+After enabling snippet annotations, try deploying Magistrala again. Magistrala should now deploy successfully on your Kubernetes cluster.
+
 ### Customizing Installation
 
 You can override default values while installing with `--set` option. For example, if you want to specify ingress hostname and pull `latest` tag of `users` image:
