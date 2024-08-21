@@ -125,7 +125,7 @@ REVISION: 1
 
 ### Customizing a New Installation
 
-You can easily customize Magistrala during installtion by overriding the default settings using the `--set` option in Helm.
+You can easily customize Magistrala during installation by overriding the default settings using the `--set` option in Helm.
 
 For example, if you want to set a custom hostname for the ingress (like `example.com`) and ensure you're using the latest version of the `users` image, you can do this during installation with the following command:
 
@@ -243,7 +243,7 @@ The NGINX Ingress Controller uses ConfigMaps to expose TCP and UDP services. The
 
 #### Step 2: Expose the Required Ports in the Ingress Service
 
-You need to expose the MQTT ports (`1883` for unencrypted and `8883` for encrypted messages) and the CoAP port (`5683` for UDP) in the NGINX Ingress Controller service. You can do that with the follwoing command that edits your service:
+You need to expose the MQTT ports (`1883` for unencrypted and `8883` for encrypted messages) and the CoAP port (`5683` for UDP) in the NGINX Ingress Controller service. You can do that with the following command that edits your service:
 
 `kubectl edit svc -n ingress-nginx nginx-ingress-ingress-nginx-controller`
 
