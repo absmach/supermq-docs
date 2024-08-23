@@ -190,7 +190,104 @@ This will apply your changes to the existing installation. The following table l
 
 ### Customizing Magistrala Services
 
-You can customize the `logLevel`, `image.pullPolicy`, `image.repository`, and `image.tag` for all Magistrala services, including both core and add-ons.
+You can customize the following parameters in `values.yml` as needed:
+
+- **`image.pullSecrets`**: Specify image pull secrets if your image repository requires authentication.
+
+  Example:
+  ```yaml
+  image:
+    pullSecrets:
+      - my-registry-key
+  ```
+
+- **`repository`**: The Docker repository where the image is stored. Set this to your preferred image repository if you are using a custom image.
+
+  Example:
+  ```yaml
+  image:
+    repository: "magistrala"
+  ```
+
+- **`tag`**: The specific tag of the image to use. Change this to pin to a specific version or use `latest` for the most recent version.
+
+  Example:
+  ```yaml
+  image:
+    tag: "latest"
+  ```
+
+- **`pullPolicy`**: This defines when Kubernetes should pull the Docker image. Options are `Always`, `IfNotPresent`, or `Never`. `IfNotPresent` is generally used to avoid unnecessary pulls.
+
+  Example:
+  ```yaml
+  image:
+    pullPolicy: "IfNotPresent"
+  ```
+
+- **`logLevel`**: Common options are `debug`, `info`, `warn`, `error`. Adjust this based on the verbosity of logs you require.
+  Example:
+  ```yaml
+  logLevel: "debug"
+  ```
+
+- **`nodeSelector`**: This is used to restrict the pod to run on specific nodes.
+
+  Example:
+  ```yaml
+  nodeSelector:
+    disktype: ssd
+  ```
+
+- **`affinity`**: Use this to specify rules about how pods should be placed relative to other pods.
+
+  Example:
+  ```yaml
+  affinity:
+    podAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        - labelSelector:
+            matchExpressions:
+              - key: app
+                operator: In
+                values:
+                  - my-app
+          topologyKey: "kubernetes.io/hostname"
+  ```
+
+- **`tolerations`**: Use this to allow pods to be scheduled on nodes with specific taints.
+
+  Example:
+  ```yaml
+  tolerations:
+    - key: "key1"
+      operator: "Equal"
+      value: "value1"
+      effect: "NoSchedule"
+  ```
+
+#### Specific Service Configuration
+
+- **`ingress`**: Uncomment the `hostname` and `tls` blocks in `values.yml` for TLS support in public ingress.
+
+  Example:
+  ```yaml
+  ingress:
+    hostname: "your-domain.com"
+    tls:
+      hostname: "your-domain.com"
+      secret: "magistrala-server"
+  ```
+
+- **`nginxInternal`**: Uncomment the `mtls` block in `values.yml` for mTLS support and use the script from `/secrets/secrets.sh` to create config maps with your certs.
+
+  Example:
+  ```yaml
+  nginxInternal:
+    mtls:
+      tls: "magistrala-server"
+      intermediateCrt: "ca"
+  ```
 
 #### Magistrala Core
 
