@@ -125,6 +125,50 @@ STATUS: deployed
 REVISION: 1
 ```
 
+After deploying Magistrala, you can visualize the running services in your Kubernetes cluster using the `kubectl` command-line tool. Here are some useful commands:
+
+**List all pods:**
+
+```sh
+kubectl get pods
+```
+
+**List all services:**
+
+```sh
+kubectl get services
+```
+
+**Get detailed information about a specific pod:**
+
+```sh
+kubectl describe pod <pod-name>
+```
+
+**Get detailed information about a specific service:**
+
+```sh
+kubectl describe service <service-name>
+```
+
+**View logs of a specific pod:**
+
+```sh
+kubectl logs <pod-name>
+```
+
+To get more detailed information, you can specify the namespace if your Helm chart uses one:
+
+```sh
+kubectl logs <pod-name> -n <namespace>
+```
+
+If your pod has multiple containers, you need to specify the container name as well:
+
+```sh
+kubectl logs <pod-name> -c <container-name>
+```
+
 ### Uninstall Magistrala
 
 To uninstall the `magistrala` release from the `mg` namespace, use the following command:
@@ -207,6 +251,7 @@ You can customize the following parameters in `values.yml` as needed:
 - **`image.pullSecrets`**: Specify image pull secrets if your image repository requires authentication.
 
   Example:
+
   ```yaml
   image:
     pullSecrets:
@@ -216,6 +261,7 @@ You can customize the following parameters in `values.yml` as needed:
 - **`repository`**: The Docker repository where the image is stored. Set this to your preferred image repository if you are using a custom image.
 
   Example:
+
   ```yaml
   image:
     repository: "magistrala"
@@ -224,6 +270,7 @@ You can customize the following parameters in `values.yml` as needed:
 - **`tag`**: The specific tag of the image to use. Change this to pin to a specific version or use `latest` for the most recent version.
 
   Example:
+
   ```yaml
   image:
     tag: "latest"
@@ -232,6 +279,7 @@ You can customize the following parameters in `values.yml` as needed:
 - **`pullPolicy`**: This defines when Kubernetes should pull the Docker image. Options are `Always`, `IfNotPresent`, or `Never`. `IfNotPresent` is generally used to avoid unnecessary pulls.
 
   Example:
+
   ```yaml
   image:
     pullPolicy: "IfNotPresent"
@@ -239,6 +287,7 @@ You can customize the following parameters in `values.yml` as needed:
 
 - **`logLevel`**: Common options are `debug`, `info`, `warn`, `error`. Adjust this based on the verbosity of logs you require.
   Example:
+
   ```yaml
   logLevel: "debug"
   ```
@@ -246,6 +295,7 @@ You can customize the following parameters in `values.yml` as needed:
 - **`nodeSelector`**: This is used to restrict the pod to run on specific nodes.
 
   Example:
+
   ```yaml
   nodeSelector:
     disktype: ssd
@@ -254,6 +304,7 @@ You can customize the following parameters in `values.yml` as needed:
 - **`affinity`**: Use this to specify rules about how pods should be placed relative to other pods.
 
   Example:
+
   ```yaml
   affinity:
     podAffinity:
@@ -270,6 +321,7 @@ You can customize the following parameters in `values.yml` as needed:
 - **`tolerations`**: Use this to allow pods to be scheduled on nodes with specific taints.
 
   Example:
+
   ```yaml
   tolerations:
     - key: "key1"
@@ -283,6 +335,7 @@ You can customize the following parameters in `values.yml` as needed:
 - **`ingress`**: Uncomment the `hostname` and `tls` blocks in `values.yml` for TLS support in public ingress.
 
   Example:
+
   ```yaml
   ingress:
     hostname: "your-domain.com"
@@ -294,6 +347,7 @@ You can customize the following parameters in `values.yml` as needed:
 - **`nginxInternal`**: Uncomment the `mtls` block in `values.yml` for mTLS support and use the script from `/secrets/secrets.sh` to create config maps with your certs.
 
   Example:
+
   ```yaml
   nginxInternal:
     mtls:
