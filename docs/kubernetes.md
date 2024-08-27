@@ -86,6 +86,8 @@ If you haven't already created a namespace, do so with:
 kubectl create namespace mg
 ```
 
+Here's the updated section with details on uninstalling the service:
+
 ### Deploy Magistrala
 
 Deploy Magistrala with a release named `magistrala` in the `mg` namespace by running:
@@ -122,6 +124,16 @@ NAMESPACE: mg
 STATUS: deployed
 REVISION: 1
 ```
+
+### Uninstall Magistrala
+
+To uninstall the `magistrala` release from the `mg` namespace, use the following command:
+
+```bash
+helm uninstall magistrala -n mg
+```
+
+If you encounter any issues during uninstallation, ensure that the release name and namespace are correctly specified.
 
 ### Customizing a New Installation
 
