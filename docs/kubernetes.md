@@ -52,7 +52,7 @@ Get Helm charts from the [Magistrala DevOps GitHub repository][devops-repo]:
 
 ```bash
 git clone https://github.com/absmach/devops.git
-cd devops/charts/mainflux
+cd devops/charts/magistrala
 ```
 
 Update the on-disk dependencies to match the `Chart.yaml` file:
