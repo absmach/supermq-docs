@@ -1,59 +1,137 @@
 # Kubernetes
 
-Magistrala can be easily deployed on Kubernetes platform by using Helm Chart from official [Magistrala DevOps GitHub repository][devops-repo].
+Magistrala can be easily deployed on the Kubernetes platform using Helm Charts from the official [Magistrala DevOps GitHub repository](https://github.com/absmach/devops).
 
 ## Prerequisites
 
-- Kubernetes: This is the platform where you'll run your applications
-- kubectl: A command-line tool for interacting with your Kubernetes cluster
-- Helm v3: A package manager for Kubernetes that helps you install and manage applications
-- Stable Helm repository: A collection of Helm charts you can use, which you can add to your Helm setup
-- Nginx Ingress Controller: A component that manages external access to your services in Kubernetes
+### 1. Install Docker
 
-### Kubernetes
+K3d requires Docker to run Kubernetes clusters inside Docker containers. Follow the official [Docker installation guide](https://docs.docker.com/get-docker/) to install Docker.
 
-Kubernetes is an open source container orchestration engine for automating deployment, scaling, and management of containerised applications. Install it locally or have access to a cluster. Follow [these instructions][kubernetes-setup] if you need more information.
+Once installed, verify the installation:
 
-### Kubectl
+```bash
+docker --version
+```
 
-Kubectl is official Kubernetes command line client. Follow [these instructions][kubectl-setup] to install it.
+---
 
-Regarding the cluster control with `kubectl`, default config `.yaml` file should be `~/.kube/config`.
+### 2. Install Kubernetes via K3d
 
-### Helm v3
+K3d is a lightweight Kubernetes distribution that runs inside Docker, ideal for local development.
 
-Helm is the package manager for Kubernetes. Follow [these instructions][helm-setup] to install it.
+#### Steps to install K3d:
 
-### Stable Helm Repository
+```bash
+curl -s https://raw.githubusercontent.com/k3d-io/k3d/main/install.sh | bash
+```
 
-Add a stable chart repository:
+For more information on K3d, refer to the official [K3d documentation](https://k3d.io/).
+
+### 3. Install kubectl
+
+`kubectl` is the command-line tool used to interact with your Kubernetes cluster.
+
+#### Steps to install kubectl:
+
+```bash
+curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+```
+
+Verify the installation:
+
+```bash
+kubectl version --client
+```
+
+---
+
+### 4. Install Helm v3
+
+Helm is a package manager for Kubernetes, simplifying application installation and management.
+
+#### Steps to install Helm:
+
+```bash
+curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+```
+
+Verify the installation:
+
+```bash
+helm version
+```
+
+---
+
+### 5. Add Helm Repositories
+
+#### Add Stable Helm Repository:
+
+The **Helm stable repository** contains Helm charts that you can use to install applications on Kubernetes.
 
 ```bash
 helm repo add stable https://charts.helm.sh/stable
+helm repo update
 ```
 
-Add a bitnami chart repository:
+#### Add Bitnami Helm Repository:
+
+Bitnami offers a collection of popular Helm charts for various applications.
 
 ```bash
 helm repo add bitnami https://charts.bitnami.com/bitnami
+helm repo update
 ```
 
-### Nginx Ingress Controller
+---
 
-Follow [these instructions][nginx-ingress] to install it or:
+### 6. Install Nginx Ingress Controller
+
+The Nginx Ingress Controller manages external access to services within your Kubernetes cluster.
+
+#### Install Nginx Ingress Controller using Helm:
 
 ```bash
+helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
+helm repo update
+
+kubectl create namespace ingress-nginx
+
 helm install ingress-nginx ingress-nginx/ingress-nginx --version 3.26.0 --create-namespace -n ingress-nginx
 ```
 
-## Deploying Magistrala
+Verify the installation:
 
-Get Helm charts from the [Magistrala DevOps GitHub repository][devops-repo]:
+```bash
+kubectl get pods -n ingress-nginx
+```
+
+---
+
+## Deploying Magistrala (Manual Local Deployment)
+
+This method involves **manually deploying Magistrala** by cloning the Helm chart repository to your local machine, making any necessary customizations, and installing the chart from the local directory.
+
+#### Use Case:
+
+This approach is useful if you want to:
+
+- Directly interact with the chart source files.
+- Modify the chart before installation.
+- Perform development or testing on the chart.
+
+### Steps:
+
+#### 1. Clone the Helm Chart Repository:
 
 ```bash
 git clone https://github.com/absmach/devops.git
 cd devops/charts/magistrala
 ```
+
+#### 2. Update Dependencies:
 
 Update the on-disk dependencies to match the `Chart.yaml` file:
 
@@ -61,13 +139,7 @@ Update the on-disk dependencies to match the `Chart.yaml` file:
 helm dependency update
 ```
 
-If you encounter the following error during the `helm dependency update` command:
-
-```
-Error: no repository definition for @nats, @jaegertracing, @hashicorp. Please add them via 'helm repo add'
-```
-
-Add the missing repositories with the following commands:
+If you encounter errors related to missing repositories, add the required repositories:
 
 ```bash
 helm repo add nats https://nats-io.github.io/k8s/helm/charts/
@@ -76,110 +148,135 @@ helm repo add hashicorp https://helm.releases.hashicorp.com
 helm repo update
 ```
 
-After adding the repositories, run the `helm dependency update` command again.
+Run `helm dependency update` again after adding the repositories.
 
-### Create a Namespace (if needed)
+---
 
-If you haven't already created a namespace, do so with:
+### 3. Create a Namespace (if needed):
 
 ```bash
 kubectl create namespace mg
 ```
 
-Here's the updated section with details on uninstalling the service:
+---
 
-### Deploy Magistrala
+### 4. Deploy Magistrala:
 
-Deploy Magistrala with a release named `magistrala` in the `mg` namespace by running:
+Deploy the Magistrala Helm chart into the `mg` namespace:
 
 ```bash
 helm install magistrala . -n mg
 ```
 
-If you encounter the following error during deployment:
-
-```
-Error: INSTALLATION FAILED: 4 errors occurred:
-        * admission webhook "validate.nginx.ingress.kubernetes.io" denied the request: nginx.ingress.kubernetes.io/configuration-snippet annotation cannot be used. Snippet directives are disabled by the Ingress administrator
-```
-
-Enable snippet annotations in the Nginx Ingress Controller by running the following command:
+If you encounter an error related to snippet annotations in Nginx, enable them with:
 
 ```bash
 helm upgrade ingress-nginx ingress-nginx/ingress-nginx -n ingress-nginx --set controller.allowSnippetAnnotations=true
 ```
 
-Make sure `ingress-nginx` repository is added to your Helm repositories. If not, add the repository with the following command:
+Ensure you have the Nginx Ingress repository added:
 
 ```bash
 helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
 ```
 
-Once the repository is added, you can run the upgrade command again. After enabling snippet annotations and adding the repository, try deploying Magistrala again. Magistrala should now deploy successfully on your Kubernetes cluster. You should see an output similar to:
+### 5. Verifying the Deployment
 
-```bash
-NAME: magistrala
-LAST DEPLOYED: Tue Aug 13 15:49:29 2024
-NAMESPACE: mg
-STATUS: deployed
-REVISION: 1
-```
-
-After deploying Magistrala, you can visualize the running services in your Kubernetes cluster using the `kubectl` command-line tool. Here are some useful commands:
+After deploying Magistrala, verify the services and pods using `kubectl` commands:
 
 **List all pods:**
 
-```sh
-kubectl get pods
+```bash
+kubectl get pods -n mg
 ```
 
 **List all services:**
 
-```sh
-kubectl get services
+```bash
+kubectl get services -n mg
 ```
 
-**Get detailed information about a specific pod:**
-
-```sh
-kubectl describe pod <pod-name>
-```
-
-**Get detailed information about a specific service:**
-
-```sh
-kubectl describe service <service-name>
-```
-
-**View logs of a specific pod:**
-
-```sh
-kubectl logs <pod-name>
-```
-
-To get more detailed information, you can specify the namespace if your Helm chart uses one:
-
-```sh
-kubectl logs <pod-name> -n <namespace>
-```
-
-If your pod has multiple containers, you need to specify the container name as well:
-
-```sh
-kubectl logs <pod-name> -c <container-name>
-```
-
-### Uninstall Magistrala
-
-To uninstall the `magistrala` release from the `mg` namespace, use the following command:
+**View logs of a pod:**
 
 ```bash
-helm uninstall magistrala -n mg
+kubectl logs <pod-name> -n mg
 ```
 
-If you encounter any issues during uninstallation, ensure that the release name and namespace are correctly specified.
+---
 
-### Customizing a New Installation
+## Installing the Magistrala Chart (From Published Helm Repository)
+
+This method is the **standard installation** approach, where you install the Magistrala chart directly from a Helm repository. This is quicker and ideal for end-users who do not need to modify the chart manually.
+
+#### Use Case:
+
+This approach is suitable for:
+
+- End-users who simply want to install Magistrala without modifying the source code.
+- Production environments where the chart is deployed directly from a hosted Helm repository.
+
+### Steps:
+
+#### 1. Add the Magistrala Helm Repository:
+
+The Helm charts are published via GitHub Pages. Add the repository to your Helm configuration:
+
+```bash
+helm repo add devops-charts https://absmach.github.io/devops/
+helm repo update
+```
+
+---
+
+#### 2. Install the Magistrala Chart:
+
+After adding the repository, install the Magistrala chart using Helm:
+
+```bash
+helm install <release-name> devops-charts/magistrala
+```
+
+Replace `<release-name>` with your desired release name.
+
+---
+
+#### 3. Upgrading the Magistrala Chart:
+
+To upgrade the chart to a new version or update configurations:
+
+```bash
+helm upgrade <release-name> devops-charts/magistrala
+```
+
+This command upgrades the existing release while retaining custom settings.
+
+---
+
+#### 4. Uninstalling Magistrala:
+
+To uninstall the Magistrala release:
+
+```bash
+helm uninstall <release-name> -n mg
+```
+
+This will remove the Magistrala release from the `mg` namespace.
+
+---
+
+### Customizing Magistrala Installation:
+
+You can customize Magistrala by overriding default values during installation. For example, if you want to set a custom hostname for the ingress (like `example.com`) and ensure you're using the latest version of the `users` image, you can do this during installation with the following command::
+
+```bash
+helm install magistrala -n mg --set ingress.hostname='example.com' --set users.image.tag='latest'
+```
+
+To update an existing installation with new settings:
+
+```bash
+helm upgrade magistrala -n mg --set ingress.hostname='example.com' --set users.image.tag='latest'
+```
 
 You can easily customize Magistrala during installation by overriding the default settings using the `--set` option in Helm.
 
@@ -188,8 +285,6 @@ For example, if you want to set a custom hostname for the ingress (like `example
 ```bash
 helm install magistrala -n mg --set ingress.hostname='example.com' --set users.image.tag='latest'
 ```
-
-#### Updating an Existing Installation
 
 If Magistrala is already installed and you want to update it with new settings (for example, changing the ingress hostname or image tag), you can use the `helm upgrade` command:
 
@@ -243,117 +338,6 @@ This will apply your changes to the existing installation. The following table l
 | bootstrap.dbPort                   | Bootstrap service DB port                                                                       | 5432                 |
 | bootstrap.httpPort                 | Bootstrap service HTTP port                                                                     | 9013                 |
 | bootstrap.redisESPort              | Bootstrap service Redis Event Store port                                                        | 6379                 |
-
-### Customizing Magistrala Services
-
-You can customize the following parameters in `values.yml` as needed:
-
-- **`image.pullSecrets`**: Specify image pull secrets if your image repository requires authentication.
-
-  Example:
-
-  ```yaml
-  image:
-    pullSecrets:
-      - my-registry-key
-  ```
-
-- **`repository`**: The Docker repository where the image is stored. Set this to your preferred image repository if you are using a custom image.
-
-  Example:
-
-  ```yaml
-  image:
-    repository: "magistrala"
-  ```
-
-- **`tag`**: The specific tag of the image to use. Change this to pin to a specific version or use `latest` for the most recent version.
-
-  Example:
-
-  ```yaml
-  image:
-    tag: "latest"
-  ```
-
-- **`pullPolicy`**: This defines when Kubernetes should pull the Docker image. Options are `Always`, `IfNotPresent`, or `Never`. `IfNotPresent` is generally used to avoid unnecessary pulls.
-
-  Example:
-
-  ```yaml
-  image:
-    pullPolicy: "IfNotPresent"
-  ```
-
-- **`logLevel`**: Common options are `debug`, `info`, `warn`, `error`. Adjust this based on the verbosity of logs you require.
-  Example:
-
-  ```yaml
-  logLevel: "debug"
-  ```
-
-- **`nodeSelector`**: This is used to restrict the pod to run on specific nodes.
-
-  Example:
-
-  ```yaml
-  nodeSelector:
-    disktype: ssd
-  ```
-
-- **`affinity`**: Use this to specify rules about how pods should be placed relative to other pods.
-
-  Example:
-
-  ```yaml
-  affinity:
-    podAffinity:
-      requiredDuringSchedulingIgnoredDuringExecution:
-        - labelSelector:
-            matchExpressions:
-              - key: app
-                operator: In
-                values:
-                  - my-app
-          topologyKey: "kubernetes.io/hostname"
-  ```
-
-- **`tolerations`**: Use this to allow pods to be scheduled on nodes with specific taints.
-
-  Example:
-
-  ```yaml
-  tolerations:
-    - key: "key1"
-      operator: "Equal"
-      value: "value1"
-      effect: "NoSchedule"
-  ```
-
-#### Specific Service Configuration
-
-- **`ingress`**: Uncomment the `hostname` and `tls` blocks in `values.yml` for TLS support in public ingress.
-
-  Example:
-
-  ```yaml
-  ingress:
-    hostname: "your-domain.com"
-    tls:
-      hostname: "your-domain.com"
-      secret: "magistrala-server"
-  ```
-
-- **`nginxInternal`**: Uncomment the `mtls` block in `values.yml` for mTLS support and use the script from `/secrets/secrets.sh` to create config maps with your certs.
-
-  Example:
-
-  ```yaml
-  nginxInternal:
-    mtls:
-      tls: "magistrala-server"
-      intermediateCrt: "ca"
-  ```
 
 #### Magistrala Core
 
