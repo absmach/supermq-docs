@@ -282,58 +282,9 @@ If Magistrala is already installed and you want to update it with new settings (
 helm upgrade magistrala -n mg --set ingress.hostname='example.com' --set users.image.tag='latest'
 ```
 
-This will apply your changes to the existing installation.
+This will apply your changes to the existing installation. For a complete table of the configurable parameters and their default values, see [configurable parameters and their default values](https://github.com/absmach/devops/blob/master/charts/magistrala/README.md). For changes to any of the configurable parameters, equally update the documentation at `charts/magistrala/README.md` using `helm-docs` as described in [Autogenerating Helm Chart Documentation](https://github.com/absmach/devops/blob/master/README.md).
 
-For changes to the `requirements.yaml`, `values.yaml`, `Chart.yaml`, or `README.md.gotmpl` files in `https://github.com/absmach/devops`, equally update the documentation at `charts/magistrala/README.md` using `helm-docs` as described [here](https://github.com/absmach/devops/blob/master/README.md).
-
-The following table lists the configurable parameters and their default values.
-
-| Parameter                          | Description                                                                                     | Default              |
-| ---------------------------------- | ----------------------------------------------------------------------------------------------- | -------------------- |
-| defaults.logLevel                  | Log level                                                                                       | info                 |
-| defaults.image.pullPolicy          | Docker Image Pull Policy                                                                        | IfNotPresent         |
-| defaults.image.rootRepository      | Docker Image Root Repository                                                                    | magistrala           |
-| defaults.image.repository          | Docker Image Repository                                                                         | magistrala           |
-| defaults.image.tag                 | Docker Image Tag                                                                                | latest               |
-| defaults.replicaCount              | Replicas of MQTT adapter, Things, Envoy and Authn                                               | 3                    |
-| defaults.eventStreamURL            | Message broker URL, the default is NATS Url                                                     | magistrala-nats:4222 |
-| defaults.jaegerCollectorPort       | Jaeger port                                                                                     | 4318                 |
-| defaults.jaegerTraceRatio          | jaegerTraceRatio                                                                                | 10                   |
-| nginxInternal.image.pullPolicy     | Docker Image Pull Policy                                                                        | IfNotPresent         |
-| nginxInternal.image.repository     | Docker Image Repository                                                                         | nginx                |
-| nginxInternal.image.tag            | Docker Image Tag                                                                                | 1.19.1-alpine        |
-| nginxInternal.mtls.tls             | TLS secret which contains the server cert/key                                                   |                      |
-| nginxInternal.mtls.intermediateCrt | Generic secret which contains the intermediate cert used to verify clients                      |                      |
-| ingress.enabled                    | Should the Nginx Ingress be created                                                             | true                 |
-| ingress.hostname                   | Hostname for the Nginx Ingress                                                                  |                      |
-| ingress.tls.hostname               | Hostname of the Nginx Ingress certificate                                                       |                      |
-| ingress.tls.secret                 | TLS secret for the Nginx Ingress                                                                |                      |
-| messageBroker.maxPayload           | Maximum payload size in bytes that the Message Broker server, if it is NATS, server will accept | 2Gi                  |
-| messageBroker.replicaCount         | Message Broker replicas                                                                         | 3                    |
-| users.dbPort                       | Users service DB port                                                                           | 5432                 |
-| users.httpPort                     | Users service HTTP port                                                                         | 9000                 |
-| things.dbPort                      | Things service DB port                                                                          | 5432                 |
-| things.httpPort                    | Things service HTTP port                                                                        | 9000                 |
-| things.authGrpcPort                | Things service Auth gRPC port                                                                   | 7000                 |
-| things.authHttpPort                | Things service Auth HTTP port                                                                   | 9001                 |
-| things.redisESPort                 | Things service Redis Event Store port                                                           | 6379                 |
-| things.redisCachePort              | Things service Redis Auth Cache port                                                            | 6379                 |
-| adapter_http.httpPort              | HTTP adapter port                                                                               | 8008                 |
-| mqtt.proxy.mqttPort                | MQTT adapter proxy port                                                                         | 1884                 |
-| mqtt.proxy.wsPort                  | MQTT adapter proxy WS port                                                                      | 8081                 |
-| mqtt.broker.mqttPort               | MQTT adapter broker port                                                                        | 1883                 |
-| mqtt.broker.wsPort                 | MQTT adapter broker WS port                                                                     | 8080                 |
-| mqtt.broker.persistentVolume.size  | MQTT adapter broker data Persistent Volume size                                                 | 5Gi                  |
-| mqtt.redisESPort                   | MQTT adapter Event Store port                                                                   | 6379                 |
-| mqtt.redisCachePort                | MQTT adapter Redis Auth Cache port                                                              | 6379                 |
-| adapter_coap.udpPort               | CoAP adapter UDP port                                                                           | 5683                 |
-| ui.port                            | UI port                                                                                         | 3000                 |
-| bootstrap.enabled                  | Enable bootstrap service                                                                        | true                 |
-| bootstrap.dbPort                   | Bootstrap service DB port                                                                       | 5432                 |
-| bootstrap.httpPort                 | Bootstrap service HTTP port                                                                     | 9013                 |
-| bootstrap.redisESPort              | Bootstrap service Redis Event Store port                                                        | 6379                 |
-
-#### Magistrala Core
+### Magistrala Core
 
 The Magistrala Core includes the essential services that are installed by default:
 
@@ -347,7 +298,7 @@ The Magistrala Core includes the essential services that are installed by defaul
 
 These are the minimum required services to run Magistrala.
 
-#### Magistrala Add-ons
+### Magistrala Add-ons
 
 Magistrala Add-ons are optional services that are not installed by default. To enable an add-on, you need to specify it during installation. For example, to enable the InfluxDB reader and writer, you would use the following command:
 
@@ -364,7 +315,7 @@ Here’s a list of available add-ons:
 - adapter_lora
 - twins
 
-#### Scaling Services
+### Scaling Services
 
 By default, the MQTT adapter, Things, Envoy, Authn, and the Message Broker services are set to scale with a replica count of 3. It’s recommended to set these values according to the number of nodes in your Kubernetes cluster. For example, you can adjust the replica count with the following command:
 
