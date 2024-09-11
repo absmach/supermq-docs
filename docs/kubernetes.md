@@ -124,22 +124,14 @@ This approach is useful if you want to:
 
 ### Steps:
 
-#### 1. Clone the Helm Chart Repository:
+#### 1. Clone Magistrala Helm Chart Repository:
 
 ```bash
 git clone https://github.com/absmach/devops.git
 cd devops/charts/magistrala
 ```
 
-#### 2. Update Dependencies:
-
-Update the on-disk dependencies to match the `Chart.yaml` file:
-
-```bash
-helm dependency update
-```
-
-If you encounter errors related to missing repositories, add the required repositories:
+#### 2. Add Required Helm Repositories
 
 ```bash
 helm repo add nats https://nats-io.github.io/k8s/helm/charts/
@@ -148,9 +140,17 @@ helm repo add hashicorp https://helm.releases.hashicorp.com
 helm repo update
 ```
 
-Run `helm dependency update` again after adding the repositories.
+This ensures that all necessary repositories are available for dependencies.
 
----
+#### 3. Update Dependencies
+
+Once the repositories have been added, update the on-disk dependencies to match the `Chart.yaml` file by running:
+
+```bash
+helm dependency update
+```
+
+If the repositories are set up correctly, this will resolve and download all chart dependencies to `charts/magistrala/charts`.
 
 ### 3. Create a Namespace (if needed):
 
@@ -204,7 +204,7 @@ kubectl logs <pod-name> -n mg
 
 ---
 
-## Installing the Magistrala Chart (From Published Helm Repository)
+## Install Magistrala Charts (From Published Helm Repository)
 
 This method is the **standard installation** approach, where you install the Magistrala chart directly from a Helm repository. This is quicker and ideal for end-users who do not need to modify the chart manually.
 
@@ -219,24 +219,28 @@ This approach is suitable for:
 
 #### 1. Add the Magistrala Helm Repository:
 
-The Helm charts are published via GitHub Pages. Add the repository to your Helm configuration:
+The Helm charts are published via GitHub Pages. After installing Helm, add the Magistrala DevOps Helm repository by running:
 
 ```bash
-helm repo add devops-charts https://absmach.github.io/devops/
+helm repo add magistrala-devops https://absmach.github.io/devops/
 helm repo update
 ```
 
----
+For a complete list of all available flags to use with the `helm repo add [NAME] [URL] [flags]` command, run `helm repo add --help`
 
 #### 2. Install the Magistrala Chart:
 
-After adding the repository, install the Magistrala chart using Helm:
-
 ```bash
-helm install <release-name> devops-charts/magistrala
+helm install <release-name> magistrala-devops/magistrala [flags]
 ```
 
-Replace `<release-name>` with your desired release name.
+Replace `<release-name>` with your desired release name. For the complete list of available flags to use with the above command, run `helm install --help`.
+
+Example with release name and flag:
+
+```bash
+helm install my-magistrala magistrala-devops/magistrala --version 1.0.6
+```
 
 ---
 
@@ -245,10 +249,8 @@ Replace `<release-name>` with your desired release name.
 To upgrade the chart to a new version or update configurations:
 
 ```bash
-helm upgrade <release-name> devops-charts/magistrala
+helm upgrade <release-name> magistrala-devops/magistrala
 ```
-
-This command upgrades the existing release while retaining custom settings.
 
 ---
 
@@ -260,27 +262,15 @@ To uninstall the Magistrala release:
 helm uninstall <release-name> -n mg
 ```
 
-This will remove the Magistrala release from the `mg` namespace.
+This will remove the Magistrala release from the previously created `mg` namespace. Use the `--dry-run` flag to see which releases will be uninstalled without actually uninstalling them.
 
 ---
 
 ### Customizing Magistrala Installation:
 
-You can customize Magistrala by overriding default values during installation. For example, if you want to set a custom hostname for the ingress (like `example.com`) and ensure you're using the latest version of the `users` image, you can do this during installation with the following command::
+To override values in the chart, use either the `--values` flag and pass in a file or use the `--set` flag and pass configuration from the command line, to force a string value use `--set-string`. You can use `--set-file` to set individual values from a file when the value itself is too long for the command line or is dynamically generated. You can also use `--set-json` to set json values (scalars/objects/arrays) from the command line.
 
-```bash
-helm install magistrala -n mg --set ingress.hostname='example.com' --set users.image.tag='latest'
-```
-
-To update an existing installation with new settings:
-
-```bash
-helm upgrade magistrala -n mg --set ingress.hostname='example.com' --set users.image.tag='latest'
-```
-
-You can easily customize Magistrala during installation by overriding the default settings using the `--set` option in Helm.
-
-For example, if you want to set a custom hostname for the ingress (like `example.com`) and ensure you're using the latest version of the `users` image, you can do this during installation with the following command:
+For example, if you want to set a custom hostname for the ingress (like `example.com`) and ensure you're using the latest version of the `users` image, you can do this during installation with the following command::
 
 ```bash
 helm install magistrala -n mg --set ingress.hostname='example.com' --set users.image.tag='latest'
@@ -292,7 +282,11 @@ If Magistrala is already installed and you want to update it with new settings (
 helm upgrade magistrala -n mg --set ingress.hostname='example.com' --set users.image.tag='latest'
 ```
 
-This will apply your changes to the existing installation. The following table lists the configurable parameters and their default values.
+This will apply your changes to the existing installation.
+
+For changes to the `requirements.yaml`, `values.yaml`, `Chart.yaml`, or `README.md.gotmpl` files in `https://github.com/absmach/devops`, equally update the documentation at `charts/magistrala/README.md` using `helm-docs` as described [here](https://github.com/absmach/devops/blob/master/README.md).
+
+The following table lists the configurable parameters and their default values.
 
 | Parameter                          | Description                                                                                     | Default              |
 | ---------------------------------- | ----------------------------------------------------------------------------------------------- | -------------------- |
