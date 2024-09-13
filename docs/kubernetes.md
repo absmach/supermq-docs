@@ -239,7 +239,7 @@ Replace `<release-name>` with your desired release name. For the complete list o
 Example with release name and flag:
 
 ```bash
-helm install my-magistrala magistrala-devops/magistrala --version 1.0.6
+helm install my-magistrala magistrala-devops/magistrala --version 0.14.0
 ```
 
 ---
