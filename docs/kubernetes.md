@@ -202,7 +202,66 @@ kubectl get services -n mg
 kubectl logs <pod-name> -n mg
 ```
 
----
+### Interacting with Magistrala Services After Deployment
+
+Once you have successfully deployed Magistrala, there are two primary ways you can interact with its services:
+
+- through the web-based User Interface (UI)
+- via Postman
+
+The ingress-nginx-controller handles the routing for your deployed services using Kubernetes Ingress resources. To interact with your Magistrala UI or any other service exposed through this load balancer, the first step is to retrieve the Public IP address of this load balancer.
+
+You can usually find this IP address in your DigitalOcean dashboard under the "Networking" or "Load Balancers" section, or by using the following command in your terminal:
+
+    kubectl get svc -A | grep LoadBalancer
+
+This command searches all namespaces for services of type `LoadBalancer`. The output looks something like this:
+
+    ingress-nginx           ingress-nginx-controller                         LoadBalancer   10.245.192.202   138.68.126.8   80:30424/TCP,443:31752/TCP                        64d
+
+NOTE: The Public IP in this case is `138.68.126.8`
+
+#### Using the Web-Based UI
+
+- Once you have the Public IP address, open your web browser.
+- In the address bar, enter the IP address followed by `/ui/login` as shown below:
+
+      http://138.68.126.8/ui/login
+
+#### Using Postman
+
+If you prefer working with APIs, you can also interact with Magistrala services using Postman by sending requests to the Public IP address of your load balancer. For example, to create a user:
+
+###### 1. Set Up the Postman Request
+
+- **Method:** `POST`
+- **URL:** `http://138.68.126.8/users`
+
+This URL points to the endpoint that handles user creation on your Magistrala deployment. Replace `138.68.126.8` with the actual IP address or domain of your deployment if it differs.
+
+###### 2. Set Up the Request Body
+
+Switch to the `Body` tab in Postman and select `raw` as the format. Choose `JSON` from the dropdown menu, and then enter the following JSON structure in the text area:
+
+```json
+{
+  "name": "user1",
+  "tags": ["tag1", "tag2"],
+  "credentials": {
+    "identity": "user1@email.com",
+    "secret": "12345678"
+  },
+  "metadata": {
+    "domain": "domain1"
+  }
+}
+```
+
+`Send` the request. If successful, the server will respond with the details of the newly created user.
+
+For all the API requests that can be used with Postman, refer to the [Magistrala API Documentation](https://docs.api.magistrala.abstractmachines.fr/).
+
+When using these examples, the only change required is to replace `localhost:port` with your load balancer's Public IP address (e.g., `138.68.126.8`). This will allow you to execute the same API requests against your live K8s deployment.
 
 ## Install Magistrala Charts (From Published Helm Repository)
 
