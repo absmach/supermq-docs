@@ -204,10 +204,11 @@ kubectl logs <pod-name> -n mg
 
 ### Interacting with Magistrala Services After Deployment
 
-Once you have successfully deployed Magistrala, there are two primary ways you can interact with its services:
+Once you have successfully deployed Magistrala, there are three primary ways you can interact with its services:
 
-- through the web-based User Interface (UI)
-- via Postman
+- web-based User Interface (UI)
+- Magistrala CLI tool
+- HTTP API Clients (e.g., cURL, Postman)
 
 The ingress-nginx-controller handles the routing for your deployed services using Kubernetes Ingress resources. To interact with your Magistrala UI or any other service exposed through this load balancer, the first step is to retrieve the Public IP address of this load balancer.
 
