@@ -260,9 +260,7 @@ Switch to the `Body` tab in Postman and select `raw` as the format. Choose `JSON
 
 `Send` the request. If successful, the server will respond with the details of the newly created user.
 
-For all the API requests that can be used with Postman, refer to the [Magistrala API Documentation](https://docs.api.magistrala.abstractmachines.fr/).
-
-When using these examples, the only change required is to replace `localhost:port` with your load balancer's Public IP address (e.g., `138.68.126.8`). This will allow you to execute the same API requests against your live K8s deployment.
+For more examples, refer to this [Postman Collection](https://elements.getpostman.com/redirect?entityId=38532610-bc171393-a598-4cd5-b63f-9471183eccf4&entityType=collection).
 
 ## Install Magistrala Charts (From Published Helm Repository)
 
