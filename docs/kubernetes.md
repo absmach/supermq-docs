@@ -260,7 +260,7 @@ Switch to the `Body` tab in Postman and select `raw` as the format. Choose `JSON
 
 `Send` the request. If successful, the server will respond with the details of the newly created user.
 
-For more examples, refer to this [Postman Collection](https://elements.getpostman.com/redirect?entityId=38532610-bc171393-a598-4cd5-b63f-9471183eccf4&entityType=collection).
+For more examples, refer to this [Postman Collection](https://elements.getpostman.com/redirect?entityId=38532610-ef9a0562-b353-4d2c-8aca-a5fae35ad0ad&entityType=collection).
 
 ## Install Magistrala Charts (From Published Helm Repository)
 
