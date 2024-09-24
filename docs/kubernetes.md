@@ -207,7 +207,7 @@ kubectl logs <pod-name> -n mg
 Once you have successfully deployed Magistrala, there are three primary ways you can interact with its services:
 
 - web-based User Interface (UI)
-- Magistrala CLI tool
+- Magistrala CLI tool (learn more in the [CLI Documentation](https://docs.magistrala.abstractmachines.fr/cli/))
 - HTTP API Clients (e.g., cURL, Postman)
 
 The ingress-nginx-controller handles the routing for your deployed services using Kubernetes Ingress resources. To interact with your Magistrala UI or any other service exposed through this load balancer, the first step is to retrieve the Public IP address of this load balancer.
@@ -220,7 +220,7 @@ This command searches all namespaces for services of type `LoadBalancer`. The ou
 
     ingress-nginx           ingress-nginx-controller                         LoadBalancer   10.245.192.202   138.68.126.8   80:30424/TCP,443:31752/TCP                        64d
 
-NOTE: The Public IP in this case is `138.68.126.8`
+NOTE: The Public IP in this case is `138.68.126.8`.
 
 #### Using the Web-Based UI
 
