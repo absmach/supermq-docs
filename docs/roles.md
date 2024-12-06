@@ -39,7 +39,7 @@ Creates a role for the given entity.
 **Response**:  
 ```json
 {
-  "role_id": "125",
+  "role_id": "id_xxxxx",
   "role_name": "member",
   "actions": ["read"],
   "members": ["user_1"]
@@ -60,13 +60,13 @@ Retrieves all roles for the given entity.
 ```json
 [
   {
-    "role_id": "<role_id>",
+    "role_id": "xxxxx",
     "role_name": "Admin",
     "actions": ["read", "update", "delete"],
     "members": ["user_1", "user_2"]
   },
   {
-    "role_id": "<role_id>",
+    "role_id": "xxxxx",
     "role_name": "Viewer",
     "actions": ["read"],
     "members": ["user_3"]
@@ -87,7 +87,7 @@ Fetches details of a specific role.
 **Response**:  
 ```json
 {
-  "role_id": "<role_id>",
+  "role_id": "xxxxx",
   "role_name": "Admin",
   "actions": ["read", "update", "delete"],
   "members": ["user_1", "user_2"]
