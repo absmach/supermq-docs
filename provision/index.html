@@ -1,0 +1,1815 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Magistrala IoT System">
+      
+      
+      
+        <link rel="canonical" href="https://docs.magistrala.abstractmachines.fr/provision/">
+      
+      
+        <link rel="prev" href="../opcua/">
+      
+      
+        <link rel="next" href="../storage/">
+      
+      
+      <link rel="icon" href="../img/favicon.png">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.17">
+    
+    
+      
+        <title>Provision - Magistrala</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.bcfcd587.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#provision" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Magistrala" class="md-header__button md-logo" aria-label="Magistrala" data-md-component="logo">
+      
+  <img src="../img/logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Magistrala
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Provision
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var media,input,key,value,palette=__md_get("__palette");if(palette&&palette.color){"(prefers-color-scheme)"===palette.color.media&&(media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']"),palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent"));for([key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/absmach/magistrala" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Magistrala" class="md-nav__button md-logo" aria-label="Magistrala" data-md-component="logo">
+      
+  <img src="../img/logo.png" alt="logo">
+
+    </a>
+    Magistrala
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/absmach/magistrala" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../architecture/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Architecture
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting-started/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Getting Started
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../entities/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Entities
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    API
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cli/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    CLI
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../authentication/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Authentication
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../authorization/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Authorization
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../security/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Security
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../messaging/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Messaging
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../events/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Events
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../edge/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Edge
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../certs/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Certs
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../bootstrap/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Bootstrap
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lora/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    LoRa
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../opcua/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    OPC-UA
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Provision
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Provision
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#platform-management" class="md-nav__link">
+    <span class="md-ellipsis">
+      Platform management
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Platform management">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#users-management" class="md-nav__link">
+    <span class="md-ellipsis">
+      Users Management
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Users Management">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#account-creation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Account Creation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#obtaining-an-authorization-token" class="md-nav__link">
+    <span class="md-ellipsis">
+      Obtaining an Authorization Token
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#system-provisioning" class="md-nav__link">
+    <span class="md-ellipsis">
+      System Provisioning
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="System Provisioning">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#provisioning-things" class="md-nav__link">
+    <span class="md-ellipsis">
+      Provisioning Things
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bulk-provisioning-things" class="md-nav__link">
+    <span class="md-ellipsis">
+      Bulk Provisioning Things
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#retrieving-provisioned-things" class="md-nav__link">
+    <span class="md-ellipsis">
+      Retrieving Provisioned Things
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#disable-things" class="md-nav__link">
+    <span class="md-ellipsis">
+      Disable Things
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#provisioning-channels" class="md-nav__link">
+    <span class="md-ellipsis">
+      Provisioning Channels
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bulk-provisioning-channels" class="md-nav__link">
+    <span class="md-ellipsis">
+      Bulk Provisioning Channels
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#retrieving-provisioned-channels" class="md-nav__link">
+    <span class="md-ellipsis">
+      Retrieving Provisioned Channels
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#disabling-channels" class="md-nav__link">
+    <span class="md-ellipsis">
+      Disabling Channels
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#access-control" class="md-nav__link">
+    <span class="md-ellipsis">
+      Access Control
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#provision-service" class="md-nav__link">
+    <span class="md-ellipsis">
+      Provision Service
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Provision Service">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configuration
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#authentication" class="md-nav__link">
+    <span class="md-ellipsis">
+      Authentication
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#running" class="md-nav__link">
+    <span class="md-ellipsis">
+      Running
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#provision_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Provision
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../storage/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Storage
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../twins/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Twins
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tracing/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Tracing
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dev-guide/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Developer's Guide
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kubernetes/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kubernetes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../benchmark/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Benchmark
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="/blogs/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Blogs
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#platform-management" class="md-nav__link">
+    <span class="md-ellipsis">
+      Platform management
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Platform management">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#users-management" class="md-nav__link">
+    <span class="md-ellipsis">
+      Users Management
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Users Management">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#account-creation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Account Creation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#obtaining-an-authorization-token" class="md-nav__link">
+    <span class="md-ellipsis">
+      Obtaining an Authorization Token
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#system-provisioning" class="md-nav__link">
+    <span class="md-ellipsis">
+      System Provisioning
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="System Provisioning">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#provisioning-things" class="md-nav__link">
+    <span class="md-ellipsis">
+      Provisioning Things
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bulk-provisioning-things" class="md-nav__link">
+    <span class="md-ellipsis">
+      Bulk Provisioning Things
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#retrieving-provisioned-things" class="md-nav__link">
+    <span class="md-ellipsis">
+      Retrieving Provisioned Things
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#disable-things" class="md-nav__link">
+    <span class="md-ellipsis">
+      Disable Things
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#provisioning-channels" class="md-nav__link">
+    <span class="md-ellipsis">
+      Provisioning Channels
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bulk-provisioning-channels" class="md-nav__link">
+    <span class="md-ellipsis">
+      Bulk Provisioning Channels
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#retrieving-provisioned-channels" class="md-nav__link">
+    <span class="md-ellipsis">
+      Retrieving Provisioned Channels
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#disabling-channels" class="md-nav__link">
+    <span class="md-ellipsis">
+      Disabling Channels
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#access-control" class="md-nav__link">
+    <span class="md-ellipsis">
+      Access Control
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#provision-service" class="md-nav__link">
+    <span class="md-ellipsis">
+      Provision Service
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Provision Service">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configuration
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#authentication" class="md-nav__link">
+    <span class="md-ellipsis">
+      Authentication
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#running" class="md-nav__link">
+    <span class="md-ellipsis">
+      Running
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#provision_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Provision
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="provision">Provision<a class="headerlink" href="#provision" title="Permanent link">#</a></h1>
+<p>Provisioning is a process of configuration of an IoT platform in which system operator creates and sets-up different entities used in the platform - users, groups, channels and things.</p>
+<h2 id="platform-management">Platform management<a class="headerlink" href="#platform-management" title="Permanent link">#</a></h2>
+<h3 id="users-management">Users Management<a class="headerlink" href="#users-management" title="Permanent link">#</a></h3>
+<h4 id="account-creation">Account Creation<a class="headerlink" href="#account-creation" title="Permanent link">#</a></h4>
+<p>Use the Magistrala API to create user account:</p>
+<div class="highlight"><pre><span></span><code>curl<span class="w"> </span>-s<span class="w"> </span>-S<span class="w"> </span>-i<span class="w"> </span>--cacert<span class="w"> </span>docker/ssl/certs/ca.crt<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w"> </span>https://localhost/users<span class="w"> </span>-d<span class="w"> </span><span class="s1">&#39;{&quot;name&quot;: &quot;John Doe&quot;, &quot;credentials&quot;: {&quot;identity&quot;: &quot;john.doe@email.com&quot;, &quot;secret&quot;: &quot;12345678&quot;}, &quot;status&quot;: &quot;enabled&quot;}&#39;</span>
+</code></pre></div>
+<p>Response should look like this:</p>
+<div class="highlight"><pre><span></span><code>HTTP/2<span class="w"> </span><span class="m">201</span>
+server:<span class="w"> </span>nginx/1.23.3
+date:<span class="w"> </span>Tue,<span class="w"> </span><span class="m">04</span><span class="w"> </span>Apr<span class="w"> </span><span class="m">2023</span><span class="w"> </span><span class="m">08</span>:40:39<span class="w"> </span>GMT
+content-type:<span class="w"> </span>application/json
+content-length:<span class="w"> </span><span class="m">229</span>
+location:<span class="w"> </span>/users/71db4bb0-591e-4f76-b766-b39ced9fc6b8
+strict-transport-security:<span class="w"> </span>max-age<span class="o">=</span><span class="m">63072000</span><span class="p">;</span><span class="w"> </span>includeSubdomains
+x-frame-options:<span class="w"> </span>DENY
+x-content-type-options:<span class="w"> </span>nosniff
+access-control-allow-origin:<span class="w"> </span>*
+access-control-allow-methods:<span class="w"> </span>*
+access-control-allow-headers:<span class="w"> </span>*
+
+<span class="o">{</span>
+<span class="w">    </span><span class="s2">&quot;id&quot;</span>:<span class="w"> </span><span class="s2">&quot;71db4bb0-591e-4f76-b766-b39ced9fc6b8&quot;</span>,
+<span class="w">    </span><span class="s2">&quot;name&quot;</span>:<span class="w"> </span><span class="s2">&quot;John Doe&quot;</span>,
+<span class="w">    </span><span class="s2">&quot;credentials&quot;</span>:<span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="s2">&quot;identity&quot;</span>:<span class="w"> </span><span class="s2">&quot;john.doe@email.com&quot;</span><span class="w"> </span><span class="o">}</span>,
+<span class="w">    </span><span class="s2">&quot;created_at&quot;</span>:<span class="w"> </span><span class="s2">&quot;2023-04-04T08:40:39.319602Z&quot;</span>,
+<span class="w">    </span><span class="s2">&quot;updated_at&quot;</span>:<span class="w"> </span><span class="s2">&quot;2023-04-04T08:40:39.319602Z&quot;</span>,
+<span class="w">    </span><span class="s2">&quot;status&quot;</span>:<span class="w"> </span><span class="s2">&quot;enabled&quot;</span>
+<span class="o">}</span>
+</code></pre></div>
+<p>Note that when using official <code>docker-compose</code>, all services are behind <code>nginx</code> proxy and all traffic is <code>TLS</code> encrypted.</p>
+<h4 id="obtaining-an-authorization-token">Obtaining an Authorization Token<a class="headerlink" href="#obtaining-an-authorization-token" title="Permanent link">#</a></h4>
+<p>In order for this user to be able to authenticate to the system, you will have to create an authorization token for them:</p>
+<div class="highlight"><pre><span></span><code>curl<span class="w"> </span>-s<span class="w"> </span>-S<span class="w"> </span>-i<span class="w"> </span>--cacert<span class="w"> </span>docker/ssl/certs/ca.crt<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w"> </span>https://localhost/users/tokens/issue<span class="w"> </span>-d<span class="w"> </span><span class="s1">&#39;{&quot;identity&quot;:&quot;john.doe@email.com&quot;, &quot;secret&quot;:&quot;12345678&quot;}&#39;</span>
+</code></pre></div>
+<p>Response should look like this:</p>
+<div class="highlight"><pre><span></span><code>HTTP/2<span class="w"> </span><span class="m">201</span>
+server:<span class="w"> </span>nginx/1.23.3
+date:<span class="w"> </span>Tue,<span class="w"> </span><span class="m">04</span><span class="w"> </span>Apr<span class="w"> </span><span class="m">2023</span><span class="w"> </span><span class="m">08</span>:40:58<span class="w"> </span>GMT
+content-type:<span class="w"> </span>application/json
+content-length:<span class="w"> </span><span class="m">709</span>
+strict-transport-security:<span class="w"> </span>max-age<span class="o">=</span><span class="m">63072000</span><span class="p">;</span><span class="w"> </span>includeSubdomains
+x-frame-options:<span class="w"> </span>DENY
+x-content-type-options:<span class="w"> </span>nosniff
+access-control-allow-origin:<span class="w"> </span>*
+access-control-allow-methods:<span class="w"> </span>*
+access-control-allow-headers:<span class="w"> </span>*
+
+<span class="o">{</span>
+<span class="w">    </span><span class="s2">&quot;access_token&quot;</span>:<span class="w"> </span><span class="s2">&quot;eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODA2NTE2NTgsImlhdCI6MTY4MDU5NzY1OCwiaWRlbnRpdHkiOiJqb2huLmRvZUBlbWFpbC5jb20iLCJpc3MiOiJjbGllbnRzLmF1dGgiLCJzdWIiOiI3MWRiNGJiMC01OTFlLTRmNzYtYjc2Ni1iMzljZWQ5ZmM2YjgiLCJ0eXBlIjoiYWNjZXNzIn0.E4v79FvikIVs-eYOJAgepBX67G2Pzd9YnC-k3xkVrRQcAjHSdMx685jttr9-uuZtF1q3yIpvV-NdQJ2CG5eDtw&quot;</span>,
+<span class="w">    </span><span class="s2">&quot;refresh_token&quot;</span>:<span class="w"> </span><span class="s2">&quot;eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODA2ODQwNTgsImlhdCI6MTY4MDU5NzY1OCwiaWRlbnRpdHkiOiJqb2huLmRvZUBlbWFpbC5jb20iLCJpc3MiOiJjbGllbnRzLmF1dGgiLCJzdWIiOiI3MWRiNGJiMC01OTFlLTRmNzYtYjc2Ni1iMzljZWQ5ZmM2YjgiLCJ0eXBlIjoicmVmcmVzaCJ9.K236Hz9nsm3dnvW6i7myu5xWcBaNFEMAIeekWkiS_X9y0sQ1LZwl997hkkj4IHFFrbn8KLfmkOfTOqVWgUREFg&quot;</span>,
+<span class="w">    </span><span class="s2">&quot;access_type&quot;</span>:<span class="w"> </span><span class="s2">&quot;Bearer&quot;</span>
+<span class="o">}</span>
+</code></pre></div>
+<p>For more information about the Users service API, please check out the <a href="https://absmach.github.io/magistrala/?urls.primaryName=users.yml">API documentation</a>.</p>
+<h3 id="system-provisioning">System Provisioning<a class="headerlink" href="#system-provisioning" title="Permanent link">#</a></h3>
+<p>Before proceeding, make sure that you have created a new account and obtained an authorization token. You can set your <code>access_token</code> in the <code>USER_TOKEN</code> environment variable:</p>
+<div class="highlight"><pre><span></span><code><span class="nv">USER_TOKEN</span><span class="o">=</span>&lt;access_token&gt;
+</code></pre></div>
+<h4 id="provisioning-things">Provisioning Things<a class="headerlink" href="#provisioning-things" title="Permanent link">#</a></h4>
+<blockquote>
+<p>This endpoint will be depreciated in 1.0.0. It will be replaced with the bulk endpoint currently found at /things/bulk.</p>
+</blockquote>
+<p>Things are created by executing request <code>POST /things</code> with a JSON payload. Note that you will need <code>user_token</code> in order to create things that belong to this particular user.</p>
+<div class="highlight"><pre><span></span><code>curl<span class="w"> </span>-s<span class="w"> </span>-S<span class="w"> </span>-i<span class="w"> </span>--cacert<span class="w"> </span>docker/ssl/certs/ca.crt<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w"> </span>-H<span class="w"> </span><span class="s2">&quot;Authorization: Bearer </span><span class="nv">$USER_TOKEN</span><span class="s2">&quot;</span><span class="w"> </span>https://localhost/things<span class="w"> </span>-d<span class="w"> </span><span class="s1">&#39;{&quot;name&quot;:&quot;weio&quot;}&#39;</span>
+</code></pre></div>
+<p>Response will contain <code>Location</code> header whose value represents path to newly created thing:</p>
+<div class="highlight"><pre><span></span><code>HTTP/2<span class="w"> </span><span class="m">201</span>
+server:<span class="w"> </span>nginx/1.23.3
+date:<span class="w"> </span>Tue,<span class="w"> </span><span class="m">04</span><span class="w"> </span>Apr<span class="w"> </span><span class="m">2023</span><span class="w"> </span><span class="m">09</span>:06:50<span class="w"> </span>GMT
+content-type:<span class="w"> </span>application/json
+content-length:<span class="w"> </span><span class="m">282</span>
+location:<span class="w"> </span>/things/9dd12d93-21c9-4147-92fe-769386efb6cc
+access-control-expose-headers:<span class="w"> </span>Location
+
+<span class="o">{</span>
+<span class="w">    </span><span class="s2">&quot;id&quot;</span>:<span class="w"> </span><span class="s2">&quot;9dd12d93-21c9-4147-92fe-769386efb6cc&quot;</span>,
+<span class="w">    </span><span class="s2">&quot;name&quot;</span>:<span class="w"> </span><span class="s2">&quot;weio&quot;</span>,
+<span class="w">    </span><span class="s2">&quot;owner&quot;</span>:<span class="w"> </span><span class="s2">&quot;71db4bb0-591e-4f76-b766-b39ced9fc6b8&quot;</span>,
+<span class="w">    </span><span class="s2">&quot;credentials&quot;</span>:<span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="s2">&quot;secret&quot;</span>:<span class="w"> </span><span class="s2">&quot;551e9869-d10f-4682-8319-5a4b18073313&quot;</span><span class="w"> </span><span class="o">}</span>,
+<span class="w">    </span><span class="s2">&quot;created_at&quot;</span>:<span class="w"> </span><span class="s2">&quot;2023-04-04T09:06:50.460258649Z&quot;</span>,
+<span class="w">    </span><span class="s2">&quot;updated_at&quot;</span>:<span class="w"> </span><span class="s2">&quot;2023-04-04T09:06:50.460258649Z&quot;</span>,
+<span class="w">    </span><span class="s2">&quot;status&quot;</span>:<span class="w"> </span><span class="s2">&quot;enabled&quot;</span>
+<span class="o">}</span>
+</code></pre></div>
+<h4 id="bulk-provisioning-things">Bulk Provisioning Things<a class="headerlink" href="#bulk-provisioning-things" title="Permanent link">#</a></h4>
+<p>Multiple things can be created by executing a <code>POST /things/bulk</code> request with a JSON payload. The payload should contain a JSON array of the things to be created. If there is an error any of the things, none of the things will be created.</p>
+<div class="highlight"><pre><span></span><code>curl<span class="w"> </span>-s<span class="w"> </span>-S<span class="w"> </span>-i<span class="w"> </span>--cacert<span class="w"> </span>docker/ssl/certs/ca.crt<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w"> </span>-H<span class="w"> </span><span class="s2">&quot;Authorization: Bearer </span><span class="nv">$USER_TOKEN</span><span class="s2">&quot;</span><span class="w"> </span>https://localhost/things/bulk<span class="w"> </span>-d<span class="w"> </span><span class="s1">&#39;[{&quot;name&quot;:&quot;weio&quot;},{&quot;name&quot;:&quot;bob&quot;}]&#39;</span>
+</code></pre></div>
+<p>The response's body will contain a list of the created things.</p>
+<div class="highlight"><pre><span></span><code><span class="err">HTTP/</span><span class="mi">2</span><span class="w"> </span><span class="mi">200</span>
+<span class="err">server</span><span class="p">:</span><span class="w"> </span><span class="kc">n</span><span class="err">gi</span><span class="kc">n</span><span class="err">x/</span><span class="mf">1.23.3</span>
+<span class="err">da</span><span class="kc">te</span><span class="p">:</span><span class="w"> </span><span class="err">Tue</span><span class="p">,</span><span class="w"> </span><span class="mi">04</span><span class="w"> </span><span class="err">Apr</span><span class="w"> </span><span class="mi">2023</span><span class="w"> </span><span class="mi">08</span><span class="p">:</span><span class="mi">42</span><span class="p">:</span><span class="mi">04</span><span class="w"> </span><span class="err">GMT</span>
+<span class="err">co</span><span class="kc">ntent</span><span class="mi">-</span><span class="kc">t</span><span class="err">ype</span><span class="p">:</span><span class="w"> </span><span class="err">applica</span><span class="kc">t</span><span class="err">io</span><span class="kc">n</span><span class="err">/jso</span><span class="kc">n</span>
+<span class="err">co</span><span class="kc">ntent</span><span class="mi">-</span><span class="err">le</span><span class="kc">n</span><span class="err">g</span><span class="kc">t</span><span class="err">h</span><span class="p">:</span><span class="w"> </span><span class="mi">586</span>
+<span class="err">access</span><span class="mi">-</span><span class="err">co</span><span class="kc">ntr</span><span class="err">ol</span><span class="mf">-e</span><span class="err">xpose</span><span class="mi">-</span><span class="err">headers</span><span class="p">:</span><span class="w"> </span><span class="err">Loca</span><span class="kc">t</span><span class="err">io</span><span class="kc">n</span>
+
+<span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;total&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;things&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[{</span>
+<span class="w">            </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;1b1cd38f-62cd-4f17-b47e-5ff4e97881e8&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;weio&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;owner&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;71db4bb0-591e-4f76-b766-b39ced9fc6b8&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;credentials&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;secret&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;43bd950e-0b3f-46f6-a92c-296a6a0bfe66&quot;</span><span class="w"> </span><span class="p">},</span>
+<span class="w">            </span><span class="nt">&quot;created_at&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2023-04-04T08:42:04.168388927Z&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;updated_at&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2023-04-04T08:42:04.168388927Z&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;enabled&quot;</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;b594af97-9550-4b11-86e1-2b6db7e329b9&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;bob&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;owner&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;71db4bb0-591e-4f76-b766-b39ced9fc6b8&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;credentials&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;secret&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;9f89f52e-1b06-4416-8294-ae753b0c4bea&quot;</span><span class="w"> </span><span class="p">},</span>
+<span class="w">            </span><span class="nt">&quot;created_at&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2023-04-04T08:42:04.168390109Z&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;updated_at&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2023-04-04T08:42:04.168390109Z&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;enabled&quot;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">]</span>
+<span class="p">}</span>
+</code></pre></div>
+<h4 id="retrieving-provisioned-things">Retrieving Provisioned Things<a class="headerlink" href="#retrieving-provisioned-things" title="Permanent link">#</a></h4>
+<p>In order to retrieve data of provisioned things that are written in database, you can send following request:</p>
+<div class="highlight"><pre><span></span><code>curl<span class="w"> </span>-s<span class="w"> </span>-S<span class="w"> </span>-i<span class="w"> </span>--cacert<span class="w"> </span>docker/ssl/certs/ca.crt<span class="w"> </span>-H<span class="w"> </span><span class="s2">&quot;Authorization: Bearer </span><span class="nv">$USER_TOKEN</span><span class="s2">&quot;</span><span class="w"> </span>https://localhost/things
+</code></pre></div>
+<p>Notice that you will receive only those things that were provisioned by <code>user_token</code> owner.</p>
+<div class="highlight"><pre><span></span><code><span class="err">HTTP/</span><span class="mi">2</span><span class="w"> </span><span class="mi">200</span>
+<span class="err">server</span><span class="p">:</span><span class="w"> </span><span class="kc">n</span><span class="err">gi</span><span class="kc">n</span><span class="err">x/</span><span class="mf">1.23.3</span>
+<span class="err">da</span><span class="kc">te</span><span class="p">:</span><span class="w"> </span><span class="err">Tue</span><span class="p">,</span><span class="w"> </span><span class="mi">04</span><span class="w"> </span><span class="err">Apr</span><span class="w"> </span><span class="mi">2023</span><span class="w"> </span><span class="mi">08</span><span class="p">:</span><span class="mi">42</span><span class="p">:</span><span class="mi">27</span><span class="w"> </span><span class="err">GMT</span>
+<span class="err">co</span><span class="kc">ntent</span><span class="mi">-</span><span class="kc">t</span><span class="err">ype</span><span class="p">:</span><span class="w"> </span><span class="err">applica</span><span class="kc">t</span><span class="err">io</span><span class="kc">n</span><span class="err">/jso</span><span class="kc">n</span>
+<span class="err">co</span><span class="kc">ntent</span><span class="mi">-</span><span class="err">le</span><span class="kc">n</span><span class="err">g</span><span class="kc">t</span><span class="err">h</span><span class="p">:</span><span class="w"> </span><span class="mi">570</span>
+<span class="err">access</span><span class="mi">-</span><span class="err">co</span><span class="kc">ntr</span><span class="err">ol</span><span class="mf">-e</span><span class="err">xpose</span><span class="mi">-</span><span class="err">headers</span><span class="p">:</span><span class="w"> </span><span class="err">Loca</span><span class="kc">t</span><span class="err">io</span><span class="kc">n</span>
+
+<span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;limit&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;total&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;things&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[{</span>
+<span class="w">            </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;1b1cd38f-62cd-4f17-b47e-5ff4e97881e8&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;weio&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;owner&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;71db4bb0-591e-4f76-b766-b39ced9fc6b8&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;credentials&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;secret&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;43bd950e-0b3f-46f6-a92c-296a6a0bfe66&quot;</span><span class="w"> </span><span class="p">},</span>
+<span class="w">            </span><span class="nt">&quot;created_at&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2023-04-04T08:42:04.168388Z&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;updated_at&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0001-01-01T00:00:00Z&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;enabled&quot;</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;b594af97-9550-4b11-86e1-2b6db7e329b9&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;bob&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;owner&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;71db4bb0-591e-4f76-b766-b39ced9fc6b8&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;credentials&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;secret&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;9f89f52e-1b06-4416-8294-ae753b0c4bea&quot;</span><span class="w"> </span><span class="p">},</span>
+<span class="w">            </span><span class="nt">&quot;created_at&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2023-04-04T08:42:04.16839Z&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;updated_at&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0001-01-01T00:00:00Z&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;enabled&quot;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">]</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>You can specify <code>offset</code> and <code>limit</code> parameters in order to fetch a specific subset of things. In that case, your request should look like:</p>
+<div class="highlight"><pre><span></span><code>curl<span class="w"> </span>-s<span class="w"> </span>-S<span class="w"> </span>-i<span class="w"> </span>--cacert<span class="w"> </span>docker/ssl/certs/ca.crt<span class="w"> </span>-H<span class="w"> </span><span class="s2">&quot;Authorization: Bearer </span><span class="nv">$USER_TOKEN</span><span class="s2">&quot;</span><span class="w"> </span>https://localhost/things?offset<span class="o">=</span><span class="m">0</span><span class="p">&amp;</span><span class="nv">limit</span><span class="o">=</span><span class="m">5</span>
+</code></pre></div>
+<p>You can specify <code>name</code> and/or <code>metadata</code> parameters in order to fetch specific subset of things. When specifying metadata you can specify just a part of the metadata JSON you want to match.</p>
+<div class="highlight"><pre><span></span><code>curl<span class="w"> </span>-s<span class="w"> </span>-S<span class="w"> </span>-i<span class="w"> </span>--cacert<span class="w"> </span>docker/ssl/certs/ca.crt<span class="w"> </span>-H<span class="w"> </span><span class="s2">&quot;Authorization: Bearer </span><span class="nv">$USER_TOKEN</span><span class="s2">&quot;</span><span class="w"> </span>https://localhost/things?offset<span class="o">=</span><span class="m">0</span><span class="p">&amp;</span><span class="nv">limit</span><span class="o">=</span><span class="m">5</span><span class="p">&amp;</span><span class="nv">name</span><span class="o">=</span><span class="s2">&quot;weio&quot;</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>HTTP/2<span class="w"> </span><span class="m">200</span>
+server:<span class="w"> </span>nginx/1.23.3
+date:<span class="w"> </span>Tue,<span class="w"> </span><span class="m">04</span><span class="w"> </span>Apr<span class="w"> </span><span class="m">2023</span><span class="w"> </span><span class="m">08</span>:43:09<span class="w"> </span>GMT
+content-type:<span class="w"> </span>application/json
+content-length:<span class="w"> </span><span class="m">302</span>
+access-control-expose-headers:<span class="w"> </span>Location
+
+<span class="o">{</span>
+<span class="w">    </span><span class="s2">&quot;limit&quot;</span>:<span class="w"> </span><span class="m">5</span>,
+<span class="w">    </span><span class="s2">&quot;total&quot;</span>:<span class="w"> </span><span class="m">1</span>,
+<span class="w">    </span><span class="s2">&quot;things&quot;</span>:<span class="w"> </span><span class="o">[{</span>
+<span class="w">        </span><span class="s2">&quot;id&quot;</span>:<span class="w"> </span><span class="s2">&quot;1b1cd38f-62cd-4f17-b47e-5ff4e97881e8&quot;</span>,
+<span class="w">        </span><span class="s2">&quot;name&quot;</span>:<span class="w"> </span><span class="s2">&quot;weio&quot;</span>,
+<span class="w">        </span><span class="s2">&quot;owner&quot;</span>:<span class="w"> </span><span class="s2">&quot;71db4bb0-591e-4f76-b766-b39ced9fc6b8&quot;</span>,
+<span class="w">        </span><span class="s2">&quot;credentials&quot;</span>:<span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="s2">&quot;secret&quot;</span>:<span class="w"> </span><span class="s2">&quot;43bd950e-0b3f-46f6-a92c-296a6a0bfe66&quot;</span><span class="w"> </span><span class="o">}</span>,
+<span class="w">        </span><span class="s2">&quot;created_at&quot;</span>:<span class="w"> </span><span class="s2">&quot;2023-04-04T08:42:04.168388Z&quot;</span>,
+<span class="w">        </span><span class="s2">&quot;updated_at&quot;</span>:<span class="w"> </span><span class="s2">&quot;0001-01-01T00:00:00Z&quot;</span>,
+<span class="w">        </span><span class="s2">&quot;status&quot;</span>:<span class="w"> </span><span class="s2">&quot;enabled&quot;</span>
+<span class="w">    </span><span class="o">}]</span>
+<span class="o">}</span>
+</code></pre></div>
+<p>If you don't provide them, default values will be used instead: 0 for <code>offset</code> and 10 for <code>limit</code>. Note that <code>limit</code> cannot be set to values greater than 100. Providing invalid values will be considered malformed request.</p>
+<h4 id="disable-things">Disable Things<a class="headerlink" href="#disable-things" title="Permanent link">#</a></h4>
+<p>This is a special endpoint that allows you to disable a thing, soft deleting it from the database. In order to disable you own thing you can send following request:</p>
+<div class="highlight"><pre><span></span><code>curl<span class="w"> </span>-s<span class="w"> </span>-S<span class="w"> </span>-i<span class="w"> </span>--cacert<span class="w"> </span>docker/ssl/certs/ca.crt<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>-H<span class="w"> </span><span class="s2">&quot;Authorization: Bearer </span><span class="nv">$USER_TOKEN</span><span class="s2">&quot;</span><span class="w"> </span>https://localhost/things/1b1cd38f-62cd-4f17-b47e-5ff4e97881e8/disable
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>HTTP/2<span class="w"> </span><span class="m">200</span>
+server:<span class="w"> </span>nginx/1.23.3
+date:<span class="w"> </span>Tue,<span class="w"> </span><span class="m">04</span><span class="w"> </span>Apr<span class="w"> </span><span class="m">2023</span><span class="w"> </span><span class="m">09</span>:00:40<span class="w"> </span>GMT
+content-type:<span class="w"> </span>application/json
+content-length:<span class="w"> </span><span class="m">277</span>
+access-control-expose-headers:<span class="w"> </span>Location
+
+<span class="o">{</span>
+<span class="w">    </span><span class="s2">&quot;id&quot;</span>:<span class="w"> </span><span class="s2">&quot;1b1cd38f-62cd-4f17-b47e-5ff4e97881e8&quot;</span>,
+<span class="w">    </span><span class="s2">&quot;name&quot;</span>:<span class="w"> </span><span class="s2">&quot;weio&quot;</span>,
+<span class="w">    </span><span class="s2">&quot;owner&quot;</span>:<span class="w"> </span><span class="s2">&quot;71db4bb0-591e-4f76-b766-b39ced9fc6b8&quot;</span>,
+<span class="w">    </span><span class="s2">&quot;credentials&quot;</span>:<span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="s2">&quot;secret&quot;</span>:<span class="w"> </span><span class="s2">&quot;43bd950e-0b3f-46f6-a92c-296a6a0bfe66&quot;</span><span class="w"> </span><span class="o">}</span>,
+<span class="w">    </span><span class="s2">&quot;created_at&quot;</span>:<span class="w"> </span><span class="s2">&quot;2023-04-04T08:42:04.168388Z&quot;</span>,
+<span class="w">    </span><span class="s2">&quot;updated_at&quot;</span>:<span class="w"> </span><span class="s2">&quot;2023-04-04T08:42:04.168388Z&quot;</span>,
+<span class="w">    </span><span class="s2">&quot;status&quot;</span>:<span class="w"> </span><span class="s2">&quot;disabled&quot;</span>
+<span class="o">}</span>
+</code></pre></div>
+<h4 id="provisioning-channels">Provisioning Channels<a class="headerlink" href="#provisioning-channels" title="Permanent link">#</a></h4>
+<blockquote>
+<p>This endpoint will be depreciated in 1.0.0. It will be replaced with the bulk endpoint currently found at /channels/bulk.</p>
+</blockquote>
+<p>Channels are created by executing request <code>POST /channels</code>:</p>
+<div class="highlight"><pre><span></span><code>curl<span class="w"> </span>-s<span class="w"> </span>-S<span class="w"> </span>-i<span class="w"> </span>--cacert<span class="w"> </span>docker/ssl/certs/ca.crt<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w"> </span>-H<span class="w"> </span><span class="s2">&quot;Authorization: Bearer </span><span class="nv">$USER_TOKEN</span><span class="s2">&quot;</span><span class="w"> </span>https://localhost/channels<span class="w"> </span>-d<span class="w"> </span><span class="s1">&#39;{&quot;name&quot;:&quot;mychan&quot;}&#39;</span>
+</code></pre></div>
+<p>After sending request you should receive response with <code>Location</code> header that contains path to newly created channel:</p>
+<div class="highlight"><pre><span></span><code>HTTP/2<span class="w"> </span><span class="m">201</span>
+server:<span class="w"> </span>nginx/1.23.3
+date:<span class="w"> </span>Tue,<span class="w"> </span><span class="m">04</span><span class="w"> </span>Apr<span class="w"> </span><span class="m">2023</span><span class="w"> </span><span class="m">09</span>:18:10<span class="w"> </span>GMT
+content-type:<span class="w"> </span>application/json
+content-length:<span class="w"> </span><span class="m">235</span>
+location:<span class="w"> </span>/channels/0a67a8ee-eda9-408e-af83-f895096b7359
+access-control-expose-headers:<span class="w"> </span>Location
+
+<span class="o">{</span>
+<span class="w">    </span><span class="s2">&quot;id&quot;</span>:<span class="w"> </span><span class="s2">&quot;0a67a8ee-eda9-408e-af83-f895096b7359&quot;</span>,
+<span class="w">    </span><span class="s2">&quot;owner_id&quot;</span>:<span class="w"> </span><span class="s2">&quot;71db4bb0-591e-4f76-b766-b39ced9fc6b8&quot;</span>,
+<span class="w">    </span><span class="s2">&quot;name&quot;</span>:<span class="w"> </span><span class="s2">&quot;mychan&quot;</span>,
+<span class="w">    </span><span class="s2">&quot;created_at&quot;</span>:<span class="w"> </span><span class="s2">&quot;2023-04-04T09:18:10.26603Z&quot;</span>,
+<span class="w">    </span><span class="s2">&quot;updated_at&quot;</span>:<span class="w"> </span><span class="s2">&quot;2023-04-04T09:18:10.26603Z&quot;</span>,
+<span class="w">    </span><span class="s2">&quot;status&quot;</span>:<span class="w"> </span><span class="s2">&quot;enabled&quot;</span>
+<span class="o">}</span>
+</code></pre></div>
+<h4 id="bulk-provisioning-channels">Bulk Provisioning Channels<a class="headerlink" href="#bulk-provisioning-channels" title="Permanent link">#</a></h4>
+<p>Multiple channels can be created by executing a <code>POST /things/bulk</code> request with a JSON payload. The payload should contain a JSON array of the channels to be created. If there is an error any of the channels, none of the channels will be created.</p>
+<div class="highlight"><pre><span></span><code>curl<span class="w"> </span>-s<span class="w"> </span>-S<span class="w"> </span>-i<span class="w"> </span>--cacert<span class="w"> </span>docker/ssl/certs/ca.crt<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w"> </span>-H<span class="w"> </span><span class="s2">&quot;Authorization: Bearer </span><span class="nv">$USER_TOKEN</span><span class="s2">&quot;</span><span class="w"> </span>https://localhost/channels/bulk<span class="w"> </span>-d<span class="w"> </span><span class="s1">&#39;[{&quot;name&quot;:&quot;joe&quot;},{&quot;name&quot;:&quot;betty&quot;}]&#39;</span>
+</code></pre></div>
+<p>The response's body will contain a list of the created channels.</p>
+<div class="highlight"><pre><span></span><code><span class="err">HTTP/</span><span class="mi">2</span><span class="w"> </span><span class="mi">200</span>
+<span class="err">server</span><span class="p">:</span><span class="w"> </span><span class="kc">n</span><span class="err">gi</span><span class="kc">n</span><span class="err">x/</span><span class="mf">1.23.3</span>
+<span class="err">da</span><span class="kc">te</span><span class="p">:</span><span class="w"> </span><span class="err">Tue</span><span class="p">,</span><span class="w"> </span><span class="mi">04</span><span class="w"> </span><span class="err">Apr</span><span class="w"> </span><span class="mi">2023</span><span class="w"> </span><span class="mi">09</span><span class="p">:</span><span class="mi">11</span><span class="p">:</span><span class="mi">16</span><span class="w"> </span><span class="err">GMT</span>
+<span class="err">co</span><span class="kc">ntent</span><span class="mi">-</span><span class="kc">t</span><span class="err">ype</span><span class="p">:</span><span class="w"> </span><span class="err">applica</span><span class="kc">t</span><span class="err">io</span><span class="kc">n</span><span class="err">/jso</span><span class="kc">n</span>
+<span class="err">co</span><span class="kc">ntent</span><span class="mi">-</span><span class="err">le</span><span class="kc">n</span><span class="err">g</span><span class="kc">t</span><span class="err">h</span><span class="p">:</span><span class="w"> </span><span class="mi">487</span>
+<span class="err">access</span><span class="mi">-</span><span class="err">co</span><span class="kc">ntr</span><span class="err">ol</span><span class="mf">-e</span><span class="err">xpose</span><span class="mi">-</span><span class="err">headers</span><span class="p">:</span><span class="w"> </span><span class="err">Loca</span><span class="kc">t</span><span class="err">io</span><span class="kc">n</span>
+
+<span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;channels&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[{</span>
+<span class="w">            </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;5ec1beb9-1b76-47e6-a9ef-baf9e4ae5820&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;owner_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;71db4bb0-591e-4f76-b766-b39ced9fc6b8&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;joe&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;created_at&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2023-04-04T09:11:16.131972Z&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;updated_at&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2023-04-04T09:11:16.131972Z&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;disabled&quot;</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ff1316f1-d3c6-4590-8bf3-33774d79eab2&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;owner_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;71db4bb0-591e-4f76-b766-b39ced9fc6b8&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;betty&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;created_at&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2023-04-04T09:11:16.138881Z&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;updated_at&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2023-04-04T09:11:16.138881Z&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;disabled&quot;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">]</span>
+<span class="p">}</span>
+</code></pre></div>
+<h4 id="retrieving-provisioned-channels">Retrieving Provisioned Channels<a class="headerlink" href="#retrieving-provisioned-channels" title="Permanent link">#</a></h4>
+<p>In order to retrieve data of provisioned channels that are written in database, you can send following request:</p>
+<div class="highlight"><pre><span></span><code>curl<span class="w"> </span>-s<span class="w"> </span>-S<span class="w"> </span>-i<span class="w"> </span>--cacert<span class="w"> </span>docker/ssl/certs/ca.crt<span class="w"> </span>-H<span class="w"> </span><span class="s2">&quot;Authorization: Bearer </span><span class="nv">$USER_TOKEN</span><span class="s2">&quot;</span><span class="w"> </span>https://localhost/channels
+</code></pre></div>
+<p>Notice that you will receive only those things that were provisioned by <code>user_token</code> owner.</p>
+<div class="highlight"><pre><span></span><code><span class="err">HTTP/</span><span class="mi">2</span><span class="w"> </span><span class="mi">200</span>
+<span class="err">server</span><span class="p">:</span><span class="w"> </span><span class="kc">n</span><span class="err">gi</span><span class="kc">n</span><span class="err">x/</span><span class="mf">1.23.3</span>
+<span class="err">da</span><span class="kc">te</span><span class="p">:</span><span class="w"> </span><span class="err">Tue</span><span class="p">,</span><span class="w"> </span><span class="mi">04</span><span class="w"> </span><span class="err">Apr</span><span class="w"> </span><span class="mi">2023</span><span class="w"> </span><span class="mi">09</span><span class="p">:</span><span class="mi">13</span><span class="p">:</span><span class="mi">48</span><span class="w"> </span><span class="err">GMT</span>
+<span class="err">co</span><span class="kc">ntent</span><span class="mi">-</span><span class="kc">t</span><span class="err">ype</span><span class="p">:</span><span class="w"> </span><span class="err">applica</span><span class="kc">t</span><span class="err">io</span><span class="kc">n</span><span class="err">/jso</span><span class="kc">n</span>
+<span class="err">co</span><span class="kc">ntent</span><span class="mi">-</span><span class="err">le</span><span class="kc">n</span><span class="err">g</span><span class="kc">t</span><span class="err">h</span><span class="p">:</span><span class="w"> </span><span class="mi">495</span>
+<span class="err">access</span><span class="mi">-</span><span class="err">co</span><span class="kc">ntr</span><span class="err">ol</span><span class="mf">-e</span><span class="err">xpose</span><span class="mi">-</span><span class="err">headers</span><span class="p">:</span><span class="w"> </span><span class="err">Loca</span><span class="kc">t</span><span class="err">io</span><span class="kc">n</span>
+
+<span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;total&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;channels&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[{</span>
+<span class="w">            </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;5ec1beb9-1b76-47e6-a9ef-baf9e4ae5820&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;owner_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;71db4bb0-591e-4f76-b766-b39ced9fc6b8&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;joe&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;created_at&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2023-04-04T09:11:16.131972Z&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;updated_at&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2023-04-04T09:11:16.131972Z&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;enabled&quot;</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ff1316f1-d3c6-4590-8bf3-33774d79eab2&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;owner_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;71db4bb0-591e-4f76-b766-b39ced9fc6b8&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;betty&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;created_at&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2023-04-04T09:11:16.138881Z&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;updated_at&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2023-04-04T09:11:16.138881Z&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;enabled&quot;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">]</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>You can specify <code>offset</code> and <code>limit</code> parameters in order to fetch specific subset of channels. In that case, your request should look like:</p>
+<div class="highlight"><pre><span></span><code>curl<span class="w"> </span>-s<span class="w"> </span>-S<span class="w"> </span>-i<span class="w"> </span>--cacert<span class="w"> </span>docker/ssl/certs/ca.crt<span class="w"> </span>-H<span class="w"> </span><span class="s2">&quot;Authorization: Bearer </span><span class="nv">$USER_TOKEN</span><span class="s2">&quot;</span><span class="w"> </span>https://localhost/channels?offset<span class="o">=</span><span class="m">0</span><span class="p">&amp;</span><span class="nv">limit</span><span class="o">=</span><span class="m">5</span>
+</code></pre></div>
+<p>If you don't provide them, default values will be used instead: 0 for <code>offset</code> and 10 for <code>limit</code>. Note that <code>limit</code> cannot be set to values greater than 100. Providing invalid values will be considered malformed request.</p>
+<h4 id="disabling-channels">Disabling Channels<a class="headerlink" href="#disabling-channels" title="Permanent link">#</a></h4>
+<p>This is a special endpoint that allows you to disable a channel, soft deleting it from the database. In order to disable you own channel you can send following request:</p>
+<div class="highlight"><pre><span></span><code>curl<span class="w"> </span>-s<span class="w"> </span>-S<span class="w"> </span>-i<span class="w"> </span>--cacert<span class="w"> </span>docker/ssl/certs/ca.crt<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>-H<span class="w"> </span><span class="s2">&quot;Authorization: Bearer </span><span class="nv">$USER_TOKEN</span><span class="s2">&quot;</span><span class="w"> </span>https://localhost/channels/5ec1beb9-1b76-47e6-a9ef-baf9e4ae5820/disable
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>HTTP/2<span class="w"> </span><span class="m">200</span>
+server:<span class="w"> </span>nginx/1.23.3
+date:<span class="w"> </span>Tue,<span class="w"> </span><span class="m">04</span><span class="w"> </span>Apr<span class="w"> </span><span class="m">2023</span><span class="w"> </span><span class="m">09</span>:16:31<span class="w"> </span>GMT
+content-type:<span class="w"> </span>application/json
+content-length:<span class="w"> </span><span class="m">235</span>
+access-control-expose-headers:<span class="w"> </span>Location
+
+<span class="o">{</span>
+<span class="w">    </span><span class="s2">&quot;id&quot;</span>:<span class="w"> </span><span class="s2">&quot;5ec1beb9-1b76-47e6-a9ef-baf9e4ae5820&quot;</span>,
+<span class="w">    </span><span class="s2">&quot;owner_id&quot;</span>:<span class="w"> </span><span class="s2">&quot;71db4bb0-591e-4f76-b766-b39ced9fc6b8&quot;</span>,
+<span class="w">    </span><span class="s2">&quot;name&quot;</span>:<span class="w"> </span><span class="s2">&quot;joe&quot;</span>,
+<span class="w">    </span><span class="s2">&quot;created_at&quot;</span>:<span class="w"> </span><span class="s2">&quot;2023-04-04T09:11:16.131972Z&quot;</span>,
+<span class="w">    </span><span class="s2">&quot;updated_at&quot;</span>:<span class="w"> </span><span class="s2">&quot;2023-04-04T09:11:16.131972Z&quot;</span>,
+<span class="w">    </span><span class="s2">&quot;status&quot;</span>:<span class="w"> </span><span class="s2">&quot;disabled&quot;</span>
+<span class="o">}</span>
+</code></pre></div>
+<h3 id="access-control">Access Control<a class="headerlink" href="#access-control" title="Permanent link">#</a></h3>
+<p>Channel can be observed as a communication group of things. Only things that are connected to the channel can send and receive messages from other things in this channel. Things that are not connected to this channel are not allowed to communicate over it. Users may also be assigned to channels, thus sharing things between users. With the necessary policies in place, users can be granted access to things that are not owned by them.</p>
+<p>A user who is the owner of a channel or a user that has been assigned to the channel with the required policy can connect things to the channel. This is equivalent of giving permissions to these things to communicate over given communication group.</p>
+<p>To connect a thing to the channel you should send following request:</p>
+<blockquote>
+<p>This endpoint will be depreciated in 1.0.0. It will be replaced with the bulk endpoint found at /connect.</p>
+</blockquote>
+<div class="highlight"><pre><span></span><code>curl<span class="w"> </span>-s<span class="w"> </span>-S<span class="w"> </span>-i<span class="w"> </span>--cacert<span class="w"> </span>docker/ssl/certs/ca.crt<span class="w"> </span>-X<span class="w"> </span>PUT<span class="w"> </span>-H<span class="w"> </span><span class="s2">&quot;Authorization: Bearer </span><span class="nv">$USER_TOKEN</span><span class="s2">&quot;</span><span class="w"> </span>https://localhost/channels/&lt;channel_id&gt;/things/&lt;thing_id&gt;
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>HTTP/2<span class="w"> </span><span class="m">201</span>
+server:<span class="w"> </span>nginx/1.23.3
+date:<span class="w"> </span>Tue,<span class="w"> </span><span class="m">04</span><span class="w"> </span>Apr<span class="w"> </span><span class="m">2023</span><span class="w"> </span><span class="m">09</span>:20:23<span class="w"> </span>GMT
+content-type:<span class="w"> </span>application/json
+content-length:<span class="w"> </span><span class="m">266</span>
+access-control-expose-headers:<span class="w"> </span>Location
+
+<span class="o">{</span>
+<span class="w">    </span><span class="s2">&quot;owner_id&quot;</span>:<span class="w"> </span><span class="s2">&quot;71db4bb0-591e-4f76-b766-b39ced9fc6b8&quot;</span>,
+<span class="w">    </span><span class="s2">&quot;subject&quot;</span>:<span class="w"> </span><span class="s2">&quot;b594af97-9550-4b11-86e1-2b6db7e329b9&quot;</span>,
+<span class="w">    </span><span class="s2">&quot;object&quot;</span>:<span class="w"> </span><span class="s2">&quot;ff1316f1-d3c6-4590-8bf3-33774d79eab2&quot;</span>,
+<span class="w">    </span><span class="s2">&quot;actions&quot;</span>:<span class="w"> </span><span class="o">[</span><span class="s2">&quot;m_write&quot;</span>,<span class="w"> </span><span class="s2">&quot;m_read&quot;</span><span class="o">]</span>,
+<span class="w">    </span><span class="s2">&quot;created_at&quot;</span>:<span class="w"> </span><span class="s2">&quot;2023-04-04T09:20:23.015342Z&quot;</span>,
+<span class="w">    </span><span class="s2">&quot;updated_at&quot;</span>:<span class="w"> </span><span class="s2">&quot;2023-04-04T09:20:23.015342Z&quot;</span>
+<span class="o">}</span>
+</code></pre></div>
+<p>To connect multiple things to a channel, you can send the following request:</p>
+<div class="highlight"><pre><span></span><code>curl<span class="w"> </span>-s<span class="w"> </span>-S<span class="w"> </span>-i<span class="w"> </span>--cacert<span class="w"> </span>docker/ssl/certs/ca.crt<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w"> </span>-H<span class="w"> </span><span class="s2">&quot;Authorization: Bearer </span><span class="nv">$USER_TOKEN</span><span class="s2">&quot;</span><span class="w"> </span>https://localhost/connect<span class="w"> </span>-d<span class="w"> </span><span class="s1">&#39;{&quot;channel_ids&quot;:[&quot;&lt;channel_id&gt;&quot;, &quot;&lt;channel_id&gt;&quot;],&quot;thing_ids&quot;:[&quot;&lt;thing_id&gt;&quot;, &quot;&lt;thing_id&gt;&quot;]}&#39;</span>
+</code></pre></div>
+<p>You can observe which things are connected to specific channel:</p>
+<div class="highlight"><pre><span></span><code>curl<span class="w"> </span>-s<span class="w"> </span>-S<span class="w"> </span>-i<span class="w"> </span>--cacert<span class="w"> </span>docker/ssl/certs/ca.crt<span class="w"> </span>-H<span class="w"> </span><span class="s2">&quot;Authorization: Bearer </span><span class="nv">$USER_TOKEN</span><span class="s2">&quot;</span><span class="w"> </span>https://localhost/channels/&lt;channel_id&gt;/things
+</code></pre></div>
+<p>Response that you'll get should look like this:</p>
+<div class="highlight"><pre><span></span><code><span class="err">HTTP/</span><span class="mi">2</span><span class="w"> </span><span class="mi">200</span>
+<span class="err">server</span><span class="p">:</span><span class="w"> </span><span class="kc">n</span><span class="err">gi</span><span class="kc">n</span><span class="err">x/</span><span class="mf">1.23.3</span>
+<span class="err">da</span><span class="kc">te</span><span class="p">:</span><span class="w"> </span><span class="err">Tue</span><span class="p">,</span><span class="w"> </span><span class="mi">04</span><span class="w"> </span><span class="err">Apr</span><span class="w"> </span><span class="mi">2023</span><span class="w"> </span><span class="mi">09</span><span class="p">:</span><span class="mi">53</span><span class="p">:</span><span class="mi">21</span><span class="w"> </span><span class="err">GMT</span>
+<span class="err">co</span><span class="kc">ntent</span><span class="mi">-</span><span class="kc">t</span><span class="err">ype</span><span class="p">:</span><span class="w"> </span><span class="err">applica</span><span class="kc">t</span><span class="err">io</span><span class="kc">n</span><span class="err">/jso</span><span class="kc">n</span>
+<span class="err">co</span><span class="kc">ntent</span><span class="mi">-</span><span class="err">le</span><span class="kc">n</span><span class="err">g</span><span class="kc">t</span><span class="err">h</span><span class="p">:</span><span class="w"> </span><span class="mi">254</span>
+<span class="err">access</span><span class="mi">-</span><span class="err">co</span><span class="kc">ntr</span><span class="err">ol</span><span class="mf">-e</span><span class="err">xpose</span><span class="mi">-</span><span class="err">headers</span><span class="p">:</span><span class="w"> </span><span class="err">Loca</span><span class="kc">t</span><span class="err">io</span><span class="kc">n</span>
+
+<span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;limit&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;total&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;things&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[{</span>
+<span class="w">        </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;b594af97-9550-4b11-86e1-2b6db7e329b9&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;bob&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;credentials&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;secret&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;9f89f52e-1b06-4416-8294-ae753b0c4bea&quot;</span><span class="w"> </span><span class="p">},</span>
+<span class="w">        </span><span class="nt">&quot;created_at&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2023-04-04T08:42:04.16839Z&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;updated_at&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;0001-01-01T00:00:00Z&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;enabled&quot;</span>
+<span class="w">    </span><span class="p">}]</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>You can observe to which channels is specified thing connected:</p>
+<div class="highlight"><pre><span></span><code>curl<span class="w"> </span>-s<span class="w"> </span>-S<span class="w"> </span>-i<span class="w"> </span>--cacert<span class="w"> </span>docker/ssl/certs/ca.crt<span class="w"> </span>-H<span class="w"> </span><span class="s2">&quot;Authorization: Bearer </span><span class="nv">$USER_TOKEN</span><span class="s2">&quot;</span><span class="w"> </span>https://localhost/things/&lt;thing_id&gt;/channels
+</code></pre></div>
+<p>Response that you'll get should look like this:</p>
+<div class="highlight"><pre><span></span><code>HTTP/2<span class="w"> </span><span class="m">200</span>
+server:<span class="w"> </span>nginx/1.23.3
+date:<span class="w"> </span>Tue,<span class="w"> </span><span class="m">04</span><span class="w"> </span>Apr<span class="w"> </span><span class="m">2023</span><span class="w"> </span><span class="m">09</span>:57:10<span class="w"> </span>GMT
+content-type:<span class="w"> </span>application/json
+content-length:<span class="w"> </span><span class="m">261</span>
+access-control-expose-headers:<span class="w"> </span>Location
+
+<span class="o">{</span>
+<span class="w">    </span><span class="s2">&quot;total&quot;</span>:<span class="w"> </span><span class="m">1</span>,
+<span class="w">    </span><span class="s2">&quot;channels&quot;</span>:<span class="w"> </span><span class="o">[{</span>
+<span class="w">        </span><span class="s2">&quot;id&quot;</span>:<span class="w"> </span><span class="s2">&quot;ff1316f1-d3c6-4590-8bf3-33774d79eab2&quot;</span>,
+<span class="w">        </span><span class="s2">&quot;owner_id&quot;</span>:<span class="w"> </span><span class="s2">&quot;71db4bb0-591e-4f76-b766-b39ced9fc6b8&quot;</span>,
+<span class="w">        </span><span class="s2">&quot;name&quot;</span>:<span class="w"> </span><span class="s2">&quot;betty&quot;</span>,
+<span class="w">        </span><span class="s2">&quot;created_at&quot;</span>:<span class="w"> </span><span class="s2">&quot;2023-04-04T09:11:16.138881Z&quot;</span>,
+<span class="w">        </span><span class="s2">&quot;updated_at&quot;</span>:<span class="w"> </span><span class="s2">&quot;2023-04-04T09:11:16.138881Z&quot;</span>,
+<span class="w">        </span><span class="s2">&quot;status&quot;</span>:<span class="w"> </span><span class="s2">&quot;enabled&quot;</span>
+<span class="w">    </span><span class="o">}]</span>
+<span class="o">}</span>
+</code></pre></div>
+<p>If you want to disconnect your thing from the channel, send following request:</p>
+<blockquote>
+<p>This endpoint will be depreciated in 1.0.0. It will be replaced with the bulk endpoint found at /disconnect.</p>
+</blockquote>
+<div class="highlight"><pre><span></span><code>curl<span class="w"> </span>-s<span class="w"> </span>-S<span class="w"> </span>-i<span class="w"> </span>--cacert<span class="w"> </span>docker/ssl/certs/ca.crt<span class="w"> </span>-X<span class="w"> </span>DELETE<span class="w"> </span>-H<span class="w"> </span><span class="s2">&quot;Authorization: Bearer </span><span class="nv">$USER_TOKEN</span><span class="s2">&quot;</span><span class="w"> </span>https://localhost/channels/&lt;channel_id&gt;/things/&lt;thing_id&gt;
+</code></pre></div>
+<p>Response that you'll get should look like this:</p>
+<div class="highlight"><pre><span></span><code>HTTP/2<span class="w"> </span><span class="m">204</span>
+server:<span class="w"> </span>nginx/1.23.3
+date:<span class="w"> </span>Tue,<span class="w"> </span><span class="m">04</span><span class="w"> </span>Apr<span class="w"> </span><span class="m">2023</span><span class="w"> </span><span class="m">09</span>:57:53<span class="w"> </span>GMT
+access-control-expose-headers:<span class="w"> </span>Location
+</code></pre></div>
+<p>For more information about the Things service API, please check out the <a href="https://absmach.github.io/magistrala/?urls.primaryName=things.yml">API documentation</a>.</p>
+<h2 id="provision-service">Provision Service<a class="headerlink" href="#provision-service" title="Permanent link">#</a></h2>
+<p>Provisioning is a process of configuration of an IoT platform in which system operator creates and sets-up different entities used in the platform - users, channels and things. It is part of process of setting up IoT applications where we connect devices on edge with platform in cloud. For provisioning we can use <a href="https://github.com/absmach/magistrala/tree/main/cli">Magistrala CLI</a> for creating users and for each node in the edge (eg. gateway) required number of things, channels, connecting them and creating certificates if needed. Provision service is used to set up initial application configuration once user is created. Provision service creates things, channels, connections and certificates. Once user is created we can use provision to create a setup for edge node in one HTTP request instead of issuing several CLI commands.</p>
+<p>Provision service provides an HTTP API to interact with <a href="https://absmach.github.io/magistrala/?urls.primaryName=provision.yml">Magistrala</a>.</p>
+<p>For gateways to communicate with <a href="https://github.com/absmach/magistrala">Magistrala</a> configuration is required (MQTT host, thing, channels, certificates...). Gateway will send a request to <a href="https://github.com/absmach/magistrala/tree/main/bootstrap">Bootstrap</a> service providing <code>&lt;external_id&gt;</code> and <code>&lt;external_key&gt;</code> in HTTP request to get the configuration. To make a request to <a href="https://github.com/absmach/magistrala/tree/main/bootstrap">Bootstrap</a> service you can use <a href="https://github.com/absmach/agent">Agent</a> service on a gateway.</p>
+<p>To create bootstrap configuration you can use <a href="https://github.com/absmach/magistrala/tree/main/bootstrap">Bootstrap</a> or <code>Provision</code> service. [Magistrala UI][mfxui] uses <a href="https://github.com/absmach/magistrala/tree/main/bootstrap">Bootstrap</a> service for creating gateway configurations. <code>Provision</code> service should provide an easy way of provisioning your gateways i.e creating bootstrap configuration and as many things and channels that your setup requires.</p>
+<p>Also, you may use provision service to create certificates for each thing. Each service running on gateway may require more than one thing and channel for communication.
+If, for example, you are using services <a href="https://github.com/absmach/agent">Agent</a> and <a href="https://github.com/absmach/export">Export</a> on a gateway you will need two channels for <code>Agent</code> (<code>data</code> and <code>control</code>) and one thing for <code>Export</code>.
+Additionally, if you enabled mTLS each service will need its own thing and certificate for access to <a href="https://github.com/absmach/magistrala">Magistrala</a>.
+Your setup could require any number of things and channels, this kind of setup we can call <code>provision layout</code>.</p>
+<p>Provision service provides a way of specifying this <code>provision layout</code> and creating a setup according to that layout by serving requests on <code>/mapping</code> endpoint. Provision layout is configured in <a href="https://github.com/absmach/magistrala/blob/master/docker/addons/provision/configs/config.toml">config.toml</a>.</p>
+<h3 id="configuration">Configuration<a class="headerlink" href="#configuration" title="Permanent link">#</a></h3>
+<p>The service is configured using the environment variables presented in the following <a href="https://github.com/absmach/magistrala/tree/main/provision#configuration">table</a>. Note that any unset variables will be replaced with their default values.</p>
+<p>By default, call to <code>/mapping</code> endpoint will create one thing and two channels (<code>control</code> and <code>data</code>) and connect it as this is typical setup required by <a href="/edge/#agent">Agent</a>. If there is a requirement for different provision layout we can use <a href="https://github.com/absmach/magistrala/blob/master/docker/addons/provision/configs/config.toml">config</a> file in addition to environment variables.</p>
+<p>For the purposes of running provision as an add-on in docker composition environment variables seems more suitable. Environment variables are set in <a href="https://github.com/absmach/magistrala/blob/master/.env">.env</a>.</p>
+<p>Configuration can be specified in <a href="https://github.com/absmach/magistrala/blob/master/docker/addons/provision/configs/config.toml">config.toml</a>. Config file can specify all the settings that environment variables can configure and in addition <code>/mapping</code> endpoint provision layout can be configured.</p>
+<p>In <code>config.toml</code> we can enlist an array of things and channels that we want to create and make connections between them which we call provision layout.</p>
+<p>Things Metadata can be whatever suits your needs. Thing that has metadata with <code>external_id</code> will have bootstrap configuration created, <code>external_id</code> value will be populated with value from <a href="#example">request</a>).
+Bootstrap configuration can be fetched with <a href="https://github.com/absmach/agent">Agent</a>. For channel's metadata <code>type</code> is reserved for <code>control</code> and <code>data</code> which we use with <a href="https://github.com/absmach/agent">Agent</a>.</p>
+<p>Example of provision layout below</p>
+<div class="highlight"><pre><span></span><code><span class="k">[bootstrap]</span>
+<span class="w">  </span><span class="k">[bootstrap.content]</span>
+<span class="w">    </span><span class="k">[bootstrap.content.agent.edgex]</span>
+<span class="w">      </span><span class="n">url</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;http://localhost:48090/api/v1/&quot;</span>
+
+<span class="w">    </span><span class="k">[bootstrap.content.agent.log]</span>
+<span class="w">      </span><span class="n">level</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;info&quot;</span>
+
+<span class="w">    </span><span class="k">[bootstrap.content.agent.mqtt]</span>
+<span class="w">      </span><span class="n">mtls</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">false</span>
+<span class="w">      </span><span class="n">qos</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span>
+<span class="w">      </span><span class="n">retain</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">false</span>
+<span class="w">      </span><span class="n">skip_tls_ver</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span>
+<span class="w">      </span><span class="n">url</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;localhost:1883&quot;</span>
+
+<span class="w">    </span><span class="k">[bootstrap.content.agent.server]</span>
+<span class="w">      </span><span class="n">nats_url</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;localhost:4222&quot;</span>
+<span class="w">      </span><span class="n">port</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;9000&quot;</span>
+
+<span class="w">    </span><span class="k">[bootstrap.content.agent.heartbeat]</span>
+<span class="w">      </span><span class="n">interval</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;30s&quot;</span>
+
+<span class="w">    </span><span class="k">[bootstrap.content.agent.terminal]</span>
+<span class="w">      </span><span class="n">session_timeout</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;30s&quot;</span>
+
+<span class="w">    </span><span class="k">[bootstrap.content.export.exp]</span>
+<span class="w">      </span><span class="n">log_level</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;debug&quot;</span>
+<span class="w">      </span><span class="n">nats</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;nats://localhost:4222&quot;</span>
+<span class="w">      </span><span class="n">port</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;8172&quot;</span>
+<span class="w">      </span><span class="n">cache_url</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;localhost:6379&quot;</span>
+<span class="w">      </span><span class="n">cache_pass</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;&quot;</span>
+<span class="w">      </span><span class="n">cache_db</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;0&quot;</span>
+
+<span class="w">    </span><span class="k">[bootstrap.content.export.mqtt]</span>
+<span class="w">      </span><span class="n">ca_path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;ca.crt&quot;</span>
+<span class="w">      </span><span class="n">cert_path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;thing.crt&quot;</span>
+<span class="w">      </span><span class="n">channel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;&quot;</span>
+<span class="w">      </span><span class="n">host</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;tcp://localhost:1883&quot;</span>
+<span class="w">      </span><span class="n">mtls</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">false</span>
+<span class="w">      </span><span class="n">password</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;&quot;</span>
+<span class="w">      </span><span class="n">priv_key_path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;thing.key&quot;</span>
+<span class="w">      </span><span class="n">qos</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span>
+<span class="w">      </span><span class="n">retain</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">false</span>
+<span class="w">      </span><span class="n">skip_tls_ver</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">false</span>
+<span class="w">      </span><span class="n">username</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;&quot;</span>
+
+<span class="w">    </span><span class="k">[[bootstrap.content.export.routes]]</span>
+<span class="w">      </span><span class="n">mqtt_topic</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;&quot;</span>
+<span class="w">      </span><span class="n">nats_topic</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;channels&quot;</span>
+<span class="w">      </span><span class="n">subtopic</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;&quot;</span>
+<span class="w">      </span><span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;mfx&quot;</span>
+<span class="w">      </span><span class="n">workers</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span>
+
+<span class="w">    </span><span class="k">[[bootstrap.content.export.routes]]</span>
+<span class="w">      </span><span class="n">mqtt_topic</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;&quot;</span>
+<span class="w">      </span><span class="n">nats_topic</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;export&quot;</span>
+<span class="w">      </span><span class="n">subtopic</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;&quot;</span>
+<span class="w">      </span><span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;default&quot;</span>
+<span class="w">      </span><span class="n">workers</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span>
+
+<span class="k">[[things]]</span>
+<span class="w">  </span><span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;thing&quot;</span>
+
+<span class="w">  </span><span class="k">[things.metadata]</span>
+<span class="w">    </span><span class="n">external_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;xxxxxx&quot;</span>
+
+<span class="k">[[channels]]</span>
+<span class="w">  </span><span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;control-channel&quot;</span>
+
+<span class="w">  </span><span class="k">[channels.metadata]</span>
+<span class="w">    </span><span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;control&quot;</span>
+
+<span class="k">[[channels]]</span>
+<span class="w">  </span><span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;data-channel&quot;</span>
+
+<span class="w">  </span><span class="k">[channels.metadata]</span>
+<span class="w">    </span><span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;data&quot;</span>
+
+<span class="k">[[channels]]</span>
+<span class="w">  </span><span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;export-channel&quot;</span>
+
+<span class="w">  </span><span class="k">[channels.metadata]</span>
+<span class="w">    </span><span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;export&quot;</span>
+</code></pre></div>
+<p><code>[bootstrap.content]</code> will be marshalled and saved into <code>content</code> field in bootstrap configs when request to <code>/mappings</code> is made, <code>content</code> field from bootstrap config is used to create <code>Agent</code> and <code>Export</code> configuration files upon <code>Agent</code> fetching bootstrap configuration.</p>
+<h3 id="authentication">Authentication<a class="headerlink" href="#authentication" title="Permanent link">#</a></h3>
+<p>In order to create necessary entities provision service needs to authenticate against Magistrala.
+To provide authentication credentials to the provision service you can pass it in as an environment variable or in a config file as Magistrala user and password or as API token (that can be issued on <code>/users/tokens/issue</code> endpoint of <a href="https://github.com/absmach/magistrala/blob/master/users/README.md">users service</a>.</p>
+<p>Additionally, users or API token can be passed in Authorization header, this authentication takes precedence over others.</p>
+<ul>
+<li><code>username</code>, <code>password</code> - (<code>MG_PROVISION_USER</code>, <code>MG_PROVISION_PASSWORD</code> in <a href="https://github.com/absmach/magistrala/blob/master/.env">.env</a>, <code>MG_user</code>, <code>MG_pass</code> in <a href="https://github.com/absmach/magistrala/blob/master/docker/addons/provision/configs/config.toml">config.toml</a></li>
+<li>API Key - (<code>MG_PROVISION_API_KEY</code> in <a href="https://github.com/absmach/magistrala/blob/master/.env">.env</a> or <a href="https://github.com/absmach/magistrala/blob/master/docker/addons/provision/configs/config.toml">config.toml</a></li>
+<li><code>Authorization: Bearer Token|ApiKey</code> - request authorization header containing users token. Check <a href="../authentication/">auth</a>.</li>
+</ul>
+<h3 id="running">Running<a class="headerlink" href="#running" title="Permanent link">#</a></h3>
+<p>Provision service can be run as a standalone or in docker composition as addon to the core docker composition.</p>
+<p>Standalone:</p>
+<div class="highlight"><pre><span></span><code><span class="nv">MG_PROVISION_BS_SVC_URL</span><span class="o">=</span>http://localhost:9013/things<span class="w"> </span><span class="se">\</span>
+<span class="nv">MG_PROVISION_THINGS_LOCATION</span><span class="o">=</span>http://localhost:9000<span class="w"> </span><span class="se">\</span>
+<span class="nv">MG_PROVISION_USERS_LOCATION</span><span class="o">=</span>http://localhost:9002<span class="w"> </span><span class="se">\</span>
+<span class="nv">MG_PROVISION_CONFIG_FILE</span><span class="o">=</span>docker/addons/provision/configs/config.toml<span class="w"> </span><span class="se">\</span>
+build/magistrala-provision
+</code></pre></div>
+<p>Docker composition:</p>
+<div class="highlight"><pre><span></span><code>docker-compose<span class="w"> </span>-f<span class="w"> </span>docker/addons/provision/docker-compose.yml<span class="w"> </span>up
+</code></pre></div>
+<h3 id="provision_1">Provision<a class="headerlink" href="#provision_1" title="Permanent link">#</a></h3>
+<p>For the case that credentials or API token is passed in configuration file or environment variables, call to <code>/mapping</code> endpoint doesn't require <code>Authentication</code> header:</p>
+<div class="highlight"><pre><span></span><code>curl<span class="w"> </span>-s<span class="w"> </span>-S<span class="w">  </span>-X<span class="w"> </span>POST<span class="w">  </span>http://localhost:9016/mapping<span class="w">  </span>-H<span class="w"> </span><span class="s1">&#39;Content-Type: application/json&#39;</span><span class="w"> </span>-d<span class="w"> </span><span class="s1">&#39;{&quot;external_id&quot;: &quot;33:52:77:99:43&quot;, &quot;external_key&quot;: &quot;223334fw2&quot;}&#39;</span>
+</code></pre></div>
+<p>In the case that provision service is not deployed with credentials or API key or you want to use user other than one being set in environment (or config file):</p>
+<div class="highlight"><pre><span></span><code>curl<span class="w"> </span>-s<span class="w"> </span>-S<span class="w">  </span>-X<span class="w"> </span>POST<span class="w">  </span>http://localhost:9016/mapping<span class="w"> </span>-H<span class="w"> </span><span class="s2">&quot;Authorization: Bearer &lt;token|api_key&gt;&quot;</span><span class="w"> </span>-H<span class="w"> </span><span class="s1">&#39;Content-Type: application/json&#39;</span><span class="w"> </span>-d<span class="w"> </span><span class="s1">&#39;{&quot;external_id&quot;: &quot;&lt;external_id&gt;&quot;, &quot;external_key&quot;: &quot;&lt;external_key&gt;&quot;}&#39;</span>
+</code></pre></div>
+<p>Or if you want to specify a name for thing different than in <code>config.toml</code> you can specify post data as:</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&lt;name&gt;&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;external_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&lt;external_id&gt;&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;external_key&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&lt;external_key&gt;&quot;</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>Response contains created things, channels and certificates if any:</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;things&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;c22b0c0f-8c03-40da-a06b-37ed3a72c8d1&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;thing&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;key&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;007cce56-e0eb-40d6-b2b9-ed348a97d1eb&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;metadata&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;external_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;33:52:79:C3:43&quot;</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">],</span>
+<span class="w">  </span><span class="nt">&quot;channels&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;064c680e-181b-4b58-975e-6983313a5170&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;control-channel&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;metadata&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;control&quot;</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;579da92d-6078-4801-a18a-dd1cfa2aa44f&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;data-channel&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;metadata&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;data&quot;</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">],</span>
+<span class="w">  </span><span class="nt">&quot;whitelisted&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;c22b0c0f-8c03-40da-a06b-37ed3a72c8d1&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<h3 id="example">Example<a class="headerlink" href="#example" title="Permanent link">#</a></h3>
+<p>Deploy Magistrala UI docker composition as it contains all the required services for provisioning to work ( <code>certs</code>, <code>bootstrap</code> and Magistrala core)</p>
+<div class="highlight"><pre><span></span><code>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/absmach/magistrala-ui
+<span class="nb">cd</span><span class="w"> </span>magistrala-ui
+docker-compose<span class="w"> </span>-f<span class="w"> </span>docker/docker-compose.yml<span class="w"> </span>up
+</code></pre></div>
+<p>Create user and obtain access token</p>
+<div class="highlight"><pre><span></span><code>magistrala-cli<span class="w"> </span>users<span class="w"> </span>create<span class="w"> </span>john.doe@email.com<span class="w"> </span><span class="m">12345678</span>
+
+<span class="c1"># Retrieve token</span>
+magistrala-cli<span class="w"> </span>users<span class="w"> </span>token<span class="w"> </span>john.doe@email.com<span class="w"> </span><span class="m">12345678</span>
+
+created:<span class="w"> </span>eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1OTY1ODU3MDUsImlhdCI6MTU5NjU0OTcwNSwiaXNzIjoibWFpbmZsdXguYXV0aG4iLCJzdWIiOiJtaXJrYXNoQGdtYWlsLmNvbSIsInR5cGUiOjB9._vq0zJzFc9tQqc8x74kpn7dXYefUtG9IB0Cb-X2KMK8
+</code></pre></div>
+<p>Put a value of token into environment variable</p>
+<div class="highlight"><pre><span></span><code><span class="nv">TOKEN</span><span class="o">=</span>eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1OTY1ODU3MDUsImlhdCI6MTU5NjU0OTcwNSwiaXNzIjoibWFpbmZsdXguYXV0aG4iLCJzdWIiOiJtaXJrYXNoQGdtYWlsLmNvbSIsInR5cGUiOjB9._vq0zJzFc9tQqc8x74kpn7dXYefUtG9IB0Cb-X2KMK8
+</code></pre></div>
+<p>Make a call to provision endpoint</p>
+<div class="highlight"><pre><span></span><code>curl<span class="w"> </span>-s<span class="w"> </span>-S<span class="w">  </span>-X<span class="w"> </span>POST<span class="w">  </span>http://magistrala.com:9016/mapping<span class="w"> </span>-H<span class="w"> </span><span class="s2">&quot;Authorization: Bearer </span><span class="nv">$TOKEN</span><span class="s2">&quot;</span><span class="w"> </span>-H<span class="w"> </span><span class="s1">&#39;Content-Type: application/json&#39;</span><span class="w">   </span>-d<span class="w"> </span><span class="s1">&#39;{&quot;name&quot;:&quot;edge-gw&quot;,  &quot;external_id&quot; : &quot;gateway&quot;, &quot;external_key&quot;:&quot;external_key&quot; }&#39;</span>
+</code></pre></div>
+<p>To check the results you can make a call to bootstrap endpoint</p>
+<div class="highlight"><pre><span></span><code>curl<span class="w"> </span>-s<span class="w"> </span>-S<span class="w"> </span>-X<span class="w"> </span>GET<span class="w"> </span>http://magistrala.com:9013/things/bootstrap/gateway<span class="w"> </span>-H<span class="w"> </span><span class="s2">&quot;Authorization: Thing external_key&quot;</span><span class="w"> </span>-H<span class="w"> </span><span class="s1">&#39;Content-Type: application/json&#39;</span>
+</code></pre></div>
+<p>Or you can start <code>Agent</code> with:</p>
+<div class="highlight"><pre><span></span><code>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/absmach/agent.git
+<span class="nb">cd</span><span class="w"> </span>agent
+make
+<span class="nv">MG_AGENT_BOOTSTRAP_ID</span><span class="o">=</span>gateway<span class="w"> </span><span class="nv">MG_AGENT_BOOTSTRAP_KEY</span><span class="o">=</span>external_key<span class="w"> </span><span class="nv">MG_AGENT_BOOTSTRAP_URL</span><span class="o">=</span>http://magistrala.ccom:9013/things/bootstrap<span class="w"> </span>build/magistrala-agent
+</code></pre></div>
+<p>Agent will retrieve connections parameters and connect to Magistrala cloud.</p>
+<p>For more information about the Provision service API, please check out the <a href="https://github.com/absmach/magistrala/blob/master/api/provision.yml">API documentation</a>.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright (c) Abstract Machines
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.1e8ae164.min.js"></script>
+      
+    
+  </body>
+</html>

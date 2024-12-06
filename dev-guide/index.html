@@ -1,0 +1,1362 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Magistrala IoT System">
+      
+      
+      
+        <link rel="canonical" href="https://docs.magistrala.abstractmachines.fr/dev-guide/">
+      
+      
+        <link rel="prev" href="../tracing/">
+      
+      
+        <link rel="next" href="../kubernetes/">
+      
+      
+      <link rel="icon" href="../img/favicon.png">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.17">
+    
+    
+      
+        <title>Developer's Guide - Magistrala</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.bcfcd587.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#developers-guide" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Magistrala" class="md-header__button md-logo" aria-label="Magistrala" data-md-component="logo">
+      
+  <img src="../img/logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Magistrala
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Developer's Guide
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var media,input,key,value,palette=__md_get("__palette");if(palette&&palette.color){"(prefers-color-scheme)"===palette.color.media&&(media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']"),palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent"));for([key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/absmach/magistrala" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Magistrala" class="md-nav__button md-logo" aria-label="Magistrala" data-md-component="logo">
+      
+  <img src="../img/logo.png" alt="logo">
+
+    </a>
+    Magistrala
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/absmach/magistrala" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../architecture/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Architecture
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting-started/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Getting Started
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../entities/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Entities
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    API
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cli/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    CLI
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../authentication/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Authentication
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../authorization/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Authorization
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../security/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Security
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../messaging/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Messaging
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../events/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Events
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../edge/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Edge
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../certs/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Certs
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../bootstrap/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Bootstrap
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lora/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    LoRa
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../opcua/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    OPC-UA
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../provision/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Provision
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../storage/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Storage
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../twins/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Twins
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tracing/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Tracing
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Developer's Guide
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Developer's Guide
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#getting-magistrala" class="md-nav__link">
+    <span class="md-ellipsis">
+      Getting Magistrala
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#building" class="md-nav__link">
+    <span class="md-ellipsis">
+      Building
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Building">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      Prerequisites
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#build-all-services" class="md-nav__link">
+    <span class="md-ellipsis">
+      Build All Services
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#build-individual-microservice" class="md-nav__link">
+    <span class="md-ellipsis">
+      Build Individual Microservice
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#building-dockers" class="md-nav__link">
+    <span class="md-ellipsis">
+      Building Dockers
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Building Dockers">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#building-docker-images-for-development" class="md-nav__link">
+    <span class="md-ellipsis">
+      Building Docker images for development
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#suggested-workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      Suggested workflow
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#overriding-the-default-docker-compose-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Overriding the default docker-compose configuration
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cleaning-up-your-dockerized-magistrala-setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      Cleaning up your dockerized Magistrala setup
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mqtt-broker" class="md-nav__link">
+    <span class="md-ellipsis">
+      MQTT Broker
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#protobuf" class="md-nav__link">
+    <span class="md-ellipsis">
+      Protobuf
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cross-compiling-for-arm" class="md-nav__link">
+    <span class="md-ellipsis">
+      Cross-compiling for ARM
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#running-tests" class="md-nav__link">
+    <span class="md-ellipsis">
+      Running tests
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#installing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Installing
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#deployment" class="md-nav__link">
+    <span class="md-ellipsis">
+      Deployment
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Deployment">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#prerequisites_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Prerequisites
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Prerequisites">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#message-broker" class="md-nav__link">
+    <span class="md-ellipsis">
+      Message Broker
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#postgresql" class="md-nav__link">
+    <span class="md-ellipsis">
+      PostgreSQL
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#magistrala-services" class="md-nav__link">
+    <span class="md-ellipsis">
+      Magistrala Services
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kubernetes/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kubernetes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../benchmark/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Benchmark
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="/blogs/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Blogs
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#getting-magistrala" class="md-nav__link">
+    <span class="md-ellipsis">
+      Getting Magistrala
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#building" class="md-nav__link">
+    <span class="md-ellipsis">
+      Building
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Building">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      Prerequisites
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#build-all-services" class="md-nav__link">
+    <span class="md-ellipsis">
+      Build All Services
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#build-individual-microservice" class="md-nav__link">
+    <span class="md-ellipsis">
+      Build Individual Microservice
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#building-dockers" class="md-nav__link">
+    <span class="md-ellipsis">
+      Building Dockers
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Building Dockers">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#building-docker-images-for-development" class="md-nav__link">
+    <span class="md-ellipsis">
+      Building Docker images for development
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#suggested-workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      Suggested workflow
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#overriding-the-default-docker-compose-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Overriding the default docker-compose configuration
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cleaning-up-your-dockerized-magistrala-setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      Cleaning up your dockerized Magistrala setup
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mqtt-broker" class="md-nav__link">
+    <span class="md-ellipsis">
+      MQTT Broker
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#protobuf" class="md-nav__link">
+    <span class="md-ellipsis">
+      Protobuf
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cross-compiling-for-arm" class="md-nav__link">
+    <span class="md-ellipsis">
+      Cross-compiling for ARM
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#running-tests" class="md-nav__link">
+    <span class="md-ellipsis">
+      Running tests
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#installing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Installing
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#deployment" class="md-nav__link">
+    <span class="md-ellipsis">
+      Deployment
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Deployment">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#prerequisites_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Prerequisites
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Prerequisites">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#message-broker" class="md-nav__link">
+    <span class="md-ellipsis">
+      Message Broker
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#postgresql" class="md-nav__link">
+    <span class="md-ellipsis">
+      PostgreSQL
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#magistrala-services" class="md-nav__link">
+    <span class="md-ellipsis">
+      Magistrala Services
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="developers-guide">Developer's guide<a class="headerlink" href="#developers-guide" title="Permanent link">#</a></h1>
+<h2 id="getting-magistrala">Getting Magistrala<a class="headerlink" href="#getting-magistrala" title="Permanent link">#</a></h2>
+<p>Magistrala source can be found in the official <a href="https://github.com/absmach/magistrala">Magistrala GitHub repository</a>. You should fork this repository in order to make changes to the project. The forked version of the repository should be cloned using the following:</p>
+<div class="highlight"><pre><span></span><code>git<span class="w"> </span>clone<span class="w"> </span>&lt;forked<span class="w"> </span>repository&gt;<span class="w"> </span><span class="nv">$SOMEPATH</span>/magistrala
+<span class="nb">cd</span><span class="w"> </span><span class="nv">$SOMEPATH</span>/magistrala
+</code></pre></div>
+<p><strong>Note:</strong> If your <code>$SOMEPATH</code> is equal to <code>$GOPATH/src/github.com/absmach/magistrala</code>, make sure that your <code>$GOROOT</code> and <code>$GOPATH</code> do not overlap (otherwise, go modules won't work).</p>
+<h2 id="building">Building<a class="headerlink" href="#building" title="Permanent link">#</a></h2>
+<h3 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">#</a></h3>
+<p>Make sure that you have <a href="https://developers.google.com/protocol-buffers/">Protocol Buffers</a> (version 21.12) compiler (<code>protoc</code>) installed.</p>
+<p><a href="https://github.com/golang/protobuf">Go Protobuf</a> installation instructions are <a href="https://github.com/golang/protobuf#installation">here</a>. Go Protobuf uses C bindings, so you will need to install <a href="https://github.com/google/protobuf">C++ protobuf</a> as a prerequisite. Magistrala uses <code>Protocol Buffers for Go with Gadgets</code> to generate faster marshaling and unmarshaling Go code. Protocol Buffers for Go with Gadgets installation instructions can be found <a href="https://google.golang.org/protobuf/proto">here</a>.</p>
+<p>A copy of <a href="https://golang.org/doc/install">Go</a> (version 1.19.4) and docker template (version 3.7) will also need to be installed on your system.</p>
+<p>If any of these versions seem outdated, the latest can always be found in our <a href="https://github.com/absmach/magistrala/blob/master/scripts/ci.sh">CI script</a>.</p>
+<h3 id="build-all-services">Build All Services<a class="headerlink" href="#build-all-services" title="Permanent link">#</a></h3>
+<p>Use the <em>GNU Make</em> tool to build all Magistrala services:</p>
+<div class="highlight"><pre><span></span><code>make
+</code></pre></div>
+<p>Build artifacts will be put in the <code>build</code> directory.</p>
+<blockquote>
+<p>N.B. All Magistrala services are built as a statically linked binaries. This way they can be portable (transferred to any platform just by placing them there and running them) as they contain all needed libraries and do not relay on shared system libraries. This helps creating <a href="https://hub.docker.com/_/scratch/">FROM scratch</a> dockers.</p>
+</blockquote>
+<h3 id="build-individual-microservice">Build Individual Microservice<a class="headerlink" href="#build-individual-microservice" title="Permanent link">#</a></h3>
+<p>Individual microservices can be built with:</p>
+<div class="highlight"><pre><span></span><code>make<span class="w"> </span>&lt;microservice_name&gt;
+</code></pre></div>
+<p>For example:</p>
+<div class="highlight"><pre><span></span><code>make<span class="w"> </span>http
+</code></pre></div>
+<p>will build the HTTP Adapter microservice.</p>
+<h3 id="building-dockers">Building Dockers<a class="headerlink" href="#building-dockers" title="Permanent link">#</a></h3>
+<p>Dockers can be built with:</p>
+<div class="highlight"><pre><span></span><code>make<span class="w"> </span>dockers
+</code></pre></div>
+<p>or individually with:</p>
+<div class="highlight"><pre><span></span><code>make<span class="w"> </span>docker_&lt;microservice_name&gt;
+</code></pre></div>
+<p>For example:</p>
+<div class="highlight"><pre><span></span><code>make<span class="w"> </span>docker_http
+</code></pre></div>
+<blockquote>
+<p>N.B. Magistrala creates <code>FROM scratch</code> docker containers which are compact and small in size.</p>
+<p>N.B. The <code>things-db</code> and <code>users-db</code> containers are built from a vanilla PostgreSQL docker image downloaded from docker hub which does not persist the data when these containers are rebuilt. Thus, <strong>rebuilding of all docker containers with <code>make dockers</code> or rebuilding the <code>things-db</code> and <code>users-db</code> containers separately with <code>make docker_things-db</code> and <code>make docker_users-db</code> respectively, will cause data loss. All your users, things, channels and connections between them will be lost!</strong> As we use this setup only for development, we don't guarantee any permanent data persistence. Though, in order to enable data retention, we have configured persistent volumes for each container that stores some data. If you want to update your Magistrala dockerized installation and want to keep your data, use <code>make cleandocker</code> to clean the containers and images and keep the data (stored in docker persistent volumes) and then <code>make run</code> to update the images and the containers. Check the <a href="#cleaning-up-your-dockerized-magistrala-setup">Cleaning up your dockerized Magistrala setup</a> section for details. Please note that this kind of updating might not work if there are database changes.</p>
+</blockquote>
+<h4 id="building-docker-images-for-development">Building Docker images for development<a class="headerlink" href="#building-docker-images-for-development" title="Permanent link">#</a></h4>
+<p>In order to speed up build process, you can use commands such as:</p>
+<div class="highlight"><pre><span></span><code>make<span class="w"> </span>dockers_dev
+</code></pre></div>
+<p>or individually with</p>
+<div class="highlight"><pre><span></span><code>make<span class="w"> </span>docker_dev_&lt;microservice_name&gt;
+</code></pre></div>
+<p>Commands <code>make dockers</code> and <code>make dockers_dev</code> are similar. The main difference is that building images in the development mode is done on the local machine, rather than an intermediate image, which makes building images much faster. Before running this command, corresponding binary needs to be built in order to make changes visible. This can be done using <code>make</code> or <code>make &lt;service_name&gt;</code> command. Commands <code>make dockers_dev</code> and <code>make docker_dev_&lt;service_name&gt;</code> should be used only for development to speed up the process of image building. <strong>For deployment images, commands from section above should be used.</strong></p>
+<h3 id="suggested-workflow">Suggested workflow<a class="headerlink" href="#suggested-workflow" title="Permanent link">#</a></h3>
+<p>When the project is first cloned to your system, you will need to make sure and build all of the Magistrala services.</p>
+<div class="highlight"><pre><span></span><code>make
+make<span class="w"> </span>dockers_dev
+</code></pre></div>
+<p>As you develop and test changes, only the services related to your changes will need to be rebuilt. This will reduce compile time and create a much more enjoyable development experience.</p>
+<div class="highlight"><pre><span></span><code>make<span class="w"> </span>&lt;microservice_name&gt;
+make<span class="w"> </span>docker_dev_&lt;microservice_name&gt;
+make<span class="w"> </span>run
+</code></pre></div>
+<h3 id="overriding-the-default-docker-compose-configuration">Overriding the default docker-compose configuration<a class="headerlink" href="#overriding-the-default-docker-compose-configuration" title="Permanent link">#</a></h3>
+<p>Sometimes, depending on the use case and the user's needs it might be useful to override or add some extra parameters to the docker-compose configuration. These configuration changes can be done by specifying multiple compose files with the <a href="https://docs.docker.com/compose/reference/overview/">docker-compose command line option -f</a> as described <a href="https://docs.docker.com/compose/extends/">here</a>.
+The following format of the <code>docker-compose</code> command can be used to extend or override the configuration:</p>
+<div class="highlight"><pre><span></span><code>docker-compose<span class="w"> </span>-f<span class="w"> </span>docker/docker-compose.yml<span class="w"> </span>-f<span class="w"> </span>docker/docker-compose.custom1.yml<span class="w"> </span>-f<span class="w"> </span>docker/docker-compose.custom2.yml<span class="w"> </span>up<span class="w"> </span><span class="o">[</span>-d<span class="o">]</span>
+</code></pre></div>
+<p>In the command above each successive file overrides the previous parameters.</p>
+<p>A practical example in our case would be to enable debugging and tracing in NATS so that we can see better how are the messages moving around.</p>
+<p><code>docker-compose.nats-debugging.yml</code></p>
+<div class="highlight"><pre><span></span><code><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;3&quot;</span>
+
+<span class="nt">services</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">nats</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">command</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">--debug -DV</span>
+</code></pre></div>
+<p>When we have the override files in place, to compose the whole infrastructure including the persistent volumes we can execute:</p>
+<div class="highlight"><pre><span></span><code>docker-compose<span class="w"> </span>-f<span class="w"> </span>docker/docker-compose.yml<span class="w"> </span>-f<span class="w"> </span>docker/docker-compose.nats-debugging.yml<span class="w"> </span>up<span class="w"> </span>-d
+</code></pre></div>
+<p><strong>Note:</strong> Please store your customizations to some folder outside the Magistrala's source folder and maybe add them to some other git repository. You can always apply your customizations by pointing to the right file using <code>docker-compose -f ...</code>.</p>
+<h3 id="cleaning-up-your-dockerized-magistrala-setup">Cleaning up your dockerized Magistrala setup<a class="headerlink" href="#cleaning-up-your-dockerized-magistrala-setup" title="Permanent link">#</a></h3>
+<p>If you want to clean your whole dockerized Magistrala installation you can use the <code>make pv=true cleandocker</code> command. Please note that <strong>by default the <code>make cleandocker</code> command will stop and delete all of the containers and images, but NOT DELETE persistent volumes</strong>. If you want to delete the gathered data in the system (the persistent volumes) please use the following command <code>make pv=true cleandocker</code> (pv = persistent volumes). This form of the command will stop and delete the containers, the images and will also delete the persistent volumes.</p>
+<h3 id="mqtt-broker">MQTT Broker<a class="headerlink" href="#mqtt-broker" title="Permanent link">#</a></h3>
+<p>To build Magistrala MQTT message broker Docker image, use the following commands:</p>
+<div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>docker/vernemq
+docker<span class="w"> </span>build<span class="w"> </span>--no-cache<span class="w"> </span>.<span class="w"> </span>-t<span class="w"> </span>magistrala/vernemq
+</code></pre></div>
+<p>The Magistrala uses the <a href="https://vernemq.com/downloads/">VerneMQ</a> for implementation of the MQTT messaging. Therefore, for some questions or problems you can also check out the VerneMQ documentation or reach out its contributors.</p>
+<h3 id="protobuf">Protobuf<a class="headerlink" href="#protobuf" title="Permanent link">#</a></h3>
+<p>If you've made any changes to <code>.proto</code> files, you should call <code>protoc</code> command prior to compiling individual microservices.</p>
+<p>To do this by hand, execute:</p>
+<div class="highlight"><pre><span></span><code>protoc<span class="w"> </span>-I.<span class="w"> </span>--go_out<span class="o">=</span>.<span class="w"> </span>--go_opt<span class="o">=</span><span class="nv">paths</span><span class="o">=</span>source_relative<span class="w"> </span>pkg/messaging/*.proto
+protoc<span class="w"> </span>-I.<span class="w"> </span>--go_out<span class="o">=</span>.<span class="w"> </span>--go_opt<span class="o">=</span><span class="nv">paths</span><span class="o">=</span>source_relative<span class="w"> </span>--go-grpc_out<span class="o">=</span>.<span class="w"> </span>--go-grpc_opt<span class="o">=</span><span class="nv">paths</span><span class="o">=</span>source_relative<span class="w"> </span>users/policies/*.proto
+protoc<span class="w"> </span>-I.<span class="w"> </span>--go_out<span class="o">=</span>.<span class="w"> </span>--go_opt<span class="o">=</span><span class="nv">paths</span><span class="o">=</span>source_relative<span class="w"> </span>--go-grpc_out<span class="o">=</span>.<span class="w"> </span>--go-grpc_opt<span class="o">=</span><span class="nv">paths</span><span class="o">=</span>source_relative<span class="w"> </span>things/policies/*.proto
+</code></pre></div>
+<p>A shorthand to do this via <code>make</code> tool is:</p>
+<div class="highlight"><pre><span></span><code>make<span class="w"> </span>proto
+</code></pre></div>
+<blockquote>
+<p>N.B. This must be done once at the beginning in order to generate protobuf Go structures needed for the build. However, if you don't change any of <code>.proto</code> files, this step is not mandatory, since all generated files are included in the repository (those are files with <code>.pb.go</code> extension).</p>
+</blockquote>
+<h3 id="cross-compiling-for-arm">Cross-compiling for ARM<a class="headerlink" href="#cross-compiling-for-arm" title="Permanent link">#</a></h3>
+<p>Magistrala can be compiled for ARM platform and run on Raspberry Pi or other similar IoT gateways, by following the instructions <a href="https://dave.cheney.net/2015/08/22/cross-compilation-with-go-1-5">here</a> or <a href="https://www.alexruf.net/golang/arm/raspberrypi/2016/01/16/cross-compile-with-go-1-5-for-raspberry-pi.html">here</a> as well as information found <a href="https://go.dev/wiki/GoArm">here</a>. The environment variables <code>GOARCH=arm</code> and <code>GOARM=7</code> must be set for the compilation.</p>
+<p>Cross-compilation for ARM with Magistrala make:</p>
+<div class="highlight"><pre><span></span><code><span class="nv">GOOS</span><span class="o">=</span>linux<span class="w"> </span><span class="nv">GOARCH</span><span class="o">=</span>arm<span class="w"> </span><span class="nv">GOARM</span><span class="o">=</span><span class="m">7</span><span class="w"> </span>make
+</code></pre></div>
+<h2 id="running-tests">Running tests<a class="headerlink" href="#running-tests" title="Permanent link">#</a></h2>
+<p>To run all of the tests you can execute:</p>
+<div class="highlight"><pre><span></span><code>make<span class="w"> </span><span class="nb">test</span>
+</code></pre></div>
+<p>Dockertest is used for the tests, so to run them, you will need the Docker daemon/service running.</p>
+<h2 id="installing">Installing<a class="headerlink" href="#installing" title="Permanent link">#</a></h2>
+<p>Installing Go binaries is simple: just move them from <code>build</code> to <code>$GOBIN</code> (do not fortget to add <code>$GOBIN</code> to your <code>$PATH</code>).</p>
+<p>You can execute:</p>
+<div class="highlight"><pre><span></span><code>make<span class="w"> </span>install
+</code></pre></div>
+<p>which will do this copying of the binaries.</p>
+<blockquote>
+<p>N.B. Only Go binaries will be installed this way. The MQTT broker is a written in Erlang and its build scripts can be found in <code>docker/vernemq</code> dir.</p>
+</blockquote>
+<h2 id="deployment">Deployment<a class="headerlink" href="#deployment" title="Permanent link">#</a></h2>
+<h3 id="prerequisites_1">Prerequisites<a class="headerlink" href="#prerequisites_1" title="Permanent link">#</a></h3>
+<p>Magistrala depends on several infrastructural services, notably the default message broker, <a href="https://www.nats.io/">NATS</a> and <a href="https://www.postgresql.org/">PostgreSQL</a> database.</p>
+<h4 id="message-broker">Message Broker<a class="headerlink" href="#message-broker" title="Permanent link">#</a></h4>
+<p>Magistrala uses NATS as it's default central message bus. For development purposes (when not run via Docker), it expects that NATS is installed on the local system.</p>
+<p>To do this execute:</p>
+<div class="highlight"><pre><span></span><code>go<span class="w"> </span>install<span class="w"> </span>github.com/nats-io/nats-server/v2@latest
+</code></pre></div>
+<p>This will install <code>nats-server</code> binary that can be simply run by executing:</p>
+<div class="highlight"><pre><span></span><code>nats-server
+</code></pre></div>
+<p>If you want to change the default message broker to <a href="https://www.rabbitmq.com/download.html">RabbitMQ</a>, <a href="https://vernemq.com/downloads/">VerneMQ</a> or <a href="https://kafka.apache.org/quickstart">Kafka</a> you need to install it on the local system.
+To run using a different broker you need to set the <code>MG_BROKER_TYPE</code> env variable to <code>nats</code>, <code>rabbitmq</code> or <code>vernemq</code> during make and run process.</p>
+<div class="highlight"><pre><span></span><code><span class="nv">MG_BROKER_TYPE</span><span class="o">=</span>&lt;broker-type&gt;<span class="w"> </span>make
+<span class="nv">MG_BROKER_TYPE</span><span class="o">=</span>&lt;broker-type&gt;<span class="w"> </span>make<span class="w"> </span>run
+</code></pre></div>
+<h4 id="postgresql">PostgreSQL<a class="headerlink" href="#postgresql" title="Permanent link">#</a></h4>
+<p>Magistrala uses PostgreSQL to store metadata (<code>users</code>, <code>things</code> and <code>channels</code> entities alongside with authorization tokens). It expects that PostgreSQL DB is installed, set up and running on the local system.</p>
+<p>Information how to set-up (prepare) PostgreSQL database can be found <a href="https://support.rackspace.com/how-to/postgresql-creating-and-dropping-roles/">here</a>, and it is done by executing following commands:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Create `users` and `things` databases</span>
+sudo<span class="w"> </span>-u<span class="w"> </span>postgres<span class="w"> </span>createdb<span class="w"> </span>users
+sudo<span class="w"> </span>-u<span class="w"> </span>postgres<span class="w"> </span>createdb<span class="w"> </span>things
+
+<span class="c1"># Set-up Postgres roles</span>
+sudo<span class="w"> </span>su<span class="w"> </span>-<span class="w"> </span>postgres
+psql<span class="w"> </span>-U<span class="w"> </span>postgres
+<span class="nv">postgres</span><span class="o">=</span><span class="c1"># CREATE ROLE magistrala WITH LOGIN ENCRYPTED PASSWORD &#39;magistrala&#39;;</span>
+<span class="nv">postgres</span><span class="o">=</span><span class="c1"># ALTER USER magistrala WITH LOGIN ENCRYPTED PASSWORD &#39;magistrala&#39;;</span>
+</code></pre></div>
+<h3 id="magistrala-services">Magistrala Services<a class="headerlink" href="#magistrala-services" title="Permanent link">#</a></h3>
+<p>Running of the Magistrala microservices can be tricky, as there is a lot of them and each demand configuration in the form of environment variables.</p>
+<p>The whole system (set of microservices) can be run with one command:</p>
+<div class="highlight"><pre><span></span><code>make<span class="w"> </span>rundev
+</code></pre></div>
+<p>which will properly configure and run all microservices.</p>
+<p>Please assure that MQTT microservice has <code>node_modules</code> installed, as explained in <em>MQTT Microservice</em> chapter.</p>
+<blockquote>
+<p>N.B. <code>make rundev</code> actually calls helper script <code>scripts/run.sh</code>, so you can inspect this script for the details.</p>
+</blockquote>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright (c) Abstract Machines
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.1e8ae164.min.js"></script>
+      
+    
+  </body>
+</html>

@@ -1,0 +1,16 @@
+.md-typeset h5 {
+    color: var(--md-default-fg-color);
+    font-size: large;
+    text-transform: none;
+}
+
+.md-header__button.md-logo {
+    margin: 0;
+    padding: 0;
+}
+
+.md-header__button.md-logo img{
+    margin: 0;
+    padding: 0;
+    height: 1.8rem;
+}

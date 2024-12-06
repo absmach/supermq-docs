@@ -1,0 +1,1599 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Magistrala IoT System">
+      
+      
+      
+        <link rel="canonical" href="https://docs.magistrala.abstractmachines.fr/messaging/">
+      
+      
+        <link rel="prev" href="../security/">
+      
+      
+        <link rel="next" href="../events/">
+      
+      
+      <link rel="icon" href="../img/favicon.png">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.17">
+    
+    
+      
+        <title>Messaging - Magistrala</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.bcfcd587.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#messaging" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Magistrala" class="md-header__button md-logo" aria-label="Magistrala" data-md-component="logo">
+      
+  <img src="../img/logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Magistrala
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Messaging
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var media,input,key,value,palette=__md_get("__palette");if(palette&&palette.color){"(prefers-color-scheme)"===palette.color.media&&(media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']"),palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent"));for([key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/absmach/magistrala" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Magistrala" class="md-nav__button md-logo" aria-label="Magistrala" data-md-component="logo">
+      
+  <img src="../img/logo.png" alt="logo">
+
+    </a>
+    Magistrala
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/absmach/magistrala" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../architecture/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Architecture
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting-started/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Getting Started
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../entities/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Entities
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    API
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cli/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    CLI
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../authentication/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Authentication
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../authorization/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Authorization
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../security/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Security
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Messaging
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Messaging
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#http" class="md-nav__link">
+    <span class="md-ellipsis">
+      HTTP
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mqtt" class="md-nav__link">
+    <span class="md-ellipsis">
+      MQTT
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#coap" class="md-nav__link">
+    <span class="md-ellipsis">
+      CoAP
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#websocket" class="md-nav__link">
+    <span class="md-ellipsis">
+      WebSocket
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="WebSocket">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#basic-nodejs-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      Basic nodejs example
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#basic-golang-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      Basic golang example
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mqtt-over-ws" class="md-nav__link">
+    <span class="md-ellipsis">
+      MQTT-over-WS
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#subtopics" class="md-nav__link">
+    <span class="md-ellipsis">
+      Subtopics
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mqtt-broker" class="md-nav__link">
+    <span class="md-ellipsis">
+      MQTT Broker
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="MQTT Broker">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configuration
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#nats-mqtt-broker" class="md-nav__link">
+    <span class="md-ellipsis">
+      Nats MQTT Broker
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Nats MQTT Broker">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      Architecture
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#limitations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Limitations
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vernemq-mqtt-broker" class="md-nav__link">
+    <span class="md-ellipsis">
+      Vernemq MQTT Broker
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Vernemq MQTT Broker">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#architecture_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Architecture
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#message-broker" class="md-nav__link">
+    <span class="md-ellipsis">
+      Message Broker
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Message Broker">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#nats-jetstream" class="md-nav__link">
+    <span class="md-ellipsis">
+      NATS JetStream
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="NATS JetStream">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#architecture_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Architecture
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rabbitmq" class="md-nav__link">
+    <span class="md-ellipsis">
+      RabbitMQ
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="RabbitMQ">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#architecture_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Architecture
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#kafka" class="md-nav__link">
+    <span class="md-ellipsis">
+      Kafka
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Kafka">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#architecture_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Architecture
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../events/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Events
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../edge/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Edge
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../certs/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Certs
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../bootstrap/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Bootstrap
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lora/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    LoRa
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../opcua/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    OPC-UA
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../provision/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Provision
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../storage/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Storage
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../twins/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Twins
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tracing/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Tracing
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dev-guide/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Developer's Guide
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kubernetes/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kubernetes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../benchmark/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Benchmark
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="/blogs/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Blogs
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#http" class="md-nav__link">
+    <span class="md-ellipsis">
+      HTTP
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mqtt" class="md-nav__link">
+    <span class="md-ellipsis">
+      MQTT
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#coap" class="md-nav__link">
+    <span class="md-ellipsis">
+      CoAP
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#websocket" class="md-nav__link">
+    <span class="md-ellipsis">
+      WebSocket
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="WebSocket">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#basic-nodejs-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      Basic nodejs example
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#basic-golang-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      Basic golang example
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mqtt-over-ws" class="md-nav__link">
+    <span class="md-ellipsis">
+      MQTT-over-WS
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#subtopics" class="md-nav__link">
+    <span class="md-ellipsis">
+      Subtopics
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mqtt-broker" class="md-nav__link">
+    <span class="md-ellipsis">
+      MQTT Broker
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="MQTT Broker">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configuration
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#nats-mqtt-broker" class="md-nav__link">
+    <span class="md-ellipsis">
+      Nats MQTT Broker
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Nats MQTT Broker">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      Architecture
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#limitations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Limitations
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vernemq-mqtt-broker" class="md-nav__link">
+    <span class="md-ellipsis">
+      Vernemq MQTT Broker
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Vernemq MQTT Broker">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#architecture_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Architecture
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#message-broker" class="md-nav__link">
+    <span class="md-ellipsis">
+      Message Broker
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Message Broker">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#nats-jetstream" class="md-nav__link">
+    <span class="md-ellipsis">
+      NATS JetStream
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="NATS JetStream">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#architecture_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      Architecture
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rabbitmq" class="md-nav__link">
+    <span class="md-ellipsis">
+      RabbitMQ
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="RabbitMQ">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#architecture_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Architecture
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#kafka" class="md-nav__link">
+    <span class="md-ellipsis">
+      Kafka
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Kafka">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#architecture_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      Architecture
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="messaging">Messaging<a class="headerlink" href="#messaging" title="Permanent link">#</a></h1>
+<p>Once a channel is provisioned and thing is connected to it, it can start to publish messages on the channel. The following sections will provide an example of message publishing for each of the supported protocols.</p>
+<h2 id="http">HTTP<a class="headerlink" href="#http" title="Permanent link">#</a></h2>
+<p>To publish message over channel, thing should send following request:</p>
+<div class="highlight"><pre><span></span><code>curl<span class="w"> </span>-s<span class="w"> </span>-S<span class="w"> </span>-i<span class="w"> </span>--cacert<span class="w"> </span>docker/ssl/certs/ca.crt<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/senml+json&quot;</span><span class="w"> </span>-H<span class="w"> </span><span class="s2">&quot;Authorization: Thing &lt;thing_secret&gt;&quot;</span><span class="w"> </span>https://localhost/http/channels/&lt;channel_id&gt;/messages<span class="w"> </span>-d<span class="w"> </span><span class="s1">&#39;[{&quot;bn&quot;:&quot;some-base-name:&quot;,&quot;bt&quot;:1.276020076001e+09, &quot;bu&quot;:&quot;A&quot;,&quot;bver&quot;:5, &quot;n&quot;:&quot;voltage&quot;,&quot;u&quot;:&quot;V&quot;,&quot;v&quot;:120.1}, {&quot;n&quot;:&quot;current&quot;,&quot;t&quot;:-5,&quot;v&quot;:1.2}, {&quot;n&quot;:&quot;current&quot;,&quot;t&quot;:-4,&quot;v&quot;:1.3}]&#39;</span>
+</code></pre></div>
+<p>Note that if you're going to use senml message format, you should always send messages as an array.</p>
+<p>For more information about the HTTP messaging service API, please check out the <a href="https://github.com/absmach/magistrala/blob/master/api/openapi/http.yml">API documentation</a>.</p>
+<h2 id="mqtt">MQTT<a class="headerlink" href="#mqtt" title="Permanent link">#</a></h2>
+<p>To send and receive messages over MQTT you could use <a href="https://mosquitto.org">Mosquitto tools</a>, or <a href="https://www.eclipse.org/paho/">Paho</a> if you want to use MQTT over WebSocket.</p>
+<p>To publish message over channel, thing should call following command:</p>
+<div class="highlight"><pre><span></span><code>mosquitto_pub<span class="w"> </span>-u<span class="w"> </span>&lt;thing_id&gt;<span class="w"> </span>-P<span class="w"> </span>&lt;thing_secret&gt;<span class="w"> </span>-t<span class="w"> </span>channels/&lt;channel_id&gt;/messages<span class="w"> </span>-h<span class="w"> </span>localhost<span class="w"> </span>-m<span class="w"> </span><span class="s1">&#39;[{&quot;bn&quot;:&quot;some-base-name:&quot;,&quot;bt&quot;:1.276020076001e+09, &quot;bu&quot;:&quot;A&quot;,&quot;bver&quot;:5, &quot;n&quot;:&quot;voltage&quot;,&quot;u&quot;:&quot;V&quot;,&quot;v&quot;:120.1}, {&quot;n&quot;:&quot;current&quot;,&quot;t&quot;:-5,&quot;v&quot;:1.2}, {&quot;n&quot;:&quot;current&quot;,&quot;t&quot;:-4,&quot;v&quot;:1.3}]&#39;</span>
+</code></pre></div>
+<p>To subscribe to channel, thing should call following command:</p>
+<div class="highlight"><pre><span></span><code>mosquitto_sub<span class="w"> </span>-u<span class="w"> </span>&lt;thing_id&gt;<span class="w"> </span>-P<span class="w"> </span>&lt;thing_secret&gt;<span class="w"> </span>-t<span class="w"> </span>channels/&lt;channel_id&gt;/messages<span class="w"> </span>-h<span class="w"> </span>localhost
+</code></pre></div>
+<p>If you want to use standard topic such as <code>channels/&lt;channel_id&gt;/messages</code> with SenML content type (JSON or CBOR), you should use following topic <code>channels/&lt;channel_id&gt;/messages</code>.</p>
+<p>If you are using TLS to secure MQTT connection, add <code>--cafile docker/ssl/certs/ca.crt</code>
+to every command.</p>
+<h2 id="coap">CoAP<a class="headerlink" href="#coap" title="Permanent link">#</a></h2>
+<p>CoAP adapter implements CoAP protocol using underlying UDP and according to <a href="https://tools.ietf.org/html/rfc7252">RFC 7252</a>. To send and receive messages over CoAP, you can use <a href="https://github.com/absmach/coap-cli">CoAP CLI</a>. To set the add-on, please follow the installation instructions provided <a href="https://github.com/absmach/coap-cli">here</a>.</p>
+<p>Examples:</p>
+<div class="highlight"><pre><span></span><code>coap-cli<span class="w"> </span>get<span class="w"> </span>channels/&lt;channel_id&gt;/messages/subtopic<span class="w"> </span>-auth<span class="w"> </span>&lt;thing_secret&gt;<span class="w"> </span>-o
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>coap-cli<span class="w"> </span>post<span class="w"> </span>channels/&lt;channel_id&gt;/messages/subtopic<span class="w"> </span>-auth<span class="w"> </span>&lt;thing_secret&gt;<span class="w"> </span>-d<span class="w"> </span><span class="s2">&quot;hello world&quot;</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>coap-cli<span class="w"> </span>post<span class="w"> </span>channels/&lt;channel_id&gt;/messages/subtopic<span class="w"> </span>-auth<span class="w"> </span>&lt;thing_secret&gt;<span class="w"> </span>-d<span class="w"> </span><span class="s2">&quot;hello world&quot;</span><span class="w"> </span>-h<span class="w"> </span><span class="m">0</span>.0.0.0<span class="w"> </span>-p<span class="w"> </span><span class="m">1234</span>
+</code></pre></div>
+<p>To send a message, use <code>POST</code> request. To subscribe, send <code>GET</code> request with Observe option (flag <code>o</code>) set to false. There are two ways to unsubscribe:</p>
+<ol>
+<li>Send <code>GET</code> request with Observe option set to true.</li>
+<li>Forget the token and send <code>RST</code> message as a response to <code>CONF</code> message received by the server.</li>
+</ol>
+<p>The most of the notifications received from the Adapter are non-confirmable. By <a href="https://tools.ietf.org/html/rfc7641#page-18">RFC 7641</a>:</p>
+<blockquote>
+<p>Server must send a notification in a confirmable message instead of a non-confirmable message at least every 24 hours. This prevents a client that went away or is no longer interested from remaining in the list of observers indefinitely.</p>
+</blockquote>
+<p>CoAP Adapter sends these notifications every 12 hours. To configure this period, please check <a href="https://www.github.com/absmach/magistrala/tree/main/coap/README.md">adapter documentation</a> If the client is no longer interested in receiving notifications, the second scenario described above can be used to unsubscribe.</p>
+<h2 id="websocket">WebSocket<a class="headerlink" href="#websocket" title="Permanent link">#</a></h2>
+<p>To publish and receive messages over channel using web socket, you should first send handshake request to <code>/channels/&lt;channel_id&gt;/messages</code> path. Don't forget to send <code>Authorization</code> header with thing authorization token. In order to pass message content type to WS adapter you can use <code>Content-Type</code> header.</p>
+<p>If you are not able to send custom headers in your handshake request, send them as query parameter <code>authorization</code> and <code>content-type</code>. Then your path should look like this <code>/channels/&lt;channel_id&gt;/messages?authorization=&lt;thing_secret&gt;&amp;content-type=&lt;content-type&gt;</code>.</p>
+<p>If you are using the docker environment prepend the url with <code>ws</code>. So for example <code>/ws/channels/&lt;channel_id&gt;/messages?authorization=&lt;thing_secret&gt;&amp;content-type=&lt;content-type&gt;</code>.</p>
+<h3 id="basic-nodejs-example">Basic nodejs example<a class="headerlink" href="#basic-nodejs-example" title="Permanent link">#</a></h3>
+<div class="highlight"><pre><span></span><code><span class="kd">const</span><span class="w"> </span><span class="nx">WebSocket</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">require</span><span class="p">(</span><span class="s2">&quot;ws&quot;</span><span class="p">);</span>
+<span class="c1">// do not verify self-signed certificates if you are using one</span>
+<span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">NODE_TLS_REJECT_UNAUTHORIZED</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;0&quot;</span><span class="p">;</span>
+<span class="c1">// c02ff576-ccd5-40f6-ba5f-c85377aad529 is an example of a thing_auth_key</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">ws</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">WebSocket</span><span class="p">(</span>
+<span class="w">  </span><span class="s2">&quot;ws://localhost:8186/ws/channels/1/messages?authorization=c02ff576-ccd5-40f6-ba5f-c85377aad529&quot;</span>
+<span class="p">);</span>
+<span class="nx">ws</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s2">&quot;open&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">ws</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="s2">&quot;something&quot;</span><span class="p">);</span>
+<span class="p">});</span>
+<span class="nx">ws</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s2">&quot;message&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="nx">data</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span>
+<span class="p">});</span>
+<span class="nx">ws</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s2">&quot;error&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="nx">e</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">e</span><span class="p">);</span>
+<span class="p">});</span>
+</code></pre></div>
+<h3 id="basic-golang-example">Basic golang example<a class="headerlink" href="#basic-golang-example" title="Permanent link">#</a></h3>
+<div class="highlight"><pre><span></span><code><span class="kn">package</span><span class="w"> </span><span class="nx">main</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="p">(</span>
+<span class="w">    </span><span class="s">&quot;log&quot;</span>
+<span class="w">    </span><span class="s">&quot;os&quot;</span>
+<span class="w">    </span><span class="s">&quot;os/signal&quot;</span>
+<span class="w">    </span><span class="s">&quot;time&quot;</span>
+
+<span class="w">    </span><span class="s">&quot;github.com/gorilla/websocket&quot;</span>
+<span class="p">)</span>
+
+<span class="kd">var</span><span class="w"> </span><span class="nx">done</span><span class="w"> </span><span class="kd">chan</span><span class="w"> </span><span class="kd">interface</span><span class="p">{}</span>
+<span class="kd">var</span><span class="w"> </span><span class="nx">interrupt</span><span class="w"> </span><span class="kd">chan</span><span class="w"> </span><span class="nx">os</span><span class="p">.</span><span class="nx">Signal</span>
+
+<span class="kd">func</span><span class="w"> </span><span class="nx">receiveHandler</span><span class="p">(</span><span class="nx">connection</span><span class="w"> </span><span class="o">*</span><span class="nx">websocket</span><span class="p">.</span><span class="nx">Conn</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">defer</span><span class="w"> </span><span class="nb">close</span><span class="p">(</span><span class="nx">done</span><span class="p">)</span>
+
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nx">_</span><span class="p">,</span><span class="w"> </span><span class="nx">msg</span><span class="p">,</span><span class="w"> </span><span class="nx">err</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">connection</span><span class="p">.</span><span class="nx">ReadMessage</span><span class="p">()</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="nx">err</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="kc">nil</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nx">log</span><span class="p">.</span><span class="nx">Fatal</span><span class="p">(</span><span class="s">&quot;Error in receive: &quot;</span><span class="p">,</span><span class="w"> </span><span class="nx">err</span><span class="p">)</span>
+<span class="w">            </span><span class="k">return</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="nx">log</span><span class="p">.</span><span class="nx">Printf</span><span class="p">(</span><span class="s">&quot;Received: %s\n&quot;</span><span class="p">,</span><span class="w"> </span><span class="nx">msg</span><span class="p">)</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kd">func</span><span class="w"> </span><span class="nx">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">done</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">make</span><span class="p">(</span><span class="kd">chan</span><span class="w"> </span><span class="kd">interface</span><span class="p">{})</span>
+<span class="w">    </span><span class="nx">interrupt</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">make</span><span class="p">(</span><span class="kd">chan</span><span class="w"> </span><span class="nx">os</span><span class="p">.</span><span class="nx">Signal</span><span class="p">)</span>
+
+<span class="w">    </span><span class="nx">signal</span><span class="p">.</span><span class="nx">Notify</span><span class="p">(</span><span class="nx">interrupt</span><span class="p">,</span><span class="w"> </span><span class="nx">os</span><span class="p">.</span><span class="nx">Interrupt</span><span class="p">)</span>
+
+<span class="w">    </span><span class="nx">channelId</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="s">&quot;30315311-56ba-484d-b500-c1e08305511f&quot;</span>
+<span class="w">    </span><span class="nx">thingSecret</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="s">&quot;c02ff576-ccd5-40f6-ba5f-c85377aad529&quot;</span>
+
+<span class="w">    </span><span class="nx">socketUrl</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="s">&quot;ws://localhost:8186/channels/&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nx">channelId</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot;/messages/?authorization=&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nx">thingSecret</span>
+
+<span class="w">    </span><span class="nx">conn</span><span class="p">,</span><span class="w"> </span><span class="nx">_</span><span class="p">,</span><span class="w"> </span><span class="nx">err</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">websocket</span><span class="p">.</span><span class="nx">DefaultDialer</span><span class="p">.</span><span class="nx">Dial</span><span class="p">(</span><span class="nx">socketUrl</span><span class="p">,</span><span class="w"> </span><span class="kc">nil</span><span class="p">)</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="nx">err</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="kc">nil</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nx">log</span><span class="p">.</span><span class="nx">Fatal</span><span class="p">(</span><span class="s">&quot;Error connecting to Websocket Server: &quot;</span><span class="p">,</span><span class="w"> </span><span class="nx">err</span><span class="p">)</span>
+<span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nx">log</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="s">&quot;Connected to the ws adapter&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">defer</span><span class="w"> </span><span class="nx">conn</span><span class="p">.</span><span class="nx">Close</span><span class="p">()</span>
+
+<span class="w">    </span><span class="k">go</span><span class="w"> </span><span class="nx">receiveHandler</span><span class="p">(</span><span class="nx">conn</span><span class="p">)</span>
+
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">select</span><span class="w"> </span><span class="p">{</span>
+
+<span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="o">&lt;-</span><span class="nx">interrupt</span><span class="p">:</span>
+<span class="w">            </span><span class="nx">log</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="s">&quot;Interrupt occured, closing the connection...&quot;</span><span class="p">)</span>
+<span class="w">            </span><span class="nx">conn</span><span class="p">.</span><span class="nx">Close</span><span class="p">()</span>
+<span class="w">            </span><span class="nx">err</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">conn</span><span class="p">.</span><span class="nx">WriteMessage</span><span class="p">(</span><span class="nx">websocket</span><span class="p">.</span><span class="nx">TextMessage</span><span class="p">,</span><span class="w"> </span><span class="p">[]</span><span class="nb">byte</span><span class="p">(</span><span class="s">&quot;closed this ws client just now&quot;</span><span class="p">))</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="nx">err</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="kc">nil</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="nx">log</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="s">&quot;Error during closing websocket: &quot;</span><span class="p">,</span><span class="w"> </span><span class="nx">err</span><span class="p">)</span>
+<span class="w">                </span><span class="k">return</span>
+<span class="w">            </span><span class="p">}</span>
+
+<span class="w">            </span><span class="k">select</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="k">case</span><span class="w"> </span><span class="o">&lt;-</span><span class="nx">done</span><span class="p">:</span>
+<span class="w">                </span><span class="nx">log</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="s">&quot;Receiver Channel Closed! Exiting...&quot;</span><span class="p">)</span>
+
+<span class="w">            </span><span class="k">case</span><span class="w"> </span><span class="o">&lt;-</span><span class="nx">time</span><span class="p">.</span><span class="nx">After</span><span class="p">(</span><span class="nx">time</span><span class="p">.</span><span class="nx">Duration</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nx">time</span><span class="p">.</span><span class="nx">Second</span><span class="p">):</span>
+<span class="w">                </span><span class="nx">log</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="s">&quot;Timeout in closing receiving channel. Exiting...&quot;</span><span class="p">)</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">            </span><span class="k">return</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<h2 id="mqtt-over-ws">MQTT-over-WS<a class="headerlink" href="#mqtt-over-ws" title="Permanent link">#</a></h2>
+<p>Magistrala also supports <a href="https://www.hivemq.com/blog/mqtt-essentials-special-mqtt-over-websockets/#:~:text=In%20MQTT%20over%20WebSockets%2C%20the,(WebSockets%20also%20leverage%20TCP).">MQTT-over-WS</a>, along with pure WS protocol. this bring numerous benefits for IoT applications that are derived from the properties of MQTT - like QoS and PUB/SUB features.</p>
+<p>There are 2 reccomended Javascript libraries for implementing browser support for Magistrala MQTT-over-WS connectivity:</p>
+<ol>
+<li><a href="https://www.eclipse.org/paho/index.php?page=clients/js/index.php">Eclipse Paho JavaScript Client</a></li>
+<li><a href="https://github.com/mqttjs/MQTT.js">MQTT.js</a></li>
+</ol>
+<p>As WS is an extension of HTTP protocol, Magistrala exposes it on port <code>8008</code>, so it's usage is practically transparent.
+Additionally, please notice that since same port as for HTTP is used (<code>8008</code>), and extension URL <code>/mqtt</code> should be used -
+i.e. connection URL should be <code>ws://&lt;host_addr&gt;/mqtt</code>.</p>
+<p>For quick testing you can use <a href="http://www.hivemq.com/demos/websocket-client/">HiveMQ UI tool</a>.</p>
+<p>Here is an example of a browser application connecting to Magistrala server and sending and receiving messages over WebSocket using MQTT.js library:</p>
+<div class="highlight"><pre><span></span><code><span class="o">&lt;</span><span class="nx">script</span><span class="w"> </span><span class="nx">src</span><span class="o">=</span><span class="s2">&quot;https://unpkg.com/mqtt/dist/mqtt.min.js&quot;</span><span class="o">&gt;&lt;</span><span class="err">/script&gt;</span>
+<span class="o">&lt;</span><span class="nx">script</span><span class="o">&gt;</span>
+<span class="w">    </span><span class="c1">// Initialize a mqtt variable globally</span>
+<span class="w">    </span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">mqtt</span><span class="p">)</span>
+
+<span class="w">    </span><span class="c1">// connection option</span>
+<span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">options</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nx">clean</span><span class="o">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w"> </span><span class="c1">// retain session</span>
+<span class="w">        </span><span class="nx">connectTimeout</span><span class="o">:</span><span class="w"> </span><span class="mf">4000</span><span class="p">,</span><span class="w"> </span><span class="c1">// Timeout period</span>
+<span class="w">        </span><span class="c1">// Authentication information</span>
+<span class="w">        </span><span class="nx">clientId</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;14d6c682-fb5a-4d28-b670-ee565ab5866c&#39;</span><span class="p">,</span>
+<span class="w">        </span><span class="nx">username</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;14d6c682-fb5a-4d28-b670-ee565ab5866c&#39;</span><span class="p">,</span>
+<span class="w">        </span><span class="nx">password</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;ec82f341-d4b5-4c77-ae05-34877a62428f&#39;</span><span class="p">,</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kd">var</span><span class="w"> </span><span class="nx">channelId</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;08676a76-101d-439c-b62e-d4bb3b014337&#39;</span>
+<span class="w">    </span><span class="kd">var</span><span class="w"> </span><span class="nx">topic</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;channels/&#39;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nx">channelId</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s1">&#39;/messages&#39;</span>
+
+<span class="w">    </span><span class="c1">// Connect string, and specify the connection method by the protocol</span>
+<span class="w">    </span><span class="c1">// ws Unencrypted WebSocket connection</span>
+<span class="w">    </span><span class="c1">// wss Encrypted WebSocket connection</span>
+<span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">connectUrl</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;ws://localhost/mqtt&#39;</span>
+<span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">client</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">mqtt</span><span class="p">.</span><span class="nx">connect</span><span class="p">(</span><span class="nx">connectUrl</span><span class="p">,</span><span class="w"> </span><span class="nx">options</span><span class="p">)</span>
+
+<span class="w">    </span><span class="nx">client</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;reconnect&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="nx">error</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;reconnecting:&#39;</span><span class="p">,</span><span class="w"> </span><span class="nx">error</span><span class="p">)</span>
+<span class="w">    </span><span class="p">})</span>
+
+<span class="w">    </span><span class="nx">client</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;error&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="nx">error</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;Connection failed:&#39;</span><span class="p">,</span><span class="w"> </span><span class="nx">error</span><span class="p">)</span>
+<span class="w">    </span><span class="p">})</span>
+
+<span class="w">    </span><span class="nx">client</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;connect&#39;</span><span class="p">,</span><span class="w"> </span><span class="kd">function</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;client connected:&#39;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nx">options</span><span class="p">.</span><span class="nx">clientId</span><span class="p">)</span>
+<span class="w">        </span><span class="nx">client</span><span class="p">.</span><span class="nx">subscribe</span><span class="p">(</span><span class="nx">topic</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">qos</span><span class="o">:</span><span class="w"> </span><span class="mf">0</span><span class="w"> </span><span class="p">})</span>
+<span class="w">        </span><span class="nx">client</span><span class="p">.</span><span class="nx">publish</span><span class="p">(</span><span class="nx">topic</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;WS connection demo!&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">qos</span><span class="o">:</span><span class="w"> </span><span class="mf">0</span><span class="p">,</span><span class="w"> </span><span class="nx">retain</span><span class="o">:</span><span class="w"> </span><span class="kc">false</span><span class="w"> </span><span class="p">})</span>
+<span class="w">    </span><span class="p">})</span>
+
+<span class="w">    </span><span class="nx">client</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;message&#39;</span><span class="p">,</span><span class="w"> </span><span class="kd">function</span><span class="w"> </span><span class="p">(</span><span class="nx">topic</span><span class="p">,</span><span class="w"> </span><span class="nx">message</span><span class="p">,</span><span class="w"> </span><span class="nx">packet</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;Received Message:= &#39;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nx">message</span><span class="p">.</span><span class="nx">toString</span><span class="p">()</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s1">&#39;\nOn topic:= &#39;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nx">topic</span><span class="p">)</span>
+<span class="w">    </span><span class="p">})</span>
+
+<span class="w">    </span><span class="nx">client</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;close&#39;</span><span class="p">,</span><span class="w"> </span><span class="kd">function</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">options</span><span class="p">.</span><span class="nx">clientId</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s1">&#39; disconnected&#39;</span><span class="p">)</span>
+<span class="w">    </span><span class="p">})</span>
+<span class="o">&lt;</span><span class="err">/script&gt;</span>
+</code></pre></div>
+<p><strong>N.B.</strong> Eclipse Paho lib adds sub-URL <code>/mqtt</code> automaticlly, so procedure for connecting to the server can be something like this:</p>
+<div class="highlight"><pre><span></span><code><span class="kd">var</span><span class="w"> </span><span class="nx">loc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">hostname</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;localhost&quot;</span><span class="p">,</span><span class="w"> </span><span class="nx">port</span><span class="o">:</span><span class="w"> </span><span class="mf">8008</span><span class="w"> </span><span class="p">};</span>
+<span class="c1">// Create a client instance</span>
+<span class="nx">client</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">Paho</span><span class="p">.</span><span class="nx">MQTT</span><span class="p">.</span><span class="nx">Client</span><span class="p">(</span><span class="nx">loc</span><span class="p">.</span><span class="nx">hostname</span><span class="p">,</span><span class="w"> </span><span class="nb">Number</span><span class="p">(</span><span class="nx">loc</span><span class="p">.</span><span class="nx">port</span><span class="p">),</span><span class="w"> </span><span class="s2">&quot;clientId&quot;</span><span class="p">);</span>
+<span class="c1">// Connect the client</span>
+<span class="nx">client</span><span class="p">.</span><span class="nx">connect</span><span class="p">({</span><span class="w"> </span><span class="nx">onSuccess</span><span class="o">:</span><span class="w"> </span><span class="nx">onConnect</span><span class="w"> </span><span class="p">});</span>
+</code></pre></div>
+<h2 id="subtopics">Subtopics<a class="headerlink" href="#subtopics" title="Permanent link">#</a></h2>
+<p>In order to use subtopics and give more meaning to your pub/sub channel, you can simply add any suffix to base <code>/channels/&lt;channel_id&gt;/messages</code> topic.</p>
+<p>Example subtopic publish/subscribe for bedroom temperature would be <code>channels/&lt;channel_id&gt;/messages/bedroom/temperature</code>.</p>
+<p>Subtopics are generic and multilevel. You can use almost any suffix with any depth.</p>
+<p>Topics with subtopics are propagated to Message broker in the following format <code>channels.&lt;channel_id&gt;.&lt;optional_subtopic&gt;</code>.</p>
+<p>Our example topic <code>channels/&lt;channel_id&gt;/messages/bedroom/temperature</code> will be translated to appropriate Message Broker topic <code>channels.&lt;channel_id&gt;.bedroom.temperature</code>.</p>
+<p>You can use multilevel subtopics, that have multiple parts. These parts are separated by <code>.</code> or <code>/</code> separators.
+When you use combination of these two, have in mind that behind the scene, <code>/</code> separator will be replaced with <code>.</code>.
+Every empty part of subtopic will be removed. What this means is that subtopic <code>a///b</code> is equivalent to <code>a/b</code>.
+When you want to subscribe, you can use the default Message Broker, NATS, wildcards <code>*</code> and <code>&gt;</code>. Every subtopic part can have <code>*</code> or <code>&gt;</code> as it's value, but if there is any other character beside these wildcards, subtopic will be invalid. What this means is that subtopics such as <code>a.b*c.d</code> will be invalid, while <code>a.b.*.c.d</code> will be valid.</p>
+<p>Authorization is done on channel level, so you only have to have access to channel in order to have access to
+it's subtopics.</p>
+<p><strong>Note:</strong> When using MQTT, it's recommended that you use standard MQTT wildcards <code>+</code> and <code>#</code>.</p>
+<h2 id="mqtt-broker">MQTT Broker<a class="headerlink" href="#mqtt-broker" title="Permanent link">#</a></h2>
+<p>Magistrala supports the MQTT protocol for message exchange. MQTT is a lightweight Publish/Subscribe messaging protocol used to connect restricted devices in low bandwidth, high-latency or unreliable networks. The publish-subscribe messaging pattern requires a message broker. The broker is responsible for distributing messages to and from clients connected to the MQTT adapter.</p>
+<p>Magistrala supports <a href="https://docs.oasis-open.org/mqtt/mqtt/v3.1.1/os/mqtt-v3.1.1-os.html">MQTT version 3.1.1</a>. The MQTT adapter is based on <a href="https://www.eclipse.org/paho/">Eclipse Paho</a> MQTT client library. The adapter is configured to use <a href="https://docs.nats.io/running-a-nats-service/configuration/mqtt">nats</a> as the default MQTT broker, but you can use <a href="https://docs.vernemq.com/">vernemq</a> too.</p>
+<h3 id="configuration">Configuration<a class="headerlink" href="#configuration" title="Permanent link">#</a></h3>
+<p>In the dev environment, docker profiles are preferred when handling different MQTT and message brokers supported by Magistrala.</p>
+<p>Magistrala uses two types of brokers:</p>
+<ol>
+<li><code>MQTT_BROKER</code>: Handles MQTT communication between MQTT adapters and message broker.</li>
+<li><code>MESSAGE_BROKER</code>: Manages communication between adapters and Magistrala writer services.</li>
+</ol>
+<p><code>MQTT_BROKER</code> can be either <code>vernemq</code> or <code>nats</code>.
+<code>MESSAGE_BROKER</code> can be either <code>nats</code> or <code>rabbitmq</code>.</p>
+<p>Each broker has a unique profile for configuration. The available profiles are:</p>
+<ul>
+<li><code>vernemq_nats</code>: Uses <code>vernemq</code> as MQTT_BROKER and <code>nats</code> as MESSAGE_BROKER.</li>
+<li><code>vernemq_rabbitmq</code>: Uses <code>vernemq</code> as MQTT_BROKER and <code>rabbitmq</code> as MESSAGE_BROKER.</li>
+<li><code>nats_nats</code>: Uses <code>nats</code> as both MQTT_BROKER and MESSAGE_BROKER.</li>
+<li><code>nats_rabbitmq</code>: Uses <code>nats</code> as MQTT_BROKER and <code>rabbitmq</code> as MESSAGE_BROKER.</li>
+</ul>
+<p>The following command will run VerneMQ as an MQTT broker and Nats as a message broker:</p>
+<div class="highlight"><pre><span></span><code><span class="nv">MG_MQTT_BROKER_TYPE</span><span class="o">=</span>vernemq<span class="w"> </span><span class="nv">MG_BROKER_TYPE</span><span class="o">=</span>nats<span class="w"> </span>make<span class="w"> </span>run
+</code></pre></div>
+<p>The following command will run NATS as an MQTT broker and RabbitMQ as a message broker:</p>
+<div class="highlight"><pre><span></span><code><span class="nv">MG_MQTT_BROKER_TYPE</span><span class="o">=</span>nats<span class="w"> </span><span class="nv">MG_BROKER_TYPE</span><span class="o">=</span>rabbitmq<span class="w"> </span>make<span class="w"> </span>run
+</code></pre></div>
+<p>By default, NATS is used as an MQTT broker and RabbitMQ as a message broker.</p>
+<h3 id="nats-mqtt-broker">Nats MQTT Broker<a class="headerlink" href="#nats-mqtt-broker" title="Permanent link">#</a></h3>
+<p>NATS support for MQTT and it is designed to empower users to leverage their existing IoT deployments. NATS offers significant advantages in terms of security and observability when used end-to-end. NATS server as a drop-in replacement for MQTT is compelling. This approach allows you to retain your existing IoT investments while benefiting from NATS' secure, resilient, and scalable access to your streams and services.</p>
+<h4 id="architecture">Architecture<a class="headerlink" href="#architecture" title="Permanent link">#</a></h4>
+<p>To enable MQTT support on NATS, JetStream needs to be enabled. This is done by default in Magistrala. This is because persistence is necessary for sessions and retained messages, even for QoS 0 retained messages. Communication between MQTT and NATS involves creating similar NATS subscriptions when MQTT clients subscribe to topics. This ensures that the interest is registered in the NATS cluster, and messages are delivered accordingly. When MQTT publishers send messages, they are converted to NATS subjects, and matching NATS subscriptions receive the MQTT messages.</p>
+<p>NATS supports up to QoS 1 subscriptions, where the server retains messages until it receives the PUBACK for the corresponding packet identifier. If PUBACK is not received within the "ack_wait" interval, the message is resent. The maximum value for "max_ack_pending" is 65535.</p>
+<p>NATS Server persists all sessions, even if they are created with the "clean session" flag. Sessions are identified by client identifiers. If two connections attempt to use the same client identifier, the server will close the existing connection and accept the new one, reducing the flapping rate.</p>
+<p>NATS supports MQTT in a NATS cluster, with the replication factor automatically set based on cluster size.</p>
+<h4 id="limitations">Limitations<a class="headerlink" href="#limitations" title="Permanent link">#</a></h4>
+<ul>
+<li>NATS does not support QoS 2 messages. Hence Magistrala inherently does not support QoS 2 messages.</li>
+<li>MQTT wildcard "#" may cause the NATS server to create two subscriptions.</li>
+<li>MQTT concurrent sessions may result in the new connection being evicted instead of the existing one.</li>
+</ul>
+<h3 id="vernemq-mqtt-broker">Vernemq MQTT Broker<a class="headerlink" href="#vernemq-mqtt-broker" title="Permanent link">#</a></h3>
+<p>VerneMQ is a powerful MQTT publish/subscribe message broker designed to implement the OASIS industry standard MQTT protocol. It is built to take messaging and IoT applications to the next level by providing a unique set of features related to scalability, reliability, high-performance, and operational simplicity.</p>
+<p>Key features of VerneMQ include:</p>
+<ul>
+<li>Low Entry and Exit Risk: VerneMQ is open-source and Apache 2 licensed, allowing unrestricted commercial re-use without upfront investment.</li>
+<li>Carrier-Grade Reliability: Built on OTP (Open Telecom Platform), VerneMQ leverages telecom-grade technology for soft-realtime, distributed control, and messaging applications. It is highly fault-tolerant and capable of continuous operation.</li>
+<li>Scalability: VerneMQ can scale to handle millions of clients, limited only by the underlying hardware. You can easily add nodes to a VerneMQ cluster for horizontal scalability.</li>
+<li>Cluster Operations &amp; Monitoring: VerneMQ comes with built-in extensible metrics systems and allows cluster-wide instant live reconfiguration. It focuses on production tooling and enterprise operations for operational peace of mind.</li>
+<li>Lower Total Cost of Ownership (TCO): VerneMQ offers a favourable TCO compared to many messaging Platform-as-a-Service (PaaS) solutions.</li>
+<li>Full MQTT Support: VerneMQ implements the full MQTT 3.1, 3.1.1, and 5.0 specifications, including various QoS levels, authentication and authorization options, TLS/SSL encryption, WebSockets support, clustering, and more.</li>
+</ul>
+<h4 id="architecture_1">Architecture<a class="headerlink" href="#architecture_1" title="Permanent link">#</a></h4>
+<p>VerneMQ is designed from the ground up to work as a distributed message broker, ensuring continued operation even in the event of node or network failures. It can easily scale both horizontally and vertically to handle large numbers of concurrent clients.</p>
+<p>VerneMQ uses a master-less clustering technology, which means there are no special nodes like masters or slaves to consider when adding or removing nodes, making cluster operation safe and simple. This allows MQTT clients to connect to any cluster node and receive messages from any other node. However, it acknowledges the challenges of fulfilling MQTT specification guarantees in a distributed environment, particularly during network partitions.</p>
+<h2 id="message-broker">Message Broker<a class="headerlink" href="#message-broker" title="Permanent link">#</a></h2>
+<p>Magistrala supports multiple message brokers for message exchange. Message brokers are used to distribute messages to and from clients connected to the different protocols adapters and writers. Writers, which are responsible for storing messages in the database, are connected to the message broker using wildcard subscriptions. This means that writers will receive all messages published to the message broker. Clients can subscribe to the message broker using topic and subtopic combinations. The message broker will then forward all messages published to the topic and subtopic combination to the client.</p>
+<p>Magistrala supports <a href="https://nats.io/documentation/writing_applications/subscribing/">NATS</a>, <a href="https://www.rabbitmq.com/documentation.html">RabbitMQ</a> and <a href="https://kafka.apache.org/documentation/">Kafka</a> as message brokers.</p>
+<h3 id="nats-jetstream">NATS JetStream<a class="headerlink" href="#nats-jetstream" title="Permanent link">#</a></h3>
+<p>Since Magistrala supports configurable message brokers, you can use Nats with JetStream enabled as a message broker. To do so, you need to set <code>MG_BROKER_TYPE</code> to <code>nats</code> and set <code>MG_NATS_URL</code> to the url of your nats instance. When using <code>make</code> command to start Magistrala <code>MG_BROKER_URL</code> is automatically set to <code>MG_NATS_URL</code>.</p>
+<p>Since Magistrala is using <code>nats:2.9.21-alpine</code> docker image with the following configuration:</p>
+<div class="highlight"><pre><span></span><code>max_payload: 1MB
+max_connections: 1M
+port: $MG_NATS_PORT
+http_port: $MG_NATS_HTTP_PORT
+trace: true
+
+jetstream {
+    store_dir: &quot;/data&quot;
+    cipher: &quot;aes&quot;
+    key: $MG_NATS_JETSTREAM_KEY
+    max_mem: 1G
+}
+</code></pre></div>
+<p>These are the default values but you can change them by editing the configuration file. For more information about nats configuration checkout <a href="https://docs.nats.io/nats-concepts/jetstream">official nats documentation</a>. The health check endpoint is exposed on <code>MG_NATS_HTTP_PORT</code> and its <code>/healthz</code> path.</p>
+<h4 id="architecture_2">Architecture<a class="headerlink" href="#architecture_2" title="Permanent link">#</a></h4>
+<p>The main reason for using Nats with JetStream enabled is to have a distributed system with high availability and minimal dependencies. Nats is configure to run as the default message broker, but you can use any other message broker supported by Magistrala. Nats is configured to use JetStream, which is a distributed streaming platform built on top of nats. JetStream is used to store messages and to provide high availability. This makes nats to be used as the default event store, but you can use any other event store supported by Magistrala. Nats with JetStream enabled is also used as a key-value store for caching purposes. This makes nats to be used as the default cache store, but you can use any other cache store supported by Magistrala.</p>
+<p>This versatile architecture allows you to use nats alone for the MQTT broker, message broker, event store and cache store. This is the default configuration, but you can use any other MQTT broker, message broker, event store and cache store supported by Magistrala.</p>
+<h3 id="rabbitmq">RabbitMQ<a class="headerlink" href="#rabbitmq" title="Permanent link">#</a></h3>
+<p>Since Magistrala uses a configurable message broker, you can use RabbitMQ as a message broker. To do so, you need to set <code>MG_BROKER_TYPE</code> to <code>rabbitmq</code> and set <code>MG_RABBITMQ_URL</code> to the url of your RabbitMQ instance. When using <code>make</code> command to start Magistrala <code>MG_BROKER_URL</code> is automatically set to <code>MG_RABBITMQ_URL</code>.</p>
+<p>Since Magistrala is using <code>rabbitmq:3.9.20-management-alpine</code> docker image, the management console is available at port <code>MG_RABBITMQ_HTTP_PORT</code></p>
+<h4 id="architecture_3">Architecture<a class="headerlink" href="#architecture_3" title="Permanent link">#</a></h4>
+<p>Magistrala has one exchange for the entire platform called <code>messages</code>. This exchange is of type <code>topic</code>. The exchange is <code>durable</code> i.e. it will survive broker restarts and remain declared when there are no remaining bindings. The exchange does not <code>auto-delete</code> when all queues have finished using it. When declaring the exchange <code>no_wait</code> is set to <code>false</code> which means that the broker will wait for a confirmation from the server that the exchange was successfully declared. The exchange is not <code>internal</code> i.e. other exchanges can publish messages to it.</p>
+<p>Magistrala uses topic-based routing to route messages to the appropriate queues. The routing key is in the format <code>channels.&lt;channel_id&gt;.&lt;optional_subtopic&gt;</code>. A few valid routing key examples: <code>channels.318BC587-A68B-40D3-9026-3356FA4E702C</code>, <code>channels.318BC587-A68B-40D3-9026-3356FA4E702C.bedroom.temperature</code>.</p>
+<p>The AMQP published message doesn't contain any headers. The message body is the payload of the message.</p>
+<p>When subscribing to messages from a channel, a queue is created with the name <code>channels.&lt;channel_id&gt;.&lt;optional_subtopic&gt;</code>. The queue is <code>durable</code> i.e. it will survive broker restarts and remain declared when there are no remaining consumers or bindings. The queue does not <code>auto-delete</code> when all consumers have finished using it. The queue is not <code>exclusive</code> i.e. it can be accessed in other connections. When declaring the queue we set <code>no_wait</code> to <code>false</code> which means that the broker waits for a confirmation from the server that the queue was successfully declared. The queue is not passive i.e. the server creates the queue if it does not exist.</p>
+<p>The queue is then bound to the exchange with the routing key <code>channels.&lt;channel_id&gt;.&lt;optional_subtopic&gt;</code>. The binding is not no-wait i.e. the broker waits for a confirmation from the server that the binding was successfully created.</p>
+<p>Once this is done, the consumer can start consuming messages from the queue with a specific client ID. The consumer is not <code>no-local</code> i.e. the server will not send messages to the connection that published them. The consumer is not <code>exclusive</code> i.e. the queue can be accessed in other connections. The consumer is <code>no-ack</code> i.e. the server acknowledges
+deliveries to this consumer prior to writing the delivery to the network.</p>
+<p>When Unsubscribing from a channel, the queue is unbound from the exchange and deleted.</p>
+<p>For more information and examples checkout <a href="https://nats.io/documentation/writing_applications/subscribing/">official nats.io documentation</a>, <a href="https://www.rabbitmq.com/documentation.html">official rabbitmq documentation</a>, <a href="https://docs.vernemq.com/">official vernemq documentation</a> and <a href="https://kafka.apache.org/documentation/">official kafka documentation</a>.</p>
+<h3 id="kafka">Kafka<a class="headerlink" href="#kafka" title="Permanent link">#</a></h3>
+<p>Since Magistrala uses a configurable message broker, you can use Kafka as a message broker. To do so, you need to set <code>MG_BROKER_TYPE</code> to <code>kafka</code> and set <code>MG_KAFKA_URL</code> to the url of your Kafka instance. When using <code>make</code> command to start Magistrala <code>MG_BROKER_URL</code> is automatically set to <code>MG_KAFKA_URL</code>.</p>
+<p>Magistrala utilizes <code>spotify/kafka:latest</code> docker image. The image also exposes <code>kafka:9092</code> and <code>zookeeper:2181</code> ports. This is used for development purposes only. For production, it is assumed that you have your own Kafka cluster.</p>
+<h5 id="architecture_4">Architecture<a class="headerlink" href="#architecture_4" title="Permanent link">#</a></h5>
+<p>The publisher implementation is based on the <code>segmentio/kafka-go</code> library. Publishing messages is well supported by the library, but subscribing to topics is not. The library does not provide a way to subscribe to all topics, but only to a specific topic. This is a problem because the Magistrala platform uses a topic per channel, and the number of channels is not known in advance. The solution is to use the Zookeeper library to get a list of all topics and then subscribe to each of them. The list of topics is obtained by connecting to the Zookeeper server and reading the list of topics from the <code>/brokers/topics</code> node. The first message published from the topic can be lost if subscription happens closely followed by publishing. After the subscription, we guarantee that all messages will be received.</p>
+<p>Magistrala publishes messages to Kafka using the <code>channels.&lt;channel_id&gt;.&lt;optional_subtopic&gt;</code> topic. A few valid topic examples: <code>channels.318BC587-A68B-40D3-9026-3356FA4E702C</code>, <code>channels.318BC587-A68B-40D3-9026-3356FA4E702C.bedroom.temperature</code>. All topics have a single partition and replication factor of 1. On publishing messages a topic is created and a writer is created for that topic. The writer is not closed after publishing a message. The writer is closed when the application is closed. The <code>batchSize</code> is set to 1, which means that messages are written to Kafka as soon as they are published. The <code>requiredAcks</code> is set to <code>RequireAll</code> which means that the server will wait for the leader to receive the message and wait for the full set of in-sync replicas to receive the message.</p>
+<p>On subscribing to messages from a channel, a reader is configured with the topic <code>channels.&lt;channel_id&gt;.&lt;optional_subtopic&gt;</code>. The reader is not closed after reading a message. The reader is closed when the application is closed. The <code>maxWait</code> is set to 1 second, which means that the reader will wait for 1 second for new data to come when fetching batches of messages from kafka. The <code>heartbeatInterval</code> is set to 1 second, which means that the reader will send the consumer group heartbeat update every 1 second. The <code>partitionWatchInterval</code> is set to 1 second, which means that the reader will check for partition changes every 1 second. The <code>sessionTimeout</code> is set to 1 second, which means that the coordinator will consider the consumer dead and initiate a rebalance if no heartbeat is received for 1 second. For wildcard topics since kafka does not support wildcards, Magistrala subscribes to all topics and filter the messages received.</p>
+<p>When Unsubscribing from a channel, the reader is closed.</p>
+<p>For more information and examples checkout <a href="https://nats.io/documentation/writing_applications/subscribing/">official nats.io documentation</a>, <a href="https://www.rabbitmq.com/documentation.html">official rabbitmq documentation</a>, <a href="https://docs.vernemq.com/">official vernemq documentation</a> and <a href="https://kafka.apache.org/documentation/">official kafka documentation</a>.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright (c) Abstract Machines
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.1e8ae164.min.js"></script>
+      
+    
+  </body>
+</html>

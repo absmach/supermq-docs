@@ -1,0 +1,1831 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Magistrala IoT System">
+      
+      
+      
+        <link rel="canonical" href="https://docs.magistrala.abstractmachines.fr/edge/">
+      
+      
+        <link rel="prev" href="../events/">
+      
+      
+        <link rel="next" href="../certs/">
+      
+      
+      <link rel="icon" href="../img/favicon.png">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.17">
+    
+    
+      
+        <title>Edge - Magistrala</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.bcfcd587.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#edge" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Magistrala" class="md-header__button md-logo" aria-label="Magistrala" data-md-component="logo">
+      
+  <img src="../img/logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Magistrala
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Edge
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var media,input,key,value,palette=__md_get("__palette");if(palette&&palette.color){"(prefers-color-scheme)"===palette.color.media&&(media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']"),palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent"));for([key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/absmach/magistrala" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Magistrala" class="md-nav__button md-logo" aria-label="Magistrala" data-md-component="logo">
+      
+  <img src="../img/logo.png" alt="logo">
+
+    </a>
+    Magistrala
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/absmach/magistrala" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../architecture/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Architecture
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting-started/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Getting Started
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../entities/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Entities
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    API
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cli/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    CLI
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../authentication/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Authentication
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../authorization/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Authorization
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../security/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Security
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../messaging/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Messaging
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../events/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Events
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Edge
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Edge
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#agent" class="md-nav__link">
+    <span class="md-ellipsis">
+      Agent
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Agent">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#run-agent" class="md-nav__link">
+    <span class="md-ellipsis">
+      Run Agent
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Run Agent">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#remote-execution-of-commands-via-agent" class="md-nav__link">
+    <span class="md-ellipsis">
+      Remote execution of commands via Agent
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#remote-terminal" class="md-nav__link">
+    <span class="md-ellipsis">
+      Remote terminal
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#heartbeat" class="md-nav__link">
+    <span class="md-ellipsis">
+      Heartbeat
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#proxying-commands" class="md-nav__link">
+    <span class="md-ellipsis">
+      Proxying commands
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#edgex" class="md-nav__link">
+    <span class="md-ellipsis">
+      EdgeX
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#remote-commands" class="md-nav__link">
+    <span class="md-ellipsis">
+      Remote Commands
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Remote Commands">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#operation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Operation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#config" class="md-nav__link">
+    <span class="md-ellipsis">
+      Config
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#metrics" class="md-nav__link">
+    <span class="md-ellipsis">
+      Metrics
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#export" class="md-nav__link">
+    <span class="md-ellipsis">
+      Export
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Export">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#install" class="md-nav__link">
+    <span class="md-ellipsis">
+      Install
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#usage" class="md-nav__link">
+    <span class="md-ellipsis">
+      Usage
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configuration
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#environment-variables" class="md-nav__link">
+    <span class="md-ellipsis">
+      Environment variables
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Environment variables">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#http-port" class="md-nav__link">
+    <span class="md-ellipsis">
+      Http port
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mqtt-connection" class="md-nav__link">
+    <span class="md-ellipsis">
+      MQTT connection
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mtls" class="md-nav__link">
+    <span class="md-ellipsis">
+      MTLS
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#routes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Routes
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-to-save-config-via-agent" class="md-nav__link">
+    <span class="md-ellipsis">
+      How to save config via agent
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#using-configure-script" class="md-nav__link">
+    <span class="md-ellipsis">
+      Using configure script
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#example-deployment" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example deployment
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Example deployment">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#edge-deployment" class="md-nav__link">
+    <span class="md-ellipsis">
+      Edge deployment
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#services-in-the-cloud" class="md-nav__link">
+    <span class="md-ellipsis">
+      Services in the cloud
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#services-on-the-edge" class="md-nav__link">
+    <span class="md-ellipsis">
+      Services on the Edge
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Services on the Edge">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#agent-service" class="md-nav__link">
+    <span class="md-ellipsis">
+      Agent service
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#export-service" class="md-nav__link">
+    <span class="md-ellipsis">
+      Export service
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Export service">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#testing-export" class="md-nav__link">
+    <span class="md-ellipsis">
+      Testing Export
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../certs/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Certs
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../bootstrap/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Bootstrap
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lora/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    LoRa
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../opcua/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    OPC-UA
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../provision/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Provision
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../storage/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Storage
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../twins/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Twins
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tracing/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Tracing
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dev-guide/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Developer's Guide
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kubernetes/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kubernetes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../benchmark/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Benchmark
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="/blogs/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Blogs
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#agent" class="md-nav__link">
+    <span class="md-ellipsis">
+      Agent
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Agent">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#run-agent" class="md-nav__link">
+    <span class="md-ellipsis">
+      Run Agent
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Run Agent">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#remote-execution-of-commands-via-agent" class="md-nav__link">
+    <span class="md-ellipsis">
+      Remote execution of commands via Agent
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#remote-terminal" class="md-nav__link">
+    <span class="md-ellipsis">
+      Remote terminal
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#heartbeat" class="md-nav__link">
+    <span class="md-ellipsis">
+      Heartbeat
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#proxying-commands" class="md-nav__link">
+    <span class="md-ellipsis">
+      Proxying commands
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#edgex" class="md-nav__link">
+    <span class="md-ellipsis">
+      EdgeX
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#remote-commands" class="md-nav__link">
+    <span class="md-ellipsis">
+      Remote Commands
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Remote Commands">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#operation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Operation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#config" class="md-nav__link">
+    <span class="md-ellipsis">
+      Config
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#metrics" class="md-nav__link">
+    <span class="md-ellipsis">
+      Metrics
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#export" class="md-nav__link">
+    <span class="md-ellipsis">
+      Export
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Export">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#install" class="md-nav__link">
+    <span class="md-ellipsis">
+      Install
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#usage" class="md-nav__link">
+    <span class="md-ellipsis">
+      Usage
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configuration
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#environment-variables" class="md-nav__link">
+    <span class="md-ellipsis">
+      Environment variables
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Environment variables">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#http-port" class="md-nav__link">
+    <span class="md-ellipsis">
+      Http port
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mqtt-connection" class="md-nav__link">
+    <span class="md-ellipsis">
+      MQTT connection
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mtls" class="md-nav__link">
+    <span class="md-ellipsis">
+      MTLS
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#routes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Routes
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#how-to-save-config-via-agent" class="md-nav__link">
+    <span class="md-ellipsis">
+      How to save config via agent
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#using-configure-script" class="md-nav__link">
+    <span class="md-ellipsis">
+      Using configure script
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#example-deployment" class="md-nav__link">
+    <span class="md-ellipsis">
+      Example deployment
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Example deployment">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#edge-deployment" class="md-nav__link">
+    <span class="md-ellipsis">
+      Edge deployment
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#services-in-the-cloud" class="md-nav__link">
+    <span class="md-ellipsis">
+      Services in the cloud
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#services-on-the-edge" class="md-nav__link">
+    <span class="md-ellipsis">
+      Services on the Edge
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Services on the Edge">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#agent-service" class="md-nav__link">
+    <span class="md-ellipsis">
+      Agent service
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#export-service" class="md-nav__link">
+    <span class="md-ellipsis">
+      Export service
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Export service">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#testing-export" class="md-nav__link">
+    <span class="md-ellipsis">
+      Testing Export
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="edge">Edge<a class="headerlink" href="#edge" title="Permanent link">#</a></h1>
+<p>Magistrala IoT platform provides services for supporting management of devices on the edge. Typically, IoT solution includes devices (sensors/actuators) deployed in far edge and connected through some proxy gateway. Although most devices could be connected to the Magistrala directly, using gateways decentralizes system, decreases load on the cloud and makes setup less difficult. Also, gateways can provide additional data processing, filtering and storage.</p>
+<p>Services that can be used on gateway to enable data and control plane for edge:</p>
+<ul>
+<li><a href="/edge/#agent">Agent</a></li>
+<li><a href="/edge/#export">Export</a></li>
+<li><a href="/architecture/">Magistrala</a></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;"><img alt="Edge1" src="../img/edge/edge.png" /></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">Figure 1 - Edge services deployment</td>
+</tr>
+</tbody>
+</table>
+<p>Figure shows edge gateway that is running Agent, Export and minimal deployment of Magistrala services. Magistrala services enable device management and MQTT protocol, NATS being a central message bus as it is the default message broker in Magistrala becomes also central message bus for other services like <code>Agent</code> and <code>Export</code> as well as for any new custom developed service that can be built to interface with devices with any of hardware supported interfaces on the gateway, those services would publish data to the message broker where <code>Export</code> service can pick them up and send to cloud.</p>
+<p>Agent can be used to control deployed services as well as to monitor their liveliness through subcribing to <code>heartbeat</code> Message Broker subject where services should publish their liveliness status, like <code>Export</code> service does.</p>
+<h2 id="agent">Agent<a class="headerlink" href="#agent" title="Permanent link">#</a></h2>
+<p>Agent is service that is used to manage gateways that are connected to Magistrala in cloud. It provides a way to send commands to gateway and receive response via mqtt. There are two types of channels used for <strong>Agent</strong> <code>data</code> and <code>control</code>. Over the <code>control</code> we are sending commands and receiving response from commands. Data collected from sensors connected to gateway are being sent over <code>data</code> channel. Agent is able to configure itself provided that <a href="/bootstrap/">bootstrap server</a> is running, it will retrieve configuration from bootstrap server provided few arguments - <code>external_id</code> and <code>external_key</code> see <a href="/bootstrap/#bootstrapping">bootstraping</a>.</p>
+<p>Agent service has following features:</p>
+<ul>
+<li>Remote execution of commands</li>
+<li>Remote terminal, remote session to <code>bash</code> managed by <code>Agent</code></li>
+<li>Heartbeat - listening to Message Broker topic <code>heartbeat.&gt;</code> it can remotely provide info on running services, if services are publishing heartbeat ( like <a href="/edge/#export">Export</a>)</li>
+<li>Proxying commands to other gateway services</li>
+<li>Edgex SMA - remotely making requests to EdgeX endpoints and fetching results, if EdgeX is deployed.</li>
+</ul>
+<h3 id="run-agent">Run Agent<a class="headerlink" href="#run-agent" title="Permanent link">#</a></h3>
+<p>Before running agent we need to provision a thing and DATA and CONTROL channel. Thing that will be used as gateway representation and make bootstrap configuration. If using Magistrala UI this is done automatically when adding gateway through UI. Gateway can be provisioned with <a href="/provision/"><code>provision</code></a> service.</p>
+<p>When you provisioned gateway as described in <a href="/provision/">provision</a> you can check results</p>
+<div class="highlight"><pre><span></span><code>curl<span class="w"> </span>-s<span class="w"> </span>-S<span class="w"> </span>-X<span class="w"> </span>GET<span class="w"> </span>http://magistrala-domain.com:9013/things/bootstrap/&lt;external_id&gt;<span class="w"> </span>-H<span class="w"> </span><span class="s2">&quot;Authorization: Thing &lt;external_key&gt;&quot;</span><span class="w"> </span>-H<span class="w"> </span><span class="s1">&#39;Content-Type: application/json&#39;</span><span class="w"> </span><span class="p">|</span>jq
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;thing_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;e22c383a-d2ab-47c1-89cd-903955da993d&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;thing_key&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;fc987711-1828-461b-aa4b-16d5b2c642fe&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;channels&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;fa5f9ba8-a1fc-4380-9edb-d0c23eaa24ec&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;control-channel&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;metadata&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;control&quot;</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;24e5473e-3cbe-43d9-8a8b-a725ff918c0e&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;data-channel&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;metadata&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;data&quot;</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;1eac45c2-0f72-4089-b255-ebd2e5732bbb&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;export-channel&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;metadata&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;export&quot;</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">],</span>
+<span class="w">  </span><span class="nt">&quot;content&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;{\&quot;agent\&quot;:{\&quot;edgex\&quot;:{\&quot;url\&quot;:\&quot;http://localhost:48090/api/v1/\&quot;},\&quot;heartbeat\&quot;:{\&quot;interval\&quot;:\&quot;30s\&quot;},\&quot;log\&quot;:{\&quot;level\&quot;:\&quot;debug\&quot;},\&quot;mqtt\&quot;:{\&quot;mtls\&quot;:false,\&quot;qos\&quot;:0,\&quot;retain\&quot;:false,\&quot;skip_tls_ver\&quot;:true,\&quot;url\&quot;:\&quot;tcp://magistrala-domain.com:1883\&quot;},\&quot;server\&quot;:{\&quot;nats_url\&quot;:\&quot;localhost:4222\&quot;,\&quot;port\&quot;:\&quot;9000\&quot;},\&quot;terminal\&quot;:{\&quot;session_timeout\&quot;:\&quot;30s\&quot;}},\&quot;export\&quot;:{\&quot;exp\&quot;:{\&quot;cache_db\&quot;:\&quot;0\&quot;,\&quot;cache_pass\&quot;:\&quot;\&quot;,\&quot;cache_url\&quot;:\&quot;localhost:6379\&quot;,\&quot;log_level\&quot;:\&quot;debug\&quot;,\&quot;nats\&quot;:\&quot;nats://localhost:4222\&quot;,\&quot;port\&quot;:\&quot;8172\&quot;},\&quot;mqtt\&quot;:{\&quot;ca_path\&quot;:\&quot;ca.crt\&quot;,\&quot;cert_path\&quot;:\&quot;thing.crt\&quot;,\&quot;channel\&quot;:\&quot;\&quot;,\&quot;host\&quot;:\&quot;tcp://magistrala-domain.com:1883\&quot;,\&quot;mtls\&quot;:false,\&quot;password\&quot;:\&quot;\&quot;,\&quot;priv_key_path\&quot;:\&quot;thing.key\&quot;,\&quot;qos\&quot;:0,\&quot;retain\&quot;:false,\&quot;skip_tls_ver\&quot;:false,\&quot;username\&quot;:\&quot;\&quot;},\&quot;routes\&quot;:[{\&quot;mqtt_topic\&quot;:\&quot;\&quot;,\&quot;nats_topic\&quot;:\&quot;channels\&quot;,\&quot;subtopic\&quot;:\&quot;\&quot;,\&quot;type\&quot;:\&quot;mfx\&quot;,\&quot;workers\&quot;:10},{\&quot;mqtt_topic\&quot;:\&quot;\&quot;,\&quot;nats_topic\&quot;:\&quot;export\&quot;,\&quot;subtopic\&quot;:\&quot;\&quot;,\&quot;type\&quot;:\&quot;default\&quot;,\&quot;workers\&quot;:10}]}}&quot;</span>
+<span class="p">}</span>
+</code></pre></div>
+<ul>
+<li><code>external_id</code> is usually MAC address, but anything that suits applications requirements can be used</li>
+<li><code>external_key</code> is key that will be provided to agent process</li>
+<li><code>thing_id</code> is Magistrala thing id</li>
+<li><code>channels</code> is 2-element array where first channel is CONTROL and second is DATA, both channels should be assigned to thing</li>
+<li><code>content</code> is used for configuring parameters of agent and export service.</li>
+</ul>
+<p>Then to start the agent service you can do it like this</p>
+<div class="highlight"><pre><span></span><code>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/absmach/agent.git
+make
+<span class="nb">cd</span><span class="w"> </span>build
+
+<span class="nv">MG_AGENT_LOG_LEVEL</span><span class="o">=</span>debug<span class="w"> </span><span class="se">\</span>
+<span class="nv">MG_AGENT_BOOTSTRAP_KEY</span><span class="o">=</span>edged<span class="w"> </span><span class="se">\</span>
+<span class="nv">MG_AGENT_BOOTSTRAP_ID</span><span class="o">=</span><span class="m">34</span>:e1:2d:e6:cf:03<span class="w"> </span>./magistrala-agent
+
+<span class="o">{</span><span class="s2">&quot;level&quot;</span>:<span class="s2">&quot;info&quot;</span>,<span class="s2">&quot;message&quot;</span>:<span class="s2">&quot;Requesting config for 34:e1:2d:e6:cf:03 from http://localhost:9013/things/bootstrap&quot;</span>,<span class="s2">&quot;ts&quot;</span>:<span class="s2">&quot;2019-12-05T04:47:24.98411512Z&quot;</span><span class="o">}</span>
+<span class="o">{</span><span class="s2">&quot;level&quot;</span>:<span class="s2">&quot;info&quot;</span>,<span class="s2">&quot;message&quot;</span>:<span class="s2">&quot;Getting config for 34:e1:2d:e6:cf:03 from http://localhost:9013/things/bootstrap succeeded&quot;</span>,<span class="s2">&quot;ts&quot;</span>:<span class="s2">&quot;2019-12-05T04:47:24.995465239Z&quot;</span><span class="o">}</span>
+<span class="o">{</span><span class="s2">&quot;level&quot;</span>:<span class="s2">&quot;info&quot;</span>,<span class="s2">&quot;message&quot;</span>:<span class="s2">&quot;Connected to MQTT broker&quot;</span>,<span class="s2">&quot;ts&quot;</span>:<span class="s2">&quot;2019-12-05T04:47:25.009645082Z&quot;</span><span class="o">}</span>
+<span class="o">{</span><span class="s2">&quot;level&quot;</span>:<span class="s2">&quot;info&quot;</span>,<span class="s2">&quot;message&quot;</span>:<span class="s2">&quot;Agent service started, exposed port 9000&quot;</span>,<span class="s2">&quot;ts&quot;</span>:<span class="s2">&quot;2019-12-05T04:47:25.009755345Z&quot;</span><span class="o">}</span>
+<span class="o">{</span><span class="s2">&quot;level&quot;</span>:<span class="s2">&quot;info&quot;</span>,<span class="s2">&quot;message&quot;</span>:<span class="s2">&quot;Subscribed to MQTT broker&quot;</span>,<span class="s2">&quot;ts&quot;</span>:<span class="s2">&quot;2019-12-05T04:47:25.012930443Z&quot;</span><span class="o">}</span>
+</code></pre></div>
+<ul>
+<li><code>MG_AGENT_BOOTSTRAP_KEY</code> - is <code>external_key</code> in bootstrap configuration.</li>
+<li><code>MG_AGENT_BOOSTRAP_ID</code> - is <code>external_id</code> in bootstrap configuration.</li>
+</ul>
+<h4 id="remote-execution-of-commands-via-agent">Remote execution of commands via Agent<a class="headerlink" href="#remote-execution-of-commands-via-agent" title="Permanent link">#</a></h4>
+<div class="highlight"><pre><span></span><code><span class="c1"># Set connection parameters as environment variables in shell</span>
+<span class="nv">CH</span><span class="o">=</span><span class="sb">`</span>curl<span class="w"> </span>-s<span class="w"> </span>-S<span class="w"> </span>-X<span class="w"> </span>GET<span class="w"> </span>http://some-domain-name:9013/things/bootstrap/34:e1:2d:e6:cf:03<span class="w"> </span>-H<span class="w"> </span><span class="s2">&quot;Authorization: Thing &lt;BOOTSTRAP_KEY&gt;&quot;</span><span class="w"> </span>-H<span class="w"> </span><span class="s1">&#39;Content-Type: application/json&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>jq<span class="w"> </span>-r<span class="w"> </span><span class="s1">&#39;.magistrala_channels[0].id&#39;</span><span class="sb">`</span>
+<span class="nv">TH</span><span class="o">=</span><span class="sb">`</span>curl<span class="w"> </span>-s<span class="w">  </span>-S<span class="w"> </span>-X<span class="w"> </span>GET<span class="w"> </span>http://some-domain-name:9013/things/bootstrap/34:e1:2d:e6:cf:03<span class="w"> </span>-H<span class="w"> </span><span class="s2">&quot;Authorization: Thing &lt;BOOTSTRAP_KEY&gt;&quot;</span><span class="w"> </span>-H<span class="w"> </span><span class="s1">&#39;Content-Type: application/json&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>jq<span class="w"> </span>-r<span class="w"> </span>.magistrala_id<span class="sb">`</span>
+<span class="nv">KEY</span><span class="o">=</span><span class="sb">`</span>curl<span class="w"> </span>-s<span class="w">  </span>-S<span class="w"> </span>-X<span class="w"> </span>GET<span class="w"> </span>http://some-domain-name:9013/things/bootstrap/34:e1:2d:e6:cf:03<span class="w"> </span>-H<span class="w"> </span><span class="s2">&quot;Authorization: Thing &lt;BOOTSTRAP_KEY&gt;&quot;</span><span class="w"> </span>-H<span class="w"> </span><span class="s1">&#39;Content-Type: application/json&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>jq<span class="w"> </span>-r<span class="w"> </span>.magistrala_key<span class="sb">`</span>
+
+<span class="c1"># Subscribe for response</span>
+mosquitto_sub<span class="w"> </span>-d<span class="w"> </span>-u<span class="w"> </span><span class="nv">$TH</span><span class="w"> </span>-P<span class="w"> </span><span class="nv">$KEY</span><span class="w">  </span>-t<span class="w"> </span><span class="s2">&quot;channels/</span><span class="si">${</span><span class="nv">CH</span><span class="si">}</span><span class="s2">/messages/res/#&quot;</span><span class="w"> </span>-h<span class="w"> </span>some-domain-name<span class="w"> </span>-p<span class="w"> </span><span class="m">1883</span>
+
+<span class="c1"># Publish command e.g `ls`</span>
+mosquitto_pub<span class="w"> </span>-d<span class="w"> </span>-u<span class="w"> </span><span class="nv">$TH</span><span class="w"> </span>-P<span class="w"> </span><span class="nv">$KEY</span><span class="w">  </span>-t<span class="w"> </span>channels/<span class="nv">$CH</span>/messages/req<span class="w"> </span>-h<span class="w"> </span>some-domain-name<span class="w"> </span>-p<span class="w"> </span><span class="m">1883</span><span class="w">  </span>-m<span class="w"> </span><span class="s1">&#39;[{&quot;bn&quot;:&quot;1:&quot;, &quot;n&quot;:&quot;exec&quot;, &quot;vs&quot;:&quot;ls, -l&quot;}]&#39;</span>
+</code></pre></div>
+<h4 id="remote-terminal">Remote terminal<a class="headerlink" href="#remote-terminal" title="Permanent link">#</a></h4>
+<p>This can be checked from the UI, click on the details for gateway and below the gateway parameters you will se box with prompt, if <code>agent</code> is running and it is properly connected you should be able to execute commands remotely.</p>
+<h4 id="heartbeat">Heartbeat<a class="headerlink" href="#heartbeat" title="Permanent link">#</a></h4>
+<p>If there are services that are running on same gateway as <code>agent</code> and they are publishing heartbeat to the Message Broker subject <code>heartbeat.service_name.service</code>
+You can get the list of services by sending following mqtt message</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># View services that are sending heartbeat</span>
+mosquitto_pub<span class="w"> </span>-d<span class="w"> </span>-u<span class="w"> </span><span class="nv">$TH</span><span class="w"> </span>-P<span class="w"> </span><span class="nv">$KEY</span><span class="w">  </span>-t<span class="w"> </span>channels/<span class="nv">$CH</span>/messages/req<span class="w"> </span>-h<span class="w"> </span>some-domain-name<span class="w"> </span>-p<span class="w"> </span><span class="m">1883</span><span class="w">  </span>-m<span class="w"> </span><span class="s1">&#39;[{&quot;bn&quot;:&quot;1:&quot;, &quot;n&quot;:&quot;service&quot;, &quot;vs&quot;:&quot;view&quot;}]&#39;</span>
+</code></pre></div>
+<p>Response can be observed on <code>channels/$CH/messages/res/#</code></p>
+<h3 id="proxying-commands">Proxying commands<a class="headerlink" href="#proxying-commands" title="Permanent link">#</a></h3>
+<p>You can send commands to services running on the same edge gateway as Agent if they are subscribed on same the Message Broker server and correct subject.</p>
+<p>Service commands are being sent via MQTT to topic:</p>
+<p><code>channels/&lt;control_channel_id&gt;/messages/services/&lt;service_name&gt;/&lt;subtopic&gt;</code></p>
+<p>when messages is received Agent forwards them to the Message Broker on subject:</p>
+<p><code>commands.&lt;service_name&gt;.&lt;subtopic&gt;</code></p>
+<p>Payload is up to the application and service itself.</p>
+<h3 id="edgex">EdgeX<a class="headerlink" href="#edgex" title="Permanent link">#</a></h3>
+<p><a href="https://github.com/edgexfoundry/edgex-go">Edgex</a> control messages are sent and received over control channel. MG sends a control SenML of the following form:</p>
+<div class="highlight"><pre><span></span><code><span class="o">[{</span><span class="s2">&quot;bn&quot;</span>:<span class="s2">&quot;&lt;uuid&gt;:&quot;</span>,<span class="w"> </span><span class="s2">&quot;n&quot;</span>:<span class="s2">&quot;control&quot;</span>,<span class="w"> </span><span class="s2">&quot;vs&quot;</span>:<span class="s2">&quot;&lt;cmd&gt;, &lt;param&gt;, edgexsvc1, edgexsvc2, …, edgexsvcN&quot;</span><span class="o">}}]</span>
+</code></pre></div>
+<p>For example,</p>
+<div class="highlight"><pre><span></span><code><span class="o">[{</span><span class="s2">&quot;bn&quot;</span>:<span class="s2">&quot;1:&quot;</span>,<span class="w"> </span><span class="s2">&quot;n&quot;</span>:<span class="s2">&quot;control&quot;</span>,<span class="w"> </span><span class="s2">&quot;vs&quot;</span>:<span class="s2">&quot;operation, stop, edgex-support-notifications, edgex-core-data&quot;</span><span class="o">}]</span>
+</code></pre></div>
+<p>Agent, on the other hand, returns a response SenML of the following form:</p>
+<div class="highlight"><pre><span></span><code><span class="o">[{</span><span class="s2">&quot;bn&quot;</span>:<span class="s2">&quot;&lt;uuid&gt;:&quot;</span>,<span class="w"> </span><span class="s2">&quot;n&quot;</span>:<span class="s2">&quot;&lt;&gt;&quot;</span>,<span class="w"> </span><span class="s2">&quot;v&quot;</span>:<span class="s2">&quot;&lt;RESP&gt;&quot;</span><span class="o">}]</span>
+</code></pre></div>
+<h3 id="remote-commands">Remote Commands<a class="headerlink" href="#remote-commands" title="Permanent link">#</a></h3>
+<p>EdgeX defines SMA commands in the following <a href="https://github.com/edgexfoundry/edgex-go/blob/master/api/raml/system-agent.raml">RAML file</a></p>
+<p>Commands are:</p>
+<ul>
+<li>OPERATION</li>
+<li>CONFIG</li>
+<li>METRICS</li>
+<li>PING</li>
+</ul>
+<h4 id="operation">Operation<a class="headerlink" href="#operation" title="Permanent link">#</a></h4>
+<div class="highlight"><pre><span></span><code>mosquitto_pub<span class="w"> </span>-u<span class="w"> </span>&lt;thing_id&gt;<span class="w"> </span>-P<span class="w"> </span>&lt;thing_secret&gt;<span class="w"> </span>-t<span class="w"> </span>channels/&lt;channel_id&gt;/messages/req<span class="w"> </span>-h<span class="w"> </span>localhost<span class="w"> </span>-m<span class="w"> </span><span class="s1">&#39;[{&quot;bn&quot;:&quot;1:&quot;, &quot;n&quot;:&quot;control&quot;, &quot;vs&quot;:&quot;edgex-operation, start, edgex-support-notifications, edgex-core-data&quot;}]&#39;</span>
+</code></pre></div>
+<h4 id="config">Config<a class="headerlink" href="#config" title="Permanent link">#</a></h4>
+<div class="highlight"><pre><span></span><code>mosquitto_pub<span class="w"> </span>-u<span class="w"> </span>&lt;thing_id&gt;<span class="w"> </span>-P<span class="w"> </span>&lt;thing_secret&gt;<span class="w"> </span>-t<span class="w"> </span>channels/&lt;channel_id&gt;/messages/req<span class="w"> </span>-h<span class="w"> </span>localhost<span class="w"> </span>-m<span class="w"> </span><span class="s1">&#39;[{&quot;bn&quot;:&quot;1:&quot;, &quot;n&quot;:&quot;control&quot;, &quot;vs&quot;:&quot;edgex-config, edgex-support-notifications, edgex-core-data&quot;}]&#39;</span>
+</code></pre></div>
+<h4 id="metrics">Metrics<a class="headerlink" href="#metrics" title="Permanent link">#</a></h4>
+<div class="highlight"><pre><span></span><code>mosquitto_pub<span class="w"> </span>-u<span class="w"> </span>&lt;thing_id&gt;<span class="w"> </span>-P<span class="w"> </span>&lt;thing_secret&gt;<span class="w"> </span>-t<span class="w"> </span>channels/&lt;channel_id&gt;/messages/req<span class="w"> </span>-h<span class="w"> </span>localhost<span class="w"> </span>-m<span class="w"> </span><span class="s1">&#39;[{&quot;bn&quot;:&quot;1:&quot;, &quot;n&quot;:&quot;control&quot;, &quot;vs&quot;:&quot;edgex-metrics, edgex-support-notifications, edgex-core-data&quot;}]&#39;</span>
+</code></pre></div>
+<p>If you subscribe to</p>
+<div class="highlight"><pre><span></span><code>mosquitto_sub<span class="w"> </span>-u<span class="w"> </span>&lt;thing_id&gt;<span class="w"> </span>-P<span class="w"> </span>&lt;thing_secret&gt;<span class="w"> </span>-t<span class="w"> </span>channels/&lt;channel_id&gt;/messages/#
+</code></pre></div>
+<p>You can observe commands and response from commands executed against edgex</p>
+<div class="highlight"><pre><span></span><code><span class="o">[{</span><span class="s2">&quot;bn&quot;</span>:<span class="s2">&quot;1:&quot;</span>,<span class="w"> </span><span class="s2">&quot;n&quot;</span>:<span class="s2">&quot;control&quot;</span>,<span class="w"> </span><span class="s2">&quot;vs&quot;</span>:<span class="s2">&quot;edgex-metrics, edgex-support-notifications, edgex-core-data&quot;</span><span class="o">}]</span>
+<span class="o">[{</span><span class="s2">&quot;bn&quot;</span>:<span class="s2">&quot;1&quot;</span>,<span class="s2">&quot;n&quot;</span>:<span class="s2">&quot;edgex-metrics&quot;</span>,<span class="s2">&quot;vs&quot;</span>:<span class="s2">&quot;{\&quot;Metrics\&quot;:{\&quot;edgex-core-data\&quot;:{\&quot;CpuBusyAvg\&quot;:15.568632467698606,\&quot;Memory\&quot;:{\&quot;Alloc\&quot;:2040136,\&quot;Frees\&quot;:876344,\&quot;LiveObjects\&quot;:15134,\&quot;Mallocs\&quot;:891478,\&quot;Sys\&quot;:73332984,\&quot;TotalAlloc\&quot;:80657464}},\&quot;edgex-support-notifications\&quot;:{\&quot;CpuBusyAvg\&quot;:14.65381169745318,\&quot;Memory\&quot;:{\&quot;Alloc\&quot;:961784,\&quot;Frees\&quot;:127430,\&quot;LiveObjects\&quot;:6095,\&quot;Mallocs\&quot;:133525,\&quot;Sys\&quot;:72808696,\&quot;TotalAlloc\&quot;:11665416}}}}\n&quot;</span><span class="o">}]</span>
+</code></pre></div>
+<h2 id="export">Export<a class="headerlink" href="#export" title="Permanent link">#</a></h2>
+<p>Magistrala Export service can send message from one Magistrala cloud to another via MQTT, or it can send messages from edge gateway to Magistrala Cloud. Export service is subscribed to local message bus and connected to MQTT broker in the cloud. Messages collected on local message bus are redirected to the cloud. When connection is lost, if QoS2 is used, messages from the local bus are stored into file or in memory to be resent upon reconnection. Additonaly <code>Export</code> service publishes liveliness status to <code>Agent</code> via the Message Broker subject <code>heartbeat.export.service</code></p>
+<h3 id="install">Install<a class="headerlink" href="#install" title="Permanent link">#</a></h3>
+<p>Get the code:</p>
+<div class="highlight"><pre><span></span><code>go<span class="w"> </span>get<span class="w"> </span>github.com/magistrala/export
+<span class="nb">cd</span><span class="w"> </span><span class="nv">$GOPATH</span>/github.com/magistrala/export
+</code></pre></div>
+<p>Make:</p>
+<div class="highlight"><pre><span></span><code>make
+</code></pre></div>
+<h3 id="usage">Usage<a class="headerlink" href="#usage" title="Permanent link">#</a></h3>
+<div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>build
+./magistrala-export
+</code></pre></div>
+<h3 id="configuration">Configuration<a class="headerlink" href="#configuration" title="Permanent link">#</a></h3>
+<p>By default <code>Export</code> service looks for config file at <a href="https://github.com/absmach/export/blob/master/configs/config.toml"><code>../configs/config.toml</code></a> if no env vars are specified.</p>
+<div class="highlight"><pre><span></span><code><span class="k">[exp]</span>
+<span class="w">  </span><span class="n">log_level</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;debug&quot;</span>
+<span class="w">  </span><span class="n">nats</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;localhost:4222&quot;</span>
+<span class="w">  </span><span class="n">port</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;8170&quot;</span>
+
+<span class="k">[mqtt]</span>
+<span class="w">  </span><span class="n">username</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;&lt;thing_id&gt;&quot;</span>
+<span class="w">  </span><span class="n">password</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;&lt;thing_password&gt;&quot;</span>
+<span class="w">  </span><span class="n">ca_path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;ca.crt&quot;</span>
+<span class="w">  </span><span class="n">client_cert</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;&quot;</span>
+<span class="w">  </span><span class="n">client_cert_key</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;&quot;</span>
+<span class="w">  </span><span class="n">client_cert_path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;thing.crt&quot;</span>
+<span class="w">  </span><span class="n">client_priv_key_path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;thing.key&quot;</span>
+<span class="w">  </span><span class="n">mtls</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;false&quot;</span>
+<span class="w">  </span><span class="n">priv_key</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;thing.key&quot;</span>
+<span class="w">  </span><span class="n">retain</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;false&quot;</span>
+<span class="w">  </span><span class="n">skip_tls_ver</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;false&quot;</span>
+<span class="w">  </span><span class="n">url</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;tcp://magistrala.com:1883&quot;</span>
+
+<span class="k">[[routes]]</span>
+<span class="w">  </span><span class="n">mqtt_topic</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;channel/&lt;channel_id&gt;/messages&quot;</span>
+<span class="w">  </span><span class="n">subtopic</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;subtopic&quot;</span>
+<span class="w">  </span><span class="n">nats_topic</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;export&quot;</span>
+<span class="w">  </span><span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;default&quot;</span>
+<span class="w">  </span><span class="n">workers</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span>
+
+<span class="k">[[routes]]</span>
+<span class="w">  </span><span class="n">mqtt_topic</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;channel/&lt;channel_id&gt;/messages&quot;</span>
+<span class="w">  </span><span class="n">subtopic</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;subtopic&quot;</span>
+<span class="w">  </span><span class="n">nats_topic</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;channels&quot;</span>
+<span class="w">  </span><span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;mfx&quot;</span>
+<span class="w">  </span><span class="n">workers</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span>
+</code></pre></div>
+<h3 id="environment-variables">Environment variables<a class="headerlink" href="#environment-variables" title="Permanent link">#</a></h3>
+<p>Service will first look for <code>MG_EXPORT_CONFIG_FILE</code> for configuration and if not found it will be configured with env variables and new config file specified with <code>MG_EXPORT_CONFIG_FILE</code> (default value will be used if none specified) will be saved with values populated from env vars. The service is configured using the <a href="https://github.com/absmach/export#environmet-variables">environment variables</a> as presented in the table. Note that any unset variables will be replaced with their default values.</p>
+<p>For values in environment variables to take effect make sure that there is no <code>MG_EXPORT_CONFIG_FILE</code> file.</p>
+<p>If you run with environment variables you can create config file:</p>
+<div class="highlight"><pre><span></span><code><span class="nv">MG_EXPORT_PORT</span><span class="o">=</span><span class="m">8178</span><span class="w"> </span><span class="se">\</span>
+<span class="nv">MG_EXPORT_LOG_LEVEL</span><span class="o">=</span>debug<span class="w"> </span><span class="se">\</span>
+<span class="nv">MG_EXPORT_MQTT_HOST</span><span class="o">=</span>tcp://localhost:1883<span class="w"> </span><span class="se">\</span>
+<span class="nv">MG_EXPORT_MQTT_USERNAME</span><span class="o">=</span>&lt;thing_id&gt;<span class="w"> </span><span class="se">\</span>
+<span class="nv">MG_EXPORT_MQTT_PASSWORD</span><span class="o">=</span>&lt;thing_secret&gt;<span class="w"> </span><span class="se">\</span>
+<span class="nv">MG_EXPORT_MQTT_CHANNEL</span><span class="o">=</span>&lt;channel_id&gt;<span class="w"> </span><span class="se">\</span>
+<span class="nv">MG_EXPORT_MQTT_SKIP_TLS</span><span class="o">=</span><span class="nb">true</span><span class="w"> </span><span class="se">\</span>
+<span class="nv">MG_EXPORT_MQTT_MTLS</span><span class="o">=</span><span class="nb">false</span><span class="w"> </span><span class="se">\</span>
+<span class="nv">MG_EXPORT_MQTT_CA</span><span class="o">=</span>ca.crt<span class="w"> </span><span class="se">\</span>
+<span class="nv">MG_EXPORT_MQTT_CLIENT_CERT</span><span class="o">=</span>thing.crt<span class="w"> </span><span class="se">\</span>
+<span class="nv">MG_EXPORT_MQTT_CLIENT_PK</span><span class="o">=</span>thing.key<span class="w"> </span><span class="se">\</span>
+<span class="nv">MG_EXPORT_CONFIG_FILE</span><span class="o">=</span>export.toml<span class="w"> </span><span class="se">\</span>
+../build/magistrala-export<span class="p">&amp;</span>
+</code></pre></div>
+<p>Values from environment variables will be used to populate export.toml</p>
+<h4 id="http-port">Http port<a class="headerlink" href="#http-port" title="Permanent link">#</a></h4>
+<ul>
+<li><code>port</code> - HTTP port where status of <code>Export</code> service can be fetched.</li>
+</ul>
+<div class="highlight"><pre><span></span><code>curl<span class="w"> </span>-X<span class="w"> </span>GET<span class="w"> </span>http://localhost:8170/health
+<span class="s1">&#39;{&quot;status&quot;: &quot;pass&quot;, &quot;version&quot;:&quot;0.12.1&quot;, &quot;commit&quot;:&quot;57cca9677721025da055c47957fc3e869e0325aa&quot; , &quot;description&quot;:&quot;export service&quot;, &quot;build_time&quot;: &quot;2022-01-19_10:13:17&quot;}&#39;</span>
+</code></pre></div>
+<h4 id="mqtt-connection">MQTT connection<a class="headerlink" href="#mqtt-connection" title="Permanent link">#</a></h4>
+<p>To establish connection to MQTT broker following settings are needed:</p>
+<ul>
+<li><code>username</code> - Magistrala <thing_id></li>
+<li><code>password</code> - Magistrala <thing_secret></li>
+<li><code>url</code> - url of MQTT broker</li>
+</ul>
+<p>Additionally, you will need MQTT client certificates if you enable mTLS. To obtain certificates <code>ca.crt</code>, <code>thing.crt</code> and key <code>thing.key</code> follow instructions <a href="/authentication/#mutual-tls-authentication-with-x509-certificates">here</a> or <a href="/certs/#certs-service">here</a>.</p>
+<h4 id="mtls">MTLS<a class="headerlink" href="#mtls" title="Permanent link">#</a></h4>
+<p>To setup <code>MTLS</code> connection <code>Export</code> service requires client certificate and <code>mtls</code> in config or <code>MG_EXPORT_MQTT_MTLS</code> must be set to <code>true</code>. Client certificate can be provided in a file, <code>client_cert_path</code> and <code>client_cert_key_path</code> are used for specifying path to certificate files. If MTLS is used and no certificate file paths are specified then <code>Export</code> will look in <code>client_cert</code> and <code>client_cert_key</code> of config file expecting certificate content stored as string.</p>
+<h4 id="routes">Routes<a class="headerlink" href="#routes" title="Permanent link">#</a></h4>
+<p>Routes are being used for specifying which subscriber's topic(subject) goes to which publishing topic. Currently only MQTT is supported for publishing. To match Magistrala requirements <code>mqtt_topic</code> must contain <code>channel/&lt;channel_id&gt;/messages</code>, additional subtopics can be appended.</p>
+<ul>
+<li><code>mqtt_topic</code> - <code>channel/&lt;channel_id&gt;/messages/&lt;custom_subtopic&gt;</code></li>
+<li><code>nats_topic</code> - <code>Export</code> service will be subscribed to the Message Broker subject <code>&lt;nats_topic&gt;.&gt;</code></li>
+<li><code>subtopic</code> - messages will be published to MQTT topic <code>&lt;mqtt_topic&gt;/&lt;subtopic&gt;/&lt;nats_subject&gt;</code>, where dots in nats_subject are replaced with '/'</li>
+<li><code>workers</code> - specifies number of workers that will be used for message forwarding.</li>
+<li><code>type</code> - specifies message transformation:</li>
+<li><code>default</code> is for sending messages as they are received on the Message Broker with no transformation (so they should be in SenML or JSON format if we want to persist them in Magistrala in cloud). If you don't want to persist messages in Magistrala or you are not exporting to Magistrala cloud - message format can be anything that suits your application as message passes untransformed.</li>
+<li><code>mfx</code> is for messages that are being picked up on internal Magistrala Message Broker bus. When using <code>Export</code> along with Magistrala deployed on gateway (<a href="/edge/#edge">Fig. 1</a>) messages coming from MQTT broker that are published to the Message Broker bus are <a href="https://github.com/absmach/magistrala/blob/master/pkg/messaging/message.proto">Magistrala message</a>. Using <code>mfx</code> type will extract payload and <code>export</code> will publish it to <code>mqtt_topic</code>. Extracted payload is SenML or JSON if we want to persist messages. <code>nats_topic</code> in this case must be <code>channels</code>, or if you want to pick messages from a specific channel in local Magistrala instance to be exported to cloud you can put <code>channels.&lt;local_magistrala_channel_id&gt;</code>.</li>
+</ul>
+<p>Before running <code>Export</code> service edit <code>configs/config.toml</code> and provide <code>username</code>, <code>password</code> and <code>url</code></p>
+<ul>
+<li><code>username</code> - matches <code>thing_id</code> in Magistrala cloud instance</li>
+<li><code>password</code> - matches <code>thing_secret</code></li>
+<li><code>channel</code> - MQTT part of the topic where to publish MQTT data (<code>channel/&lt;channel_id&gt;/messages</code> is format of magistrala MQTT topic) and plays a part in authorization.</li>
+</ul>
+<p>If Magistrala and Export service are deployed on same gateway <code>Export</code> can be configured to send messages from Magistrala internal Message Broker bus to Magistrala in a cloud. In order for <code>Export</code> service to listen on Magistrala Message Broker deployed on the same machine Message Broker port must be exposed. Edit Magistrala <a href="https://github.com/absmach/magistrala/blob/main/docker/docker-compose.yml">docker-compose.yml</a>. Default Message Broker, NATS, section must look like below:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">nats</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nats:2.2.4</span>
+<span class="w">  </span><span class="nt">container_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">magistrala-nats</span>
+<span class="w">  </span><span class="nt">restart</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">on-failure</span>
+<span class="w">  </span><span class="nt">networks</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">magistrala-base-net</span>
+<span class="w">  </span><span class="nt">ports</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">4222:4222</span>
+</code></pre></div>
+<h3 id="how-to-save-config-via-agent">How to save config via agent<a class="headerlink" href="#how-to-save-config-via-agent" title="Permanent link">#</a></h3>
+<p>Configuration file for <code>Export</code> service can be sent over MQTT using <a href="/edge/#agent">Agent</a> service.</p>
+<div class="highlight"><pre><span></span><code>mosquitto_pub<span class="w"> </span>-u<span class="w"> </span>&lt;thing_id&gt;<span class="w"> </span>-P<span class="w"> </span>&lt;thing_secret&gt;<span class="w"> </span>-t<span class="w"> </span>channels/&lt;control_ch_id&gt;/messages/req<span class="w"> </span>-h<span class="w"> </span>localhost<span class="w"> </span>-p<span class="w"> </span><span class="m">18831</span><span class="w">  </span>-m<span class="w">  </span><span class="s2">&quot;[{\&quot;bn\&quot;:\&quot;1:\&quot;, \&quot;n\&quot;:\&quot;config\&quot;, \&quot;vs\&quot;:\&quot;save, export, &lt;config_file_path&gt;, &lt;file_content_base64&gt;\&quot;}]&quot;</span>
+</code></pre></div>
+<p><code>vs="save, export, config_file_path, file_content_base64"</code> - vs determines where to save file and contains file content in base64 encoding payload:</p>
+<div class="highlight"><pre><span></span><code><span class="nx">b</span><span class="p">,</span><span class="nx">_</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">toml</span><span class="p">.</span><span class="nx">Marshal</span><span class="p">(</span><span class="nx">export</span><span class="p">.</span><span class="nx">Config</span><span class="p">)</span>
+<span class="nx">payload</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">base64</span><span class="p">.</span><span class="nx">StdEncoding</span><span class="p">.</span><span class="nx">EncodeToString</span><span class="p">(</span><span class="nx">b</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="using-configure-script">Using configure script<a class="headerlink" href="#using-configure-script" title="Permanent link">#</a></h3>
+<p>There is a <code>configuration.sh</code> script in a <code>scripts</code> directory that can be used for automatic configuration and start up of remotely deployed <code>export</code>. For this to work it is presumed that <code>magistrala-export</code> and <code>scripts/export_start</code> are placed in executable path on remote device. Additionally this script requires that remote device is provisioned following the steps described for <a href="/provision/">provision</a> service.</p>
+<p>To run it first edit script to set parameters</p>
+<div class="highlight"><pre><span></span><code>MTLS=false
+EXTERNAL_KEY=&#39;raspberry&#39;
+EXTERNAL_ID=&#39;pi&#39;
+MAGISTRALA_HOST=&#39;magistrala.com&#39;
+MAGISTRALA_USER_EMAIL=&#39;edge@email.com&#39;
+MAGISTRALA_USER_PASSWORD=&#39;12345678&#39;
+</code></pre></div>
+<p><code>EXTERNAL_KEY</code> and <code>EXTERNAL_ID</code> are parameters posted to <code>/mapping</code> endpoint of <code>provision</code> service, <code>MAGISTRALA_HOST</code> is location of cloud instance of Magistrala that <code>export</code> should connect to and <code>MAGISTRALA_USER_EMAIL</code> and <code>MAGISTRALA_USER_PASSWORD</code> are users credentials in the cloud.</p>
+<h2 id="example-deployment">Example deployment<a class="headerlink" href="#example-deployment" title="Permanent link">#</a></h2>
+<h3 id="edge-deployment">Edge deployment<a class="headerlink" href="#edge-deployment" title="Permanent link">#</a></h3>
+<p>The following are steps that are an example usage of Magistrala components to connect edge with cloud. We will start Magistrala in the cloud with additional services <a href="/bootstrap/">Bootstrap</a> and <a href="/provision/">Provision</a>. Using <a href="bootstrap">Bootstrap</a> and <a href="provision">Provision</a> we will create a configuration for use in gateway deployment. On the gateway we will start services <a href="/edge/#agent">Agent</a> and <a href="/edge/#export">Export</a> using previously created configuration.</p>
+<h2 id="services-in-the-cloud">Services in the cloud<a class="headerlink" href="#services-in-the-cloud" title="Permanent link">#</a></h2>
+<p>Start the Magistrala:</p>
+<div class="highlight"><pre><span></span><code>docker-compose<span class="w"> </span>-f<span class="w"> </span>docker/docker-compose.yml<span class="w"> </span>up
+</code></pre></div>
+<p>Start the Bootstrap service:</p>
+<div class="highlight"><pre><span></span><code>docker-compose<span class="w"> </span>-f<span class="w"> </span>docker/addons/bootstrap/docker-compose.yml<span class="w"> </span>up
+</code></pre></div>
+<p>Start the Provision service</p>
+<div class="highlight"><pre><span></span><code>docker-compose<span class="w"> </span>-f<span class="w"> </span>docker/addons/provision/docker-compose.yml<span class="w"> </span>up
+</code></pre></div>
+<p>Create user:</p>
+<div class="highlight"><pre><span></span><code>magistrala-cli<span class="w"> </span>-m<span class="w"> </span>http://localhost:9002<span class="w"> </span>users<span class="w"> </span>create<span class="w"> </span><span class="nb">test</span><span class="w"> </span>test@email.com<span class="w"> </span><span class="m">12345678</span>
+</code></pre></div>
+<p>Obtain user token:</p>
+<div class="highlight"><pre><span></span><code>magistrala-cli<span class="w"> </span>-m<span class="w"> </span>http://localhost:9002<span class="w"> </span>users<span class="w"> </span>token<span class="w"> </span>test@email.com<span class="w"> </span><span class="m">12345678</span>
+
+<span class="o">{</span>
+<span class="w">  </span><span class="s2">&quot;access_token&quot;</span>:<span class="w"> </span><span class="s2">&quot;eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODY3NTEzNTIsImlhdCI6MTY4Njc1MDQ1MiwiaWRlbnRpdHkiOiJqb2huLmRvZUBlbWFpbC5jb20iLCJpc3MiOiJjbGllbnRzLmF1dGgiLCJzdWIiOiI5NDkzOTE1OS1kMTI5LTRmMTctOWU0ZS1jYzJkNjE1NTM5ZDciLCJ0eXBlIjoiYWNjZXNzIn0.AND1sm6mN2wgUxVkDhpipCoNa87KPMghGaS5-4dU0iZaqGIUhWScrEJwOahT9ts1TZSd1qEcANTIffJ_y2Pbsg&quot;</span>,
+<span class="w">  </span><span class="s2">&quot;refresh_token&quot;</span>:<span class="w"> </span><span class="s2">&quot;eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODY4MzY4NTIsImlhdCI6MTY4Njc1MDQ1MiwiaWRlbnRpdHkiOiJqb2huLmRvZUBlbWFpbC5jb20iLCJpc3MiOiJjbGllbnRzLmF1dGgiLCJzdWIiOiI5NDkzOTE1OS1kMTI5LTRmMTctOWU0ZS1jYzJkNjE1NTM5ZDciLCJ0eXBlIjoicmVmcmVzaCJ9.z3OWCHhNHNuvkzBqEAoLKWS6vpFLkIYXhH9cZogSCXd109-BbKVlLvYKmja-hkhaj_XDJKySDN3voiazBr_WTA&quot;</span>,
+<span class="w">  </span><span class="s2">&quot;access_type&quot;</span>:<span class="w"> </span><span class="s2">&quot;Bearer&quot;</span>
+<span class="o">}</span>
+
+<span class="nv">USER_TOKEN</span><span class="o">=</span>&lt;access_token&gt;
+</code></pre></div>
+<p>Provision a gateway:</p>
+<div class="highlight"><pre><span></span><code>curl<span class="w"> </span>-s<span class="w"> </span>-S<span class="w">  </span>-X<span class="w"> </span>POST<span class="w">  </span>http://localhost:9016/mapping<span class="w"> </span>-H<span class="w"> </span><span class="s2">&quot;Authorization: Bearer </span><span class="nv">$USER_TOKEN</span><span class="s2">&quot;</span><span class="w"> </span>-H<span class="w"> </span><span class="s1">&#39;Content-Type: application/json&#39;</span><span class="w">   </span>-d<span class="w"> </span><span class="s1">&#39;{&quot;name&quot;:&quot;testing&quot;,  &quot;external_id&quot; : &quot;54:FG:66:DC:43&quot;, &quot;external_key&quot;:&quot;223334fw2&quot; }&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>jq
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;things&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;88529fb2-6c1e-4b60-b9ab-73b5d89f7404&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;thing&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;key&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;3529c1bb-7211-4d40-9cd8-b05833196093&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;metadata&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;external_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;54:FG:66:DC:43&quot;</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">],</span>
+<span class="w">  </span><span class="nt">&quot;channels&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;1aa3f736-0bd3-44b5-a917-a72cc743f633&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;control-channel&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;metadata&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;control&quot;</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;e2adcfa6-96b2-425d-8cd4-ff8cb9c056ce&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;data-channel&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;metadata&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;data&quot;</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">],</span>
+<span class="w">  </span><span class="nt">&quot;whitelisted&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;88529fb2-6c1e-4b60-b9ab-73b5d89f7404&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>Parameters <external_id> and <external_key> are representing the gateway. <code>Provision</code> will use them to create a bootstrap configuration that will make a relation with Magistrala entities used for connection, authentication and authorization <code>thing</code> and <code>channel</code>. These parameters will be used by <code>Agent</code> service on the gateway to retrieve that information and establish a connection with the cloud.</p>
+<h2 id="services-on-the-edge">Services on the Edge<a class="headerlink" href="#services-on-the-edge" title="Permanent link">#</a></h2>
+<h3 id="agent-service">Agent service<a class="headerlink" href="#agent-service" title="Permanent link">#</a></h3>
+<p>Start the <a href="https://nats.io/">NATS</a> and <a href="/edge/#agent">Agent</a> service:</p>
+<div class="highlight"><pre><span></span><code>gnatsd
+<span class="nv">MG_AGENT_BOOTSTRAP_ID</span><span class="o">=</span><span class="m">54</span>:FG:66:DC:43<span class="w"> </span><span class="se">\</span>
+<span class="nv">MG_AGENT_BOOTSTRAP_KEY</span><span class="o">=</span><span class="s2">&quot;223334fw2&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="nv">MG_AGENT_BOOTSTRAP_URL</span><span class="o">=</span>http://localhost:9013/things/bootstrap<span class="w"> </span><span class="se">\</span>
+build/magistrala-agent
+<span class="o">{</span><span class="s2">&quot;level&quot;</span>:<span class="s2">&quot;info&quot;</span>,<span class="s2">&quot;message&quot;</span>:<span class="s2">&quot;Requesting config for 54:FG:66:DC:43 from http://localhost:9013/things/bootstrap&quot;</span>,<span class="s2">&quot;ts&quot;</span>:<span class="s2">&quot;2020-05-07T15:50:58.041145096Z&quot;</span><span class="o">}</span>
+<span class="o">{</span><span class="s2">&quot;level&quot;</span>:<span class="s2">&quot;info&quot;</span>,<span class="s2">&quot;message&quot;</span>:<span class="s2">&quot;Getting config for 54:FG:66:DC:43 from http://localhost:9013/things/bootstrap succeeded&quot;</span>,<span class="s2">&quot;ts&quot;</span>:<span class="s2">&quot;2020-05-07T15:50:58.120779415Z&quot;</span><span class="o">}</span>
+<span class="o">{</span><span class="s2">&quot;level&quot;</span>:<span class="s2">&quot;info&quot;</span>,<span class="s2">&quot;message&quot;</span>:<span class="s2">&quot;Saving export config file /configs/export/config.toml&quot;</span>,<span class="s2">&quot;ts&quot;</span>:<span class="s2">&quot;2020-05-07T15:50:58.121602229Z&quot;</span><span class="o">}</span>
+<span class="o">{</span><span class="s2">&quot;level&quot;</span>:<span class="s2">&quot;warn&quot;</span>,<span class="s2">&quot;message&quot;</span>:<span class="s2">&quot;Failed to save export config file Error writing config file: open /configs/export/config.toml: no such file or directory&quot;</span>,<span class="s2">&quot;ts&quot;</span>:<span class="s2">&quot;2020-05-07T15:50:58.121752142Z&quot;</span><span class="o">}</span>
+<span class="o">{</span><span class="s2">&quot;level&quot;</span>:<span class="s2">&quot;info&quot;</span>,<span class="s2">&quot;message&quot;</span>:<span class="s2">&quot;Client agent-88529fb2-6c1e-4b60-b9ab-73b5d89f7404 connected&quot;</span>,<span class="s2">&quot;ts&quot;</span>:<span class="s2">&quot;2020-05-07T15:50:58.128500603Z&quot;</span><span class="o">}</span>
+<span class="o">{</span><span class="s2">&quot;level&quot;</span>:<span class="s2">&quot;info&quot;</span>,<span class="s2">&quot;message&quot;</span>:<span class="s2">&quot;Agent service started, exposed port 9003&quot;</span>,<span class="s2">&quot;ts&quot;</span>:<span class="s2">&quot;2020-05-07T15:50:58.128531057Z&quot;</span><span class="o">}</span>
+</code></pre></div>
+<h3 id="export-service">Export service<a class="headerlink" href="#export-service" title="Permanent link">#</a></h3>
+<div class="highlight"><pre><span></span><code>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/absmach/export.git
+make
+</code></pre></div>
+<p>Edit the <code>configs/config.toml</code> setting</p>
+<ul>
+<li><code>username</code> - thing from the results of provision request.</li>
+<li><code>password</code> - key from the results of provision request.</li>
+<li><code>mqtt_topic</code> - in routes set to <code>channels/&lt;channel_data_id&gt;/messages</code> from results of provision.</li>
+<li><code>nats_topic</code> - whatever you need, export will subscribe to <code>export.&lt;nats_topic&gt;</code> and forward messages to MQTT.</li>
+<li><code>host</code> - url of MQTT broker.</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="k">[exp]</span>
+<span class="w">  </span><span class="n">cache_pass</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;&quot;</span>
+<span class="w">  </span><span class="n">cache_url</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;&quot;</span>
+<span class="w">  </span><span class="n">log_level</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;debug&quot;</span>
+<span class="w">  </span><span class="n">nats</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;localhost:4222&quot;</span>
+<span class="w">  </span><span class="n">port</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;8170&quot;</span>
+
+<span class="k">[mqtt]</span>
+<span class="w">  </span><span class="n">ca_path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;&quot;</span>
+<span class="w">  </span><span class="n">cert_path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;&quot;</span>
+<span class="w">  </span><span class="n">host</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;tcp://localhost:1883&quot;</span>
+<span class="w">  </span><span class="n">mtls</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">false</span>
+<span class="w">  </span><span class="n">password</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;3529c1bb-7211-4d40-9cd8-b05833196093&quot;</span>
+<span class="w">  </span><span class="n">priv_key_path</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;&quot;</span>
+<span class="w">  </span><span class="n">qos</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span>
+<span class="w">  </span><span class="n">retain</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">false</span>
+<span class="w">  </span><span class="n">skip_tls_ver</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">false</span>
+<span class="w">  </span><span class="n">username</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;88529fb2-6c1e-4b60-b9ab-73b5d89f7404&quot;</span>
+
+<span class="k">[[routes]]</span>
+<span class="w">  </span><span class="n">mqtt_topic</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;channels/e2adcfa6-96b2-425d-8cd4-ff8cb9c056ce/messages&quot;</span>
+<span class="w">  </span><span class="n">nats_topic</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;&gt;&quot;</span>
+<span class="w">  </span><span class="n">workers</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>build
+./magistrala-export
+<span class="m">2020</span>/05/07<span class="w"> </span><span class="m">17</span>:36:57<span class="w"> </span>Configuration<span class="w"> </span>loaded<span class="w"> </span>from<span class="w"> </span>file<span class="w"> </span>../configs/config.toml
+<span class="o">{</span><span class="s2">&quot;level&quot;</span>:<span class="s2">&quot;info&quot;</span>,<span class="s2">&quot;message&quot;</span>:<span class="s2">&quot;Export service started, exposed port :8170&quot;</span>,<span class="s2">&quot;ts&quot;</span>:<span class="s2">&quot;2020-05-07T15:36:57.528398548Z&quot;</span><span class="o">}</span>
+<span class="o">{</span><span class="s2">&quot;level&quot;</span>:<span class="s2">&quot;debug&quot;</span>,<span class="s2">&quot;message&quot;</span>:<span class="s2">&quot;Client export-88529fb2-6c1e-4b60-b9ab-73b5d89f7404 connected&quot;</span>,<span class="s2">&quot;ts&quot;</span>:<span class="s2">&quot;2020-05-07T15:36:57.528405818Z&quot;</span><span class="o">}</span>
+</code></pre></div>
+<h4 id="testing-export">Testing Export<a class="headerlink" href="#testing-export" title="Permanent link">#</a></h4>
+<div class="highlight"><pre><span></span><code>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/absmach/agent.git
+go<span class="w"> </span>run<span class="w"> </span>./examples/publish/main.go<span class="w"> </span>-s<span class="w"> </span>http://localhost:4222<span class="w"> </span>export.test<span class="w"> </span><span class="s2">&quot;[{\&quot;bn\&quot;:\&quot;test\&quot;}]&quot;</span><span class="p">;</span>
+</code></pre></div>
+<p>We have configured route for export, <code>nats_topic = "&gt;"</code> means that it will listen to <code>NATS</code> subject <code>export.&gt;</code> and <code>mqtt_topic</code> is configured so that data will be sent to MQTT broker on topic <code>channels/e2adcfa6-96b2-425d-8cd4-ff8cb9c056ce/messages</code> with appended <code>NATS</code> subject. Other brokers can such as <code>rabbitmq</code> can be used, for more detail refer to <a href="/dev-guide">dev-guide</a>.</p>
+<p>In terminal where export is started you should see following message:</p>
+<div class="highlight"><pre><span></span><code>{&quot;level&quot;:&quot;debug&quot;,&quot;message&quot;:&quot;Published to: export.test, payload: [{\&quot;bn\&quot;:\&quot;test\&quot;}]&quot;,&quot;ts&quot;:&quot;2020-05-08T15:14:15.757298992Z&quot;}
+</code></pre></div>
+<p>In Magistrala <code>mqtt</code> service:</p>
+<div class="highlight"><pre><span></span><code>magistrala-mqtt   | {&quot;level&quot;:&quot;info&quot;,&quot;message&quot;:&quot;Publish - client ID export-88529fb2-6c1e-4b60-b9ab-73b5d89f7404 to the topic: channels/e2adcfa6-96b2-425d-8cd4-ff8cb9c056ce/messages/export/test&quot;,&quot;ts&quot;:&quot;2020-05-08T15:16:02.999684791Z&quot;}
+</code></pre></div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright (c) Abstract Machines
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.1e8ae164.min.js"></script>
+      
+    
+  </body>
+</html>

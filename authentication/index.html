@@ -1,0 +1,1082 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Magistrala IoT System">
+      
+      
+      
+        <link rel="canonical" href="https://docs.magistrala.abstractmachines.fr/authentication/">
+      
+      
+        <link rel="prev" href="../cli/">
+      
+      
+        <link rel="next" href="../authorization/">
+      
+      
+      <link rel="icon" href="../img/favicon.png">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.17">
+    
+    
+      
+        <title>Authentication - Magistrala</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.bcfcd587.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#authentication" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Magistrala" class="md-header__button md-logo" aria-label="Magistrala" data-md-component="logo">
+      
+  <img src="../img/logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Magistrala
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Authentication
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var media,input,key,value,palette=__md_get("__palette");if(palette&&palette.color){"(prefers-color-scheme)"===palette.color.media&&(media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']"),palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent"));for([key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/absmach/magistrala" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Magistrala" class="md-nav__button md-logo" aria-label="Magistrala" data-md-component="logo">
+      
+  <img src="../img/logo.png" alt="logo">
+
+    </a>
+    Magistrala
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/absmach/magistrala" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../architecture/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Architecture
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting-started/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Getting Started
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../entities/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Entities
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    API
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cli/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    CLI
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Authentication
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Authentication
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#user-authentication" class="md-nav__link">
+    <span class="md-ellipsis">
+      User authentication
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#federated-authentication" class="md-nav__link">
+    <span class="md-ellipsis">
+      Federated authentication
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#authentication-with-magistrala-keys" class="md-nav__link">
+    <span class="md-ellipsis">
+      Authentication with Magistrala keys
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mutual-tls-authentication-with-x509-certificates" class="md-nav__link">
+    <span class="md-ellipsis">
+      Mutual TLS Authentication with X.509 Certificates
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Mutual TLS Authentication with X.509 Certificates">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#wss" class="md-nav__link">
+    <span class="md-ellipsis">
+      WSS
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#https" class="md-nav__link">
+    <span class="md-ellipsis">
+      HTTPS
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mqtts" class="md-nav__link">
+    <span class="md-ellipsis">
+      MQTTS
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="MQTTS">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#publish" class="md-nav__link">
+    <span class="md-ellipsis">
+      Publish
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#subscribe" class="md-nav__link">
+    <span class="md-ellipsis">
+      Subscribe
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../authorization/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Authorization
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../security/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Security
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../messaging/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Messaging
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../events/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Events
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../edge/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Edge
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../certs/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Certs
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../bootstrap/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Bootstrap
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lora/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    LoRa
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../opcua/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    OPC-UA
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../provision/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Provision
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../storage/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Storage
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../twins/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Twins
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tracing/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Tracing
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dev-guide/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Developer's Guide
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kubernetes/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kubernetes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../benchmark/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Benchmark
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="/blogs/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Blogs
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#user-authentication" class="md-nav__link">
+    <span class="md-ellipsis">
+      User authentication
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#federated-authentication" class="md-nav__link">
+    <span class="md-ellipsis">
+      Federated authentication
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#authentication-with-magistrala-keys" class="md-nav__link">
+    <span class="md-ellipsis">
+      Authentication with Magistrala keys
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mutual-tls-authentication-with-x509-certificates" class="md-nav__link">
+    <span class="md-ellipsis">
+      Mutual TLS Authentication with X.509 Certificates
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Mutual TLS Authentication with X.509 Certificates">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#wss" class="md-nav__link">
+    <span class="md-ellipsis">
+      WSS
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#https" class="md-nav__link">
+    <span class="md-ellipsis">
+      HTTPS
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mqtts" class="md-nav__link">
+    <span class="md-ellipsis">
+      MQTTS
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="MQTTS">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#publish" class="md-nav__link">
+    <span class="md-ellipsis">
+      Publish
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#subscribe" class="md-nav__link">
+    <span class="md-ellipsis">
+      Subscribe
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="authentication">Authentication<a class="headerlink" href="#authentication" title="Permanent link">#</a></h1>
+<h2 id="user-authentication">User authentication<a class="headerlink" href="#user-authentication" title="Permanent link">#</a></h2>
+<p>For user authentication Magistrala uses Authentication keys. There are two types of authentication keys:</p>
+<ul>
+<li>User key - keys issued to the user upon login request</li>
+<li>Recovery key - password recovery key</li>
+</ul>
+<p>Authentication keys are represented and distributed by the corresponding <a href="https://jwt.io/">JWT</a>. User keys are issued when user logs in. Each user request (other than registration and login) contains user key that is used to authenticate the user.</p>
+<p>Recovery key is the password recovery key. It's short-lived token used for password recovery process.</p>
+<p>The following actions are supported:</p>
+<ul>
+<li>create (all key types)</li>
+<li>verify (all key types)</li>
+</ul>
+<h2 id="federated-authentication">Federated authentication<a class="headerlink" href="#federated-authentication" title="Permanent link">#</a></h2>
+<p>Federated authentication is a process of authenticating users using external identity providers. Magistrala supports federated authentication using <a href="https://openid.net/connect/">OpenID Connect</a> protocol. Magistrala is a resource provider and it uses <a href="https://cloud.google.com/identity-platform/docs/">Google Identity Platform</a> as an identity provider. To use federated authentication, you need to create a project in Google Cloud Platform and enable Google Identity Platform API. After that, you need to create OAuth 2.0 credentials and configure the consent screen. This can be done by following Google's <a href="https://support.google.com/cloud/answer/6158849?hl=en">documentation</a>. Once you have created OAuth 2.0 credentials, you need to set the following environment variables:</p>
+<div class="highlight"><pre><span></span><code><span class="nv">MG_USERS_GOOGLE_CLIENT_ID</span><span class="o">=</span><span class="m">985229335584</span>-m2mft8lqbgfn5gfw9ftrm3r2sgu4tsrw.apps.googleusercontent.com
+<span class="nv">MG_USERS_GOOGLE_CLIENT_SECRET</span><span class="o">=</span>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YUIpw
+<span class="nv">MG_UI_GOOGLE_REDIRECT_URL</span><span class="o">=</span>http://localhost/google-callback
+<span class="nv">MG_USERS_GOOGLE_STATE</span><span class="o">=</span>pGXVNhEeKfycuBzk5InlSfMlEU9UrhlkTUOSqhsgDzXP2Y4RsN
+<span class="nv">MG_USERS_UI_REDIRECT_URL</span><span class="o">=</span>http://localhost:9090
+</code></pre></div>
+<ol>
+<li><code>MG_USERS_GOOGLE_CLIENT_ID</code> - Google OAuth 2.0 client ID</li>
+<li><code>MG_USERS_GOOGLE_CLIENT_SECRET</code> - Google OAuth 2.0 client secret</li>
+<li><code>MG_UI_GOOGLE_REDIRECT_URL</code> - Google OAuth 2.0 redirect URL to handle callback after successful authentication. This URL must be registered in the Google Cloud Platform.</li>
+<li><code>MG_USERS_GOOGLE_STATE</code> - Random string used to protect against cross-site request forgery attacks.</li>
+<li><code>MG_USERS_UI_REDIRECT_URL</code> - URL to redirect user after successful authentication. This can be your Magistrala UI URL.</li>
+</ol>
+<p>Magistrala handles the authentication callback at <code>&lt;MG_BASE_URL&gt;/google-callback</code> endpoint, where <code>&lt;MG_BASE_URL&gt;</code> is the base URL of your Magistrala instance. This endpoint needs to be registered in the Google Cloud Platform and it must match the value of <code>MG_UI_GOOGLE_REDIRECT_URL</code> environment variable. If an error occurs, the error message is sent from the backend using a query paramters with the key <code>error</code>. The UI will read the error message from the query parameter and display it to the user. When a user signs up, Magistrala creates a local copy of the user with an ID provided by Google, the name and email address provided by Google and the password is left empty as the user is authenticated using Google, i.e. external user. The user can be created only once, so if the user already exists, the error will be sent to the UI via the error cookie. Finally, the user is redirected to the URL provided in <code>MG_USERS_UI_REDIRECT_URL</code> environment variable upon successful authentication. This should be the base URL of your UI.</p>
+<p>The <code>MG_USERS_GOOGLE_CLIENT_ID</code>, <code>MG_USERS_GOOGLE_CLIENT_SECRET</code>, <code>MG_UI_GOOGLE_REDIRECT_URL</code> and <code>MG_USERS_GOOGLE_STATE</code> environment variables should be the same for the UI and users service. The <code>MG_USERS_UI_REDIRECT_URL</code> environment variable should be the URL of your UI which is used to redirect the user after successful authentication.</p>
+<p>Magistrala uses the <code>access_token</code> provided by Google only to fetch user information which includes user id, name, given name, family name, picture and locale. The <code>access_token</code> is not stored in the database and it's not used for any other purpose. The <code>id_token</code> is not used as it presents challenges on refreshing it, thus Magistrala issues its own <code>access_token</code> and <code>refresh_token</code> stored in the HTTP-only cookie and it's used to authenticate the user in the subsequent requests.</p>
+<h2 id="authentication-with-magistrala-keys">Authentication with Magistrala keys<a class="headerlink" href="#authentication-with-magistrala-keys" title="Permanent link">#</a></h2>
+<p>By default, Magistrala uses Magistrala Thing secret for authentication. The Thing secret is a secret key that's generated at the Thing creation. In order to authenticate, the Thing needs to send its secret with the message. The way the secret is passed depends on the protocol used to send a message and differs from adapter to adapter. For more details on how this secret is passed around, please check out <a href="/messaging/#messaging">messaging section</a>. This is the default Magistrala authentication mechanism and this method is used if the composition is started using the following command:</p>
+<div class="highlight"><pre><span></span><code>docker-compose<span class="w"> </span>-f<span class="w"> </span>docker/docker-compose.yml<span class="w"> </span>up
+</code></pre></div>
+<h2 id="mutual-tls-authentication-with-x509-certificates">Mutual TLS Authentication with X.509 Certificates<a class="headerlink" href="#mutual-tls-authentication-with-x509-certificates" title="Permanent link">#</a></h2>
+<p>In most of the cases, HTTPS, WSS, MQTTS or secure CoAP are secure enough. However, sometimes you might need an even more secure connection. Magistrala supports mutual TLS authentication (<em>mTLS</em>) based on <a href="https://tools.ietf.org/html/rfc5280">X.509 certificates</a>. By default, the TLS protocol only proves the identity of the server to the client using the X.509 certificate and the authentication of the client to the server is left to the application layer. TLS also offers client-to-server authentication using client-side X.509 authentication. This is called two-way or mutual authentication. Magistrala currently supports mTLS over HTTP, WS, MQTT and MQTT over WS protocols. In order to run Docker composition with mTLS turned on, you can execute the following command from the project root:</p>
+<div class="highlight"><pre><span></span><code><span class="nv">AUTH</span><span class="o">=</span>x509<span class="w"> </span>docker-compose<span class="w"> </span>-f<span class="w"> </span>docker/docker-compose.yml<span class="w"> </span>up<span class="w"> </span>-d
+</code></pre></div>
+<p>Mutual authentication includes client-side certificates. Certificates can be generated using the simple script provided <a href="https://github.com/absmach/magistrala/blob/master/docker/ssl/Makefile">here</a>. In order to create a valid certificate, you need to create Magistrala thing using the process described in the <a href="/provision/#platform-management">provisioning section</a>. After that, you need to fetch created thing secret. Thing secret will be used to create x.509 certificate for the corresponding thing. To create a certificate, execute the following commands:</p>
+<div class="highlight"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>docker/ssl
+make<span class="w"> </span>ca<span class="w"> </span><span class="nv">CN</span><span class="o">=</span>&lt;common_name&gt;<span class="w"> </span><span class="nv">O</span><span class="o">=</span>&lt;organization&gt;<span class="w"> </span><span class="nv">OU</span><span class="o">=</span>&lt;organizational_unit&gt;<span class="w"> </span><span class="nv">emailAddress</span><span class="o">=</span>&lt;email_address&gt;
+make<span class="w"> </span>server_cert<span class="w"> </span><span class="nv">CN</span><span class="o">=</span>&lt;common_name&gt;<span class="w"> </span><span class="nv">O</span><span class="o">=</span>&lt;organization&gt;<span class="w"> </span><span class="nv">OU</span><span class="o">=</span>&lt;organizational_unit&gt;<span class="w"> </span><span class="nv">emailAddress</span><span class="o">=</span>&lt;email_address&gt;
+make<span class="w"> </span>thing_cert<span class="w"> </span><span class="nv">THING_SECRET</span><span class="o">=</span>&lt;thing_secret&gt;<span class="w"> </span><span class="nv">CRT_FILE_NAME</span><span class="o">=</span>&lt;cert_name&gt;<span class="w"> </span><span class="nv">O</span><span class="o">=</span>&lt;organization&gt;<span class="w"> </span><span class="nv">OU</span><span class="o">=</span>&lt;organizational_unit&gt;<span class="w"> </span><span class="nv">emailAddress</span><span class="o">=</span>&lt;email_address&gt;
+</code></pre></div>
+<p>These commands use <a href="https://www.openssl.org/">OpenSSL</a> tool, so please make sure that you have it installed and set up before running these commands. The default values for Makefile variables are</p>
+<div class="highlight"><pre><span></span><code>CRT_LOCATION = certs
+THING_SECRET = d7cc2964-a48b-4a6e-871a-08da28e7883d
+O = Magistrala
+OU = magistrala
+EA = info@magistrala.com
+CN = localhost
+CRT_FILE_NAME = thing
+</code></pre></div>
+<p>Normally, in order to get things running, you will need to specify only <code>THING_SECRET</code>. The other variables are not mandatory and the termination should work with the default values.</p>
+<ul>
+<li>Command <code>make ca</code> will generate a self-signed certificate that will later be used as a CA to sign other generated certificates. CA will expire in 3 years.</li>
+<li>Command <code>make server_cert</code> will generate and sign (with previously created CA) server cert, which will expire after 1000 days. This cert is used as a Magistrala server-side certificate in usual TLS flow to establish HTTPS or MQTTS connection.</li>
+<li>Command <code>make thing_cert</code> will finally generate and sign a client-side certificate and private key for the thing.</li>
+</ul>
+<p>In this example <code>&lt;thing_secret&gt;</code> represents secret of the thing and <code>&lt;cert_name&gt;</code> represents the name of the certificate and key file which will be saved in <code>docker/ssl/certs</code> directory. Generated Certificate will expire after 2 years. The key must be stored in the x.509 certificate <code>CN</code> field. This script is created for testing purposes and is not meant to be used in production. We strongly recommend avoiding self-signed certificates and using a certificate management tool such as <a href="https://www.vaultproject.io/">Vault</a> for the production.</p>
+<p>Once you have created CA and server-side cert, you can spin the composition using:</p>
+<div class="highlight"><pre><span></span><code><span class="nv">AUTH</span><span class="o">=</span>x509<span class="w"> </span>docker-compose<span class="w"> </span>-f<span class="w"> </span>docker/docker-compose.yml<span class="w"> </span>up<span class="w"> </span>-d
+</code></pre></div>
+<p>Then, you can create user and provision things and channels. Now, in order to send a message from the specific thing to the channel, you need to connect thing to the channel and generate corresponding client certificate using aforementioned commands. To publish a message to the channel, thing should send following request:</p>
+<h3 id="wss">WSS<a class="headerlink" href="#wss" title="Permanent link">#</a></h3>
+<div class="highlight"><pre><span></span><code><span class="kd">const</span><span class="w"> </span><span class="nx">WebSocket</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">require</span><span class="p">(</span><span class="s2">&quot;ws&quot;</span><span class="p">);</span>
+<span class="c1">// Do not verify self-signed certificates if you are using one.</span>
+<span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">NODE_TLS_REJECT_UNAUTHORIZED</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;0&quot;</span><span class="p">;</span>
+<span class="c1">// Replace &lt;channel_id&gt; and &lt;thing_secret&gt; with real values.</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">ws</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">WebSocket</span><span class="p">(</span>
+<span class="w">  </span><span class="s2">&quot;wss://localhost/ws/channels/&lt;channel_id&gt;/messages?authorization=&lt;thing_secret&gt;&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="c1">// This is ClientOptions object that contains client cert and client key in the form of string. You can easily load these strings from cert and key files.</span>
+<span class="w">  </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">cert</span><span class="o">:</span><span class="w"> </span><span class="sb">`-----BEGIN CERTIFICATE-----....`</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">key</span><span class="o">:</span><span class="w"> </span><span class="sb">`-----BEGIN RSA PRIVATE KEY-----.....`</span><span class="p">,</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">);</span>
+<span class="nx">ws</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s2">&quot;open&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">ws</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="s2">&quot;something&quot;</span><span class="p">);</span>
+<span class="p">});</span>
+<span class="nx">ws</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s2">&quot;message&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="nx">data</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span>
+<span class="p">});</span>
+<span class="nx">ws</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s2">&quot;error&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="nx">e</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">e</span><span class="p">);</span>
+<span class="p">});</span>
+</code></pre></div>
+<p>As you can see, <code>Authorization</code> header does not have to be present in the HTTP request, since the secret is present in the certificate. However, if you pass <code>Authorization</code> header, it <em>must be the same as the key in the cert</em>. In the case of MQTTS, <code>password</code> filed in CONNECT message <em>must match the key from the certificate</em>. In the case of WSS, <code>Authorization</code> header or <code>authorization</code> query parameter <em>must match cert key</em>.</p>
+<h3 id="https">HTTPS<a class="headerlink" href="#https" title="Permanent link">#</a></h3>
+<div class="highlight"><pre><span></span><code>curl<span class="w"> </span>-s<span class="w"> </span>-S<span class="w"> </span>-i<span class="w"> </span>--cacert<span class="w"> </span>docker/ssl/certs/ca.crt<span class="w"> </span>--cert<span class="w"> </span>docker/ssl/certs/&lt;thing_cert_name&gt;.crt<span class="w"> </span>--key<span class="w"> </span>docker/ssl/certs/&lt;thing_cert_key&gt;.key<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/senml+json&quot;</span><span class="w"> </span>https://localhost/http/channels/&lt;channel_id&gt;/messages<span class="w"> </span>-d<span class="w"> </span><span class="s1">&#39;[{&quot;bn&quot;:&quot;some-base-name:&quot;,&quot;bt&quot;:1.276020076001e+09, &quot;bu&quot;:&quot;A&quot;,&quot;bver&quot;:5, &quot;n&quot;:&quot;voltage&quot;,&quot;u&quot;:&quot;V&quot;,&quot;v&quot;:120.1}, {&quot;n&quot;:&quot;current&quot;,&quot;t&quot;:-5,&quot;v&quot;:1.2}, {&quot;n&quot;:&quot;current&quot;,&quot;t&quot;:-4,&quot;v&quot;:1.3}]&#39;</span>
+</code></pre></div>
+<h3 id="mqtts">MQTTS<a class="headerlink" href="#mqtts" title="Permanent link">#</a></h3>
+<h4 id="publish">Publish<a class="headerlink" href="#publish" title="Permanent link">#</a></h4>
+<div class="highlight"><pre><span></span><code>mosquitto_pub<span class="w"> </span>-u<span class="w"> </span>&lt;thing_id&gt;<span class="w"> </span>-P<span class="w"> </span>&lt;thing_secret&gt;<span class="w"> </span>-t<span class="w"> </span>channels/&lt;channel_id&gt;/messages<span class="w"> </span>-h<span class="w"> </span>localhost<span class="w"> </span>-p<span class="w"> </span><span class="m">8883</span><span class="w">  </span>--cafile<span class="w"> </span>docker/ssl/certs/ca.crt<span class="w"> </span>--cert<span class="w"> </span>docker/ssl/certs/&lt;thing_cert_name&gt;.crt<span class="w"> </span>--key<span class="w"> </span>docker/ssl/certs/&lt;thing_cert_key&gt;.key<span class="w"> </span>-m<span class="w"> </span><span class="s1">&#39;[{&quot;bn&quot;:&quot;some-base-name:&quot;,&quot;bt&quot;:1.276020076001e+09, &quot;bu&quot;:&quot;A&quot;,&quot;bver&quot;:5, &quot;n&quot;:&quot;voltage&quot;,&quot;u&quot;:&quot;V&quot;,&quot;v&quot;:120.1}, {&quot;n&quot;:&quot;current&quot;,&quot;t&quot;:-5,&quot;v&quot;:1.2}, {&quot;n&quot;:&quot;current&quot;,&quot;t&quot;:-4,&quot;v&quot;:1.3}]&#39;</span>
+</code></pre></div>
+<h4 id="subscribe">Subscribe<a class="headerlink" href="#subscribe" title="Permanent link">#</a></h4>
+<div class="highlight"><pre><span></span><code>mosquitto_sub<span class="w"> </span>-u<span class="w"> </span>&lt;thing_id&gt;<span class="w"> </span>-P<span class="w"> </span>&lt;thing_secret&gt;<span class="w"> </span>--cafile<span class="w"> </span>docker/ssl/certs/ca.crt<span class="w"> </span>--cert<span class="w"> </span>docker/ssl/certs/&lt;thing_cert_name&gt;.crt<span class="w"> </span>--key<span class="w"> </span>docker/ssl/certs/&lt;thing_cert_key&gt;.key<span class="w"> </span>-t<span class="w"> </span>channels/&lt;channel_id&gt;/messages<span class="w"> </span>-h<span class="w"> </span>localhost<span class="w"> </span>-p<span class="w"> </span><span class="m">8883</span>
+</code></pre></div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright (c) Abstract Machines
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.1e8ae164.min.js"></script>
+      
+    
+  </body>
+</html>

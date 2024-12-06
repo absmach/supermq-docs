@@ -1,0 +1,1147 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Magistrala IoT System">
+      
+      
+      
+        <link rel="canonical" href="https://docs.magistrala.abstractmachines.fr/blogs/oauth/">
+      
+      
+      
+      
+      <link rel="icon" href="../../img/favicon.png">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.17">
+    
+    
+      
+        <title>Integrating OAuth2.0 with Magistrala - Magistrala</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.bcfcd587.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#integrating-oauth20-with-magistrala" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Magistrala" class="md-header__button md-logo" aria-label="Magistrala" data-md-component="logo">
+      
+  <img src="../../img/logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Magistrala
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Integrating OAuth2.0 with Magistrala
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var media,input,key,value,palette=__md_get("__palette");if(palette&&palette.color){"(prefers-color-scheme)"===palette.color.media&&(media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']"),palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent"));for([key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/absmach/magistrala" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Magistrala" class="md-nav__button md-logo" aria-label="Magistrala" data-md-component="logo">
+      
+  <img src="../../img/logo.png" alt="logo">
+
+    </a>
+    Magistrala
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/absmach/magistrala" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Architecture
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Getting Started
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../entities/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Entities
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../api/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    API
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cli/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    CLI
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../authentication/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Authentication
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../authorization/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Authorization
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../security/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Security
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../messaging/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Messaging
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../events/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Events
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../edge/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Edge
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../certs/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Certs
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../bootstrap/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Bootstrap
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lora/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    LoRa
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../opcua/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    OPC-UA
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../provision/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Provision
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../storage/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Storage
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../twins/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Twins
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tracing/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Tracing
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../dev-guide/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Developer's Guide
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../kubernetes/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kubernetes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../benchmark/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Benchmark
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="/blogs/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Blogs
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#how-to-use-oauth20-with-magistrala" class="md-nav__link">
+    <span class="md-ellipsis">
+      How to use OAuth2.0 with Magistrala
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#integration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Integration
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Integration">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-magistrala-ui-service" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Magistrala UI Service
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-magistrala-users-service" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Magistrala Users Service
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conclusion" class="md-nav__link">
+    <span class="md-ellipsis">
+      Conclusion
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="integrating-oauth20-with-magistrala">Integrating OAuth2.0 with Magistrala<a class="headerlink" href="#integrating-oauth20-with-magistrala" title="Permanent link">#</a></h1>
+<p>Over the past months, we have been working on integrating OAuth2.0 with Magistrala. We are happy to announce that we have completed the integration and it is <a href="https://github.com/absmach/magistrala/pull/2103">now available</a>. We believe that this will open up a lot of possibilities for Magistrala and we are very excited about the future of Magistrala. We are planning to add more features to the OAuth2.0 integration in future releases. We are also planning to add support for more OAuth2.0 providers. This will enable users to use their preferred OAuth2.0 provider to authenticate with Magistrala.</p>
+<p><a href="https://datatracker.ietf.org/doc/html/rfc6749">OAuth2.0</a> is an authorization framework that facilitates a third-party application to gain restricted access to another HTTP service. This can occur either by mediating an approval process between the resource owner and the HTTP service or by enabling the third-party application to autonomously acquire access. In OAuth2.0, a client requests access to a resource controlled by the resource owner and hosted by the resource server and is issued a different set of credentials than those of the resource owner. Instead of using the resource owner's credentials to access the resource, the client obtains an access token - a string representing the grant issued to the client by the resource owner. The client uses the access token to access the protected resources hosted by the resource server.</p>
+<p>In OAuth2.0, there are four roles:</p>
+<ul>
+<li><strong>Resource Owner</strong>: An entity capable of granting access to a protected resource. When the resource owner is a person, it is referred to as an end-user.</li>
+<li><strong>Resource Server</strong>: The server hosting the protected resources, is capable of accepting and responding to protected resource requests using access tokens.</li>
+<li><strong>Authorization Server</strong>: The server issues access tokens to the client after successfully authenticating the resource owner and obtaining authorization.</li>
+<li><strong>Client</strong>: An application making protected resource requests on behalf of the resource owner and with its authorization. The client is not necessarily part of the resource owner's domain.</li>
+</ul>
+<p>In the context of Magistrala, the resource owner is the user, the resource server is the Magistrala service, the authorization server is the OAuth2.0 provider, and the client is the UI service. The UI service is the client because it is making protected resource requests on behalf of the user and with the user's authorization.</p>
+<p>In OAuth2.0, there are different scopes. A scope is a mechanism in OAuth2.0 to limit an application's access to a user's account. A scope is a string that represents the access level that the application is requesting. The scope is included in the request to the authorization server. The scope is used to specify the access level that the application is requesting. The scope is a required parameter in the request to the authorization server.</p>
+<p>With Google as the authorization server, we use <code>userinfo.email</code> and <code>userinfo.profile</code> as the scopes. The <code>userinfo.email</code> scope is used to access the user's email address. The <code>userinfo.profile</code> scope is used to access the user's profile information. The user's email address is used to uniquely identify the user. The user's profile information is used to display the user's name and profile picture in the UI.</p>
+<p>The abstract OAuth2.0 flow is as follows:</p>
+<ol>
+<li>The client requests authorization from the resource owner. The authorization request can be made directly to the resource owner or indirectly via the authorization server.</li>
+<li>The client receives an authorization grant, which is a credential representing the resource owner's authorization, expressed using one of four grant types defined in the OAuth2.0 specification or using an extension grant type.</li>
+<li>The client requests an access token by authenticating with the authorization server and presenting the authorization grant.</li>
+<li>The authorization server authenticates the client and validates the authorization grant, and if valid, issues an access token.</li>
+<li>The client requests the protected resource from the resource server and authenticates it by presenting the access token.</li>
+<li>The resource server validates the access token, and if valid, serves the request.</li>
+<li>The client receives the protected resource.</li>
+</ol>
+<p>This flow is demonstrated in the following diagram:</p>
+<p><img alt="Generic OAuth2.0 flow" src="../../img/blogs/oauth/genericflow.png" /></p>
+<p>Magistrala can now be the resource server and Google as one of the authorization servers. We have implemented the OAuth2.0 <a href="https://datatracker.ietf.org/doc/html/rfc6749#section-4.1">authorization code flow</a>. The authorization code flow is used to obtain an access and refresh token to authorize API requests. The UI client initiates the flow by redirecting the user to the authorization server(Google). The user authenticates and authorizes the client(Magistrala). The authorization server(Google) redirects the user back to the client(Magistrala users service) with an authorization code. The client(Magistrala users service) exchanges the authorization code for an access token and a refresh token. The access token is used to authenticate API requests(get user details). The refresh token is used to obtain a new access token when the current access token becomes invalid or expires. This flow is demonstrated in the following diagram:</p>
+<p><img alt="authorization code flow" src="../../img/blogs/oauth/codeflow.png" />
+<em>The authorization code flow(from https://medium.com/javarevisited/oauth-2-0-authorization-code-flow-in-spring-boot-d8ff393f316d)</em></p>
+<p>There are different grant types in OAuth2.0. The grant type is a string representing the authorization grant type that the client is using to request the access token. It is included in the request to the token endpoint. It is used to specify the method of obtaining the access token. It is a required parameter in the request to the token endpoint. The grant types are:</p>
+<ul>
+<li><strong>Authorization code</strong>: The authorization code grant type is used to obtain both access and refresh tokens and is optimized for confidential clients.</li>
+<li><strong>Implicit</strong>: The implicit grant type is used to obtain access tokens and is optimized for public clients known to operate a particular redirection URI. These clients are typically implemented in a browser using a scripting language such as JavaScript.</li>
+<li><strong>Resource owner password credentials</strong>: The resource owner password credentials grant type is suitable in cases where the resource owner has a trust relationship with the client, such as the device operating system or a highly privileged application.</li>
+<li><strong>Client credentials</strong>: The client credentials grant type is used by clients to obtain an access token outside of the context of a user.</li>
+</ul>
+<p>This flow conforms to <a href="https://openid.net/connect/">OpenID Connect</a> specification, which is an identity layer on top of the OAuth2.0 protocol. OpenID Connect is a simple identity layer on top of the OAuth2.0 protocol, which allows clients to verify the identity of the end-user based on the authentication performed by an authorization server, as well as to obtain basic profile information about the end-user in an interoperable and REST-like manner. We are planning to add support for OpenID Connect in future releases.</p>
+<h2 id="how-to-use-oauth20-with-magistrala">How to use OAuth2.0 with Magistrala<a class="headerlink" href="#how-to-use-oauth20-with-magistrala" title="Permanent link">#</a></h2>
+<p>Currently, we have implemented the OAuth2.0 authorization code flow with Google as the authorization server. We are planning to add support for more OAuth2.0 providers in future releases. To use OAuth2.0 with Magistrala, you need to follow the steps below:</p>
+<ol>
+<li>You need to obtain the client ID and client secret from Google. You can obtain the client ID and client secret by creating a new project in the <a href="https://console.cloud.google.com/">Google Cloud Console</a>. You can find the client ID and client secret in the <a href="https://console.developers.google.com/apis/credentials">credentials section</a> of the project.</li>
+<li>Click on the <code>Create credentials</code> button and select <code>OAuth client ID</code>. When setting up the OAuth client, the application type should be <code>Web application</code>. Under authorized redirect URIs, you need to provide the redirect URI of the Magistrala users service. This should be something like <code>https://&lt;domain&gt;/oauth/callback/google</code>. The <code>&lt;domain&gt;</code> should be replaced with the domain of the Magistrala users service or nginix ingress. For local development, you can use <code>http://localhost/oauth/callback/google</code>.</li>
+<li>Copy the client ID and client secret and provide them to the Magistrala users service. The values should be something like:</li>
+</ol>
+<div class="highlight"><pre><span></span><code>### Google OAuth2
+MG_GOOGLE_CLIENT_ID=&quot;01234567-8abc0defg7hijklmnopqr23456s78tu9.apps.googleusercontent.com&quot;
+MG_GOOGLE_CLIENT_SECRET=&quot;GOCSPX-_abCDEfG1hIJKl4MnO7pQRSTuvwxyz&quot;
+MG_GOOGLE_REDIRECT_URL=&quot;http://localhost/oauth/callback/google&quot;
+MG_GOOGLE_STATE=&quot;7NN28jSDAg4z&quot;
+</code></pre></div>
+<p>The state is a secret key that is shared between the client and the server. It is used to prevent CSRF attacks. The state should be a random string and should be kept secret. The state is used to verify the integrity of the response from the authorization server.
+   Internally we prefix the state with <code>signin</code> or <code>signup</code> to differentiate between the sign-in and sign-up flows. This is to identify the flow that the user is in. This is important because the sign-in and sign-up flows are different and we need to handle them differently.</p>
+<ol>
+<li>You can customize the consent screen by providing the application name and the authorized domains. You can also provide the application logo and the application homepage. You can find the consent screen in the <a href="https://console.cloud.google.com/apis/credentials/consent">OAuth consent screen section</a> of the project.</li>
+</ol>
+<p>More information about the OAuth2.0 authorization code flow can be found <a href="https://developers.google.com/identity/openid-connect/openid-connect">here</a>.</p>
+<p>Here is an example of the OAuth2.0 authorization code flow with Google as the authorization server:</p>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/DxhqnHkHolU?si=BS5PJn8Qevj8Dp1j" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
+<h2 id="integration">Integration<a class="headerlink" href="#integration" title="Permanent link">#</a></h2>
+<p>This is split into two parts:</p>
+<h3 id="1-magistrala-ui-service">1. Magistrala UI Service<a class="headerlink" href="#1-magistrala-ui-service" title="Permanent link">#</a></h3>
+<p>The UI service is the client in the OAuth2.0 flow. The UI service initiates the flow by redirecting the user to the authorization server(Google).</p>
+<div class="highlight"><pre><span></span><code><span class="c1">// Name returns the name of the provider.</span>
+<span class="c1">// This is used to generate the URL for the provider.</span>
+<span class="c1">// For example, the URL for Google is /signin/google and /signup/google.</span>
+<span class="kd">func</span><span class="w"> </span><span class="p">(</span><span class="nx">cfg</span><span class="w"> </span><span class="o">*</span><span class="nx">config</span><span class="p">)</span><span class="w"> </span><span class="nx">Name</span><span class="p">()</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="s">&quot;google&quot;</span>
+<span class="p">}</span>
+
+<span class="c1">// Icon returns the icon of the provider.</span>
+<span class="c1">// This is used to display the icon of the provider in the UI.</span>
+<span class="c1">// This is when rendering the sign-in and sign-up buttons to the user.</span>
+<span class="kd">func</span><span class="w"> </span><span class="p">(</span><span class="nx">cfg</span><span class="w"> </span><span class="o">*</span><span class="nx">config</span><span class="p">)</span><span class="w"> </span><span class="nx">Icon</span><span class="p">()</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="s">&quot;fa-google&quot;</span>
+<span class="p">}</span>
+
+<span class="c1">// IsEnabled returns true if the provider is enabled.</span>
+<span class="c1">// This is used to determine if the provider is enabled or not.</span>
+<span class="c1">// This is when rendering the sign-in and sign-up buttons to the user and when generating the URL for the provider.</span>
+<span class="kd">func</span><span class="w"> </span><span class="p">(</span><span class="nx">cfg</span><span class="w"> </span><span class="o">*</span><span class="nx">config</span><span class="p">)</span><span class="w"> </span><span class="nx">IsEnabled</span><span class="p">()</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nx">cfg</span><span class="p">.</span><span class="nx">oauth2</span><span class="p">.</span><span class="nx">ClientID</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nx">cfg</span><span class="p">.</span><span class="nx">oauth2</span><span class="p">.</span><span class="nx">ClientSecret</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="s">&quot;&quot;</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>The above functions are used to generate the URL for the provider and to display the icon of the provider in the UI. The <code>IsEnabled</code> function is used to determine if the provider is enabled or not. This is used to render the sign-in and sign-up buttons to the user.</p>
+<div class="highlight"><pre><span></span><code>{{ range $i, $c := .Providers }} {{ if $c.IsEnabled }}
+<span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;text-center text-light&quot;</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;</span>or sign in with:<span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">button</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;button&quot;</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;btn btn-link btn-floating mx-1&quot;</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;/signin/{{ $c.Name }}&quot;</span><span class="p">&gt;</span>
+      <span class="p">&lt;</span><span class="nt">i</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;fab {{ $c.Icon }}&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">i</span><span class="p">&gt;</span>
+    <span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;</span>
+  <span class="p">&lt;/</span><span class="nt">button</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+{{ end }} {{ end }}
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="c1">// GenerateSignInURL generates the URL for the sign-in flow.</span>
+<span class="kd">func</span><span class="w"> </span><span class="p">(</span><span class="nx">cfg</span><span class="w"> </span><span class="o">*</span><span class="nx">config</span><span class="p">)</span><span class="w"> </span><span class="nx">GenerateSignInURL</span><span class="p">()</span><span class="w"> </span><span class="p">(</span><span class="kt">string</span><span class="p">,</span><span class="w"> </span><span class="kt">error</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nx">cfg</span><span class="p">.</span><span class="nx">generateURL</span><span class="p">(</span><span class="nx">mgoauth2</span><span class="p">.</span><span class="nx">SignIn</span><span class="p">.</span><span class="nx">String</span><span class="p">())</span>
+<span class="p">}</span>
+
+<span class="c1">// GenerateSignUpURL generates the URL for the sign-up flow.</span>
+<span class="kd">func</span><span class="w"> </span><span class="p">(</span><span class="nx">cfg</span><span class="w"> </span><span class="o">*</span><span class="nx">config</span><span class="p">)</span><span class="w"> </span><span class="nx">GenerateSignUpURL</span><span class="p">()</span><span class="w"> </span><span class="p">(</span><span class="kt">string</span><span class="p">,</span><span class="w"> </span><span class="kt">error</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nx">cfg</span><span class="p">.</span><span class="nx">generateURL</span><span class="p">(</span><span class="nx">mgoauth2</span><span class="p">.</span><span class="nx">SignUp</span><span class="p">.</span><span class="nx">String</span><span class="p">())</span>
+<span class="p">}</span>
+
+<span class="c1">// generateURL generates the URL for the sign-in and sign-up flows.</span>
+<span class="kd">func</span><span class="w"> </span><span class="p">(</span><span class="nx">cfg</span><span class="w"> </span><span class="o">*</span><span class="nx">config</span><span class="p">)</span><span class="w"> </span><span class="nx">generateURL</span><span class="p">(</span><span class="nx">state</span><span class="w"> </span><span class="kt">string</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="kt">string</span><span class="p">,</span><span class="w"> </span><span class="kt">error</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">URL</span><span class="p">,</span><span class="w"> </span><span class="nx">err</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">url</span><span class="p">.</span><span class="nx">Parse</span><span class="p">(</span><span class="nx">cfg</span><span class="p">.</span><span class="nx">oauth2</span><span class="p">.</span><span class="nx">Endpoint</span><span class="p">.</span><span class="nx">AuthURL</span><span class="p">)</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="nx">err</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="kc">nil</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="p">,</span><span class="w"> </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Errorf</span><span class="p">(</span><span class="s">&quot;failed to parse google auth url: %s&quot;</span><span class="p">,</span><span class="w"> </span><span class="nx">err</span><span class="p">)</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="nx">parameters</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">url</span><span class="p">.</span><span class="nx">Values</span><span class="p">{}</span>
+<span class="w">    </span><span class="nx">parameters</span><span class="p">.</span><span class="nx">Add</span><span class="p">(</span><span class="s">&quot;client_id&quot;</span><span class="p">,</span><span class="w"> </span><span class="nx">cfg</span><span class="p">.</span><span class="nx">oauth2</span><span class="p">.</span><span class="nx">ClientID</span><span class="p">)</span>
+<span class="w">    </span><span class="nx">parameters</span><span class="p">.</span><span class="nx">Add</span><span class="p">(</span><span class="s">&quot;scope&quot;</span><span class="p">,</span><span class="w"> </span><span class="nx">strings</span><span class="p">.</span><span class="nx">Join</span><span class="p">(</span><span class="nx">cfg</span><span class="p">.</span><span class="nx">oauth2</span><span class="p">.</span><span class="nx">Scopes</span><span class="p">,</span><span class="w"> </span><span class="s">&quot; &quot;</span><span class="p">))</span>
+<span class="w">    </span><span class="nx">parameters</span><span class="p">.</span><span class="nx">Add</span><span class="p">(</span><span class="s">&quot;redirect_uri&quot;</span><span class="p">,</span><span class="w"> </span><span class="nx">cfg</span><span class="p">.</span><span class="nx">oauth2</span><span class="p">.</span><span class="nx">RedirectURL</span><span class="p">)</span>
+<span class="w">    </span><span class="c1">// response_type=code is required to get the access token</span>
+<span class="w">    </span><span class="nx">parameters</span><span class="p">.</span><span class="nx">Add</span><span class="p">(</span><span class="s">&quot;response_type&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;code&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="c1">// access_type=offline is required to get the refresh token for the first time</span>
+<span class="w">    </span><span class="nx">parameters</span><span class="p">.</span><span class="nx">Add</span><span class="p">(</span><span class="s">&quot;access_type&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;offline&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="c1">// prompt=consent is required to get the refresh token subsequently</span>
+<span class="w">    </span><span class="nx">parameters</span><span class="p">.</span><span class="nx">Add</span><span class="p">(</span><span class="s">&quot;prompt&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;consent&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="c1">// signin or signup is prepended to the state to be used in the callback state is prepended to the state to be used in the callback</span>
+<span class="w">    </span><span class="nx">parameters</span><span class="p">.</span><span class="nx">Add</span><span class="p">(</span><span class="s">&quot;state&quot;</span><span class="p">,</span><span class="w"> </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Sprintf</span><span class="p">(</span><span class="s">&quot;%s-%s&quot;</span><span class="p">,</span><span class="w"> </span><span class="nx">state</span><span class="p">,</span><span class="w"> </span><span class="nx">cfg</span><span class="p">.</span><span class="nx">state</span><span class="p">))</span>
+<span class="w">    </span><span class="nx">URL</span><span class="p">.</span><span class="nx">RawQuery</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nx">parameters</span><span class="p">.</span><span class="nx">Encode</span><span class="p">()</span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nx">URL</span><span class="p">.</span><span class="nx">String</span><span class="p">(),</span><span class="w"> </span><span class="kc">nil</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>The above functions are used to generate the URL for the sign-in and sign-up flows. The <code>generateURL</code> function is used to generate the URL for the provider. The URLs are used to redirect the user to the authorization server(Google).</p>
+<div class="highlight"><pre><span></span><code><span class="k">for</span><span class="w"> </span><span class="nx">_</span><span class="p">,</span><span class="w"> </span><span class="nx">provider</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="k">range</span><span class="w"> </span><span class="nx">providers</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="nx">provider</span><span class="p">.</span><span class="nx">IsEnabled</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nx">r</span><span class="p">.</span><span class="nx">HandleFunc</span><span class="p">(</span><span class="s">&quot;/signup/&quot;</span><span class="o">+</span><span class="nx">provider</span><span class="p">.</span><span class="nx">Name</span><span class="p">(),</span><span class="w"> </span><span class="nx">oauth2Handler</span><span class="p">(</span><span class="nx">oauth2</span><span class="p">.</span><span class="nx">SignUp</span><span class="p">,</span><span class="w"> </span><span class="nx">provider</span><span class="p">))</span>
+<span class="w">        </span><span class="nx">r</span><span class="p">.</span><span class="nx">HandleFunc</span><span class="p">(</span><span class="s">&quot;/signin/&quot;</span><span class="o">+</span><span class="nx">provider</span><span class="p">.</span><span class="nx">Name</span><span class="p">(),</span><span class="w"> </span><span class="nx">oauth2Handler</span><span class="p">(</span><span class="nx">oauth2</span><span class="p">.</span><span class="nx">SignIn</span><span class="p">,</span><span class="w"> </span><span class="nx">provider</span><span class="p">))</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="c1">// oauth2Handler is a http.HandlerFunc that handles OAuth2 callbacks.</span>
+<span class="c1">// For valid states, the handler generates the URL for the provider and redirects the user to the URL.</span>
+<span class="c1">// For invalid states, the handler redirects the user to the login page.</span>
+<span class="kd">func</span><span class="w"> </span><span class="nx">oauth2Handler</span><span class="p">(</span><span class="nx">state</span><span class="w"> </span><span class="nx">oauth2</span><span class="p">.</span><span class="nx">State</span><span class="p">,</span><span class="w"> </span><span class="nx">provider</span><span class="w"> </span><span class="nx">oauth2</span><span class="p">.</span><span class="nx">Provider</span><span class="p">)</span><span class="w"> </span><span class="nx">http</span><span class="p">.</span><span class="nx">HandlerFunc</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="kd">func</span><span class="p">(</span><span class="nx">w</span><span class="w"> </span><span class="nx">http</span><span class="p">.</span><span class="nx">ResponseWriter</span><span class="p">,</span><span class="w"> </span><span class="nx">r</span><span class="w"> </span><span class="o">*</span><span class="nx">http</span><span class="p">.</span><span class="nx">Request</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="kd">var</span><span class="w"> </span><span class="nx">url</span><span class="w"> </span><span class="kt">string</span>
+<span class="w">        </span><span class="kd">var</span><span class="w"> </span><span class="nx">err</span><span class="w"> </span><span class="kt">error</span>
+<span class="w">        </span><span class="k">switch</span><span class="w"> </span><span class="nx">state</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="nx">oauth2</span><span class="p">.</span><span class="nx">SignIn</span><span class="p">:</span>
+<span class="w">            </span><span class="nx">url</span><span class="p">,</span><span class="w"> </span><span class="nx">err</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nx">provider</span><span class="p">.</span><span class="nx">GenerateSignInURL</span><span class="p">()</span>
+<span class="w">        </span><span class="k">case</span><span class="w"> </span><span class="nx">oauth2</span><span class="p">.</span><span class="nx">SignUp</span><span class="p">:</span>
+<span class="w">            </span><span class="nx">url</span><span class="p">,</span><span class="w"> </span><span class="nx">err</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nx">provider</span><span class="p">.</span><span class="nx">GenerateSignUpURL</span><span class="p">()</span>
+<span class="w">        </span><span class="k">default</span><span class="p">:</span>
+<span class="w">            </span><span class="nx">err</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Errorf</span><span class="p">(</span><span class="s">&quot;invalid state&quot;</span><span class="p">)</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="nx">err</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="kc">nil</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nx">http</span><span class="p">.</span><span class="nx">Redirect</span><span class="p">(</span><span class="nx">w</span><span class="p">,</span><span class="w"> </span><span class="nx">r</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;/login&quot;</span><span class="p">,</span><span class="w"> </span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusTemporaryRedirect</span><span class="p">)</span>
+<span class="w">            </span><span class="k">return</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="nx">http</span><span class="p">.</span><span class="nx">Redirect</span><span class="p">(</span><span class="nx">w</span><span class="p">,</span><span class="w"> </span><span class="nx">r</span><span class="p">,</span><span class="w"> </span><span class="nx">url</span><span class="p">,</span><span class="w"> </span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusTemporaryRedirect</span><span class="p">)</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<h3 id="2-magistrala-users-service">2. Magistrala Users Service<a class="headerlink" href="#2-magistrala-users-service" title="Permanent link">#</a></h3>
+<p>The users service is the resource server in the OAuth2.0 flow. The users service receives the authorization code from the authorization server(Google) and exchanges the authorization code for an access and refresh token. The users service then uses the access token to obtain the user's details.</p>
+<div class="highlight"><pre><span></span><code><span class="c1">// State returns the state of the provider.</span>
+<span class="c1">// This is used to verify the integrity of the response from the authorization server.</span>
+<span class="kd">func</span><span class="w"> </span><span class="p">(</span><span class="nx">cfg</span><span class="w"> </span><span class="o">*</span><span class="nx">config</span><span class="p">)</span><span class="w"> </span><span class="nx">State</span><span class="p">()</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nx">cfg</span><span class="p">.</span><span class="nx">state</span>
+<span class="p">}</span>
+
+<span class="c1">// RedirectURL returns the URL to redirect the user when the OAuth2.0 flow is complete.</span>
+<span class="kd">func</span><span class="w"> </span><span class="p">(</span><span class="nx">cfg</span><span class="w"> </span><span class="o">*</span><span class="nx">config</span><span class="p">)</span><span class="w"> </span><span class="nx">RedirectURL</span><span class="p">()</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nx">cfg</span><span class="p">.</span><span class="nx">uiRedirectURL</span>
+<span class="p">}</span>
+
+<span class="c1">// ErrorURL returns the URL to redirect the user when an error occurs.</span>
+<span class="kd">func</span><span class="w"> </span><span class="p">(</span><span class="nx">cfg</span><span class="w"> </span><span class="o">*</span><span class="nx">config</span><span class="p">)</span><span class="w"> </span><span class="nx">ErrorURL</span><span class="p">()</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nx">cfg</span><span class="p">.</span><span class="nx">errorURL</span>
+<span class="p">}</span>
+
+<span class="c1">// IsEnabled returns true if the provider is enabled.</span>
+<span class="c1">// This is used to determine if the provider is enabled or not when generating the callback URL for the provider.</span>
+<span class="kd">func</span><span class="w"> </span><span class="p">(</span><span class="nx">cfg</span><span class="w"> </span><span class="o">*</span><span class="nx">config</span><span class="p">)</span><span class="w"> </span><span class="nx">IsEnabled</span><span class="p">()</span><span class="w"> </span><span class="kt">bool</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nx">cfg</span><span class="p">.</span><span class="nx">config</span><span class="p">.</span><span class="nx">ClientID</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nx">cfg</span><span class="p">.</span><span class="nx">config</span><span class="p">.</span><span class="nx">ClientSecret</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="s">&quot;&quot;</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>The <code>IsEnabled</code> function is used to determine if the provider is enabled or not. This is used to generate the callback URL for the provider.</p>
+<div class="highlight"><pre><span></span><code><span class="k">for</span><span class="w"> </span><span class="nx">_</span><span class="p">,</span><span class="w"> </span><span class="nx">provider</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="k">range</span><span class="w"> </span><span class="nx">providers</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">r</span><span class="p">.</span><span class="nx">HandleFunc</span><span class="p">(</span><span class="s">&quot;/oauth/callback/&quot;</span><span class="o">+</span><span class="nx">provider</span><span class="p">.</span><span class="nx">Name</span><span class="p">(),</span><span class="w"> </span><span class="nx">oauth2CallbackHandler</span><span class="p">(</span><span class="nx">provider</span><span class="p">,</span><span class="w"> </span><span class="nx">svc</span><span class="p">))</span>
+<span class="p">}</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="c1">// oauth2CallbackHandler is a http.HandlerFunc that handles OAuth2 callbacks.</span>
+<span class="kd">func</span><span class="w"> </span><span class="nx">oauth2CallbackHandler</span><span class="p">(</span><span class="nx">oauth</span><span class="w"> </span><span class="nx">oauth2</span><span class="p">.</span><span class="nx">Provider</span><span class="p">,</span><span class="w"> </span><span class="nx">svc</span><span class="w"> </span><span class="nx">users</span><span class="p">.</span><span class="nx">Service</span><span class="p">)</span><span class="w"> </span><span class="nx">http</span><span class="p">.</span><span class="nx">HandlerFunc</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="kd">func</span><span class="p">(</span><span class="nx">w</span><span class="w"> </span><span class="nx">http</span><span class="p">.</span><span class="nx">ResponseWriter</span><span class="p">,</span><span class="w"> </span><span class="nx">r</span><span class="w"> </span><span class="o">*</span><span class="nx">http</span><span class="p">.</span><span class="nx">Request</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">!</span><span class="nx">oauth</span><span class="p">.</span><span class="nx">IsEnabled</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nx">http</span><span class="p">.</span><span class="nx">Redirect</span><span class="p">(</span><span class="nx">w</span><span class="p">,</span><span class="w"> </span><span class="nx">r</span><span class="p">,</span><span class="w"> </span><span class="nx">oauth</span><span class="p">.</span><span class="nx">ErrorURL</span><span class="p">()</span><span class="o">+</span><span class="s">&quot;?error=oauth%20provider%20is%20disabled&quot;</span><span class="p">,</span><span class="w"> </span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusSeeOther</span><span class="p">)</span>
+<span class="w">            </span><span class="k">return</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="c1">// state is prefixed with signin- or signup- to indicate which flow we should use</span>
+<span class="w">        </span><span class="kd">var</span><span class="w"> </span><span class="nx">state</span><span class="w"> </span><span class="kt">string</span>
+<span class="w">        </span><span class="kd">var</span><span class="w"> </span><span class="nx">flow</span><span class="w"> </span><span class="nx">oauth2</span><span class="p">.</span><span class="nx">State</span>
+<span class="w">        </span><span class="kd">var</span><span class="w"> </span><span class="nx">err</span><span class="w"> </span><span class="kt">error</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="nx">strings</span><span class="p">.</span><span class="nx">Contains</span><span class="p">(</span><span class="nx">r</span><span class="p">.</span><span class="nx">FormValue</span><span class="p">(</span><span class="s">&quot;state&quot;</span><span class="p">),</span><span class="w"> </span><span class="s">&quot;-&quot;</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nx">state</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nx">strings</span><span class="p">.</span><span class="nx">Split</span><span class="p">(</span><span class="nx">r</span><span class="p">.</span><span class="nx">FormValue</span><span class="p">(</span><span class="s">&quot;state&quot;</span><span class="p">),</span><span class="w"> </span><span class="s">&quot;-&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+<span class="w">            </span><span class="nx">flow</span><span class="p">,</span><span class="w"> </span><span class="nx">err</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nx">oauth2</span><span class="p">.</span><span class="nx">ToState</span><span class="p">(</span><span class="nx">strings</span><span class="p">.</span><span class="nx">Split</span><span class="p">(</span><span class="nx">r</span><span class="p">.</span><span class="nx">FormValue</span><span class="p">(</span><span class="s">&quot;state&quot;</span><span class="p">),</span><span class="w"> </span><span class="s">&quot;-&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="nx">err</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="kc">nil</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="nx">http</span><span class="p">.</span><span class="nx">Redirect</span><span class="p">(</span><span class="nx">w</span><span class="p">,</span><span class="w"> </span><span class="nx">r</span><span class="p">,</span><span class="w"> </span><span class="nx">oauth</span><span class="p">.</span><span class="nx">ErrorURL</span><span class="p">()</span><span class="o">+</span><span class="s">&quot;?error=&quot;</span><span class="o">+</span><span class="nx">err</span><span class="p">.</span><span class="nx">Error</span><span class="p">(),</span><span class="w"> </span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusSeeOther</span><span class="p">)</span><span class="w"> </span><span class="c1">//nolint:goconst</span>
+<span class="w">                </span><span class="k">return</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="nx">state</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="nx">oauth</span><span class="p">.</span><span class="nx">State</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nx">http</span><span class="p">.</span><span class="nx">Redirect</span><span class="p">(</span><span class="nx">w</span><span class="p">,</span><span class="w"> </span><span class="nx">r</span><span class="p">,</span><span class="w"> </span><span class="nx">oauth</span><span class="p">.</span><span class="nx">ErrorURL</span><span class="p">()</span><span class="o">+</span><span class="s">&quot;?error=invalid%20state&quot;</span><span class="p">,</span><span class="w"> </span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusSeeOther</span><span class="p">)</span>
+<span class="w">            </span><span class="k">return</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="nx">code</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">r</span><span class="p">.</span><span class="nx">FormValue</span><span class="p">(</span><span class="s">&quot;code&quot;</span><span class="p">);</span><span class="w"> </span><span class="nx">code</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nx">token</span><span class="p">,</span><span class="w"> </span><span class="nx">err</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">oauth</span><span class="p">.</span><span class="nx">Exchange</span><span class="p">(</span><span class="nx">r</span><span class="p">.</span><span class="nx">Context</span><span class="p">(),</span><span class="w"> </span><span class="nx">code</span><span class="p">)</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="nx">err</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="kc">nil</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="nx">http</span><span class="p">.</span><span class="nx">Redirect</span><span class="p">(</span><span class="nx">w</span><span class="p">,</span><span class="w"> </span><span class="nx">r</span><span class="p">,</span><span class="w"> </span><span class="nx">oauth</span><span class="p">.</span><span class="nx">ErrorURL</span><span class="p">()</span><span class="o">+</span><span class="s">&quot;?error=&quot;</span><span class="o">+</span><span class="nx">err</span><span class="p">.</span><span class="nx">Error</span><span class="p">(),</span><span class="w"> </span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusSeeOther</span><span class="p">)</span>
+<span class="w">                </span><span class="k">return</span>
+<span class="w">            </span><span class="p">}</span>
+
+<span class="w">            </span><span class="nx">client</span><span class="p">,</span><span class="w"> </span><span class="nx">err</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">oauth</span><span class="p">.</span><span class="nx">UserInfo</span><span class="p">(</span><span class="nx">token</span><span class="p">.</span><span class="nx">AccessToken</span><span class="p">)</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="nx">err</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="kc">nil</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="nx">http</span><span class="p">.</span><span class="nx">Redirect</span><span class="p">(</span><span class="nx">w</span><span class="p">,</span><span class="w"> </span><span class="nx">r</span><span class="p">,</span><span class="w"> </span><span class="nx">oauth</span><span class="p">.</span><span class="nx">ErrorURL</span><span class="p">()</span><span class="o">+</span><span class="s">&quot;?error=&quot;</span><span class="o">+</span><span class="nx">err</span><span class="p">.</span><span class="nx">Error</span><span class="p">(),</span><span class="w"> </span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusSeeOther</span><span class="p">)</span>
+<span class="w">                </span><span class="k">return</span>
+<span class="w">            </span><span class="p">}</span>
+
+<span class="w">            </span><span class="nx">jwt</span><span class="p">,</span><span class="w"> </span><span class="nx">err</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">svc</span><span class="p">.</span><span class="nx">OAuthCallback</span><span class="p">(</span><span class="nx">r</span><span class="p">.</span><span class="nx">Context</span><span class="p">(),</span><span class="w"> </span><span class="nx">flow</span><span class="p">,</span><span class="w"> </span><span class="nx">client</span><span class="p">)</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="nx">err</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="kc">nil</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="nx">http</span><span class="p">.</span><span class="nx">Redirect</span><span class="p">(</span><span class="nx">w</span><span class="p">,</span><span class="w"> </span><span class="nx">r</span><span class="p">,</span><span class="w"> </span><span class="nx">oauth</span><span class="p">.</span><span class="nx">ErrorURL</span><span class="p">()</span><span class="o">+</span><span class="s">&quot;?error=&quot;</span><span class="o">+</span><span class="nx">err</span><span class="p">.</span><span class="nx">Error</span><span class="p">(),</span><span class="w"> </span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusSeeOther</span><span class="p">)</span>
+<span class="w">                </span><span class="k">return</span>
+<span class="w">            </span><span class="p">}</span>
+
+<span class="w">            </span><span class="nx">http</span><span class="p">.</span><span class="nx">SetCookie</span><span class="p">(</span><span class="nx">w</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="nx">http</span><span class="p">.</span><span class="nx">Cookie</span><span class="p">{</span>
+<span class="w">                </span><span class="nx">Name</span><span class="p">:</span><span class="w">     </span><span class="s">&quot;access_token&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="nx">Value</span><span class="p">:</span><span class="w">    </span><span class="nx">jwt</span><span class="p">.</span><span class="nx">AccessToken</span><span class="p">,</span>
+<span class="w">                </span><span class="nx">Path</span><span class="p">:</span><span class="w">     </span><span class="s">&quot;/&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="nx">HttpOnly</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">                </span><span class="nx">Secure</span><span class="p">:</span><span class="w">   </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">            </span><span class="p">})</span>
+<span class="w">            </span><span class="nx">http</span><span class="p">.</span><span class="nx">SetCookie</span><span class="p">(</span><span class="nx">w</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="nx">http</span><span class="p">.</span><span class="nx">Cookie</span><span class="p">{</span>
+<span class="w">                </span><span class="nx">Name</span><span class="p">:</span><span class="w">     </span><span class="s">&quot;refresh_token&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="nx">Value</span><span class="p">:</span><span class="w">    </span><span class="o">*</span><span class="nx">jwt</span><span class="p">.</span><span class="nx">RefreshToken</span><span class="p">,</span>
+<span class="w">                </span><span class="nx">Path</span><span class="p">:</span><span class="w">     </span><span class="s">&quot;/&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="nx">HttpOnly</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">                </span><span class="nx">Secure</span><span class="p">:</span><span class="w">   </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">            </span><span class="p">})</span>
+
+<span class="w">            </span><span class="nx">http</span><span class="p">.</span><span class="nx">Redirect</span><span class="p">(</span><span class="nx">w</span><span class="p">,</span><span class="w"> </span><span class="nx">r</span><span class="p">,</span><span class="w"> </span><span class="nx">oauth</span><span class="p">.</span><span class="nx">RedirectURL</span><span class="p">(),</span><span class="w"> </span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusFound</span><span class="p">)</span>
+<span class="w">            </span><span class="k">return</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="nx">http</span><span class="p">.</span><span class="nx">Redirect</span><span class="p">(</span><span class="nx">w</span><span class="p">,</span><span class="w"> </span><span class="nx">r</span><span class="p">,</span><span class="w"> </span><span class="nx">oauth</span><span class="p">.</span><span class="nx">ErrorURL</span><span class="p">()</span><span class="o">+</span><span class="s">&quot;?error=empty%20code&quot;</span><span class="p">,</span><span class="w"> </span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusSeeOther</span><span class="p">)</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>The oauth2CallbackHandler is a http.HandlerFunc that handles OAuth2 callbacks. The handler verifies the integrity of the response from the authorization server and redirects the user to the URL when the OAuth2.0 flow is complete or when an error occurs. The handler also sets the access and refresh tokens in the user's session.</p>
+<div class="highlight"><pre><span></span><code><span class="kd">func</span><span class="w"> </span><span class="p">(</span><span class="nx">cfg</span><span class="w"> </span><span class="o">*</span><span class="nx">config</span><span class="p">)</span><span class="w"> </span><span class="nx">UserInfo</span><span class="p">(</span><span class="nx">accessToken</span><span class="w"> </span><span class="kt">string</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="nx">mfclients</span><span class="p">.</span><span class="nx">Client</span><span class="p">,</span><span class="w"> </span><span class="kt">error</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">resp</span><span class="p">,</span><span class="w"> </span><span class="nx">err</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">http</span><span class="p">.</span><span class="nx">Get</span><span class="p">(</span><span class="nx">userInfoURL</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nx">url</span><span class="p">.</span><span class="nx">QueryEscape</span><span class="p">(</span><span class="nx">accessToken</span><span class="p">))</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="nx">err</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="kc">nil</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nx">mfclients</span><span class="p">.</span><span class="nx">Client</span><span class="p">{},</span><span class="w"> </span><span class="nx">err</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">defer</span><span class="w"> </span><span class="nx">resp</span><span class="p">.</span><span class="nx">Body</span><span class="p">.</span><span class="nx">Close</span><span class="p">()</span>
+
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="nx">resp</span><span class="p">.</span><span class="nx">StatusCode</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="nx">http</span><span class="p">.</span><span class="nx">StatusOK</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nx">mfclients</span><span class="p">.</span><span class="nx">Client</span><span class="p">{},</span><span class="w"> </span><span class="nx">svcerr</span><span class="p">.</span><span class="nx">ErrAuthentication</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="nx">data</span><span class="p">,</span><span class="w"> </span><span class="nx">err</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">io</span><span class="p">.</span><span class="nx">ReadAll</span><span class="p">(</span><span class="nx">resp</span><span class="p">.</span><span class="nx">Body</span><span class="p">)</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="nx">err</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="kc">nil</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nx">mfclients</span><span class="p">.</span><span class="nx">Client</span><span class="p">{},</span><span class="w"> </span><span class="nx">err</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kd">var</span><span class="w"> </span><span class="nx">user</span><span class="w"> </span><span class="kd">struct</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nx">ID</span><span class="w">      </span><span class="kt">string</span><span class="w"> </span><span class="s">`json:&quot;id&quot;`</span>
+<span class="w">        </span><span class="nx">Name</span><span class="w">    </span><span class="kt">string</span><span class="w"> </span><span class="s">`json:&quot;name&quot;`</span>
+<span class="w">        </span><span class="nx">Email</span><span class="w">   </span><span class="kt">string</span><span class="w"> </span><span class="s">`json:&quot;email&quot;`</span>
+<span class="w">        </span><span class="nx">Picture</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span><span class="s">`json:&quot;picture&quot;`</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="nx">err</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">json</span><span class="p">.</span><span class="nx">Unmarshal</span><span class="p">(</span><span class="nx">data</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="nx">user</span><span class="p">);</span><span class="w"> </span><span class="nx">err</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="kc">nil</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nx">mfclients</span><span class="p">.</span><span class="nx">Client</span><span class="p">{},</span><span class="w"> </span><span class="nx">err</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="nx">user</span><span class="p">.</span><span class="nx">ID</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="nx">user</span><span class="p">.</span><span class="nx">Name</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="nx">user</span><span class="p">.</span><span class="nx">Email</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nx">mfclients</span><span class="p">.</span><span class="nx">Client</span><span class="p">{},</span><span class="w"> </span><span class="nx">svcerr</span><span class="p">.</span><span class="nx">ErrAuthentication</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="nx">client</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">mfclients</span><span class="p">.</span><span class="nx">Client</span><span class="p">{</span>
+<span class="w">        </span><span class="nx">ID</span><span class="p">:</span><span class="w">   </span><span class="nx">user</span><span class="p">.</span><span class="nx">ID</span><span class="p">,</span>
+<span class="w">        </span><span class="nx">Name</span><span class="p">:</span><span class="w"> </span><span class="nx">user</span><span class="p">.</span><span class="nx">Name</span><span class="p">,</span>
+<span class="w">        </span><span class="nx">Credentials</span><span class="p">:</span><span class="w"> </span><span class="nx">mfclients</span><span class="p">.</span><span class="nx">Credentials</span><span class="p">{</span>
+<span class="w">            </span><span class="nx">Identity</span><span class="p">:</span><span class="w"> </span><span class="nx">user</span><span class="p">.</span><span class="nx">Email</span><span class="p">,</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="nx">Metadata</span><span class="p">:</span><span class="w"> </span><span class="kd">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="kd">interface</span><span class="p">{}{</span>
+<span class="w">            </span><span class="s">&quot;oauth_provider&quot;</span><span class="p">:</span><span class="w">  </span><span class="nx">providerName</span><span class="p">,</span>
+<span class="w">            </span><span class="s">&quot;profile_picture&quot;</span><span class="p">:</span><span class="w"> </span><span class="nx">user</span><span class="p">.</span><span class="nx">Picture</span><span class="p">,</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="nx">Status</span><span class="p">:</span><span class="w"> </span><span class="nx">mfclients</span><span class="p">.</span><span class="nx">EnabledStatus</span><span class="p">,</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nx">client</span><span class="p">,</span><span class="w"> </span><span class="kc">nil</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>The <code>UserInfo</code> function is used to obtain the user's details. The function then uses the access token to obtain the user's details. The user's details are used to uniquely identify the user and to display the user's name and profile picture in the UI.</p>
+<div class="highlight"><pre><span></span><code><span class="kd">func</span><span class="w"> </span><span class="p">(</span><span class="nx">svc</span><span class="w"> </span><span class="nx">service</span><span class="p">)</span><span class="w"> </span><span class="nx">OAuthCallback</span><span class="p">(</span><span class="nx">ctx</span><span class="w"> </span><span class="nx">context</span><span class="p">.</span><span class="nx">Context</span><span class="p">,</span><span class="w"> </span><span class="nx">state</span><span class="w"> </span><span class="nx">mgoauth2</span><span class="p">.</span><span class="nx">State</span><span class="p">,</span><span class="w"> </span><span class="nx">client</span><span class="w"> </span><span class="nx">mgclients</span><span class="p">.</span><span class="nx">Client</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="o">*</span><span class="nx">magistrala</span><span class="p">.</span><span class="nx">Token</span><span class="p">,</span><span class="w"> </span><span class="kt">error</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">switch</span><span class="w"> </span><span class="nx">state</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="nx">mgoauth2</span><span class="p">.</span><span class="nx">SignIn</span><span class="p">:</span>
+<span class="w">        </span><span class="nx">rclient</span><span class="p">,</span><span class="w"> </span><span class="nx">err</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">svc</span><span class="p">.</span><span class="nx">clients</span><span class="p">.</span><span class="nx">RetrieveByIdentity</span><span class="p">(</span><span class="nx">ctx</span><span class="p">,</span><span class="w"> </span><span class="nx">client</span><span class="p">.</span><span class="nx">Credentials</span><span class="p">.</span><span class="nx">Identity</span><span class="p">)</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="nx">err</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="kc">nil</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="nx">errors</span><span class="p">.</span><span class="nx">Contains</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span><span class="w"> </span><span class="nx">repoerr</span><span class="p">.</span><span class="nx">ErrNotFound</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="k">return</span><span class="w"> </span><span class="o">&amp;</span><span class="nx">magistrala</span><span class="p">.</span><span class="nx">Token</span><span class="p">{},</span><span class="w"> </span><span class="nx">errors</span><span class="p">.</span><span class="nx">New</span><span class="p">(</span><span class="s">&quot;user not signed up&quot;</span><span class="p">)</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="o">&amp;</span><span class="nx">magistrala</span><span class="p">.</span><span class="nx">Token</span><span class="p">{},</span><span class="w"> </span><span class="nx">err</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="nx">claims</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="o">&amp;</span><span class="nx">magistrala</span><span class="p">.</span><span class="nx">IssueReq</span><span class="p">{</span>
+<span class="w">            </span><span class="nx">UserId</span><span class="p">:</span><span class="w"> </span><span class="nx">rclient</span><span class="p">.</span><span class="nx">ID</span><span class="p">,</span>
+<span class="w">            </span><span class="nx">Type</span><span class="p">:</span><span class="w">   </span><span class="nb">uint32</span><span class="p">(</span><span class="nx">auth</span><span class="p">.</span><span class="nx">AccessKey</span><span class="p">),</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nx">svc</span><span class="p">.</span><span class="nx">auth</span><span class="p">.</span><span class="nx">Issue</span><span class="p">(</span><span class="nx">ctx</span><span class="p">,</span><span class="w"> </span><span class="nx">claims</span><span class="p">)</span>
+<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="nx">mgoauth2</span><span class="p">.</span><span class="nx">SignUp</span><span class="p">:</span>
+<span class="w">        </span><span class="nx">rclient</span><span class="p">,</span><span class="w"> </span><span class="nx">err</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">svc</span><span class="p">.</span><span class="nx">RegisterClient</span><span class="p">(</span><span class="nx">ctx</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="p">,</span><span class="w"> </span><span class="nx">client</span><span class="p">)</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="nx">err</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="kc">nil</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="nx">errors</span><span class="p">.</span><span class="nx">Contains</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span><span class="w"> </span><span class="nx">repoerr</span><span class="p">.</span><span class="nx">ErrConflict</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="k">return</span><span class="w"> </span><span class="o">&amp;</span><span class="nx">magistrala</span><span class="p">.</span><span class="nx">Token</span><span class="p">{},</span><span class="w"> </span><span class="nx">errors</span><span class="p">.</span><span class="nx">New</span><span class="p">(</span><span class="s">&quot;user already exists&quot;</span><span class="p">)</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="o">&amp;</span><span class="nx">magistrala</span><span class="p">.</span><span class="nx">Token</span><span class="p">{},</span><span class="w"> </span><span class="nx">err</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="nx">claims</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="o">&amp;</span><span class="nx">magistrala</span><span class="p">.</span><span class="nx">IssueReq</span><span class="p">{</span>
+<span class="w">            </span><span class="nx">UserId</span><span class="p">:</span><span class="w"> </span><span class="nx">rclient</span><span class="p">.</span><span class="nx">ID</span><span class="p">,</span>
+<span class="w">            </span><span class="nx">Type</span><span class="p">:</span><span class="w">   </span><span class="nb">uint32</span><span class="p">(</span><span class="nx">auth</span><span class="p">.</span><span class="nx">AccessKey</span><span class="p">),</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nx">svc</span><span class="p">.</span><span class="nx">auth</span><span class="p">.</span><span class="nx">Issue</span><span class="p">(</span><span class="nx">ctx</span><span class="p">,</span><span class="w"> </span><span class="nx">claims</span><span class="p">)</span>
+<span class="w">    </span><span class="k">default</span><span class="p">:</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="o">&amp;</span><span class="nx">magistrala</span><span class="p">.</span><span class="nx">Token</span><span class="p">{},</span><span class="w"> </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Errorf</span><span class="p">(</span><span class="s">&quot;unknown state %s&quot;</span><span class="p">,</span><span class="w"> </span><span class="nx">state</span><span class="p">)</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>The <code>OAuthCallback</code> function is used to handle the OAuth2.0 callback. The function issues a token to the user and sets the access and refresh tokens in the user's session. Depending on the state, the function either signs in the user or signs up the user.</p>
+<p>We don't store the access token or refresh token since they are only used once to obtain the user's details. The access token is used to authenticate the user.</p>
+<h2 id="conclusion">Conclusion<a class="headerlink" href="#conclusion" title="Permanent link">#</a></h2>
+<p>In conclusion, the successful integration of OAuth2.0 with Magistrala represents a significant milestone in enhancing the security and functionality of our platform. By leveraging OAuth2.0, we enable seamless authentication and authorization processes, empowering users to securely access Magistrala services with their preferred OAuth2.0 provider. With OAuth2.0, users can grant access to their protected resources hosted on Magistrala, facilitating secure interactions between third-party applications and Magistrala services. Through the OAuth2.0 authorization code flow, users can obtain access and refresh tokens, ensuring secure and authenticated API requests.</p>
+<p>Moving forward, we are dedicated to expanding our OAuth2.0 integration by adding support for additional providers and implementing new features to enrich the user experience. This integration not only enhances the security and usability of Magistrala but also lays the foundation for future innovations and integrations. We are excited about the opportunities that OAuth2.0 integration brings and look forward to the continued evolution of Magistrala.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright (c) Abstract Machines
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": [], "search": "../../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.1e8ae164.min.js"></script>
+      
+    
+  </body>
+</html>

@@ -1,0 +1,2101 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Magistrala IoT System">
+      
+      
+      
+        <link rel="canonical" href="https://docs.magistrala.abstractmachines.fr/kubernetes/">
+      
+      
+        <link rel="prev" href="../dev-guide/">
+      
+      
+        <link rel="next" href="../benchmark/">
+      
+      
+      <link rel="icon" href="../img/favicon.png">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.17">
+    
+    
+      
+        <title>Kubernetes - Magistrala</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.bcfcd587.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#kubernetes" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Magistrala" class="md-header__button md-logo" aria-label="Magistrala" data-md-component="logo">
+      
+  <img src="../img/logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Magistrala
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Kubernetes
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var media,input,key,value,palette=__md_get("__palette");if(palette&&palette.color){"(prefers-color-scheme)"===palette.color.media&&(media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']"),palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent"));for([key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/absmach/magistrala" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Magistrala" class="md-nav__button md-logo" aria-label="Magistrala" data-md-component="logo">
+      
+  <img src="../img/logo.png" alt="logo">
+
+    </a>
+    Magistrala
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/absmach/magistrala" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../architecture/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Architecture
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting-started/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Getting Started
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../entities/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Entities
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    API
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cli/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    CLI
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../authentication/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Authentication
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../authorization/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Authorization
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../security/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Security
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../messaging/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Messaging
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../events/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Events
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../edge/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Edge
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../certs/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Certs
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../bootstrap/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Bootstrap
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lora/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    LoRa
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../opcua/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    OPC-UA
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../provision/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Provision
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../storage/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Storage
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../twins/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Twins
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tracing/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Tracing
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dev-guide/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Developer's Guide
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Kubernetes
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Kubernetes
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      Prerequisites
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Prerequisites">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-install-docker" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Install Docker
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-install-kubernetes-via-k3d" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Install Kubernetes via K3d
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Install Kubernetes via K3d">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#steps-to-install-k3d" class="md-nav__link">
+    <span class="md-ellipsis">
+      Steps to install K3d:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-install-kubectl" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Install kubectl
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Install kubectl">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#steps-to-install-kubectl" class="md-nav__link">
+    <span class="md-ellipsis">
+      Steps to install kubectl:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-install-helm-v3" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Install Helm v3
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Install Helm v3">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#steps-to-install-helm" class="md-nav__link">
+    <span class="md-ellipsis">
+      Steps to install Helm:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-add-helm-repositories" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Add Helm Repositories
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Add Helm Repositories">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#add-stable-helm-repository" class="md-nav__link">
+    <span class="md-ellipsis">
+      Add Stable Helm Repository:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#add-bitnami-helm-repository" class="md-nav__link">
+    <span class="md-ellipsis">
+      Add Bitnami Helm Repository:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-install-nginx-ingress-controller" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. Install Nginx Ingress Controller
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. Install Nginx Ingress Controller">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#install-nginx-ingress-controller-using-helm" class="md-nav__link">
+    <span class="md-ellipsis">
+      Install Nginx Ingress Controller using Helm:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#deploying-magistrala-manual-local-deployment" class="md-nav__link">
+    <span class="md-ellipsis">
+      Deploying Magistrala (Manual Local Deployment)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Deploying Magistrala (Manual Local Deployment)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#use-case" class="md-nav__link">
+    <span class="md-ellipsis">
+      Use Case:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#steps" class="md-nav__link">
+    <span class="md-ellipsis">
+      Steps:
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Steps:">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-clone-magistrala-helm-chart-repository" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Clone Magistrala Helm Chart Repository:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-add-required-helm-repositories" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Add Required Helm Repositories
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-update-dependencies" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Update Dependencies
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-create-a-namespace-if-needed" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Create a Namespace (if needed):
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-deploy-magistrala" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Deploy Magistrala:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-verifying-the-deployment" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Verifying the Deployment
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#interacting-with-magistrala-services-after-deployment" class="md-nav__link">
+    <span class="md-ellipsis">
+      Interacting with Magistrala Services After Deployment
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Interacting with Magistrala Services After Deployment">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#using-the-web-based-ui" class="md-nav__link">
+    <span class="md-ellipsis">
+      Using the Web-Based UI
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#using-postman" class="md-nav__link">
+    <span class="md-ellipsis">
+      Using Postman
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Using Postman">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-set-up-the-postman-request" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Set Up the Postman Request
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-set-up-the-request-body" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Set Up the Request Body
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#install-magistrala-charts-from-published-helm-repository" class="md-nav__link">
+    <span class="md-ellipsis">
+      Install Magistrala Charts (From Published Helm Repository)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Install Magistrala Charts (From Published Helm Repository)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#use-case_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Use Case:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#steps_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Steps:
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Steps:">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-add-the-magistrala-helm-repository" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Add the Magistrala Helm Repository:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-install-the-magistrala-chart" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Install the Magistrala Chart:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-upgrading-the-magistrala-chart" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Upgrading the Magistrala Chart:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-uninstalling-magistrala" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Uninstalling Magistrala:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#customizing-magistrala-installation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Customizing Magistrala Installation:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#magistrala-core" class="md-nav__link">
+    <span class="md-ellipsis">
+      Magistrala Core
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#magistrala-add-ons" class="md-nav__link">
+    <span class="md-ellipsis">
+      Magistrala Add-ons
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#scaling-services" class="md-nav__link">
+    <span class="md-ellipsis">
+      Scaling Services
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#additional-steps-to-configure-ingress-controller" class="md-nav__link">
+    <span class="md-ellipsis">
+      Additional Steps to Configure Ingress Controller
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Additional Steps to Configure Ingress Controller">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step-1-configure-tcp-and-udp-services" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 1: Configure TCP and UDP Services
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-2-expose-the-required-ports-in-the-ingress-service" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 2: Expose the Required Ports in the Ingress Service
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuring-tls-mtls" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configuring TLS &amp; mTLS
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Configuring TLS & mTLS">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#generating-certificates" class="md-nav__link">
+    <span class="md-ellipsis">
+      Generating Certificates
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#creating-kubernetes-secrets" class="md-nav__link">
+    <span class="md-ellipsis">
+      Creating Kubernetes Secrets
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#configuring-ingress-for-tls" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configuring Ingress for TLS
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#configuring-ingress-for-mtls" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configuring Ingress for mTLS
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#testing-mqtt-with-mtls" class="md-nav__link">
+    <span class="md-ellipsis">
+      Testing MQTT with mTLS
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../benchmark/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Benchmark
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="/blogs/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Blogs
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      Prerequisites
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Prerequisites">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-install-docker" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Install Docker
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-install-kubernetes-via-k3d" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Install Kubernetes via K3d
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Install Kubernetes via K3d">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#steps-to-install-k3d" class="md-nav__link">
+    <span class="md-ellipsis">
+      Steps to install K3d:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-install-kubectl" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Install kubectl
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Install kubectl">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#steps-to-install-kubectl" class="md-nav__link">
+    <span class="md-ellipsis">
+      Steps to install kubectl:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-install-helm-v3" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Install Helm v3
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Install Helm v3">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#steps-to-install-helm" class="md-nav__link">
+    <span class="md-ellipsis">
+      Steps to install Helm:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-add-helm-repositories" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Add Helm Repositories
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Add Helm Repositories">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#add-stable-helm-repository" class="md-nav__link">
+    <span class="md-ellipsis">
+      Add Stable Helm Repository:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#add-bitnami-helm-repository" class="md-nav__link">
+    <span class="md-ellipsis">
+      Add Bitnami Helm Repository:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-install-nginx-ingress-controller" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. Install Nginx Ingress Controller
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. Install Nginx Ingress Controller">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#install-nginx-ingress-controller-using-helm" class="md-nav__link">
+    <span class="md-ellipsis">
+      Install Nginx Ingress Controller using Helm:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#deploying-magistrala-manual-local-deployment" class="md-nav__link">
+    <span class="md-ellipsis">
+      Deploying Magistrala (Manual Local Deployment)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Deploying Magistrala (Manual Local Deployment)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#use-case" class="md-nav__link">
+    <span class="md-ellipsis">
+      Use Case:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#steps" class="md-nav__link">
+    <span class="md-ellipsis">
+      Steps:
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Steps:">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-clone-magistrala-helm-chart-repository" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Clone Magistrala Helm Chart Repository:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-add-required-helm-repositories" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Add Required Helm Repositories
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-update-dependencies" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Update Dependencies
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-create-a-namespace-if-needed" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Create a Namespace (if needed):
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-deploy-magistrala" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Deploy Magistrala:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-verifying-the-deployment" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Verifying the Deployment
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#interacting-with-magistrala-services-after-deployment" class="md-nav__link">
+    <span class="md-ellipsis">
+      Interacting with Magistrala Services After Deployment
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Interacting with Magistrala Services After Deployment">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#using-the-web-based-ui" class="md-nav__link">
+    <span class="md-ellipsis">
+      Using the Web-Based UI
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#using-postman" class="md-nav__link">
+    <span class="md-ellipsis">
+      Using Postman
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Using Postman">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-set-up-the-postman-request" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Set Up the Postman Request
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-set-up-the-request-body" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Set Up the Request Body
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#install-magistrala-charts-from-published-helm-repository" class="md-nav__link">
+    <span class="md-ellipsis">
+      Install Magistrala Charts (From Published Helm Repository)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Install Magistrala Charts (From Published Helm Repository)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#use-case_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Use Case:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#steps_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Steps:
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Steps:">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-add-the-magistrala-helm-repository" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Add the Magistrala Helm Repository:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-install-the-magistrala-chart" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Install the Magistrala Chart:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-upgrading-the-magistrala-chart" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Upgrading the Magistrala Chart:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-uninstalling-magistrala" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Uninstalling Magistrala:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#customizing-magistrala-installation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Customizing Magistrala Installation:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#magistrala-core" class="md-nav__link">
+    <span class="md-ellipsis">
+      Magistrala Core
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#magistrala-add-ons" class="md-nav__link">
+    <span class="md-ellipsis">
+      Magistrala Add-ons
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#scaling-services" class="md-nav__link">
+    <span class="md-ellipsis">
+      Scaling Services
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#additional-steps-to-configure-ingress-controller" class="md-nav__link">
+    <span class="md-ellipsis">
+      Additional Steps to Configure Ingress Controller
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Additional Steps to Configure Ingress Controller">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step-1-configure-tcp-and-udp-services" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 1: Configure TCP and UDP Services
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-2-expose-the-required-ports-in-the-ingress-service" class="md-nav__link">
+    <span class="md-ellipsis">
+      Step 2: Expose the Required Ports in the Ingress Service
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuring-tls-mtls" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configuring TLS &amp; mTLS
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Configuring TLS & mTLS">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#generating-certificates" class="md-nav__link">
+    <span class="md-ellipsis">
+      Generating Certificates
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#creating-kubernetes-secrets" class="md-nav__link">
+    <span class="md-ellipsis">
+      Creating Kubernetes Secrets
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#configuring-ingress-for-tls" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configuring Ingress for TLS
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#configuring-ingress-for-mtls" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configuring Ingress for mTLS
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#testing-mqtt-with-mtls" class="md-nav__link">
+    <span class="md-ellipsis">
+      Testing MQTT with mTLS
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="kubernetes">Kubernetes<a class="headerlink" href="#kubernetes" title="Permanent link">#</a></h1>
+<p>Magistrala can be easily deployed on the Kubernetes platform using Helm Charts from the official <a href="https://github.com/absmach/devops">Magistrala DevOps GitHub repository</a>.</p>
+<h2 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">#</a></h2>
+<h3 id="1-install-docker">1. Install Docker<a class="headerlink" href="#1-install-docker" title="Permanent link">#</a></h3>
+<p>K3d requires Docker to run Kubernetes clusters inside Docker containers. Follow the official <a href="https://docs.docker.com/get-docker/">Docker installation guide</a> to install Docker.</p>
+<p>Once installed, verify the installation:</p>
+<div class="highlight"><pre><span></span><code>docker<span class="w"> </span>--version
+</code></pre></div>
+<hr />
+<h3 id="2-install-kubernetes-via-k3d">2. Install Kubernetes via K3d<a class="headerlink" href="#2-install-kubernetes-via-k3d" title="Permanent link">#</a></h3>
+<p>K3d is a lightweight Kubernetes distribution that runs inside Docker, ideal for local development.</p>
+<h4 id="steps-to-install-k3d">Steps to install K3d:<a class="headerlink" href="#steps-to-install-k3d" title="Permanent link">#</a></h4>
+<div class="highlight"><pre><span></span><code>curl<span class="w"> </span>-s<span class="w"> </span>https://raw.githubusercontent.com/k3d-io/k3d/main/install.sh<span class="w"> </span><span class="p">|</span><span class="w"> </span>bash
+</code></pre></div>
+<p>For more information on K3d, refer to the official <a href="https://k3d.io/">K3d documentation</a>.</p>
+<h3 id="3-install-kubectl">3. Install kubectl<a class="headerlink" href="#3-install-kubectl" title="Permanent link">#</a></h3>
+<p><code>kubectl</code> is the command-line tool used to interact with your Kubernetes cluster.</p>
+<h4 id="steps-to-install-kubectl">Steps to install kubectl:<a class="headerlink" href="#steps-to-install-kubectl" title="Permanent link">#</a></h4>
+<div class="highlight"><pre><span></span><code>curl<span class="w"> </span>-LO<span class="w"> </span><span class="s2">&quot;https://dl.k8s.io/release/</span><span class="k">$(</span>curl<span class="w"> </span>-L<span class="w"> </span>-s<span class="w"> </span>https://dl.k8s.io/release/stable.txt<span class="k">)</span><span class="s2">/bin/linux/amd64/kubectl&quot;</span>
+sudo<span class="w"> </span>install<span class="w"> </span>-o<span class="w"> </span>root<span class="w"> </span>-g<span class="w"> </span>root<span class="w"> </span>-m<span class="w"> </span><span class="m">0755</span><span class="w"> </span>kubectl<span class="w"> </span>/usr/local/bin/kubectl
+</code></pre></div>
+<p>Verify the installation:</p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>version<span class="w"> </span>--client
+</code></pre></div>
+<hr />
+<h3 id="4-install-helm-v3">4. Install Helm v3<a class="headerlink" href="#4-install-helm-v3" title="Permanent link">#</a></h3>
+<p>Helm is a package manager for Kubernetes, simplifying application installation and management.</p>
+<h4 id="steps-to-install-helm">Steps to install Helm:<a class="headerlink" href="#steps-to-install-helm" title="Permanent link">#</a></h4>
+<div class="highlight"><pre><span></span><code>curl<span class="w"> </span>https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3<span class="w"> </span><span class="p">|</span><span class="w"> </span>bash
+</code></pre></div>
+<p>Verify the installation:</p>
+<div class="highlight"><pre><span></span><code>helm<span class="w"> </span>version
+</code></pre></div>
+<hr />
+<h3 id="5-add-helm-repositories">5. Add Helm Repositories<a class="headerlink" href="#5-add-helm-repositories" title="Permanent link">#</a></h3>
+<h4 id="add-stable-helm-repository">Add Stable Helm Repository:<a class="headerlink" href="#add-stable-helm-repository" title="Permanent link">#</a></h4>
+<p>The <strong>Helm stable repository</strong> contains Helm charts that you can use to install applications on Kubernetes.</p>
+<div class="highlight"><pre><span></span><code>helm<span class="w"> </span>repo<span class="w"> </span>add<span class="w"> </span>stable<span class="w"> </span>https://charts.helm.sh/stable
+helm<span class="w"> </span>repo<span class="w"> </span>update
+</code></pre></div>
+<h4 id="add-bitnami-helm-repository">Add Bitnami Helm Repository:<a class="headerlink" href="#add-bitnami-helm-repository" title="Permanent link">#</a></h4>
+<p>Bitnami offers a collection of popular Helm charts for various applications.</p>
+<div class="highlight"><pre><span></span><code>helm<span class="w"> </span>repo<span class="w"> </span>add<span class="w"> </span>bitnami<span class="w"> </span>https://charts.bitnami.com/bitnami
+helm<span class="w"> </span>repo<span class="w"> </span>update
+</code></pre></div>
+<hr />
+<h3 id="6-install-nginx-ingress-controller">6. Install Nginx Ingress Controller<a class="headerlink" href="#6-install-nginx-ingress-controller" title="Permanent link">#</a></h3>
+<p>The Nginx Ingress Controller manages external access to services within your Kubernetes cluster.</p>
+<h4 id="install-nginx-ingress-controller-using-helm">Install Nginx Ingress Controller using Helm:<a class="headerlink" href="#install-nginx-ingress-controller-using-helm" title="Permanent link">#</a></h4>
+<div class="highlight"><pre><span></span><code>helm<span class="w"> </span>repo<span class="w"> </span>add<span class="w"> </span>ingress-nginx<span class="w"> </span>https://kubernetes.github.io/ingress-nginx
+helm<span class="w"> </span>repo<span class="w"> </span>update
+
+kubectl<span class="w"> </span>create<span class="w"> </span>namespace<span class="w"> </span>ingress-nginx
+
+helm<span class="w"> </span>install<span class="w"> </span>ingress-nginx<span class="w"> </span>ingress-nginx/ingress-nginx<span class="w"> </span>--version<span class="w"> </span><span class="m">3</span>.26.0<span class="w"> </span>--create-namespace<span class="w"> </span>-n<span class="w"> </span>ingress-nginx
+</code></pre></div>
+<p>Verify the installation:</p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>pods<span class="w"> </span>-n<span class="w"> </span>ingress-nginx
+</code></pre></div>
+<hr />
+<h2 id="deploying-magistrala-manual-local-deployment">Deploying Magistrala (Manual Local Deployment)<a class="headerlink" href="#deploying-magistrala-manual-local-deployment" title="Permanent link">#</a></h2>
+<p>This method involves <strong>manually deploying Magistrala</strong> by cloning the Helm chart repository to your local machine, making any necessary customizations, and installing the chart from the local directory.</p>
+<h4 id="use-case">Use Case:<a class="headerlink" href="#use-case" title="Permanent link">#</a></h4>
+<p>This approach is useful if you want to:</p>
+<ul>
+<li>Directly interact with the chart source files.</li>
+<li>Modify the chart before installation.</li>
+<li>Perform development or testing on the chart.</li>
+</ul>
+<h3 id="steps">Steps:<a class="headerlink" href="#steps" title="Permanent link">#</a></h3>
+<h4 id="1-clone-magistrala-helm-chart-repository">1. Clone Magistrala Helm Chart Repository:<a class="headerlink" href="#1-clone-magistrala-helm-chart-repository" title="Permanent link">#</a></h4>
+<div class="highlight"><pre><span></span><code>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/absmach/devops.git
+<span class="nb">cd</span><span class="w"> </span>devops/charts/magistrala
+</code></pre></div>
+<h4 id="2-add-required-helm-repositories">2. Add Required Helm Repositories<a class="headerlink" href="#2-add-required-helm-repositories" title="Permanent link">#</a></h4>
+<div class="highlight"><pre><span></span><code>helm<span class="w"> </span>repo<span class="w"> </span>add<span class="w"> </span>nats<span class="w"> </span>https://nats-io.github.io/k8s/helm/charts/
+helm<span class="w"> </span>repo<span class="w"> </span>add<span class="w"> </span>jaegertracing<span class="w"> </span>https://jaegertracing.github.io/helm-charts
+helm<span class="w"> </span>repo<span class="w"> </span>add<span class="w"> </span>hashicorp<span class="w"> </span>https://helm.releases.hashicorp.com
+helm<span class="w"> </span>repo<span class="w"> </span>update
+</code></pre></div>
+<p>This ensures that all necessary repositories are available for dependencies.</p>
+<h4 id="3-update-dependencies">3. Update Dependencies<a class="headerlink" href="#3-update-dependencies" title="Permanent link">#</a></h4>
+<p>Once the repositories have been added, update the on-disk dependencies to match the <code>Chart.yaml</code> file by running:</p>
+<div class="highlight"><pre><span></span><code>helm<span class="w"> </span>dependency<span class="w"> </span>update
+</code></pre></div>
+<p>If the repositories are set up correctly, this will resolve and download all chart dependencies to <code>charts/magistrala/charts</code>.</p>
+<h3 id="3-create-a-namespace-if-needed">3. Create a Namespace (if needed):<a class="headerlink" href="#3-create-a-namespace-if-needed" title="Permanent link">#</a></h3>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>create<span class="w"> </span>namespace<span class="w"> </span>mg
+</code></pre></div>
+<hr />
+<h3 id="4-deploy-magistrala">4. Deploy Magistrala:<a class="headerlink" href="#4-deploy-magistrala" title="Permanent link">#</a></h3>
+<p>Deploy the Magistrala Helm chart into the <code>mg</code> namespace:</p>
+<div class="highlight"><pre><span></span><code>helm<span class="w"> </span>install<span class="w"> </span>magistrala<span class="w"> </span>.<span class="w"> </span>-n<span class="w"> </span>mg
+</code></pre></div>
+<p>If you encounter an error related to snippet annotations in Nginx, enable them with:</p>
+<div class="highlight"><pre><span></span><code>helm<span class="w"> </span>upgrade<span class="w"> </span>ingress-nginx<span class="w"> </span>ingress-nginx/ingress-nginx<span class="w"> </span>-n<span class="w"> </span>ingress-nginx<span class="w"> </span>--set<span class="w"> </span>controller.allowSnippetAnnotations<span class="o">=</span><span class="nb">true</span>
+</code></pre></div>
+<p>Ensure you have the Nginx Ingress repository added:</p>
+<div class="highlight"><pre><span></span><code>helm<span class="w"> </span>repo<span class="w"> </span>add<span class="w"> </span>ingress-nginx<span class="w"> </span>https://kubernetes.github.io/ingress-nginx
+</code></pre></div>
+<h3 id="5-verifying-the-deployment">5. Verifying the Deployment<a class="headerlink" href="#5-verifying-the-deployment" title="Permanent link">#</a></h3>
+<p>After deploying Magistrala, verify the services and pods using <code>kubectl</code> commands:</p>
+<p><strong>List all pods:</strong></p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>pods<span class="w"> </span>-n<span class="w"> </span>mg
+</code></pre></div>
+<p><strong>List all services:</strong></p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>services<span class="w"> </span>-n<span class="w"> </span>mg
+</code></pre></div>
+<p><strong>View logs of a pod:</strong></p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>logs<span class="w"> </span>&lt;pod-name&gt;<span class="w"> </span>-n<span class="w"> </span>mg
+</code></pre></div>
+<h3 id="interacting-with-magistrala-services-after-deployment">Interacting with Magistrala Services After Deployment<a class="headerlink" href="#interacting-with-magistrala-services-after-deployment" title="Permanent link">#</a></h3>
+<p>Once you have successfully deployed Magistrala, there are three primary ways you can interact with its services:</p>
+<ul>
+<li>web-based User Interface (UI)</li>
+<li>Magistrala CLI tool (learn more in the <a href="https://docs.magistrala.abstractmachines.fr/cli/">CLI Documentation</a>)</li>
+<li>HTTP API Clients (e.g., cURL, Postman)</li>
+</ul>
+<p>The ingress-nginx-controller handles the routing for your deployed services using Kubernetes Ingress resources. To interact with your Magistrala UI or any other service exposed through this load balancer, the first step is to retrieve the Public IP address of this load balancer.</p>
+<p>You can usually find this IP address in your DigitalOcean dashboard under the "Networking" or "Load Balancers" section, or by using the following command in your terminal:</p>
+<pre><code>kubectl get svc -A | grep LoadBalancer
+</code></pre>
+<p>This command searches all namespaces for services of type <code>LoadBalancer</code>. The output looks something like this:</p>
+<pre><code>ingress-nginx           ingress-nginx-controller                         LoadBalancer   10.245.192.202   138.68.126.8   80:30424/TCP,443:31752/TCP                        64d
+</code></pre>
+<p>NOTE: The Public IP in this case is <code>138.68.126.8</code>.</p>
+<h4 id="using-the-web-based-ui">Using the Web-Based UI<a class="headerlink" href="#using-the-web-based-ui" title="Permanent link">#</a></h4>
+<ul>
+<li>Once you have the Public IP address, open your web browser.</li>
+<li>
+<p>In the address bar, enter the IP address followed by <code>/ui/login</code> as shown below:</p>
+<p>http://138.68.126.8/ui/login</p>
+</li>
+</ul>
+<h4 id="using-postman">Using Postman<a class="headerlink" href="#using-postman" title="Permanent link">#</a></h4>
+<p>If you prefer working with APIs, you can also interact with Magistrala services using Postman by sending requests to the Public IP address of your load balancer. For example, to create a user:</p>
+<h6 id="1-set-up-the-postman-request">1. Set Up the Postman Request<a class="headerlink" href="#1-set-up-the-postman-request" title="Permanent link">#</a></h6>
+<ul>
+<li><strong>Method:</strong> <code>POST</code></li>
+<li><strong>URL:</strong> <code>http://138.68.126.8/users</code></li>
+</ul>
+<p>This URL points to the endpoint that handles user creation on your Magistrala deployment. Replace <code>138.68.126.8</code> with the actual IP address or domain of your deployment if it differs.</p>
+<h6 id="2-set-up-the-request-body">2. Set Up the Request Body<a class="headerlink" href="#2-set-up-the-request-body" title="Permanent link">#</a></h6>
+<p>Switch to the <code>Body</code> tab in Postman and select <code>raw</code> as the format. Choose <code>JSON</code> from the dropdown menu, and then enter the following JSON structure in the text area:</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;user1&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;tags&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;tag1&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;tag2&quot;</span><span class="p">],</span>
+<span class="w">  </span><span class="nt">&quot;credentials&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;identity&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;user1@email.com&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;secret&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;12345678&quot;</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">&quot;metadata&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;domain&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;domain1&quot;</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<p><code>Send</code> the request. If successful, the server will respond with the details of the newly created user.</p>
+<p>For more examples, refer to this <a href="https://elements.getpostman.com/redirect?entityId=38532610-ef9a0562-b353-4d2c-8aca-a5fae35ad0ad&amp;entityType=collection">Postman Collection</a>.</p>
+<h2 id="install-magistrala-charts-from-published-helm-repository">Install Magistrala Charts (From Published Helm Repository)<a class="headerlink" href="#install-magistrala-charts-from-published-helm-repository" title="Permanent link">#</a></h2>
+<p>This method is the <strong>standard installation</strong> approach, where you install the Magistrala chart directly from a Helm repository. This is quicker and ideal for end-users who do not need to modify the chart manually.</p>
+<h4 id="use-case_1">Use Case:<a class="headerlink" href="#use-case_1" title="Permanent link">#</a></h4>
+<p>This approach is suitable for:</p>
+<ul>
+<li>End-users who simply want to install Magistrala without modifying the source code.</li>
+<li>Production environments where the chart is deployed directly from a hosted Helm repository.</li>
+</ul>
+<h3 id="steps_1">Steps:<a class="headerlink" href="#steps_1" title="Permanent link">#</a></h3>
+<h4 id="1-add-the-magistrala-helm-repository">1. Add the Magistrala Helm Repository:<a class="headerlink" href="#1-add-the-magistrala-helm-repository" title="Permanent link">#</a></h4>
+<p>The Helm charts are published via GitHub Pages. After installing Helm, add the Magistrala DevOps Helm repository by running:</p>
+<div class="highlight"><pre><span></span><code>helm<span class="w"> </span>repo<span class="w"> </span>add<span class="w"> </span>magistrala-devops<span class="w"> </span>https://absmach.github.io/devops/
+helm<span class="w"> </span>repo<span class="w"> </span>update
+</code></pre></div>
+<p>For a complete list of all available flags to use with the <code>helm repo add [NAME] [URL] [flags]</code> command, run <code>helm repo add --help</code></p>
+<h4 id="2-install-the-magistrala-chart">2. Install the Magistrala Chart:<a class="headerlink" href="#2-install-the-magistrala-chart" title="Permanent link">#</a></h4>
+<div class="highlight"><pre><span></span><code>helm<span class="w"> </span>install<span class="w"> </span>&lt;release-name&gt;<span class="w"> </span>magistrala-devops/magistrala<span class="w"> </span><span class="o">[</span>flags<span class="o">]</span>
+</code></pre></div>
+<p>Replace <code>&lt;release-name&gt;</code> with your desired release name. For the complete list of available flags to use with the above command, run <code>helm install --help</code>.</p>
+<p>Example with release name and flag:</p>
+<div class="highlight"><pre><span></span><code>helm<span class="w"> </span>install<span class="w"> </span>my-magistrala<span class="w"> </span>magistrala-devops/magistrala<span class="w"> </span>--version<span class="w"> </span><span class="m">0</span>.14.0
+</code></pre></div>
+<hr />
+<h4 id="3-upgrading-the-magistrala-chart">3. Upgrading the Magistrala Chart:<a class="headerlink" href="#3-upgrading-the-magistrala-chart" title="Permanent link">#</a></h4>
+<p>To upgrade the chart to a new version or update configurations:</p>
+<div class="highlight"><pre><span></span><code>helm<span class="w"> </span>upgrade<span class="w"> </span>&lt;release-name&gt;<span class="w"> </span>magistrala-devops/magistrala
+</code></pre></div>
+<hr />
+<h4 id="4-uninstalling-magistrala">4. Uninstalling Magistrala:<a class="headerlink" href="#4-uninstalling-magistrala" title="Permanent link">#</a></h4>
+<p>To uninstall the Magistrala release:</p>
+<div class="highlight"><pre><span></span><code>helm<span class="w"> </span>uninstall<span class="w"> </span>&lt;release-name&gt;<span class="w"> </span>-n<span class="w"> </span>mg
+</code></pre></div>
+<p>This will remove the Magistrala release from the previously created <code>mg</code> namespace. Use the <code>--dry-run</code> flag to see which releases will be uninstalled without actually uninstalling them.</p>
+<hr />
+<h3 id="customizing-magistrala-installation">Customizing Magistrala Installation:<a class="headerlink" href="#customizing-magistrala-installation" title="Permanent link">#</a></h3>
+<p>To override values in the chart, use either the <code>--values</code> flag and pass in a file or use the <code>--set</code> flag and pass configuration from the command line, to force a string value use <code>--set-string</code>. You can use <code>--set-file</code> to set individual values from a file when the value itself is too long for the command line or is dynamically generated. You can also use <code>--set-json</code> to set json values (scalars/objects/arrays) from the command line.</p>
+<p>For example, if you want to set a custom hostname for the ingress (like <code>example.com</code>) and ensure you're using the latest version of the <code>users</code> image, you can do this during installation with the following command::</p>
+<div class="highlight"><pre><span></span><code>helm<span class="w"> </span>install<span class="w"> </span>magistrala<span class="w"> </span>-n<span class="w"> </span>mg<span class="w"> </span>--set<span class="w"> </span>ingress.hostname<span class="o">=</span><span class="s1">&#39;example.com&#39;</span><span class="w"> </span>--set<span class="w"> </span>users.image.tag<span class="o">=</span><span class="s1">&#39;latest&#39;</span>
+</code></pre></div>
+<p>If Magistrala is already installed and you want to update it with new settings (for example, changing the ingress hostname or image tag), you can use the <code>helm upgrade</code> command:</p>
+<div class="highlight"><pre><span></span><code>helm<span class="w"> </span>upgrade<span class="w"> </span>magistrala<span class="w"> </span>-n<span class="w"> </span>mg<span class="w"> </span>--set<span class="w"> </span>ingress.hostname<span class="o">=</span><span class="s1">&#39;example.com&#39;</span><span class="w"> </span>--set<span class="w"> </span>users.image.tag<span class="o">=</span><span class="s1">&#39;latest&#39;</span>
+</code></pre></div>
+<p>This will apply your changes to the existing installation. For a complete table of the configurable parameters and their default values, see <a href="https://github.com/absmach/devops/blob/master/charts/magistrala/README.md">configurable parameters and their default values</a>. For changes to any of the configurable parameters, equally update the documentation at <code>charts/magistrala/README.md</code> using <code>helm-docs</code> as described in <a href="https://github.com/absmach/devops/blob/master/README.md">Autogenerating Helm Chart Documentation</a>.</p>
+<h3 id="magistrala-core">Magistrala Core<a class="headerlink" href="#magistrala-core" title="Permanent link">#</a></h3>
+<p>The Magistrala Core includes the essential services that are installed by default:</p>
+<ul>
+<li>authn</li>
+<li>users</li>
+<li>things</li>
+<li>adapter_http</li>
+<li>adapter_mqtt</li>
+<li>adapter_coap</li>
+<li>ui</li>
+</ul>
+<p>These are the minimum required services to run Magistrala.</p>
+<h3 id="magistrala-add-ons">Magistrala Add-ons<a class="headerlink" href="#magistrala-add-ons" title="Permanent link">#</a></h3>
+<p>Magistrala Add-ons are optional services that are not installed by default. To enable an add-on, you need to specify it during installation. For example, to enable the InfluxDB reader and writer, you would use the following command:</p>
+<div class="highlight"><pre><span></span><code>helm<span class="w"> </span>install<span class="w"> </span>magistrala<span class="w"> </span>.<span class="w"> </span>-n<span class="w"> </span>mg<span class="w"> </span>--set<span class="w"> </span><span class="nv">influxdb</span><span class="o">=</span><span class="nb">true</span>
+</code></pre></div>
+<p>Here’s a list of available add-ons:</p>
+<ul>
+<li>bootstrap</li>
+<li>influxdb.writer</li>
+<li>influxdb.reader</li>
+<li>adapter_opcua</li>
+<li>adapter_lora</li>
+<li>twins</li>
+</ul>
+<h3 id="scaling-services">Scaling Services<a class="headerlink" href="#scaling-services" title="Permanent link">#</a></h3>
+<p>By default, the MQTT adapter, Things, Envoy, Authn, and the Message Broker services are set to scale with a replica count of 3. It’s recommended to set these values according to the number of nodes in your Kubernetes cluster. For example, you can adjust the replica count with the following command:</p>
+<div class="highlight"><pre><span></span><code>helm<span class="w"> </span>install<span class="w"> </span>magistrala<span class="w"> </span>.<span class="w"> </span>-n<span class="w"> </span>mg<span class="w"> </span>--set<span class="w"> </span>defaults.replicaCount<span class="o">=</span><span class="m">3</span><span class="w"> </span>--set<span class="w"> </span>messageBroker.replicaCount<span class="o">=</span><span class="m">3</span>
+</code></pre></div>
+<p>This ensures that your services scale appropriately for your environment.</p>
+<h3 id="additional-steps-to-configure-ingress-controller">Additional Steps to Configure Ingress Controller<a class="headerlink" href="#additional-steps-to-configure-ingress-controller" title="Permanent link">#</a></h3>
+<p>To allow your host to send MQTT messages on ports <code>1883</code> and <code>8883</code>, you need to configure the NGINX Ingress Controller with some additional steps.</p>
+<h4 id="step-1-configure-tcp-and-udp-services">Step 1: Configure TCP and UDP Services<a class="headerlink" href="#step-1-configure-tcp-and-udp-services" title="Permanent link">#</a></h4>
+<p>The NGINX Ingress Controller uses ConfigMaps to expose TCP and UDP services. The necessary ConfigMaps are included in the Helm chart in the <a href="https://github.com/absmach/devops/blob/master/charts/mainflux/templates/ingress.yaml#L141">ingress.yaml</a> file assuming that location of ConfigMaps should be <code>ingress-nginx/tcp-services</code> and <code>ingress-nginx/udp-services</code>. These locations are set with <code>--tcp-services-configmap</code> and <code>--udp-services-configmap</code> flags and you can check it in deployment of Ingress Controller or add it there in <a href="https://kubernetes.github.io/ingress-nginx/user-guide/cli-arguments/">args section for nginx-ingress-controller</a> if it's not already specified. This is explained in <a href="https://kubernetes.github.io/ingress-nginx/user-guide/exposing-tcp-udp-services/">NGINX Ingress documentation</a></p>
+<h4 id="step-2-expose-the-required-ports-in-the-ingress-service">Step 2: Expose the Required Ports in the Ingress Service<a class="headerlink" href="#step-2-expose-the-required-ports-in-the-ingress-service" title="Permanent link">#</a></h4>
+<p>You need to expose the MQTT ports (<code>1883</code> for unencrypted and <code>8883</code> for encrypted messages) and the CoAP port (<code>5683</code> for UDP) in the NGINX Ingress Controller service. You can do that with the following command that edits your service:</p>
+<p><code>kubectl edit svc -n ingress-nginx nginx-ingress-ingress-nginx-controller</code></p>
+<p>and add in spec-&gt;ports:</p>
+<div class="highlight"><pre><span></span><code><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mqtt</span>
+<span class="w">  </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1883</span>
+<span class="w">  </span><span class="nt">protocol</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">TCP</span>
+<span class="w">  </span><span class="nt">targetPort</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1883</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mqtts</span>
+<span class="w">  </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">8883</span>
+<span class="w">  </span><span class="nt">protocol</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">TCP</span>
+<span class="w">  </span><span class="nt">targetPort</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">8883</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">coap</span>
+<span class="w">  </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5683</span>
+<span class="w">  </span><span class="nt">protocol</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">UDP</span>
+<span class="w">  </span><span class="nt">targetPort</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5683</span>
+</code></pre></div>
+<h2 id="configuring-tls-mtls">Configuring TLS &amp; mTLS<a class="headerlink" href="#configuring-tls-mtls" title="Permanent link">#</a></h2>
+<h3 id="generating-certificates">Generating Certificates<a class="headerlink" href="#generating-certificates" title="Permanent link">#</a></h3>
+<p>For testing purposes, you can generate the necessary TLS certificates. Detailed instructions are provided in the <a href="/authentication">authentication</a> chapter of this document. You can use <a href="https://github.com/absmach/magistrala/blob/master/docker/ssl/Makefile">this script</a> to generate the certificates. After replacing all instances of <code>localhost</code> with your actual hostname, run the following commands:</p>
+<div class="highlight"><pre><span></span><code>make<span class="w"> </span>ca
+make<span class="w"> </span>server_cert
+make<span class="w"> </span>thing_cert<span class="w"> </span><span class="nv">KEY</span><span class="o">=</span>&lt;thing_secret&gt;
+</code></pre></div>
+<p>This will generate the following certificates in the <code>certs</code> folder, which you’ll use to set up TLS and mTLS:</p>
+<div class="highlight"><pre><span></span><code>ca.crt
+ca.key
+ca.srl
+magistrala-server.crt
+magistrala-server.key
+thing.crt
+thing.key
+</code></pre></div>
+<h3 id="creating-kubernetes-secrets">Creating Kubernetes Secrets<a class="headerlink" href="#creating-kubernetes-secrets" title="Permanent link">#</a></h3>
+<p>Create kubernetes secrets using those certificates by running commands from <a href="https://github.com/absmach/devops/blob/master/charts/mainflux/secrets/secrets.sh">secrets script</a>. In this example secrets are created in <code>mg</code> namespace:</p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>-n<span class="w"> </span>mg<span class="w"> </span>create<span class="w"> </span>secret<span class="w"> </span>tls<span class="w"> </span>magistrala-server<span class="w"> </span>--key<span class="w"> </span>magistrala-server.key<span class="w"> </span>--cert<span class="w"> </span>magistrala-server.crt
+
+kubectl<span class="w"> </span>-n<span class="w"> </span>mg<span class="w"> </span>create<span class="w"> </span>secret<span class="w"> </span>generic<span class="w"> </span>ca<span class="w"> </span>--from-file<span class="o">=</span>ca.crt
+</code></pre></div>
+<p>You can check if they are succesfully created:</p>
+<div class="highlight"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>secrets<span class="w"> </span>-n<span class="w"> </span>mg
+</code></pre></div>
+<h3 id="configuring-ingress-for-tls">Configuring Ingress for TLS<a class="headerlink" href="#configuring-ingress-for-tls" title="Permanent link">#</a></h3>
+<p>To secure your ingress with a TLS certificate, set the following values in your Helm configuration:</p>
+<ul>
+<li><code>ingress.hostname</code> to your hostname</li>
+<li><code>ingress.tls.hostname</code> to your hostname</li>
+<li><code>ingress.tls.secret</code> to <code>magistrala-server</code></li>
+</ul>
+<p>After updating your Helm chart, your ingress will be secured with the TLS certificate.</p>
+<h3 id="configuring-ingress-for-mtls">Configuring Ingress for mTLS<a class="headerlink" href="#configuring-ingress-for-mtls" title="Permanent link">#</a></h3>
+<p>For mTLS you need to set <code>nginx_internal.mtls.tls="magistrala-server"</code> and <code>nginx_internal.mtls.intermediate_crt="ca"</code>.</p>
+<h3 id="testing-mqtt-with-mtls">Testing MQTT with mTLS<a class="headerlink" href="#testing-mqtt-with-mtls" title="Permanent link">#</a></h3>
+<p>You can test sending an MQTT message with the following command:</p>
+<div class="highlight"><pre><span></span><code>mosquitto_pub<span class="w"> </span>-d<span class="w"> </span>-L<span class="w"> </span>mqtts://&lt;thing_id&gt;:&lt;thing_secret&gt;@example.com:8883/channels/&lt;channel_id&gt;/messages<span class="w">  </span>--cert<span class="w">  </span>thing.crt<span class="w"> </span>--key<span class="w"> </span>thing.key<span class="w"> </span>--cafile<span class="w"> </span>ca.crt<span class="w">  </span>-m<span class="w"> </span><span class="s2">&quot;test-message&quot;</span>
+</code></pre></div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright (c) Abstract Machines
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.1e8ae164.min.js"></script>
+      
+    
+  </body>
+</html>

@@ -1,0 +1,2942 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Magistrala IoT System">
+      
+      
+      
+        <link rel="canonical" href="https://docs.magistrala.abstractmachines.fr/cli/">
+      
+      
+        <link rel="prev" href="../api/">
+      
+      
+        <link rel="next" href="../authentication/">
+      
+      
+      <link rel="icon" href="../img/favicon.png">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.17">
+    
+    
+      
+        <title>CLI - Magistrala</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.bcfcd587.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#cli" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Magistrala" class="md-header__button md-logo" aria-label="Magistrala" data-md-component="logo">
+      
+  <img src="../img/logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Magistrala
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              CLI
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var media,input,key,value,palette=__md_get("__palette");if(palette&&palette.color){"(prefers-color-scheme)"===palette.color.media&&(media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']"),palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent"));for([key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/absmach/magistrala" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Magistrala" class="md-nav__button md-logo" aria-label="Magistrala" data-md-component="logo">
+      
+  <img src="../img/logo.png" alt="logo">
+
+    </a>
+    Magistrala
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/absmach/magistrala" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../architecture/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Architecture
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting-started/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Getting Started
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../entities/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Entities
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    API
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    CLI
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    CLI
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#service" class="md-nav__link">
+    <span class="md-ellipsis">
+      Service
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Service">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#get-magistrala-services-health-check" class="md-nav__link">
+    <span class="md-ellipsis">
+      Get Magistrala services health check
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#users-management" class="md-nav__link">
+    <span class="md-ellipsis">
+      Users management
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Users management">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#create-user" class="md-nav__link">
+    <span class="md-ellipsis">
+      Create User
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#login-user" class="md-nav__link">
+    <span class="md-ellipsis">
+      Login User
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get-user-token-from-refresh-token" class="md-nav__link">
+    <span class="md-ellipsis">
+      Get User Token From Refresh Token
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get-user" class="md-nav__link">
+    <span class="md-ellipsis">
+      Get User
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get-users" class="md-nav__link">
+    <span class="md-ellipsis">
+      Get Users
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#update-user-metadata" class="md-nav__link">
+    <span class="md-ellipsis">
+      Update User Metadata
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#update-user-tags" class="md-nav__link">
+    <span class="md-ellipsis">
+      Update User Tags
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#update-user-identity" class="md-nav__link">
+    <span class="md-ellipsis">
+      Update User Identity
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#update-user-owner" class="md-nav__link">
+    <span class="md-ellipsis">
+      Update User Owner
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#update-user-password" class="md-nav__link">
+    <span class="md-ellipsis">
+      Update User Password
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#enable-user" class="md-nav__link">
+    <span class="md-ellipsis">
+      Enable User
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#disable-user" class="md-nav__link">
+    <span class="md-ellipsis">
+      Disable User
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get-profile-of-the-user-identified-by-the-token" class="md-nav__link">
+    <span class="md-ellipsis">
+      Get Profile of the User identified by the token
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#groups-management" class="md-nav__link">
+    <span class="md-ellipsis">
+      Groups management
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Groups management">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#create-group" class="md-nav__link">
+    <span class="md-ellipsis">
+      Create Group
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get-group" class="md-nav__link">
+    <span class="md-ellipsis">
+      Get Group
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get-groups" class="md-nav__link">
+    <span class="md-ellipsis">
+      Get Groups
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#update-group" class="md-nav__link">
+    <span class="md-ellipsis">
+      Update Group
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get-group-members" class="md-nav__link">
+    <span class="md-ellipsis">
+      Get Group Members
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get-memberships" class="md-nav__link">
+    <span class="md-ellipsis">
+      Get Memberships
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#assign-members-to-group" class="md-nav__link">
+    <span class="md-ellipsis">
+      Assign Members to Group
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#unassign-members-to-group" class="md-nav__link">
+    <span class="md-ellipsis">
+      Unassign Members to Group
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#enable-group" class="md-nav__link">
+    <span class="md-ellipsis">
+      Enable Group
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#disable-group" class="md-nav__link">
+    <span class="md-ellipsis">
+      Disable Group
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#domain-management" class="md-nav__link">
+    <span class="md-ellipsis">
+      Domain management
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Domain management">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#creating-a-new-domain" class="md-nav__link">
+    <span class="md-ellipsis">
+      Creating a New Domain
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get-domains" class="md-nav__link">
+    <span class="md-ellipsis">
+      Get domains
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#updating-domains" class="md-nav__link">
+    <span class="md-ellipsis">
+      Updating Domains
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#disable-a-domain" class="md-nav__link">
+    <span class="md-ellipsis">
+      Disable a domain
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#enable-a-domain" class="md-nav__link">
+    <span class="md-ellipsis">
+      Enable a domain
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#assigning-users-to-a-domain" class="md-nav__link">
+    <span class="md-ellipsis">
+      Assigning Users to a Domain
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#list-domain-users" class="md-nav__link">
+    <span class="md-ellipsis">
+      List Domain users
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#unassign-users-from-a-domain" class="md-nav__link">
+    <span class="md-ellipsis">
+      Unassign users from a domain
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#things-management" class="md-nav__link">
+    <span class="md-ellipsis">
+      Things management
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Things management">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#create-thing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Create Thing
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#create-thing-with-metadata" class="md-nav__link">
+    <span class="md-ellipsis">
+      Create Thing with metadata
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bulk-provision-things" class="md-nav__link">
+    <span class="md-ellipsis">
+      Bulk Provision Things
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#update-thing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Update Thing
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#update-thing-tags" class="md-nav__link">
+    <span class="md-ellipsis">
+      Update Thing Tags
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#update-thing-owner" class="md-nav__link">
+    <span class="md-ellipsis">
+      Update Thing Owner
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#update-thing-secret" class="md-nav__link">
+    <span class="md-ellipsis">
+      Update Thing Secret
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#identify-thing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Identify Thing
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#enable-thing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Enable Thing
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#disable-thing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Disable Thing
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get-thing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Get Thing
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get-things" class="md-nav__link">
+    <span class="md-ellipsis">
+      Get Things
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get-a-subset-list-of-provisioned-things" class="md-nav__link">
+    <span class="md-ellipsis">
+      Get a subset list of provisioned Things
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#share-thing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Share Thing
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#channels-management" class="md-nav__link">
+    <span class="md-ellipsis">
+      Channels management
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Channels management">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#create-channel" class="md-nav__link">
+    <span class="md-ellipsis">
+      Create Channel
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bulk-provision-channels" class="md-nav__link">
+    <span class="md-ellipsis">
+      Bulk Provision Channels
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#update-channel" class="md-nav__link">
+    <span class="md-ellipsis">
+      Update Channel
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#enable-channel" class="md-nav__link">
+    <span class="md-ellipsis">
+      Enable Channel
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#disable-channel" class="md-nav__link">
+    <span class="md-ellipsis">
+      Disable Channel
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get-channel" class="md-nav__link">
+    <span class="md-ellipsis">
+      Get Channel
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get-channels" class="md-nav__link">
+    <span class="md-ellipsis">
+      Get Channels
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get-a-subset-list-of-provisioned-channels" class="md-nav__link">
+    <span class="md-ellipsis">
+      Get a subset list of provisioned Channels
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#connect-thing-to-channel" class="md-nav__link">
+    <span class="md-ellipsis">
+      Connect Thing to Channel
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bulk-connect-things-to-channels" class="md-nav__link">
+    <span class="md-ellipsis">
+      Bulk Connect Things to Channels
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#disconnect-thing-from-channel" class="md-nav__link">
+    <span class="md-ellipsis">
+      Disconnect Thing from Channel
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get-a-subset-list-of-channels-connected-to-thing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Get a subset list of Channels connected to Thing
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get-a-subset-list-of-things-connected-to-channel" class="md-nav__link">
+    <span class="md-ellipsis">
+      Get a subset list of Things connected to Channel
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#messaging" class="md-nav__link">
+    <span class="md-ellipsis">
+      Messaging
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Messaging">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#send-a-message-over-http" class="md-nav__link">
+    <span class="md-ellipsis">
+      Send a message over HTTP
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#read-messages-over-http" class="md-nav__link">
+    <span class="md-ellipsis">
+      Read messages over HTTP
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bootstrap" class="md-nav__link">
+    <span class="md-ellipsis">
+      Bootstrap
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Bootstrap">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#add-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Add configuration
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#view-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      View configuration
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#update-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Update configuration
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#remove-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Remove configuration
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bootstrap-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Bootstrap configuration
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#config" class="md-nav__link">
+    <span class="md-ellipsis">
+      Config
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../authentication/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Authentication
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../authorization/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Authorization
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../security/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Security
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../messaging/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Messaging
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../events/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Events
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../edge/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Edge
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../certs/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Certs
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../bootstrap/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Bootstrap
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lora/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    LoRa
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../opcua/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    OPC-UA
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../provision/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Provision
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../storage/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Storage
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../twins/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Twins
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tracing/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Tracing
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dev-guide/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Developer's Guide
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../kubernetes/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kubernetes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../benchmark/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Benchmark
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="/blogs/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Blogs
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#service" class="md-nav__link">
+    <span class="md-ellipsis">
+      Service
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Service">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#get-magistrala-services-health-check" class="md-nav__link">
+    <span class="md-ellipsis">
+      Get Magistrala services health check
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#users-management" class="md-nav__link">
+    <span class="md-ellipsis">
+      Users management
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Users management">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#create-user" class="md-nav__link">
+    <span class="md-ellipsis">
+      Create User
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#login-user" class="md-nav__link">
+    <span class="md-ellipsis">
+      Login User
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get-user-token-from-refresh-token" class="md-nav__link">
+    <span class="md-ellipsis">
+      Get User Token From Refresh Token
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get-user" class="md-nav__link">
+    <span class="md-ellipsis">
+      Get User
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get-users" class="md-nav__link">
+    <span class="md-ellipsis">
+      Get Users
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#update-user-metadata" class="md-nav__link">
+    <span class="md-ellipsis">
+      Update User Metadata
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#update-user-tags" class="md-nav__link">
+    <span class="md-ellipsis">
+      Update User Tags
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#update-user-identity" class="md-nav__link">
+    <span class="md-ellipsis">
+      Update User Identity
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#update-user-owner" class="md-nav__link">
+    <span class="md-ellipsis">
+      Update User Owner
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#update-user-password" class="md-nav__link">
+    <span class="md-ellipsis">
+      Update User Password
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#enable-user" class="md-nav__link">
+    <span class="md-ellipsis">
+      Enable User
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#disable-user" class="md-nav__link">
+    <span class="md-ellipsis">
+      Disable User
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get-profile-of-the-user-identified-by-the-token" class="md-nav__link">
+    <span class="md-ellipsis">
+      Get Profile of the User identified by the token
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#groups-management" class="md-nav__link">
+    <span class="md-ellipsis">
+      Groups management
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Groups management">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#create-group" class="md-nav__link">
+    <span class="md-ellipsis">
+      Create Group
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get-group" class="md-nav__link">
+    <span class="md-ellipsis">
+      Get Group
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get-groups" class="md-nav__link">
+    <span class="md-ellipsis">
+      Get Groups
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#update-group" class="md-nav__link">
+    <span class="md-ellipsis">
+      Update Group
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get-group-members" class="md-nav__link">
+    <span class="md-ellipsis">
+      Get Group Members
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get-memberships" class="md-nav__link">
+    <span class="md-ellipsis">
+      Get Memberships
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#assign-members-to-group" class="md-nav__link">
+    <span class="md-ellipsis">
+      Assign Members to Group
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#unassign-members-to-group" class="md-nav__link">
+    <span class="md-ellipsis">
+      Unassign Members to Group
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#enable-group" class="md-nav__link">
+    <span class="md-ellipsis">
+      Enable Group
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#disable-group" class="md-nav__link">
+    <span class="md-ellipsis">
+      Disable Group
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#domain-management" class="md-nav__link">
+    <span class="md-ellipsis">
+      Domain management
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Domain management">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#creating-a-new-domain" class="md-nav__link">
+    <span class="md-ellipsis">
+      Creating a New Domain
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get-domains" class="md-nav__link">
+    <span class="md-ellipsis">
+      Get domains
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#updating-domains" class="md-nav__link">
+    <span class="md-ellipsis">
+      Updating Domains
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#disable-a-domain" class="md-nav__link">
+    <span class="md-ellipsis">
+      Disable a domain
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#enable-a-domain" class="md-nav__link">
+    <span class="md-ellipsis">
+      Enable a domain
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#assigning-users-to-a-domain" class="md-nav__link">
+    <span class="md-ellipsis">
+      Assigning Users to a Domain
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#list-domain-users" class="md-nav__link">
+    <span class="md-ellipsis">
+      List Domain users
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#unassign-users-from-a-domain" class="md-nav__link">
+    <span class="md-ellipsis">
+      Unassign users from a domain
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#things-management" class="md-nav__link">
+    <span class="md-ellipsis">
+      Things management
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Things management">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#create-thing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Create Thing
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#create-thing-with-metadata" class="md-nav__link">
+    <span class="md-ellipsis">
+      Create Thing with metadata
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bulk-provision-things" class="md-nav__link">
+    <span class="md-ellipsis">
+      Bulk Provision Things
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#update-thing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Update Thing
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#update-thing-tags" class="md-nav__link">
+    <span class="md-ellipsis">
+      Update Thing Tags
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#update-thing-owner" class="md-nav__link">
+    <span class="md-ellipsis">
+      Update Thing Owner
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#update-thing-secret" class="md-nav__link">
+    <span class="md-ellipsis">
+      Update Thing Secret
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#identify-thing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Identify Thing
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#enable-thing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Enable Thing
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#disable-thing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Disable Thing
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get-thing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Get Thing
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get-things" class="md-nav__link">
+    <span class="md-ellipsis">
+      Get Things
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get-a-subset-list-of-provisioned-things" class="md-nav__link">
+    <span class="md-ellipsis">
+      Get a subset list of provisioned Things
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#share-thing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Share Thing
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#channels-management" class="md-nav__link">
+    <span class="md-ellipsis">
+      Channels management
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Channels management">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#create-channel" class="md-nav__link">
+    <span class="md-ellipsis">
+      Create Channel
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bulk-provision-channels" class="md-nav__link">
+    <span class="md-ellipsis">
+      Bulk Provision Channels
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#update-channel" class="md-nav__link">
+    <span class="md-ellipsis">
+      Update Channel
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#enable-channel" class="md-nav__link">
+    <span class="md-ellipsis">
+      Enable Channel
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#disable-channel" class="md-nav__link">
+    <span class="md-ellipsis">
+      Disable Channel
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get-channel" class="md-nav__link">
+    <span class="md-ellipsis">
+      Get Channel
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get-channels" class="md-nav__link">
+    <span class="md-ellipsis">
+      Get Channels
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get-a-subset-list-of-provisioned-channels" class="md-nav__link">
+    <span class="md-ellipsis">
+      Get a subset list of provisioned Channels
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#connect-thing-to-channel" class="md-nav__link">
+    <span class="md-ellipsis">
+      Connect Thing to Channel
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bulk-connect-things-to-channels" class="md-nav__link">
+    <span class="md-ellipsis">
+      Bulk Connect Things to Channels
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#disconnect-thing-from-channel" class="md-nav__link">
+    <span class="md-ellipsis">
+      Disconnect Thing from Channel
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get-a-subset-list-of-channels-connected-to-thing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Get a subset list of Channels connected to Thing
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get-a-subset-list-of-things-connected-to-channel" class="md-nav__link">
+    <span class="md-ellipsis">
+      Get a subset list of Things connected to Channel
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#messaging" class="md-nav__link">
+    <span class="md-ellipsis">
+      Messaging
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Messaging">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#send-a-message-over-http" class="md-nav__link">
+    <span class="md-ellipsis">
+      Send a message over HTTP
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#read-messages-over-http" class="md-nav__link">
+    <span class="md-ellipsis">
+      Read messages over HTTP
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bootstrap" class="md-nav__link">
+    <span class="md-ellipsis">
+      Bootstrap
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Bootstrap">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#add-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Add configuration
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#view-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      View configuration
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#update-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Update configuration
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#remove-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Remove configuration
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bootstrap-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Bootstrap configuration
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#config" class="md-nav__link">
+    <span class="md-ellipsis">
+      Config
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="cli">CLI<a class="headerlink" href="#cli" title="Permanent link">#</a></h1>
+<p>Magistrala CLI makes it easy to manage users, things, channels and messages.</p>
+<p>CLI can be downloaded as separate asset from <a href="https://github.com/absmach/magistrala/releases">project realeses</a> or it can be built with <code>GNU Make</code> tool:</p>
+<p>Get the Magistrala code</p>
+<div class="highlight"><pre><span></span><code>go<span class="w"> </span>get<span class="w"> </span>github.com/absmach/magistrala
+</code></pre></div>
+<p>Build the magistrala-cli</p>
+<div class="highlight"><pre><span></span><code>make<span class="w"> </span>cli
+</code></pre></div>
+<p>which will build <code>magistrala-cli</code> in <code>&lt;project_root&gt;/build</code> folder.</p>
+<p>Executing <code>build/magistrala-cli</code> without any arguments will output help with all available commands and flags:</p>
+<div class="highlight"><pre><span></span><code>Usage:
+<span class="w">  </span>magistrala-cli<span class="w"> </span><span class="o">[</span>command<span class="o">]</span>
+
+Available<span class="w"> </span>Commands:
+<span class="w">  </span>bootstrap<span class="w">    </span>Bootstrap<span class="w"> </span>management
+<span class="w">  </span>certs<span class="w">        </span>Certificates<span class="w"> </span>management
+<span class="w">  </span>channels<span class="w">     </span>Channels<span class="w"> </span>management
+<span class="w">  </span>completion<span class="w">   </span>Generate<span class="w"> </span>the<span class="w"> </span>autocompletion<span class="w"> </span>script<span class="w"> </span><span class="k">for</span><span class="w"> </span>the<span class="w"> </span>specified<span class="w"> </span>shell
+<span class="w">  </span>config<span class="w">       </span>CLI<span class="w"> </span><span class="nb">local</span><span class="w"> </span>config
+<span class="w">  </span>domains<span class="w">      </span>Domains<span class="w"> </span>management
+<span class="w">  </span>groups<span class="w">       </span>Groups<span class="w"> </span>management
+<span class="w">  </span>health<span class="w">       </span>Health<span class="w"> </span>Check
+<span class="w">  </span><span class="nb">help</span><span class="w">         </span>Help<span class="w"> </span>about<span class="w"> </span>any<span class="w"> </span><span class="nb">command</span>
+<span class="w">  </span>invitations<span class="w">  </span>Invitations<span class="w"> </span>management
+<span class="w">  </span>messages<span class="w">     </span>Send<span class="w"> </span>or<span class="w"> </span><span class="nb">read</span><span class="w"> </span>messages
+<span class="w">  </span>provision<span class="w">    </span>Provision<span class="w"> </span>things<span class="w"> </span>and<span class="w"> </span>channels<span class="w"> </span>from<span class="w"> </span>a<span class="w"> </span>config<span class="w"> </span>file
+<span class="w">  </span>subscription<span class="w"> </span>Subscription<span class="w"> </span>management
+<span class="w">  </span>things<span class="w">       </span>Things<span class="w"> </span>management
+<span class="w">  </span>users<span class="w">        </span>Users<span class="w"> </span>management
+
+Flags:
+<span class="w">  </span>-b,<span class="w"> </span>--bootstrap-url<span class="w"> </span>string<span class="w">     </span>Bootstrap<span class="w"> </span>service<span class="w"> </span>URL<span class="w"> </span><span class="o">(</span>default<span class="w"> </span><span class="s2">&quot;http://localhost:9013&quot;</span><span class="o">)</span>
+<span class="w">  </span>-s,<span class="w"> </span>--certs-url<span class="w"> </span>string<span class="w">         </span>Certs<span class="w"> </span>service<span class="w"> </span>URL<span class="w"> </span><span class="o">(</span>default<span class="w"> </span><span class="s2">&quot;http://localhost:9019&quot;</span><span class="o">)</span>
+<span class="w">  </span>-c,<span class="w"> </span>--config<span class="w"> </span>string<span class="w">            </span>Config<span class="w"> </span>path
+<span class="w">  </span>-C,<span class="w"> </span>--contact<span class="w"> </span>string<span class="w">           </span>Subscription<span class="w"> </span>contact<span class="w"> </span>query<span class="w"> </span>parameter
+<span class="w">  </span>-y,<span class="w"> </span>--content-type<span class="w"> </span>string<span class="w">      </span>Message<span class="w"> </span>content<span class="w"> </span><span class="nb">type</span><span class="w"> </span><span class="o">(</span>default<span class="w"> </span><span class="s2">&quot;application/senml+json&quot;</span><span class="o">)</span>
+<span class="w">  </span>-d,<span class="w"> </span>--domains-url<span class="w"> </span>string<span class="w">       </span>Domains<span class="w"> </span>service<span class="w"> </span>URL<span class="w"> </span><span class="o">(</span>default<span class="w"> </span><span class="s2">&quot;http://localhost:8189&quot;</span><span class="o">)</span>
+<span class="w">  </span>-h,<span class="w"> </span>--help<span class="w">                     </span><span class="nb">help</span><span class="w"> </span><span class="k">for</span><span class="w"> </span>magistrala-cli
+<span class="w">  </span>-H,<span class="w"> </span>--host-url<span class="w"> </span>string<span class="w">          </span>Host<span class="w"> </span>URL<span class="w"> </span><span class="o">(</span>default<span class="w"> </span><span class="s2">&quot;http://localhost&quot;</span><span class="o">)</span>
+<span class="w">  </span>-p,<span class="w"> </span>--http-url<span class="w"> </span>string<span class="w">          </span>HTTP<span class="w"> </span>adapter<span class="w"> </span>URL<span class="w"> </span><span class="o">(</span>default<span class="w"> </span><span class="s2">&quot;http://localhost/http&quot;</span><span class="o">)</span>
+<span class="w">  </span>-I,<span class="w"> </span>--identity<span class="w"> </span>string<span class="w">          </span>User<span class="w"> </span>identity<span class="w"> </span>query<span class="w"> </span>parameter
+<span class="w">  </span>-i,<span class="w"> </span>--insecure<span class="w">                 </span>Do<span class="w"> </span>not<span class="w"> </span>check<span class="w"> </span><span class="k">for</span><span class="w"> </span>TLS<span class="w"> </span>cert
+<span class="w">  </span>-v,<span class="w"> </span>--invitations-url<span class="w"> </span>string<span class="w">   </span>Inivitations<span class="w"> </span>URL<span class="w"> </span><span class="o">(</span>default<span class="w"> </span><span class="s2">&quot;http://localhost:9020&quot;</span><span class="o">)</span>
+<span class="w">  </span>-l,<span class="w"> </span>--limit<span class="w"> </span>uint<span class="w">               </span>Limit<span class="w"> </span>query<span class="w"> </span>parameter<span class="w"> </span><span class="o">(</span>default<span class="w"> </span><span class="m">10</span><span class="o">)</span>
+<span class="w">  </span>-m,<span class="w"> </span>--metadata<span class="w"> </span>string<span class="w">          </span>Metadata<span class="w"> </span>query<span class="w"> </span>parameter
+<span class="w">  </span>-n,<span class="w"> </span>--name<span class="w"> </span>string<span class="w">              </span>Name<span class="w"> </span>query<span class="w"> </span>parameter
+<span class="w">  </span>-o,<span class="w"> </span>--offset<span class="w"> </span>uint<span class="w">              </span>Offset<span class="w"> </span>query<span class="w"> </span>parameter
+<span class="w">  </span>-r,<span class="w"> </span>--raw<span class="w">                      </span>Enables<span class="w"> </span>raw<span class="w"> </span>output<span class="w"> </span>mode<span class="w"> </span><span class="k">for</span><span class="w"> </span>easier<span class="w"> </span>parsing<span class="w"> </span>of<span class="w"> </span>output
+<span class="w">  </span>-R,<span class="w"> </span>--reader-url<span class="w"> </span>string<span class="w">        </span>Reader<span class="w"> </span>URL<span class="w"> </span><span class="o">(</span>default<span class="w"> </span><span class="s2">&quot;http://localhost&quot;</span><span class="o">)</span>
+<span class="w">  </span>-z,<span class="w"> </span>--state<span class="w"> </span>string<span class="w">             </span>Bootstrap<span class="w"> </span>state<span class="w"> </span>query<span class="w"> </span>parameter
+<span class="w">  </span>-S,<span class="w"> </span>--status<span class="w"> </span>string<span class="w">            </span>User<span class="w"> </span>status<span class="w"> </span>query<span class="w"> </span>parameter
+<span class="w">  </span>-t,<span class="w"> </span>--things-url<span class="w"> </span>string<span class="w">        </span>Things<span class="w"> </span>service<span class="w"> </span>URL<span class="w"> </span><span class="o">(</span>default<span class="w"> </span><span class="s2">&quot;http://localhost:9000&quot;</span><span class="o">)</span>
+<span class="w">  </span>-T,<span class="w"> </span>--topic<span class="w"> </span>string<span class="w">             </span>Subscription<span class="w"> </span>topic<span class="w"> </span>query<span class="w"> </span>parameter
+<span class="w">  </span>-u,<span class="w"> </span>--users-url<span class="w"> </span>string<span class="w">         </span>Users<span class="w"> </span>service<span class="w"> </span>URL<span class="w"> </span><span class="o">(</span>default<span class="w"> </span><span class="s2">&quot;http://localhost:9002&quot;</span><span class="o">)</span>
+
+Use<span class="w"> </span><span class="s2">&quot;magistrala-cli [command] --help&quot;</span><span class="w"> </span><span class="k">for</span><span class="w"> </span>more<span class="w"> </span>information<span class="w"> </span>about<span class="w"> </span>a<span class="w"> </span>command.
+</code></pre></div>
+<p>It is also possible to use the docker image <code>magistrala/cli</code> to execute CLI command:</p>
+<div class="highlight"><pre><span></span><code>docker<span class="w"> </span>run<span class="w"> </span>-it<span class="w"> </span>--rm<span class="w"> </span>magistrala/cli<span class="w"> </span>-u<span class="w"> </span>http://&lt;IP_SERVER&gt;<span class="w"> </span><span class="o">[</span>command<span class="o">]</span>
+</code></pre></div>
+<p>For example:</p>
+<div class="highlight"><pre><span></span><code>docker<span class="w"> </span>run<span class="w"> </span>-it<span class="w"> </span>--rm<span class="w"> </span>magistrala/cli<span class="w"> </span>-u<span class="w"> </span>http://192.168.160.1<span class="w"> </span>users<span class="w"> </span>token<span class="w"> </span>admin@example.com<span class="w"> </span><span class="m">12345678</span>
+
+<span class="o">{</span>
+<span class="w">  </span><span class="s2">&quot;access_token&quot;</span>:<span class="w"> </span><span class="s2">&quot;eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODA2MjEzMDcsImlhdCI6MTY4MDYyMDQwNywiaWRlbnRpdHkiOiJhZG1pbkBleGFtcGxlLmNvbSIsImlzcyI6ImNsaWVudHMuYXV0aCIsInN1YiI6ImYxZTA5Y2YxLTgzY2UtNDE4ZS1iZDBmLWU3M2I3M2MxNDM2NSIsInR5cGUiOiJhY2Nlc3MifQ.iKdBv3Ko7PKuhjTC6Xs-DvqfKScjKted3ZMorTwpXCd4QrRSsz6NK_lARG6LjpE0JkymaCMVMZlzykyQ6ZgwpA&quot;</span>,
+<span class="w">  </span><span class="s2">&quot;access_type&quot;</span>:<span class="w"> </span><span class="s2">&quot;Bearer&quot;</span>,
+<span class="w">  </span><span class="s2">&quot;refresh_token&quot;</span>:<span class="w"> </span><span class="s2">&quot;eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODA3MDY4MDcsImlhdCI6MTY4MDYyMDQwNywiaWRlbnRpdHkiOiJhZG1pbkBleGFtcGxlLmNvbSIsImlzcyI6ImNsaWVudHMuYXV0aCIsInN1YiI6ImYxZTA5Y2YxLTgzY2UtNDE4ZS1iZDBmLWU3M2I3M2MxNDM2NSIsInR5cGUiOiJyZWZyZXNoIn0.-0tOtXFZi48VS-FxkCnVxnW2RUkJvqUmzRz3_EYSSKFyKealoFrv7sZIUvrdvKomnUFzXshP0EygL8vjWP1SFw&quot;</span>
+<span class="o">}</span>
+</code></pre></div>
+<p>You can execute each command with <code>-h</code> flag for more information about that command, e.g.</p>
+<div class="highlight"><pre><span></span><code>magistrala-cli<span class="w"> </span>channels<span class="w"> </span>-h
+</code></pre></div>
+<p>Response should look like this:</p>
+<div class="highlight"><pre><span></span><code>Channels<span class="w"> </span>management:<span class="w"> </span>create,<span class="w"> </span>get,<span class="w"> </span>update<span class="w"> </span>or<span class="w"> </span>delete<span class="w"> </span>Channel<span class="w"> </span>and<span class="w"> </span>get<span class="w"> </span>list<span class="w"> </span>of<span class="w"> </span>Things<span class="w"> </span>connected<span class="w"> </span>or<span class="w"> </span>not<span class="w"> </span>connected<span class="w"> </span>to<span class="w"> </span>a<span class="w"> </span>Channel
+
+Usage:
+<span class="w">  </span>magistrala-cli<span class="w"> </span>channels<span class="w"> </span><span class="o">[</span>command<span class="o">]</span>
+
+Available<span class="w"> </span>Commands:
+<span class="w">  </span>assign<span class="w">      </span>Assign<span class="w"> </span>users<span class="w"> </span>or<span class="w"> </span>groups<span class="w"> </span>to<span class="w"> </span>a<span class="w"> </span>channel
+<span class="w">  </span>connections<span class="w"> </span>Connections<span class="w"> </span>list
+<span class="w">  </span>create<span class="w">      </span>Create<span class="w"> </span>channel
+<span class="w">  </span>delete<span class="w">      </span>Delete<span class="w"> </span>channel
+<span class="w">  </span>disable<span class="w">     </span>Change<span class="w"> </span>channel<span class="w"> </span>status<span class="w"> </span>to<span class="w"> </span>disabled
+<span class="w">  </span><span class="nb">enable</span><span class="w">      </span>Change<span class="w"> </span>channel<span class="w"> </span>status<span class="w"> </span>to<span class="w"> </span>enabled
+<span class="w">  </span>get<span class="w">         </span>Get<span class="w"> </span>channel
+<span class="w">  </span>groups<span class="w">      </span>List<span class="w"> </span>groups
+<span class="w">  </span>unassign<span class="w">    </span>Unassign<span class="w"> </span>users<span class="w"> </span>or<span class="w"> </span>groups<span class="w"> </span>from<span class="w"> </span>a<span class="w"> </span>channel
+<span class="w">  </span>update<span class="w">      </span>Update<span class="w"> </span>channel
+<span class="w">  </span>users<span class="w">       </span>List<span class="w"> </span>users
+
+Flags:
+<span class="w">  </span>-h,<span class="w"> </span>--help<span class="w">   </span><span class="nb">help</span><span class="w"> </span><span class="k">for</span><span class="w"> </span>channels
+
+Global<span class="w"> </span>Flags:
+<span class="w">  </span>-b,<span class="w"> </span>--bootstrap-url<span class="w"> </span>string<span class="w">     </span>Bootstrap<span class="w"> </span>service<span class="w"> </span>URL<span class="w"> </span><span class="o">(</span>default<span class="w"> </span><span class="s2">&quot;http://localhost:9013&quot;</span><span class="o">)</span>
+<span class="w">  </span>-s,<span class="w"> </span>--certs-url<span class="w"> </span>string<span class="w">         </span>Certs<span class="w"> </span>service<span class="w"> </span>URL<span class="w"> </span><span class="o">(</span>default<span class="w"> </span><span class="s2">&quot;http://localhost:9019&quot;</span><span class="o">)</span>
+<span class="w">  </span>-c,<span class="w"> </span>--config<span class="w"> </span>string<span class="w">            </span>Config<span class="w"> </span>path
+<span class="w">  </span>-C,<span class="w"> </span>--contact<span class="w"> </span>string<span class="w">           </span>Subscription<span class="w"> </span>contact<span class="w"> </span>query<span class="w"> </span>parameter
+<span class="w">  </span>-y,<span class="w"> </span>--content-type<span class="w"> </span>string<span class="w">      </span>Message<span class="w"> </span>content<span class="w"> </span><span class="nb">type</span><span class="w"> </span><span class="o">(</span>default<span class="w"> </span><span class="s2">&quot;application/senml+json&quot;</span><span class="o">)</span>
+<span class="w">  </span>-d,<span class="w"> </span>--domains-url<span class="w"> </span>string<span class="w">       </span>Domains<span class="w"> </span>service<span class="w"> </span>URL<span class="w"> </span><span class="o">(</span>default<span class="w"> </span><span class="s2">&quot;http://localhost:8189&quot;</span><span class="o">)</span>
+<span class="w">  </span>-H,<span class="w"> </span>--host-url<span class="w"> </span>string<span class="w">          </span>Host<span class="w"> </span>URL<span class="w"> </span><span class="o">(</span>default<span class="w"> </span><span class="s2">&quot;http://localhost&quot;</span><span class="o">)</span>
+<span class="w">  </span>-p,<span class="w"> </span>--http-url<span class="w"> </span>string<span class="w">          </span>HTTP<span class="w"> </span>adapter<span class="w"> </span>URL<span class="w"> </span><span class="o">(</span>default<span class="w"> </span><span class="s2">&quot;http://localhost/http&quot;</span><span class="o">)</span>
+<span class="w">  </span>-I,<span class="w"> </span>--identity<span class="w"> </span>string<span class="w">          </span>User<span class="w"> </span>identity<span class="w"> </span>query<span class="w"> </span>parameter
+<span class="w">  </span>-i,<span class="w"> </span>--insecure<span class="w">                 </span>Do<span class="w"> </span>not<span class="w"> </span>check<span class="w"> </span><span class="k">for</span><span class="w"> </span>TLS<span class="w"> </span>cert
+<span class="w">  </span>-v,<span class="w"> </span>--invitations-url<span class="w"> </span>string<span class="w">   </span>Inivitations<span class="w"> </span>URL<span class="w"> </span><span class="o">(</span>default<span class="w"> </span><span class="s2">&quot;http://localhost:9020&quot;</span><span class="o">)</span>
+<span class="w">  </span>-l,<span class="w"> </span>--limit<span class="w"> </span>uint<span class="w">               </span>Limit<span class="w"> </span>query<span class="w"> </span>parameter<span class="w"> </span><span class="o">(</span>default<span class="w"> </span><span class="m">10</span><span class="o">)</span>
+<span class="w">  </span>-m,<span class="w"> </span>--metadata<span class="w"> </span>string<span class="w">          </span>Metadata<span class="w"> </span>query<span class="w"> </span>parameter
+<span class="w">  </span>-n,<span class="w"> </span>--name<span class="w"> </span>string<span class="w">              </span>Name<span class="w"> </span>query<span class="w"> </span>parameter
+<span class="w">  </span>-o,<span class="w"> </span>--offset<span class="w"> </span>uint<span class="w">              </span>Offset<span class="w"> </span>query<span class="w"> </span>parameter
+<span class="w">  </span>-r,<span class="w"> </span>--raw<span class="w">                      </span>Enables<span class="w"> </span>raw<span class="w"> </span>output<span class="w"> </span>mode<span class="w"> </span><span class="k">for</span><span class="w"> </span>easier<span class="w"> </span>parsing<span class="w"> </span>of<span class="w"> </span>output
+<span class="w">  </span>-R,<span class="w"> </span>--reader-url<span class="w"> </span>string<span class="w">        </span>Reader<span class="w"> </span>URL<span class="w"> </span><span class="o">(</span>default<span class="w"> </span><span class="s2">&quot;http://localhost&quot;</span><span class="o">)</span>
+<span class="w">  </span>-z,<span class="w"> </span>--state<span class="w"> </span>string<span class="w">             </span>Bootstrap<span class="w"> </span>state<span class="w"> </span>query<span class="w"> </span>parameter
+<span class="w">  </span>-S,<span class="w"> </span>--status<span class="w"> </span>string<span class="w">            </span>User<span class="w"> </span>status<span class="w"> </span>query<span class="w"> </span>parameter
+<span class="w">  </span>-t,<span class="w"> </span>--things-url<span class="w"> </span>string<span class="w">        </span>Things<span class="w"> </span>service<span class="w"> </span>URL<span class="w"> </span><span class="o">(</span>default<span class="w"> </span><span class="s2">&quot;http://localhost:9000&quot;</span><span class="o">)</span>
+<span class="w">  </span>-T,<span class="w"> </span>--topic<span class="w"> </span>string<span class="w">             </span>Subscription<span class="w"> </span>topic<span class="w"> </span>query<span class="w"> </span>parameter
+<span class="w">  </span>-u,<span class="w"> </span>--users-url<span class="w"> </span>string<span class="w">         </span>Users<span class="w"> </span>service<span class="w"> </span>URL<span class="w"> </span><span class="o">(</span>default<span class="w"> </span><span class="s2">&quot;http://localhost:9002&quot;</span><span class="o">)</span>
+
+Use<span class="w"> </span><span class="s2">&quot;magistrala-cli channels [command] --help&quot;</span><span class="w"> </span><span class="k">for</span><span class="w"> </span>more<span class="w"> </span>information<span class="w"> </span>about<span class="w"> </span>a<span class="w"> </span>command.
+</code></pre></div>
+<h2 id="service">Service<a class="headerlink" href="#service" title="Permanent link">#</a></h2>
+<h3 id="get-magistrala-services-health-check">Get Magistrala services health check<a class="headerlink" href="#get-magistrala-services-health-check" title="Permanent link">#</a></h3>
+<div class="highlight"><pre><span></span><code>magistrala-cli<span class="w"> </span>health<span class="w"> </span>&lt;service&gt;
+</code></pre></div>
+<p>For "things" service, the response should look like this:</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;build_time&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2024-03-13_16:12:26&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;commit&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;3bf59689fb74388415d2655eb43b5d736ac82fc2&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;things service&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;pass&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;version&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;v0.14.0&quot;</span>
+<span class="p">}</span>
+</code></pre></div>
+<h3 id="users-management">Users management<a class="headerlink" href="#users-management" title="Permanent link">#</a></h3>
+<h4 id="create-user">Create User<a class="headerlink" href="#create-user" title="Permanent link">#</a></h4>
+<p>Magistrala has two options for user creation. Either the <code>&lt;user_token&gt;</code> is provided or not. If the <code>&lt;user_token&gt;</code> is provided then the created user will be owned by the user identified by the <code>&lt;user_token&gt;</code>. Otherwise, when the token is not used, since everybody can create new users, the user will not have an owner. However, the token is still required, in order to be consistent. For more details, please see <a href="../authorization/">Authorization page</a>.</p>
+<div class="highlight"><pre><span></span><code>magistrala-cli<span class="w"> </span>users<span class="w"> </span>create<span class="w"> </span>&lt;user_name&gt;<span class="w"> </span>&lt;user_email&gt;<span class="w"> </span>&lt;user_password&gt;
+
+magistrala-cli<span class="w"> </span>users<span class="w"> </span>create<span class="w"> </span>&lt;user_name&gt;<span class="w"> </span>&lt;user_email&gt;<span class="w"> </span>&lt;user_password&gt;<span class="w"> </span>&lt;user_token&gt;
+</code></pre></div>
+<h4 id="login-user">Login User<a class="headerlink" href="#login-user" title="Permanent link">#</a></h4>
+<div class="highlight"><pre><span></span><code>magistrala-cli<span class="w"> </span>users<span class="w"> </span>token<span class="w"> </span>&lt;user_email&gt;<span class="w"> </span>&lt;user_password&gt;
+</code></pre></div>
+<p>Since v0.14.0, Magistrala supports domains. Domains are used to separate different tenants, and almost all the activities in Magistrala happen under a particular domain. Only two types of actions do not happen within a domain: login where you get to list domains and log in to them, and invitations management to accept domain membership sent by other users.
+An access token with a domain is required for all the other actions on Things, Channels, and Groups. To obtain token within the domain, use the following command:</p>
+<div class="highlight"><pre><span></span><code>magistrala-cli<span class="w"> </span>users<span class="w"> </span>token<span class="w"> </span>&lt;user_email&gt;<span class="w"> </span>&lt;user_password&gt;<span class="w"> </span>&lt;domain_id&gt;
+</code></pre></div>
+<h4 id="get-user-token-from-refresh-token">Get User Token From Refresh Token<a class="headerlink" href="#get-user-token-from-refresh-token" title="Permanent link">#</a></h4>
+<div class="highlight"><pre><span></span><code>magistrala-cli<span class="w"> </span>users<span class="w"> </span>refreshtoken<span class="w"> </span>&lt;refresh_token&gt;
+</code></pre></div>
+<h4 id="get-user">Get User<a class="headerlink" href="#get-user" title="Permanent link">#</a></h4>
+<div class="highlight"><pre><span></span><code>magistrala-cli<span class="w"> </span>users<span class="w"> </span>get<span class="w"> </span>&lt;user_id&gt;<span class="w"> </span>&lt;user_token&gt;
+</code></pre></div>
+<h4 id="get-users">Get Users<a class="headerlink" href="#get-users" title="Permanent link">#</a></h4>
+<div class="highlight"><pre><span></span><code>magistrala-cli<span class="w"> </span>users<span class="w"> </span>get<span class="w"> </span>all<span class="w"> </span>&lt;user_token&gt;
+</code></pre></div>
+<h4 id="update-user-metadata">Update User Metadata<a class="headerlink" href="#update-user-metadata" title="Permanent link">#</a></h4>
+<div class="highlight"><pre><span></span><code>magistrala-cli<span class="w"> </span>users<span class="w"> </span>update<span class="w"> </span>&lt;user_id&gt;<span class="w"> </span><span class="s1">&#39;{&quot;name&quot;:&quot;value1&quot;, &quot;metadata&quot;:{&quot;value2&quot;: &quot;value3&quot;}}&#39;</span><span class="w"> </span>&lt;user_token&gt;
+</code></pre></div>
+<h4 id="update-user-tags">Update User Tags<a class="headerlink" href="#update-user-tags" title="Permanent link">#</a></h4>
+<div class="highlight"><pre><span></span><code>magistrala-cli<span class="w"> </span>users<span class="w"> </span>update<span class="w"> </span>tags<span class="w"> </span>&lt;user_id&gt;<span class="w"> </span><span class="s1">&#39;[&quot;tag1&quot;, &quot;tag2&quot;]&#39;</span><span class="w"> </span>&lt;user_token&gt;
+</code></pre></div>
+<h4 id="update-user-identity">Update User Identity<a class="headerlink" href="#update-user-identity" title="Permanent link">#</a></h4>
+<div class="highlight"><pre><span></span><code>magistrala-cli<span class="w"> </span>users<span class="w"> </span>update<span class="w"> </span>identity<span class="w"> </span>&lt;user_id&gt;<span class="w"> </span>&lt;user_email&gt;<span class="w"> </span>&lt;user_token&gt;
+</code></pre></div>
+<h4 id="update-user-owner">Update User Owner<a class="headerlink" href="#update-user-owner" title="Permanent link">#</a></h4>
+<div class="highlight"><pre><span></span><code>magistrala-cli<span class="w"> </span>users<span class="w"> </span>update<span class="w"> </span>owner<span class="w"> </span>&lt;user_id&gt;<span class="w"> </span>&lt;owner_id&gt;<span class="w"> </span>&lt;user_token&gt;
+</code></pre></div>
+<h4 id="update-user-password">Update User Password<a class="headerlink" href="#update-user-password" title="Permanent link">#</a></h4>
+<div class="highlight"><pre><span></span><code>magistrala-cli<span class="w"> </span>users<span class="w"> </span>password<span class="w"> </span>&lt;old_password&gt;<span class="w"> </span>&lt;password&gt;<span class="w"> </span>&lt;user_token&gt;
+</code></pre></div>
+<h4 id="enable-user">Enable User<a class="headerlink" href="#enable-user" title="Permanent link">#</a></h4>
+<div class="highlight"><pre><span></span><code>magistrala-cli<span class="w"> </span>users<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>&lt;user_id&gt;<span class="w"> </span>&lt;user_token&gt;
+</code></pre></div>
+<h4 id="disable-user">Disable User<a class="headerlink" href="#disable-user" title="Permanent link">#</a></h4>
+<div class="highlight"><pre><span></span><code>magistrala-cli<span class="w"> </span>users<span class="w"> </span>disable<span class="w"> </span>&lt;user_id&gt;<span class="w"> </span>&lt;user_token&gt;
+</code></pre></div>
+<h4 id="get-profile-of-the-user-identified-by-the-token">Get Profile of the User identified by the token<a class="headerlink" href="#get-profile-of-the-user-identified-by-the-token" title="Permanent link">#</a></h4>
+<div class="highlight"><pre><span></span><code>magistrala-cli<span class="w"> </span>users<span class="w"> </span>profile<span class="w"> </span>&lt;user_token&gt;
+</code></pre></div>
+<h3 id="groups-management">Groups management<a class="headerlink" href="#groups-management" title="Permanent link">#</a></h3>
+<h4 id="create-group">Create Group<a class="headerlink" href="#create-group" title="Permanent link">#</a></h4>
+<div class="highlight"><pre><span></span><code>magistrala-cli<span class="w"> </span>groups<span class="w"> </span>create<span class="w"> </span><span class="s1">&#39;{&quot;name&quot;:&quot;&lt;group_name&gt;&quot;,&quot;description&quot;:&quot;&lt;description&gt;&quot;,&quot;parentID&quot;:&quot;&lt;parent_id&gt;&quot;,&quot;metadata&quot;:&quot;&lt;metadata&gt;&quot;}&#39;</span><span class="w"> </span>&lt;user_token&gt;
+</code></pre></div>
+<h4 id="get-group">Get Group<a class="headerlink" href="#get-group" title="Permanent link">#</a></h4>
+<div class="highlight"><pre><span></span><code>magistrala-cli<span class="w"> </span>groups<span class="w"> </span>get<span class="w"> </span>&lt;group_id&gt;<span class="w"> </span>&lt;user_token&gt;
+</code></pre></div>
+<h4 id="get-groups">Get Groups<a class="headerlink" href="#get-groups" title="Permanent link">#</a></h4>
+<div class="highlight"><pre><span></span><code>magistrala-cli<span class="w"> </span>groups<span class="w"> </span>get<span class="w"> </span>all<span class="w"> </span>&lt;user_token&gt;
+</code></pre></div>
+<h4 id="update-group">Update Group<a class="headerlink" href="#update-group" title="Permanent link">#</a></h4>
+<div class="highlight"><pre><span></span><code>magistrala-cli<span class="w"> </span>groups<span class="w"> </span>update<span class="w"> </span><span class="s1">&#39;{&quot;id&quot;:&quot;&lt;group_id&gt;&quot;,&quot;name&quot;:&quot;&lt;group_name&gt;&quot;,&quot;description&quot;:&quot;&lt;description&gt;&quot;,&quot;metadata&quot;:&quot;&lt;metadata&gt;&quot;}&#39;</span><span class="w"> </span>&lt;user_token&gt;
+</code></pre></div>
+<h4 id="get-group-members">Get Group Members<a class="headerlink" href="#get-group-members" title="Permanent link">#</a></h4>
+<div class="highlight"><pre><span></span><code>magistrala-cli<span class="w"> </span>groups<span class="w"> </span>members<span class="w"> </span>&lt;group_id&gt;<span class="w"> </span>&lt;user_token&gt;
+</code></pre></div>
+<h4 id="get-memberships">Get Memberships<a class="headerlink" href="#get-memberships" title="Permanent link">#</a></h4>
+<div class="highlight"><pre><span></span><code>magistrala-cli<span class="w"> </span>groups<span class="w"> </span>membership<span class="w"> </span>&lt;member_id&gt;<span class="w"> </span>&lt;user_token&gt;
+</code></pre></div>
+<h4 id="assign-members-to-group">Assign Members to Group<a class="headerlink" href="#assign-members-to-group" title="Permanent link">#</a></h4>
+<div class="highlight"><pre><span></span><code>magistrala-cli<span class="w"> </span>groups<span class="w"> </span>assign<span class="w"> </span>&lt;member_ids&gt;<span class="w"> </span>&lt;member_type&gt;<span class="w"> </span>&lt;group_id&gt;<span class="w"> </span>&lt;user_token&gt;
+</code></pre></div>
+<h4 id="unassign-members-to-group">Unassign Members to Group<a class="headerlink" href="#unassign-members-to-group" title="Permanent link">#</a></h4>
+<div class="highlight"><pre><span></span><code>magistrala-cli<span class="w"> </span>groups<span class="w"> </span>unassign<span class="w"> </span>&lt;member_ids&gt;<span class="w"> </span>&lt;group_id&gt;<span class="w">  </span>&lt;user_token&gt;
+</code></pre></div>
+<h4 id="enable-group">Enable Group<a class="headerlink" href="#enable-group" title="Permanent link">#</a></h4>
+<div class="highlight"><pre><span></span><code>magistrala-cli<span class="w"> </span>groups<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>&lt;group_id&gt;<span class="w"> </span>&lt;user_token&gt;
+</code></pre></div>
+<h4 id="disable-group">Disable Group<a class="headerlink" href="#disable-group" title="Permanent link">#</a></h4>
+<div class="highlight"><pre><span></span><code>magistrala-cli<span class="w"> </span>groups<span class="w"> </span>disable<span class="w"> </span>&lt;group_id&gt;<span class="w"> </span>&lt;user_token&gt;
+</code></pre></div>
+<h3 id="domain-management">Domain management<a class="headerlink" href="#domain-management" title="Permanent link">#</a></h3>
+<h4 id="creating-a-new-domain">Creating a New Domain<a class="headerlink" href="#creating-a-new-domain" title="Permanent link">#</a></h4>
+<div class="highlight"><pre><span></span><code>magistrala-cli<span class="w"> </span>domains<span class="w"> </span>create<span class="w"> </span>&lt;domain_name&gt;<span class="w"> </span>&lt;domain_alias&gt;<span class="w"> </span>&lt;user_token&gt;
+</code></pre></div>
+<p>In this command:</p>
+<ul>
+<li><code>&lt;domain_name&gt;</code> is the name you want to give to the new domain.</li>
+<li><code>&lt;domain_alias&gt;</code> is the alias for the new domain.</li>
+<li><code>&lt;user_token&gt;</code> is your user token.</li>
+</ul>
+<p>Here's an example creating a new domain with the name <code>mydomain</code> and the alias <code>myalias</code> with the user access token stored in the <code>ADMIN_ACCESS</code> environment variable:</p>
+<div class="highlight"><pre><span></span><code>magistrala-cli<span class="w"> </span>domains<span class="w"> </span>create<span class="w"> </span><span class="s2">&quot;mydomain&quot;</span><span class="w"> </span><span class="s2">&quot;myalias&quot;</span><span class="w"> </span><span class="nv">$ADMIN_ACCESS</span>
+</code></pre></div>
+<p>After running the command, you should see output similar to this:</p>
+<div class="highlight"><pre><span></span><code><span class="o">{</span>
+<span class="w">  </span><span class="s2">&quot;alias&quot;</span>:<span class="w"> </span><span class="s2">&quot;myalias&quot;</span>,
+<span class="w">  </span><span class="s2">&quot;created_at&quot;</span>:<span class="w"> </span><span class="s2">&quot;2024-03-27T09:35:03.61728Z&quot;</span>,
+<span class="w">  </span><span class="s2">&quot;created_by&quot;</span>:<span class="w"> </span><span class="s2">&quot;f905b21e-3755-4f73-8444-0fd6db6b96e3&quot;</span>,
+<span class="w">  </span><span class="s2">&quot;id&quot;</span>:<span class="w"> </span><span class="s2">&quot;6fcfec51-423d-4f69-b5c5-1ed1c9ae547c&quot;</span>,
+<span class="w">  </span><span class="s2">&quot;name&quot;</span>:<span class="w"> </span><span class="s2">&quot;mydomain&quot;</span>,
+<span class="w">  </span><span class="s2">&quot;status&quot;</span>:<span class="w"> </span><span class="s2">&quot;enabled&quot;</span>,
+<span class="w">  </span><span class="s2">&quot;updated_at&quot;</span>:<span class="w"> </span><span class="s2">&quot;0001-01-01T00:00:00Z&quot;</span>
+<span class="o">}</span>
+</code></pre></div>
+<h4 id="get-domains">Get domains<a class="headerlink" href="#get-domains" title="Permanent link">#</a></h4>
+<p>For a single domain</p>
+<div class="highlight"><pre><span></span><code>magistrala-cli<span class="w"> </span>domains<span class="w"> </span>get<span class="w"> </span>&lt;domain_id&gt;<span class="w"> </span>&lt;user_token&gt;
+</code></pre></div>
+<p>where:</p>
+<ul>
+<li><code>&lt;domain_id&gt;</code> is the unique identifier of the domain you want to retrieve information about.</li>
+<li><code>&lt;user_token&gt;</code> is your user token.</li>
+</ul>
+<p>For example</p>
+<div class="highlight"><pre><span></span><code>magistrala-cli<span class="w"> </span>domains<span class="w"> </span>get<span class="w"> </span><span class="s2">&quot;6fcfec51-423d-4f69-b5c5-1ed1c9ae547c&quot;</span><span class="w"> </span><span class="nv">$ADMIN_ACCESS</span>
+</code></pre></div>
+<p>The ouptut should look like</p>
+<div class="highlight"><pre><span></span><code><span class="o">{</span>
+<span class="w">  </span><span class="s2">&quot;alias&quot;</span>:<span class="w"> </span><span class="s2">&quot;myalias&quot;</span>,
+<span class="w">  </span><span class="s2">&quot;created_at&quot;</span>:<span class="w"> </span><span class="s2">&quot;2024-03-27T09:35:03.61728Z&quot;</span>,
+<span class="w">  </span><span class="s2">&quot;created_by&quot;</span>:<span class="w"> </span><span class="s2">&quot;f905b21e-3755-4f73-8444-0fd6db6b96e3&quot;</span>,
+<span class="w">  </span><span class="s2">&quot;id&quot;</span>:<span class="w"> </span><span class="s2">&quot;6fcfec51-423d-4f69-b5c5-1ed1c9ae547c&quot;</span>,
+<span class="w">  </span><span class="s2">&quot;name&quot;</span>:<span class="w"> </span><span class="s2">&quot;mydomain&quot;</span>,
+<span class="w">  </span><span class="s2">&quot;status&quot;</span>:<span class="w"> </span><span class="s2">&quot;enabled&quot;</span>,
+<span class="w">  </span><span class="s2">&quot;updated_at&quot;</span>:<span class="w"> </span><span class="s2">&quot;0001-01-01T00:00:00Z&quot;</span>
+<span class="o">}</span>
+</code></pre></div>
+<p>For all domains</p>
+<div class="highlight"><pre><span></span><code>magistrala-cli<span class="w"> </span>domains<span class="w"> </span>get<span class="w"> </span>all<span class="w"> </span>&lt;user_token&gt;
+</code></pre></div>
+<p>For example</p>
+<div class="highlight"><pre><span></span><code>magistrala-cli<span class="w"> </span>domains<span class="w"> </span>get<span class="w"> </span>all<span class="w"> </span><span class="nv">$ADMIN_ACCESS</span>
+</code></pre></div>
+<p>After running this command, you will receive information about all domains. The output should look something like this:</p>
+<div class="highlight"><pre><span></span><code><span class="o">{</span>
+<span class="w">  </span><span class="s2">&quot;domains&quot;</span>:<span class="w"> </span><span class="o">[</span>
+<span class="w">    </span><span class="o">{</span>
+<span class="w">      </span><span class="s2">&quot;alias&quot;</span>:<span class="w"> </span><span class="s2">&quot;myalias&quot;</span>,
+<span class="w">      </span><span class="s2">&quot;created_at&quot;</span>:<span class="w"> </span><span class="s2">&quot;2024-03-27T09:35:03.61728Z&quot;</span>,
+<span class="w">      </span><span class="s2">&quot;created_by&quot;</span>:<span class="w"> </span><span class="s2">&quot;f905b21e-3755-4f73-8444-0fd6db6b96e3&quot;</span>,
+<span class="w">      </span><span class="s2">&quot;id&quot;</span>:<span class="w"> </span><span class="s2">&quot;6fcfec51-423d-4f69-b5c5-1ed1c9ae547c&quot;</span>,
+<span class="w">      </span><span class="s2">&quot;name&quot;</span>:<span class="w"> </span><span class="s2">&quot;mydomain&quot;</span>,
+<span class="w">      </span><span class="s2">&quot;status&quot;</span>:<span class="w"> </span><span class="s2">&quot;enabled&quot;</span>,
+<span class="w">      </span><span class="s2">&quot;updated_at&quot;</span>:<span class="w"> </span><span class="s2">&quot;0001-01-01T00:00:00Z&quot;</span>
+<span class="w">    </span><span class="o">}</span>,
+<span class="w">    </span><span class="o">{</span>
+<span class="w">      </span><span class="s2">&quot;alias&quot;</span>:<span class="w"> </span><span class="s2">&quot;mydomain&quot;</span>,
+<span class="w">      </span><span class="s2">&quot;created_at&quot;</span>:<span class="w"> </span><span class="s2">&quot;2024-03-21T07:57:50.320928Z&quot;</span>,
+<span class="w">      </span><span class="s2">&quot;created_by&quot;</span>:<span class="w"> </span><span class="s2">&quot;3d57bf0e-409b-42ee-9adb-abcfb3d4b710&quot;</span>,
+<span class="w">      </span><span class="s2">&quot;id&quot;</span>:<span class="w"> </span><span class="s2">&quot;5b6d3cf9-14fc-4283-9ff9-fdd6127ef402&quot;</span>,
+<span class="w">      </span><span class="s2">&quot;name&quot;</span>:<span class="w"> </span><span class="s2">&quot;mydomain&quot;</span>,
+<span class="w">      </span><span class="s2">&quot;permission&quot;</span>:<span class="w"> </span><span class="s2">&quot;administrator&quot;</span>,
+<span class="w">      </span><span class="s2">&quot;status&quot;</span>:<span class="w"> </span><span class="s2">&quot;enabled&quot;</span>,
+<span class="w">      </span><span class="s2">&quot;updated_at&quot;</span>:<span class="w"> </span><span class="s2">&quot;0001-01-01T00:00:00Z&quot;</span>
+<span class="w">    </span><span class="o">}</span>
+<span class="w">  </span><span class="o">]</span>,
+<span class="w">  </span><span class="s2">&quot;limit&quot;</span>:<span class="w"> </span><span class="m">10</span>,
+<span class="w">  </span><span class="s2">&quot;offset&quot;</span>:<span class="w"> </span><span class="m">0</span>,
+<span class="w">  </span><span class="s2">&quot;total&quot;</span>:<span class="w"> </span><span class="m">2</span>
+<span class="o">}</span>
+</code></pre></div>
+<h4 id="updating-domains">Updating Domains<a class="headerlink" href="#updating-domains" title="Permanent link">#</a></h4>
+<div class="highlight"><pre><span></span><code>magistrala-cli<span class="w"> </span>domains<span class="w"> </span>update<span class="w"> </span>&lt;domain_id&gt;<span class="w"> </span><span class="s1">&#39;{&quot;name&quot; : &quot;&lt;new_domain_name&gt;&quot;, &quot;alias&quot; : &quot;&lt;new_domain_alias&gt;&quot;, &quot;metadata&quot; : &quot;&lt;new_metadata&gt;&quot;}&#39;</span><span class="w"> </span>&lt;user_token&gt;
+</code></pre></div>
+<p>In this command:</p>
+<ul>
+<li><code>&lt;domain_id&gt;</code> is the unique identifier of the domain you want to update.</li>
+<li><code>&lt;new_domain_name&gt;</code> is the new name you want to give to the domain.</li>
+<li><code>&lt;new_domain_alias&gt;</code> is the new alias for the domain.</li>
+<li><code>&lt;new_metadata&gt;</code> is the new metadata for the domain.</li>
+<li><code>&lt;user_token&gt;</code> is your user token.</li>
+</ul>
+<p>Here's an example in which we're updating the domain with the ID <code>6fcfec51-423d-4f69-b5c5-1ed1c9ae547c</code> to have the name <code>domain_name</code> instead of <code>mydomain</code>, the alias <code>domain_alias</code> instead of <code>myalias</code>, and adding new metadata <code>{"location" : "london"}</code>.</p>
+<div class="highlight"><pre><span></span><code>magistrala-cli<span class="w"> </span>domains<span class="w"> </span>update<span class="w"> </span><span class="s2">&quot;6fcfec51-423d-4f69-b5c5-1ed1c9ae547c&quot;</span><span class="w"> </span><span class="s1">&#39;{&quot;name&quot; : &quot;domain_name&quot;, &quot;alias&quot; : &quot;domain_alias&quot;, &quot;metadata&quot; : {&quot;location&quot; : &quot;london&quot;}}&#39;</span><span class="w"> </span><span class="nv">$ADMIN_ACCESS</span>
+</code></pre></div>
+<p>After running the command, you should see an output similar to this:</p>
+<div class="highlight"><pre><span></span><code><span class="o">{</span>
+<span class="w">  </span><span class="s2">&quot;alias&quot;</span>:<span class="w"> </span><span class="s2">&quot;domain_alias&quot;</span>,
+<span class="w">  </span><span class="s2">&quot;created_at&quot;</span>:<span class="w"> </span><span class="s2">&quot;2024-03-27T09:35:03.61728Z&quot;</span>,
+<span class="w">  </span><span class="s2">&quot;created_by&quot;</span>:<span class="w"> </span><span class="s2">&quot;f905b21e-3755-4f73-8444-0fd6db6b96e3&quot;</span>,
+<span class="w">  </span><span class="s2">&quot;id&quot;</span>:<span class="w"> </span><span class="s2">&quot;6fcfec51-423d-4f69-b5c5-1ed1c9ae547c&quot;</span>,
+<span class="w">  </span><span class="s2">&quot;metadata&quot;</span>:<span class="w"> </span><span class="o">{</span>
+<span class="w">    </span><span class="s2">&quot;location&quot;</span>:<span class="w"> </span><span class="s2">&quot;london&quot;</span>
+<span class="w">  </span><span class="o">}</span>,
+<span class="w">  </span><span class="s2">&quot;name&quot;</span>:<span class="w"> </span><span class="s2">&quot;domain_name&quot;</span>,
+<span class="w">  </span><span class="s2">&quot;status&quot;</span>:<span class="w"> </span><span class="s2">&quot;enabled&quot;</span>,
+<span class="w">  </span><span class="s2">&quot;updated_at&quot;</span>:<span class="w"> </span><span class="s2">&quot;2024-03-27T09:56:43.66215Z&quot;</span>,
+<span class="w">  </span><span class="s2">&quot;updated_by&quot;</span>:<span class="w"> </span><span class="s2">&quot;f905b21e-3755-4f73-8444-0fd6db6b96e3&quot;</span>
+<span class="o">}</span>
+</code></pre></div>
+<h4 id="disable-a-domain">Disable a domain<a class="headerlink" href="#disable-a-domain" title="Permanent link">#</a></h4>
+<div class="highlight"><pre><span></span><code>magistrala-cli<span class="w"> </span>domains<span class="w"> </span>disable<span class="w"> </span>&lt;domain_id&gt;<span class="w"> </span>&lt;user_token&gt;
+</code></pre></div>
+<p>In this command:</p>
+<ul>
+<li><code>&lt;domain_id&gt;</code> is the unique identifier of the domain you want to disable.</li>
+<li><code>&lt;user_token&gt;</code> is your user token.</li>
+</ul>
+<p>For example,</p>
+<div class="highlight"><pre><span></span><code>magistrala-cli<span class="w"> </span>domains<span class="w"> </span>disable<span class="w"> </span><span class="s2">&quot;6fcfec51-423d-4f69-b5c5-1ed1c9ae547c&quot;</span><span class="w"> </span><span class="nv">$ADMIN_ACCESS</span>
+</code></pre></div>
+<h4 id="enable-a-domain">Enable a domain<a class="headerlink" href="#enable-a-domain" title="Permanent link">#</a></h4>
+<div class="highlight"><pre><span></span><code>magistrala-cli<span class="w"> </span>domains<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>&lt;domain_id&gt;<span class="w"> </span>&lt;user_token&gt;
+</code></pre></div>
+<p>In this command:</p>
+<ul>
+<li><code>&lt;domain_id&gt;</code> is the unique identifier of the domain you want to enable.</li>
+<li><code>&lt;user_token&gt;</code> is your user token.</li>
+</ul>
+<p>For example,</p>
+<div class="highlight"><pre><span></span><code>magistrala-cli<span class="w"> </span>domains<span class="w"> </span><span class="nb">enable</span><span class="w"> </span><span class="s2">&quot;6fcfec51-423d-4f69-b5c5-1ed1c9ae547c&quot;</span><span class="w"> </span><span class="nv">$ADMIN_ACCESS</span>
+</code></pre></div>
+<h4 id="assigning-users-to-a-domain">Assigning Users to a Domain<a class="headerlink" href="#assigning-users-to-a-domain" title="Permanent link">#</a></h4>
+<div class="highlight"><pre><span></span><code>magistrala-cli<span class="w"> </span>domains<span class="w"> </span>assign<span class="w"> </span>users<span class="w"> </span>&lt;relation&gt;<span class="w"> </span>&lt;user_ids&gt;<span class="w"> </span>&lt;domain_id&gt;<span class="w"> </span>&lt;user_token&gt;
+</code></pre></div>
+<p>In this command:</p>
+<ul>
+<li><code>&lt;relation&gt;</code> is the relationship of the user to the domain (for example, 'Administrator', 'Editor', 'Viewer', or 'Member').</li>
+<li><code>&lt;user_ids&gt;</code> is a list of user IDs that you want to assign to the domain.</li>
+<li><code>&lt;domain_id&gt;</code> is the unique identifier of the domain to which you want to assign the users.</li>
+<li><code>&lt;user_token&gt;</code> is your user token.</li>
+</ul>
+<p>For example,</p>
+<div class="highlight"><pre><span></span><code>magistrala-cli<span class="w"> </span>domains<span class="w"> </span>assign<span class="w"> </span>users<span class="w"> </span><span class="s2">&quot;member&quot;</span><span class="w"> </span><span class="s2">&quot;6a8c0864-1d95-4053-a335-a6399c0ccb0a&quot;</span><span class="w"> </span><span class="s2">&quot;6fcfec51-423d-4f69-b5c5-1ed1c9ae547c&quot;</span><span class="w"> </span><span class="nv">$ADMIN_ACCESS</span>
+</code></pre></div>
+<h4 id="list-domain-users">List Domain users<a class="headerlink" href="#list-domain-users" title="Permanent link">#</a></h4>
+<div class="highlight"><pre><span></span><code>magistrala-cli<span class="w"> </span>domains<span class="w"> </span>users<span class="w"> </span>&lt;domain_id&gt;<span class="w">  </span>&lt;user_token&gt;
+</code></pre></div>
+<p>For example, if your domain ID is <code>6fcfec51-423d-4f69-b5c5-1ed1c9ae547c</code> and your user token is stored in the <code>ADMIN_ACCESS</code> environment variable, you would type:</p>
+<div class="highlight"><pre><span></span><code>magistrala-cli<span class="w"> </span>domains<span class="w"> </span>users<span class="w"> </span><span class="s2">&quot;6fcfec51-423d-4f69-b5c5-1ed1c9ae547c&quot;</span><span class="w"> </span><span class="nv">$ADMIN_ACCESS</span>
+</code></pre></div>
+<p>After you run this command, the system will show you a list of users in the domain, like this:</p>
+<div class="highlight"><pre><span></span><code><span class="o">{</span>
+<span class="w">  </span><span class="s2">&quot;limit&quot;</span>:<span class="w"> </span><span class="m">10</span>,
+<span class="w">  </span><span class="s2">&quot;offset&quot;</span>:<span class="w"> </span><span class="m">0</span>,
+<span class="w">  </span><span class="s2">&quot;total&quot;</span>:<span class="w"> </span><span class="m">2</span>,
+<span class="w">  </span><span class="s2">&quot;users&quot;</span>:<span class="w"> </span><span class="o">[</span>
+<span class="w">    </span><span class="o">{</span>
+<span class="w">      </span><span class="s2">&quot;created_at&quot;</span>:<span class="w"> </span><span class="s2">&quot;2024-03-21T08:06:55.232067Z&quot;</span>,
+<span class="w">      </span><span class="s2">&quot;credentials&quot;</span>:<span class="w"> </span><span class="o">{</span>
+<span class="w">        </span><span class="s2">&quot;identity&quot;</span>:<span class="w"> </span><span class="s2">&quot;user1@email.com&quot;</span>
+<span class="w">      </span><span class="o">}</span>,
+<span class="w">      </span><span class="s2">&quot;id&quot;</span>:<span class="w"> </span><span class="s2">&quot;6a8c0864-1d95-4053-a335-a6399c0ccb0a&quot;</span>,
+<span class="w">      </span><span class="s2">&quot;metadata&quot;</span>:<span class="w"> </span><span class="o">{</span>
+<span class="w">        </span><span class="s2">&quot;location&quot;</span>:<span class="w"> </span><span class="s2">&quot;london&quot;</span>
+<span class="w">      </span><span class="o">}</span>,
+<span class="w">      </span><span class="s2">&quot;name&quot;</span>:<span class="w"> </span><span class="s2">&quot;user1&quot;</span>,
+<span class="w">      </span><span class="s2">&quot;status&quot;</span>:<span class="w"> </span><span class="s2">&quot;enabled&quot;</span>,
+<span class="w">      </span><span class="s2">&quot;tags&quot;</span>:<span class="w"> </span><span class="o">[</span>
+<span class="w">        </span><span class="s2">&quot;male&quot;</span>,
+<span class="w">        </span><span class="s2">&quot;developer&quot;</span>
+<span class="w">      </span><span class="o">]</span>,
+<span class="w">      </span><span class="s2">&quot;updated_at&quot;</span>:<span class="w"> </span><span class="s2">&quot;2024-03-25T10:31:26.557439Z&quot;</span>
+<span class="w">    </span><span class="o">}</span>,
+<span class="w">    </span><span class="o">{</span>
+<span class="w">      </span><span class="s2">&quot;created_at&quot;</span>:<span class="w"> </span><span class="s2">&quot;2024-03-25T09:21:03.821017Z&quot;</span>,
+<span class="w">      </span><span class="s2">&quot;credentials&quot;</span>:<span class="w"> </span><span class="o">{</span>
+<span class="w">        </span><span class="s2">&quot;identity&quot;</span>:<span class="w"> </span><span class="s2">&quot;user3@example.com&quot;</span>
+<span class="w">      </span><span class="o">}</span>,
+<span class="w">      </span><span class="s2">&quot;id&quot;</span>:<span class="w"> </span><span class="s2">&quot;78411c55-adfe-4940-bbbf-e973d60a4e14&quot;</span>,
+<span class="w">      </span><span class="s2">&quot;name&quot;</span>:<span class="w"> </span><span class="s2">&quot;user3&quot;</span>,
+<span class="w">      </span><span class="s2">&quot;status&quot;</span>:<span class="w"> </span><span class="s2">&quot;enabled&quot;</span>,
+<span class="w">      </span><span class="s2">&quot;updated_at&quot;</span>:<span class="w"> </span><span class="s2">&quot;0001-01-01T00:00:00Z&quot;</span>
+<span class="w">    </span><span class="o">}</span>
+<span class="w">  </span><span class="o">]</span>
+<span class="o">}</span>
+</code></pre></div>
+<p>This output tells you that there are currently 2 users in the domain.</p>
+<h4 id="unassign-users-from-a-domain">Unassign users from a domain<a class="headerlink" href="#unassign-users-from-a-domain" title="Permanent link">#</a></h4>
+<div class="highlight"><pre><span></span><code>magistrala-cli<span class="w"> </span>domains<span class="w"> </span>unassign<span class="w"> </span>users<span class="w"> </span>&lt;relation&gt;<span class="w"> </span>&lt;user_ids&gt;<span class="w"> </span>&lt;domain_id&gt;<span class="w"> </span>&lt;user_token&gt;
+</code></pre></div>
+<p>For example, if you want to remove a user with the ID <code>6a8c0864-1d95-4053-a335-a6399c0ccb0a</code> from a domain with the ID <code>6fcfec51-423d-4f69-b5c5-1ed1c9ae547c</code>, and the user is a member of the domain, you would type:</p>
+<div class="highlight"><pre><span></span><code>magistrala-cli<span class="w"> </span>domains<span class="w"> </span>unassign<span class="w"> </span>users<span class="w"> </span><span class="s2">&quot;member&quot;</span><span class="w"> </span><span class="s2">&quot;6a8c0864-1d95-4053-a335-a6399c0ccb0a&quot;</span><span class="w"> </span><span class="s2">&quot;6fcfec51-423d-4f69-b5c5-1ed1c9ae547c&quot;</span><span class="w"> </span><span class="nv">$ADMIN_ACCESS</span>
+</code></pre></div>
+<h3 id="things-management">Things management<a class="headerlink" href="#things-management" title="Permanent link">#</a></h3>
+<h4 id="create-thing">Create Thing<a class="headerlink" href="#create-thing" title="Permanent link">#</a></h4>
+<div class="highlight"><pre><span></span><code>magistrala-cli<span class="w"> </span>things<span class="w"> </span>create<span class="w"> </span><span class="s1">&#39;{&quot;name&quot;:&quot;myThing&quot;}&#39;</span><span class="w"> </span>&lt;user_token&gt;
+</code></pre></div>
+<h4 id="create-thing-with-metadata">Create Thing with metadata<a class="headerlink" href="#create-thing-with-metadata" title="Permanent link">#</a></h4>
+<div class="highlight"><pre><span></span><code>magistrala-cli<span class="w"> </span>things<span class="w"> </span>create<span class="w"> </span><span class="s1">&#39;{&quot;name&quot;:&quot;myThing&quot;, &quot;metadata&quot;: {&quot;key1&quot;:&quot;value1&quot;}}&#39;</span><span class="w"> </span>&lt;user_token&gt;
+</code></pre></div>
+<h4 id="bulk-provision-things">Bulk Provision Things<a class="headerlink" href="#bulk-provision-things" title="Permanent link">#</a></h4>
+<div class="highlight"><pre><span></span><code>magistrala-cli<span class="w"> </span>provision<span class="w"> </span>things<span class="w"> </span>&lt;file&gt;<span class="w"> </span>&lt;user_token&gt;
+</code></pre></div>
+<ul>
+<li><code>file</code> - A CSV or JSON file containing thing names (must have extension <code>.csv</code> or <code>.json</code>)</li>
+<li><code>user_token</code> - A valid user auth token for the current system</li>
+</ul>
+<p>An example CSV file might be:</p>
+<div class="highlight"><pre><span></span><code>thing1,
+thing2,
+thing3,
+</code></pre></div>
+<p>in which the first column is thing names.</p>
+<p>A comparable JSON file would be</p>
+<div class="highlight"><pre><span></span><code><span class="p">[</span>
+<span class="w">  </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&lt;thing1_name&gt;&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;enabled&quot;</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&lt;thing2_name&gt;&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;disabled&quot;</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&lt;thing3_name&gt;&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;enabled&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;credentials&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;identity&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&lt;thing3_identity&gt;&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;secret&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&lt;thing3_secret&gt;&quot;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">]</span>
+</code></pre></div>
+<p>With JSON you can be able to specify more fields of the channels you want to create</p>
+<h4 id="update-thing">Update Thing<a class="headerlink" href="#update-thing" title="Permanent link">#</a></h4>
+<div class="highlight"><pre><span></span><code>magistrala-cli<span class="w"> </span>things<span class="w"> </span>update<span class="w"> </span>&lt;thing_id&gt;<span class="w"> </span><span class="s1">&#39;{&quot;name&quot;:&quot;value1&quot;, &quot;metadata&quot;:{&quot;key1&quot;: &quot;value2&quot;}}&#39;</span><span class="w"> </span>&lt;user_token&gt;
+</code></pre></div>
+<h4 id="update-thing-tags">Update Thing Tags<a class="headerlink" href="#update-thing-tags" title="Permanent link">#</a></h4>
+<div class="highlight"><pre><span></span><code>magistrala-cli<span class="w"> </span>things<span class="w"> </span>update<span class="w"> </span>tags<span class="w"> </span>&lt;thing_id&gt;<span class="w"> </span><span class="s1">&#39;[&quot;tag1&quot;, &quot;tag2&quot;]&#39;</span><span class="w"> </span>&lt;user_token&gt;
+</code></pre></div>
+<h4 id="update-thing-owner">Update Thing Owner<a class="headerlink" href="#update-thing-owner" title="Permanent link">#</a></h4>
+<div class="highlight"><pre><span></span><code>magistrala-cli<span class="w"> </span>things<span class="w"> </span>update<span class="w"> </span>owner<span class="w"> </span>&lt;thing_id&gt;<span class="w"> </span>&lt;owner_id&gt;<span class="w"> </span>&lt;user_token&gt;
+</code></pre></div>
+<h4 id="update-thing-secret">Update Thing Secret<a class="headerlink" href="#update-thing-secret" title="Permanent link">#</a></h4>
+<div class="highlight"><pre><span></span><code>magistrala-cli<span class="w"> </span>things<span class="w"> </span>update<span class="w"> </span>secret<span class="w"> </span>&lt;thing_id&gt;<span class="w"> </span>&lt;secet&gt;<span class="w"> </span>&lt;user_token&gt;
+</code></pre></div>
+<h4 id="identify-thing">Identify Thing<a class="headerlink" href="#identify-thing" title="Permanent link">#</a></h4>
+<div class="highlight"><pre><span></span><code>magistrala-cli<span class="w"> </span>things<span class="w"> </span>identify<span class="w"> </span>&lt;thing_secret&gt;
+</code></pre></div>
+<h4 id="enable-thing">Enable Thing<a class="headerlink" href="#enable-thing" title="Permanent link">#</a></h4>
+<div class="highlight"><pre><span></span><code>magistrala-cli<span class="w"> </span>things<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>&lt;thing_id&gt;<span class="w"> </span>&lt;user_token&gt;
+</code></pre></div>
+<h4 id="disable-thing">Disable Thing<a class="headerlink" href="#disable-thing" title="Permanent link">#</a></h4>
+<div class="highlight"><pre><span></span><code>magistrala-cli<span class="w"> </span>things<span class="w"> </span>disable<span class="w"> </span>&lt;thing_id&gt;<span class="w"> </span>&lt;user_token&gt;
+</code></pre></div>
+<h4 id="get-thing">Get Thing<a class="headerlink" href="#get-thing" title="Permanent link">#</a></h4>
+<div class="highlight"><pre><span></span><code>magistrala-cli<span class="w"> </span>things<span class="w"> </span>get<span class="w"> </span>&lt;thing_id&gt;<span class="w"> </span>&lt;user_token&gt;
+</code></pre></div>
+<h4 id="get-things">Get Things<a class="headerlink" href="#get-things" title="Permanent link">#</a></h4>
+<div class="highlight"><pre><span></span><code>magistrala-cli<span class="w"> </span>things<span class="w"> </span>get<span class="w"> </span>all<span class="w"> </span>&lt;user_token&gt;
+</code></pre></div>
+<h4 id="get-a-subset-list-of-provisioned-things">Get a subset list of provisioned Things<a class="headerlink" href="#get-a-subset-list-of-provisioned-things" title="Permanent link">#</a></h4>
+<div class="highlight"><pre><span></span><code>magistrala-cli<span class="w"> </span>things<span class="w"> </span>get<span class="w"> </span>all<span class="w"> </span>--offset<span class="o">=</span><span class="m">1</span><span class="w"> </span>--limit<span class="o">=</span><span class="m">5</span><span class="w"> </span>&lt;user_token&gt;
+</code></pre></div>
+<h4 id="share-thing">Share Thing<a class="headerlink" href="#share-thing" title="Permanent link">#</a></h4>
+<div class="highlight"><pre><span></span><code>magistrala-cli<span class="w"> </span>things<span class="w"> </span>share<span class="w"> </span>&lt;channel_id&gt;<span class="w"> </span>&lt;user_id&gt;<span class="w"> </span>&lt;allowed_actions&gt;<span class="w"> </span>&lt;user_token&gt;
+</code></pre></div>
+<h3 id="channels-management">Channels management<a class="headerlink" href="#channels-management" title="Permanent link">#</a></h3>
+<h4 id="create-channel">Create Channel<a class="headerlink" href="#create-channel" title="Permanent link">#</a></h4>
+<div class="highlight"><pre><span></span><code>magistrala-cli<span class="w"> </span>channels<span class="w"> </span>create<span class="w"> </span><span class="s1">&#39;{&quot;name&quot;:&quot;myChannel&quot;}&#39;</span><span class="w"> </span>&lt;user_token&gt;
+</code></pre></div>
+<h4 id="bulk-provision-channels">Bulk Provision Channels<a class="headerlink" href="#bulk-provision-channels" title="Permanent link">#</a></h4>
+<div class="highlight"><pre><span></span><code>magistrala-cli<span class="w"> </span>provision<span class="w"> </span>channels<span class="w"> </span>&lt;file&gt;<span class="w"> </span>&lt;user_token&gt;
+</code></pre></div>
+<ul>
+<li><code>file</code> - A CSV or JSON file containing channel names (must have extension <code>.csv</code> or <code>.json</code>)</li>
+<li><code>user_token</code> - A valid user auth token for the current system</li>
+</ul>
+<p>An example CSV file might be:</p>
+<div class="highlight"><pre><span></span><code>&lt;channel1_name&gt;,
+&lt;channel2_name&gt;,
+&lt;channel3_name&gt;,
+</code></pre></div>
+<p>in which the first column is channel names.</p>
+<p>A comparable JSON file would be</p>
+<div class="highlight"><pre><span></span><code><span class="p">[</span>
+<span class="w">  </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&lt;channel1_name&gt;&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&lt;channel1_description&gt;&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;enabled&quot;</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&lt;channel2_name&gt;&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&lt;channel2_description&gt;&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;disabled&quot;</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&lt;channel3_name&gt;&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&lt;channel3_description&gt;&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;enabled&quot;</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">]</span>
+</code></pre></div>
+<p>With JSON you can be able to specify more fields of the channels you want to create</p>
+<h4 id="update-channel">Update Channel<a class="headerlink" href="#update-channel" title="Permanent link">#</a></h4>
+<div class="highlight"><pre><span></span><code>magistrala-cli<span class="w"> </span>channels<span class="w"> </span>update<span class="w"> </span><span class="s1">&#39;{&quot;id&quot;:&quot;&lt;channel_id&gt;&quot;,&quot;name&quot;:&quot;myNewName&quot;}&#39;</span><span class="w"> </span>&lt;user_token&gt;
+</code></pre></div>
+<h4 id="enable-channel">Enable Channel<a class="headerlink" href="#enable-channel" title="Permanent link">#</a></h4>
+<div class="highlight"><pre><span></span><code>magistrala-cli<span class="w"> </span>channels<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>&lt;channel_id&gt;<span class="w"> </span>&lt;user_token&gt;
+</code></pre></div>
+<h4 id="disable-channel">Disable Channel<a class="headerlink" href="#disable-channel" title="Permanent link">#</a></h4>
+<div class="highlight"><pre><span></span><code>magistrala-cli<span class="w"> </span>channels<span class="w"> </span>disable<span class="w"> </span>&lt;channel_id&gt;<span class="w"> </span>&lt;user_token&gt;
+</code></pre></div>
+<h4 id="get-channel">Get Channel<a class="headerlink" href="#get-channel" title="Permanent link">#</a></h4>
+<div class="highlight"><pre><span></span><code>magistrala-cli<span class="w"> </span>channels<span class="w"> </span>get<span class="w"> </span>&lt;channel_id&gt;<span class="w"> </span>&lt;user_token&gt;
+</code></pre></div>
+<h4 id="get-channels">Get Channels<a class="headerlink" href="#get-channels" title="Permanent link">#</a></h4>
+<div class="highlight"><pre><span></span><code>magistrala-cli<span class="w"> </span>channels<span class="w"> </span>get<span class="w"> </span>all<span class="w"> </span>&lt;user_token&gt;
+</code></pre></div>
+<h4 id="get-a-subset-list-of-provisioned-channels">Get a subset list of provisioned Channels<a class="headerlink" href="#get-a-subset-list-of-provisioned-channels" title="Permanent link">#</a></h4>
+<div class="highlight"><pre><span></span><code>magistrala-cli<span class="w"> </span>channels<span class="w"> </span>get<span class="w"> </span>all<span class="w"> </span>--offset<span class="o">=</span><span class="m">1</span><span class="w"> </span>--limit<span class="o">=</span><span class="m">5</span><span class="w"> </span>&lt;user_token&gt;
+</code></pre></div>
+<h4 id="connect-thing-to-channel">Connect Thing to Channel<a class="headerlink" href="#connect-thing-to-channel" title="Permanent link">#</a></h4>
+<div class="highlight"><pre><span></span><code>magistrala-cli<span class="w"> </span>things<span class="w"> </span>connect<span class="w"> </span>&lt;thing_id&gt;<span class="w"> </span>&lt;channel_id&gt;<span class="w"> </span>&lt;user_token&gt;
+</code></pre></div>
+<h4 id="bulk-connect-things-to-channels">Bulk Connect Things to Channels<a class="headerlink" href="#bulk-connect-things-to-channels" title="Permanent link">#</a></h4>
+<div class="highlight"><pre><span></span><code>magistrala-cli<span class="w"> </span>provision<span class="w"> </span>connect<span class="w"> </span>&lt;file&gt;<span class="w"> </span>&lt;user_token&gt;
+</code></pre></div>
+<ul>
+<li><code>file</code> - A CSV or JSON file containing thing and channel ids (must have extension <code>.csv</code> or <code>.json</code>)</li>
+<li><code>user_token</code> - A valid user auth token for the current system</li>
+</ul>
+<p>An example CSV file might be</p>
+<div class="highlight"><pre><span></span><code>&lt;thing_id1&gt;,&lt;channel_id1&gt;
+&lt;thing_id2&gt;,&lt;channel_id2&gt;
+</code></pre></div>
+<p>in which the first column is thing IDs and the second column is channel IDs. A connection will be created for each thing to each channel. This example would result in 4 connections being created.</p>
+<p>A comparable JSON file would be</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;subjects&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;&lt;thing_id1&gt;&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;&lt;thing_id2&gt;&quot;</span><span class="p">],</span>
+<span class="w">  </span><span class="nt">&quot;objects&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;&lt;channel_id1&gt;&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;&lt;channel_id2&gt;&quot;</span><span class="p">]</span>
+<span class="p">}</span>
+</code></pre></div>
+<h4 id="disconnect-thing-from-channel">Disconnect Thing from Channel<a class="headerlink" href="#disconnect-thing-from-channel" title="Permanent link">#</a></h4>
+<div class="highlight"><pre><span></span><code>magistrala-cli<span class="w"> </span>things<span class="w"> </span>disconnect<span class="w"> </span>&lt;thing_id&gt;<span class="w"> </span>&lt;channel_id&gt;<span class="w"> </span>&lt;user_token&gt;
+</code></pre></div>
+<h4 id="get-a-subset-list-of-channels-connected-to-thing">Get a subset list of Channels connected to Thing<a class="headerlink" href="#get-a-subset-list-of-channels-connected-to-thing" title="Permanent link">#</a></h4>
+<div class="highlight"><pre><span></span><code>magistrala-cli<span class="w"> </span>things<span class="w"> </span>connections<span class="w"> </span>&lt;thing_id&gt;<span class="w"> </span>&lt;user_token&gt;
+</code></pre></div>
+<h4 id="get-a-subset-list-of-things-connected-to-channel">Get a subset list of Things connected to Channel<a class="headerlink" href="#get-a-subset-list-of-things-connected-to-channel" title="Permanent link">#</a></h4>
+<div class="highlight"><pre><span></span><code>magistrala-cli<span class="w"> </span>channels<span class="w"> </span>connections<span class="w"> </span>&lt;channel_id&gt;<span class="w"> </span>&lt;user_token&gt;
+</code></pre></div>
+<h3 id="messaging">Messaging<a class="headerlink" href="#messaging" title="Permanent link">#</a></h3>
+<h4 id="send-a-message-over-http">Send a message over HTTP<a class="headerlink" href="#send-a-message-over-http" title="Permanent link">#</a></h4>
+<div class="highlight"><pre><span></span><code>magistrala-cli<span class="w"> </span>messages<span class="w"> </span>send<span class="w"> </span>&lt;channel_id&gt;<span class="w"> </span><span class="s1">&#39;[{&quot;bn&quot;:&quot;Dev1&quot;,&quot;n&quot;:&quot;temp&quot;,&quot;v&quot;:20}, {&quot;n&quot;:&quot;hum&quot;,&quot;v&quot;:40}, {&quot;bn&quot;:&quot;Dev2&quot;, &quot;n&quot;:&quot;temp&quot;,&quot;v&quot;:20}, {&quot;n&quot;:&quot;hum&quot;,&quot;v&quot;:40}]&#39;</span><span class="w"> </span>&lt;thing_secret&gt;
+</code></pre></div>
+<h4 id="read-messages-over-http">Read messages over HTTP<a class="headerlink" href="#read-messages-over-http" title="Permanent link">#</a></h4>
+<div class="highlight"><pre><span></span><code>magistrala-cli<span class="w"> </span>messages<span class="w"> </span><span class="nb">read</span><span class="w"> </span>&lt;channel_id&gt;<span class="w"> </span>&lt;user_token&gt;<span class="w"> </span>-R<span class="w"> </span>&lt;reader_url&gt;
+</code></pre></div>
+<h3 id="bootstrap">Bootstrap<a class="headerlink" href="#bootstrap" title="Permanent link">#</a></h3>
+<h4 id="add-configuration">Add configuration<a class="headerlink" href="#add-configuration" title="Permanent link">#</a></h4>
+<div class="highlight"><pre><span></span><code>magistrala-cli<span class="w"> </span>bootstrap<span class="w"> </span>create<span class="w"> </span><span class="s1">&#39;{&quot;external_id&quot;: &quot;myExtID&quot;, &quot;external_key&quot;: &quot;myExtKey&quot;, &quot;name&quot;: &quot;myName&quot;, &quot;content&quot;: &quot;myContent&quot;}&#39;</span><span class="w"> </span>&lt;user_token&gt;<span class="w"> </span>-b<span class="w"> </span>&lt;bootstrap-url&gt;
+</code></pre></div>
+<h4 id="view-configuration">View configuration<a class="headerlink" href="#view-configuration" title="Permanent link">#</a></h4>
+<div class="highlight"><pre><span></span><code>magistrala-cli<span class="w"> </span>bootstrap<span class="w"> </span>get<span class="w"> </span>&lt;thing_id&gt;<span class="w"> </span>&lt;user_token&gt;<span class="w"> </span>-b<span class="w"> </span>&lt;bootstrap-url&gt;
+</code></pre></div>
+<h4 id="update-configuration">Update configuration<a class="headerlink" href="#update-configuration" title="Permanent link">#</a></h4>
+<div class="highlight"><pre><span></span><code>magistrala-cli<span class="w"> </span>bootstrap<span class="w"> </span>update<span class="w"> </span><span class="s1">&#39;{&quot;magistrala_id&quot;:&quot;&lt;thing_id&gt;&quot;, &quot;name&quot;: &quot;newName&quot;, &quot;content&quot;: &quot;newContent&quot;}&#39;</span><span class="w"> </span>&lt;user_token&gt;<span class="w"> </span>-b<span class="w"> </span>&lt;bootstrap-url&gt;
+</code></pre></div>
+<h4 id="remove-configuration">Remove configuration<a class="headerlink" href="#remove-configuration" title="Permanent link">#</a></h4>
+<div class="highlight"><pre><span></span><code>magistrala-cli<span class="w"> </span>bootstrap<span class="w"> </span>remove<span class="w"> </span>&lt;thing_id&gt;<span class="w"> </span>&lt;user_token&gt;<span class="w"> </span>-b<span class="w"> </span>&lt;bootstrap-url&gt;
+</code></pre></div>
+<h4 id="bootstrap-configuration">Bootstrap configuration<a class="headerlink" href="#bootstrap-configuration" title="Permanent link">#</a></h4>
+<div class="highlight"><pre><span></span><code>magistrala-cli<span class="w"> </span>bootstrap<span class="w"> </span>bootstrap<span class="w"> </span>&lt;external_id&gt;<span class="w"> </span>&lt;external_key&gt;<span class="w"> </span>-b<span class="w"> </span>&lt;bootstrap-url&gt;
+</code></pre></div>
+<h2 id="config">Config<a class="headerlink" href="#config" title="Permanent link">#</a></h2>
+<p>Magistrala CLI tool supports configuration files that contain some of the basic settings so you don't have to specify them through flags. Once you set the settings, they remain stored locally.</p>
+<div class="highlight"><pre><span></span><code>magistrala-cli<span class="w"> </span>config<span class="w"> </span>&lt;parameter&gt;<span class="w"> </span>&lt;value&gt;
+</code></pre></div>
+<p>Response should look like this:</p>
+<div class="highlight"><pre><span></span><code><span class="w">  </span>ok
+</code></pre></div>
+<p>This command is used to set the flags to be used by CLI in a local TOML file. The default location of the TOML file is in the same directory as the CLI binary. To change the location of the TOML file you can run the command:</p>
+<div class="highlight"><pre><span></span><code>  magistrala-cli config &lt;parameter&gt; &lt;value&gt; -c &quot;cli/file_name.toml&quot;
+</code></pre></div>
+<p>The possible parameters that can be set using the config command are:</p>
+<table>
+<thead>
+<tr>
+<th>Flag</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>bootstrap_url</td>
+<td>Bootstrap service URL</td>
+<td>"http://localhost:9013"</td>
+</tr>
+<tr>
+<td>certs_url</td>
+<td>Certs service URL</td>
+<td>"http://localhost:9019"</td>
+</tr>
+<tr>
+<td>http_adapter_url</td>
+<td>HTTP adapter URL</td>
+<td>"http://localhost/http"</td>
+</tr>
+<tr>
+<td>msg_content_type</td>
+<td>Message content type</td>
+<td>"application/senml+json"</td>
+</tr>
+<tr>
+<td>reader_url</td>
+<td>Reader URL</td>
+<td>"http://localhost"</td>
+</tr>
+<tr>
+<td>things_url</td>
+<td>Things service URL</td>
+<td>"http://localhost:9000"</td>
+</tr>
+<tr>
+<td>tls_verification</td>
+<td>Do not check for TLS cert</td>
+<td></td>
+</tr>
+<tr>
+<td>users_url</td>
+<td>Users service URL</td>
+<td>"http://localhost:9002"</td>
+</tr>
+<tr>
+<td>state</td>
+<td>Bootstrap state query parameter</td>
+<td></td>
+</tr>
+<tr>
+<td>status</td>
+<td>User status query parameter</td>
+<td></td>
+</tr>
+<tr>
+<td>topic</td>
+<td>Subscription topic query parameter</td>
+<td></td>
+</tr>
+<tr>
+<td>contact</td>
+<td>Subscription contact query parameter</td>
+<td></td>
+</tr>
+<tr>
+<td>email</td>
+<td>User email query parameter</td>
+<td></td>
+</tr>
+<tr>
+<td>limit</td>
+<td>Limit query parameter</td>
+<td>10</td>
+</tr>
+<tr>
+<td>metadata</td>
+<td>Metadata query parameter</td>
+<td></td>
+</tr>
+<tr>
+<td>name</td>
+<td>Name query parameter</td>
+<td></td>
+</tr>
+<tr>
+<td>offset</td>
+<td>Offset query parameter</td>
+<td></td>
+</tr>
+<tr>
+<td>raw_output</td>
+<td>Enables raw output mode for easier parsing of output</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright (c) Abstract Machines
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.1e8ae164.min.js"></script>
+      
+    
+  </body>
+</html>
