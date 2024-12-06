@@ -1,8 +1,8 @@
-# Magistrala Authorization Specification Document
+# SuperMQ Authorization Specification Document
 
 ## Overview
 
-Magistrala consists of following entities:
+SuperMQ consists of following entities:
 - User
 - Client
 - Channel
@@ -21,7 +21,7 @@ A role is a collection of actions that a group of users is allowed to perform on
 4. The entity allowed actions are derived automatically from authorization schema(spicedb schema) while starting the entity service.
 5. A user can be a member of multiple roles across different entities, but for a single entity, user can only have one role. and user should be member of domain
 
-#### Entities in Magistrala which are having roles
+#### Entities in SuperMQ which are having roles
 - Clients
 - Channels
 - Groups
