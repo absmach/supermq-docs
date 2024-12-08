@@ -769,3 +769,314 @@ User registration is self register default which can be changed by following env
 ```env
 MG_USERS_ALLOW_SELF_REGISTER=true
 ```
+
+## SuperMQ Personal Access Token (PAT) Authentication
+
+### Overview
+
+Personal Access Tokens (PATs) in SuperMQ provide a secure method for authentication and authorization, similar to JSON Web Tokens (JWTs). PATs enable fine-grained access control with customizable scopes and permissions.
+
+### PAT Fields
+PATs have the following fields:
+  - ID: Unique identifier for the token
+  - User: User ID associated with the token
+  - Name: User-defined name for easy identification
+  - Description: Explanation of the token's purpose
+  - Secret: Securely hashed token for authentication
+  - Scope: Defines the precise permissions and access levels
+  - IssuedAt: Timestamp of token creation
+  - ExpiresAt: Timestamp when the token becomes invalid
+  - UpdatedAt: Last modification timestamp
+  - LastUsedAt: Timestamp of most recent token usage
+  - Revoked: Boolean indicating token's active/inactive status
+  - RevokedAt: Timestamp of token revocation
+
+### Scope Structure
+  The PAT scope defines granular permissions across different system components:
+   - Users: Operations that can be performed by users
+   - Domains: Permissions for entities within domains (groups, channels, clients)
+   - Dashboard: Dashboard-related operations
+   - Messaging: Publish and subscribe permissions
+
+### Example Scope JSON
+
+```json
+{
+  "users": {
+          "create": ["*"],
+          "read": ["*"],
+          "list": ["*"],
+          "update": ["*"],
+          "delete": ["*"]
+  },
+  "domains": {
+      "domain_1": {
+          "entities": {
+              "groups": {
+                  "create": ["*"] // this for all groups in domain
+              },
+              "channels": {
+                  // for particular channel in domain
+                  "delete": [
+                      "0241e6fe-2113-4731-9cfa-5c74626652b8",
+                  ]
+              },
+              "clients": {
+                  "update": ["*"] // this for all clients in domain
+              }
+          }
+      }
+  }
+}
+```
+
+### PAT Endpoint Operations
+SuperMQ exposes a couple of endpoints that allow the user to create,retrieve, update, delete and list pats. 
+
+- **Create PAT**:
+
+Endpoint: `POST http://localhost:9001/pats`
+
+Example Request:
+
+```bash
+curl --location 'http://localhost:9001/pats' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Bearer {JWT Token}' \
+--data '{
+    "name": "clients pat",
+    "description": "for creating any client",
+    "duration": "20h",
+    "scope": {
+        "domains": {
+            "{domainID}": {
+                "entities": {
+                    "clients": {
+                      "create": [
+                          "*"
+                      ]
+                    }
+                }
+            }
+        }
+    }
+}'
+```
+
+Expected response:
+```bash
+{
+    "id": "ec562a21-3341-4776-81ea-165afc2a8a57",
+    "user": "1e16c130-6f65-4ee8-80ac-e3ee76854878",
+    "name": "clients pat",
+    "description": "for creating any client",
+    "secret": "pat_HhbBMG9lTuiArOPudoVIeOxWKiEzQUd2geoWWvwqilc=_ZdO$M3-DT3Kz32nrLJ2IPY!jakoT9qTlEQ=1mgQC5^Y+hMxtkH%w$mJ5MOy2*Q-^4aTn148n$Zd|fwZssxgaW5@wv=lv!v4EJK%|",
+    "scope": {
+        "domains": {
+            "71133f11-8763-4c43-93b8-852ba7313109": {
+                "entities": {
+                    "clients": {
+                        "create": "*"
+                    }
+                }
+            }
+        }
+    },
+    "issued_at": "2024-12-06T12:57:32.239599201Z",
+    "expires_at": "2024-12-07T08:57:32.239599201Z",
+    "updated_at": "0001-01-01T00:00:00Z",
+    "last_used_at": "0001-01-01T00:00:00Z",
+    "revoked_at": "0001-01-01T00:00:00Z"
+}
+```
+
+- **Retrieve PAT**:
+
+Endpoint: `GET http://localhost:9001/pats/{patID}`
+
+Example Request:
+
+```bash
+curl --location 'http://localhost:9001/pats/{patID}' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Bearer {JWT Token}'
+```
+
+Expected response:
+```bash
+{
+    "id": "ec562a21-3341-4776-81ea-165afc2a8a57",
+    "user": "1e16c130-6f65-4ee8-80ac-e3ee76854878",
+    "name": "clients pat",
+    "description": "for creating any client",
+    "scope": {
+        "domains": {
+            "71133f11-8763-4c43-93b8-852ba7313109": {
+                "entities": {
+                    "clients": {
+                        "create": "*"
+                    }
+                }
+            }
+        }
+    },
+    "issued_at": "2024-12-06T12:57:32Z",
+    "expires_at": "2024-12-07T08:57:32Z",
+    "updated_at": "0001-01-01T00:00:00Z",
+    "last_used_at": "0001-01-01T00:00:00Z",
+    "revoked_at": "0001-01-01T00:00:00Z"
+}
+```
+
+- **Update PAT**:
+
+Endpoint: `PATCH http://localhost:9001/pats/{patID}/name`
+
+Example Request:
+
+```bash
+curl --location --request PATCH 'http://localhost:9001/pats/{patID}/name' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Bearer {JWT Token}' \
+--data '{
+    "name": "new client pat"
+}'
+```
+
+Expected response:
+```bash
+{
+    "id": "ec562a21-3341-4776-81ea-165afc2a8a57",
+    "user": "1e16c130-6f65-4ee8-80ac-e3ee76854878",
+    "name": "new client pat",
+    "description": "for creating any client",
+    "scope": {
+        "domains": {
+            "71133f11-8763-4c43-93b8-852ba7313109": {
+                "entities": {
+                    "clients": {
+                        "create": "*"
+                    }
+                }
+            }
+        }
+    },
+    "issued_at": "2024-12-06T12:57:32Z",
+    "expires_at": "2024-12-07T08:57:32Z",
+    "updated_at": "2024-12-06T16:42:18Z",
+    "last_used_at": "0001-01-01T00:00:00Z",
+    "revoked_at": "0001-01-01T00:00:00Z"
+}
+```
+
+- **Delete PAT**:
+
+Example Request:
+
+Endpoint: DELETE `http://localhost:9001/pats/{patID}`
+
+```bash
+curl --location --request DELETE 'http://localhost:9001/pats/{patID}' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Bearer {JWT Token}'
+```
+
+With this lets use the PAT token/secret in platform to create a client and channel and connect them.
+
+lets create a PAT that can create any client and channel:
+```bash
+curl --location 'http://localhost:9001/pats' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Bearer {JWT Token}' \
+--data '{
+    "name": "clients & channels pat",
+    "description": "for creating any client or channel",
+    "duration": "20h",
+    "scope": {
+        "domains": {
+            "{domainID}": {
+                "entities": {
+                    "clients": {
+                      "create": [
+                          "*"
+                      ]
+                    }
+                    "channels": {
+                      "create": [
+                          "*"
+                      ]
+                    }
+                }
+            }
+        }
+    }
+}'
+```
+
+### Authentication and Authorization Process
+
+1. **Authentication**: The system first verifies that the PAT was legitimately issued by the platform.
+2. **Authorization**: The system then checks if the requested API operation is permitted by the token's defined scope.
+
+
+Example of Using PAT
+
+- Creating a client using PATs:
+
+```bash
+curl --location 'http://localhost:9006/{domainID}/clients' \
+--header 'accept: application/json' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Bearer pat_HhbBMG9lTuiArOPudoVIeEvY94LEeE86jgoIzvk3vDs=_wdRegJONu9SpmfjS^tDy0$fG-2jp&$^yLgQr5Fse@eb6IBCatDv-R+4#Tpc%dHomiWN%NKYe6|J40KTYnmXmG-NAVNlogw*U4%!Q' \
+--data '{
+  "name": "client",
+  "tags": [
+    "tag1",
+    "tag2"
+  ],
+  "metadata":{"units":"km"},
+  "status": "enabled"
+}'
+```
+
+- Creating a channel using PATs:
+
+```bash
+curl --location 'http://localhost:9005/{domainID}/channels' \
+--header 'accept: application/json' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Bearer pat_HhbBMG9lTuiArOPudoVIeEvY94LEeE86jgoIzvk3vDs=_wdRegJONu9SpmfjS^tDy0$fG-2jp&$^yLgQr5Fse@eb6IBCatDv-R+4#Tpc%dHomiWN%NKYe6|J40KTYnmXmG-NAVNlogw*U4%!Q' \
+--data '{
+  "name": "channel",
+  "description": "long channel description",
+  "metadata": {
+    "location": "London"
+  },
+  "status": "enabled"
+}'
+```
+
+- Connecting both using the created PAT:
+```bash
+curl --location 'http://localhost:9005/{domainID}/channels/connect' \
+--header 'accept: */*' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Bearer pat_6ofqnFdFTH2qbgzDl8Dhn07ode5Sgk4BsCR1qgzFJoo=_9u=^tyQn0aJ$Jco1ZvJnPizYaN1W|Ij5F4y0A=MQr&cBQ*Woa4DI7GBn&E6BDFLgXDpb-Og@h1rWshzFtn7K4PTq|A*5+g1aiwQj' \
+--data '{
+    "client_ids": ["{clientID}"],
+    "channel_ids": ["{channelID}"],
+    "types": "publish"
+}'
+```
+
+#### Example of Authorization Failure
+
+If the PAT used above with client and channel creation permissions attempts to create a group, the request will be denied and
+the expected is error:
+
+```bash
+{
+    "error": "",
+    "message": "failed to authorize PAT"
+}
+```
