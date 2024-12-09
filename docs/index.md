@@ -1,14 +1,18 @@
+---
+sidebar_position: 1
+---
+
 # Overview
 
 ## About
 
-### What is Magistrala?
+### What is SuperMQ?
 
-Magistrala is modern, scalable, secure open source and patent-free IoT cloud platform written in Go.
+SuperMQ is modern, scalable, secure open source and patent-free IoT cloud platform written in Go.
 
 It accepts user and thing connections over various network protocols (i.e. HTTP, MQTT, WebSocket, CoAP), thus making a seamless bridge between them. It is used as the IoT middleware for building complex IoT solutions.
 
-![banner][gopher]
+![banner](img/gopherBanner.jpg)
 
 ### Features
 
@@ -22,9 +26,9 @@ It accepts user and thing connections over various network protocols (i.e. HTTP,
 - Multi-tenancy support
 - Extensibility and customization support
 
-## Contributing to Magistrala
+## Contributing to SuperMQ
 
-Thank you for your interest in Magistrala and the desire to contribute!
+Thank you for your interest in SuperMQ and the desire to contribute!
 
 Take a look at our [open issues][open-issues]. The [good-first-issue][good-first-issue] label is specifically for issues that are great for getting started. Checkout the [contribution guide][contribution-guide] to learn more about our style and conventions. Make your changes compatible to our workflow.
 
@@ -32,8 +36,7 @@ Take a look at our [open issues][open-issues]. The [good-first-issue][good-first
 
 [Apache-2.0][license]
 
-[gopher]: img/gopherBanner.jpg
-[open-issues]: https://github.com/absmach/magistrala/issues
-[good-first-issue]: https://github.com/absmach/magistrala/labels/good-first-issue
-[contribution-guide]: https://github.com/absmach/magistrala/blob/master/CONTRIBUTING.md
-[license]: https://github.com/absmach/magistrala/blob/master/LICENSE
+[open-issues]: https://github.com/absmach/supermq/issues
+[good-first-issue]: https://github.com/absmach/supermq/labels/good-first-issue
+[contribution-guide]: https://github.com/absmach/supermq/blob/main/CONTRIBUTING.md
+[license]: https://github.com/absmach/supermq/blob/main/LICENSE

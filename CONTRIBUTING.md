@@ -1,7 +1,7 @@
-# Contributing to Magistrala
+# Contributing to SuperMQ
 
-The following is a set of guidelines to contribute to Magistrala and its libraries, which are
-hosted on the [Magistrala Organization](https://github.com/absmach/magistrala) on GitHub.
+The following is a set of guidelines to contribute to SuperMQ and its libraries, which are
+hosted on the [SuperMQ Organization](https://github.com/absmach/supermq) on GitHub.
 
 This project adheres to the [Contributor Covenant 1.2](http://contributor-covenant.org/version/1/2/0).
 By participating, you are expected to uphold this code. Please report unacceptable behavior to
@@ -49,11 +49,11 @@ git remote add upstream https://github.com/absmach/magistrala-docs.git
 If your cloned repository is behind the upstream commits, then get the latest changes from upstream:
 
 ```
-git checkout master
-git pull --rebase upstream master
+git checkout main
+git pull --rebase upstream main
 ```
 
-Create a new topic branch from `master` using the naming convention `MG-[issue-number]`
+Create a new topic branch from `main` using the naming convention `MG-[issue-number]`
 to help us keep track of your contribution scope:
 
 ```
@@ -74,7 +74,7 @@ and `user.email` git configs, you can sign your commit automatically with `git c
 Locally merge (or rebase) the upstream development branch into your topic branch:
 
 ```
-git pull --rebase upstream master
+git pull --rebase upstream main
 ```
 
 Push your topic branch up to your fork:

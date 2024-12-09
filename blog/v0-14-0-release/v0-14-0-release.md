@@ -1,6 +1,18 @@
+---
+slug: v0-14-0-release
+title: What's New in Magistrala v0.14.0
+authors: osodo
+description: Discover the latest updates in SuperMQ v0.14.0, featuring enhanced scalability, improved access control, and UI upgrades.
+tags: [release, SuperMQ, update]
+---
+
 # What's New in Magistrala v0.14.0
 
-We're thrilled to announce the release of Magistrala v0.14.0, packed with exciting new features and improvements that elevate your experience! This update marks a significant leap forward, making Magistrala even more powerful and versatile. Here are some of the highlights:
+We're thrilled to announce the release of Magistrala v0.14.0, packed with exciting new features and improvements that elevate your experience! This update marks a significant leap forward, making Magistrala even more powerful and versatile. 
+
+<!-- truncate -->
+
+Here are some of the highlights:
 
 - Switched to Google Zanzibar Access control approach with SpiceDB
 - Implemented Domains for access control
@@ -72,9 +84,9 @@ Logical deletion is a way to mark an entity as deleted without actually deleting
 
 Distributed tracing is a way to trace a request as it goes through the system. We enhanced support for distributed tracing in Magistrala. We added support for distributed tracing over NATS and gRPC.
 
-![Tracing HTTP publish operation](../img/blogs/v0-14-0-release/tracing1.png)
+![Tracing HTTP publish operation](./tracing1.png)
 
-![Tracing update group operation](../img/blogs/v0-14-0-release/tracing2.png)
+![Tracing update group operation](./tracing2.png)
 
 ### Improved event sourcing
 
@@ -103,6 +115,6 @@ Data collection is on by default and can be disabled by setting the env variable
 
 Prometheus is an open-source monitoring and alerting toolkit. Grafana is the open-source analytics and monitoring solution for every database. We added support for Prometheus and grafana for metrics. Prometheus is used to collect metrics from the different services and grafana is used to visualize the metrics. The PR for this change can be found [here](https://github.com/absmach/magistrala/pull/1753)
 
-![Grafana dashboard](../img/blogs/v0-14-0-release/grafana.png)
+![Grafana dashboard](./grafana.png)
 
 Get ready to experience Magistrala like never before! This release is jam-packed with improvements, making it easier than ever to get started and navigate our features. We've also implemented a new wave of automated testing, ensuring rock-solid stability, and squashed those pesky bugs that were slowing you down. We're thrilled about the progress and can't wait for you to dive in! Don't hesitate to share your thoughts and feedback, as your input is invaluable to us. We're always here to help, so reach out with any questions you may have. Let's explore the exciting world of Magistrala together!

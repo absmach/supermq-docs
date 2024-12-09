@@ -1,3 +1,7 @@
+---
+sidebar_position: 17
+---
+
 # Provision
 
 Provisioning is a process of configuration of an IoT platform in which system operator creates and sets-up different entities used in the platform - users, groups, channels and things.
@@ -8,7 +12,7 @@ Provisioning is a process of configuration of an IoT platform in which system op
 
 #### Account Creation
 
-Use the Magistrala API to create user account:
+Use the SuperMQ API to create user account:
 
 ```bash
 curl -s -S -i --cacert docker/ssl/certs/ca.crt -X POST -H "Content-Type: application/json" https://localhost/users -d '{"name": "John Doe", "credentials": {"identity": "john.doe@email.com", "secret": "12345678"}, "status": "enabled"}'
@@ -72,7 +76,7 @@ access-control-allow-headers: *
 }
 ```
 
-For more information about the Users service API, please check out the [API documentation](https://absmach.github.io/magistrala/?urls.primaryName=users.yml).
+For more information about the Users service API, please check out the [API documentation](https://absmach.github.io/supermq/?urls.primaryName=users.yml).
 
 ### System Provisioning
 
@@ -521,21 +525,21 @@ date: Tue, 04 Apr 2023 09:57:53 GMT
 access-control-expose-headers: Location
 ```
 
-For more information about the Things service API, please check out the [API documentation](https://absmach.github.io/magistrala/?urls.primaryName=things.yml).
+For more information about the Things service API, please check out the [API documentation](https://absmach.github.io/supermq/?urls.primaryName=things.yml).
 
 ## Provision Service
 
-Provisioning is a process of configuration of an IoT platform in which system operator creates and sets-up different entities used in the platform - users, channels and things. It is part of process of setting up IoT applications where we connect devices on edge with platform in cloud. For provisioning we can use [Magistrala CLI][cli] for creating users and for each node in the edge (eg. gateway) required number of things, channels, connecting them and creating certificates if needed. Provision service is used to set up initial application configuration once user is created. Provision service creates things, channels, connections and certificates. Once user is created we can use provision to create a setup for edge node in one HTTP request instead of issuing several CLI commands.
+Provisioning is a process of configuration of an IoT platform in which system operator creates and sets-up different entities used in the platform - users, channels and things. It is part of process of setting up IoT applications where we connect devices on edge with platform in cloud. For provisioning we can use [SuperMQ CLI][cli] for creating users and for each node in the edge (eg. gateway) required number of things, channels, connecting them and creating certificates if needed. Provision service is used to set up initial application configuration once user is created. Provision service creates things, channels, connections and certificates. Once user is created we can use provision to create a setup for edge node in one HTTP request instead of issuing several CLI commands.
 
-Provision service provides an HTTP API to interact with [Magistrala][provision-api].
+Provision service provides an HTTP API to interact with [SuperMQ][provision-api].
 
-For gateways to communicate with [Magistrala][magistrala] configuration is required (MQTT host, thing, channels, certificates...). Gateway will send a request to [Bootstrap][bootstrap] service providing `<external_id>` and `<external_key>` in HTTP request to get the configuration. To make a request to [Bootstrap][bootstrap] service you can use [Agent][agent] service on a gateway.
+For gateways to communicate with [SuperMQ][supermq] configuration is required (MQTT host, thing, channels, certificates...). Gateway will send a request to [Bootstrap][bootstrap] service providing `<external_id>` and `<external_key>` in HTTP request to get the configuration. To make a request to [Bootstrap][bootstrap] service you can use [Agent][agent] service on a gateway.
 
-To create bootstrap configuration you can use [Bootstrap][bootstrap] or `Provision` service. [Magistrala UI][mfxui] uses [Bootstrap][bootstrap] service for creating gateway configurations. `Provision` service should provide an easy way of provisioning your gateways i.e creating bootstrap configuration and as many things and channels that your setup requires.
+To create bootstrap configuration you can use [Bootstrap][bootstrap] or `Provision` service. [SuperMQ UI][mfxui] uses [Bootstrap][bootstrap] service for creating gateway configurations. `Provision` service should provide an easy way of provisioning your gateways i.e creating bootstrap configuration and as many things and channels that your setup requires.
 
 Also, you may use provision service to create certificates for each thing. Each service running on gateway may require more than one thing and channel for communication.
 If, for example, you are using services [Agent][agent] and [Export][exp] on a gateway you will need two channels for `Agent` (`data` and `control`) and one thing for `Export`.
-Additionally, if you enabled mTLS each service will need its own thing and certificate for access to [Magistrala][magistrala].
+Additionally, if you enabled mTLS each service will need its own thing and certificate for access to [SuperMQ][supermq].
 Your setup could require any number of things and channels, this kind of setup we can call `provision layout`.
 
 Provision service provides a way of specifying this `provision layout` and creating a setup according to that layout by serving requests on `/mapping` endpoint. Provision layout is configured in [config.toml][conftoml].
@@ -544,7 +548,7 @@ Provision service provides a way of specifying this `provision layout` and creat
 
 The service is configured using the environment variables presented in the following [table][config]. Note that any unset variables will be replaced with their default values.
 
-By default, call to `/mapping` endpoint will create one thing and two channels (`control` and `data`) and connect it as this is typical setup required by [Agent](/edge/#agent). If there is a requirement for different provision layout we can use [config][conftoml] file in addition to environment variables.
+By default, call to `/mapping` endpoint will create one thing and two channels (`control` and `data`) and connect it as this is typical setup required by [Agent](./edge.md#agent). If there is a requirement for different provision layout we can use [config][conftoml] file in addition to environment variables.
 
 For the purposes of running provision as an add-on in docker composition environment variables seems more suitable. Environment variables are set in [.env][env].
 
@@ -647,8 +651,8 @@ Example of provision layout below
 
 ### Authentication
 
-In order to create necessary entities provision service needs to authenticate against Magistrala.
-To provide authentication credentials to the provision service you can pass it in as an environment variable or in a config file as Magistrala user and password or as API token (that can be issued on `/users/tokens/issue` endpoint of [users service][users].
+In order to create necessary entities provision service needs to authenticate against SuperMQ.
+To provide authentication credentials to the provision service you can pass it in as an environment variable or in a config file as SuperMQ user and password or as API token (that can be issued on `/users/tokens/issue` endpoint of [users service][users].
 
 Additionally, users or API token can be passed in Authorization header, this authentication takes precedence over others.
 
@@ -667,7 +671,7 @@ MG_PROVISION_BS_SVC_URL=http://localhost:9013/things \
 MG_PROVISION_THINGS_LOCATION=http://localhost:9000 \
 MG_PROVISION_USERS_LOCATION=http://localhost:9002 \
 MG_PROVISION_CONFIG_FILE=docker/addons/provision/configs/config.toml \
-build/magistrala-provision
+build/supermq-provision
 ```
 
 Docker composition:
@@ -738,7 +742,7 @@ Response contains created things, channels and certificates if any:
 
 ### Example
 
-Deploy Magistrala UI docker composition as it contains all the required services for provisioning to work ( `certs`, `bootstrap` and Magistrala core)
+Deploy Magistrala UI docker composition as it contains all the required services for provisioning to work ( `certs`, `bootstrap` and SuperMQ core)
 
 ```bash
 git clone https://github.com/absmach/magistrala-ui
@@ -749,10 +753,10 @@ docker-compose -f docker/docker-compose.yml up
 Create user and obtain access token
 
 ```bash
-magistrala-cli users create john.doe@email.com 12345678
+supermq-cli users create john.doe@email.com 12345678
 
 # Retrieve token
-magistrala-cli users token john.doe@email.com 12345678
+supermq-cli users token john.doe@email.com 12345678
 
 created: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1OTY1ODU3MDUsImlhdCI6MTU5NjU0OTcwNSwiaXNzIjoibWFpbmZsdXguYXV0aG4iLCJzdWIiOiJtaXJrYXNoQGdtYWlsLmNvbSIsInR5cGUiOjB9._vq0zJzFc9tQqc8x74kpn7dXYefUtG9IB0Cb-X2KMK8
 ```
@@ -766,13 +770,13 @@ TOKEN=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1OTY1ODU3MDUsImlhdCI6MTU5N
 Make a call to provision endpoint
 
 ```bash
-curl -s -S  -X POST  http://magistrala.com:9016/mapping -H "Authorization: Bearer $TOKEN" -H 'Content-Type: application/json'   -d '{"name":"edge-gw",  "external_id" : "gateway", "external_key":"external_key" }'
+curl -s -S  -X POST  http://supermq.com:9016/mapping -H "Authorization: Bearer $TOKEN" -H 'Content-Type: application/json'   -d '{"name":"edge-gw",  "external_id" : "gateway", "external_key":"external_key" }'
 ```
 
 To check the results you can make a call to bootstrap endpoint
 
 ```bash
-curl -s -S -X GET http://magistrala.com:9013/things/bootstrap/gateway -H "Authorization: Thing external_key" -H 'Content-Type: application/json'
+curl -s -S -X GET http://supermq.com:9013/things/bootstrap/gateway -H "Authorization: Thing external_key" -H 'Content-Type: application/json'
 ```
 
 Or you can start `Agent` with:
@@ -781,22 +785,22 @@ Or you can start `Agent` with:
 git clone https://github.com/absmach/agent.git
 cd agent
 make
-MG_AGENT_BOOTSTRAP_ID=gateway MG_AGENT_BOOTSTRAP_KEY=external_key MG_AGENT_BOOTSTRAP_URL=http://magistrala.ccom:9013/things/bootstrap build/magistrala-agent
+MG_AGENT_BOOTSTRAP_ID=gateway MG_AGENT_BOOTSTRAP_KEY=external_key MG_AGENT_BOOTSTRAP_URL=http://supermq.com:9013/things/bootstrap build/supermq-agent
 ```
 
-Agent will retrieve connections parameters and connect to Magistrala cloud.
+Agent will retrieve connections parameters and connect to SuperMQ cloud.
 
-For more information about the Provision service API, please check out the [API documentation](https://github.com/absmach/magistrala/blob/master/api/provision.yml).
+For more information about the Provision service API, please check out the [API documentation](https://github.com/absmach/supermq/blob/main/api/provision.yml).
 
-[magistrala]: https://github.com/absmach/magistrala
-[bootstrap]: https://github.com/absmach/magistrala/tree/main/bootstrap
+[supermq]: https://github.com/absmach/supermq
+[bootstrap]: https://github.com/absmach/supermq/tree/main/bootstrap
 [agent]: https://github.com/absmach/agent
 [mgui]: https://github.com/absmach/magistrala-ui
-[config]: https://github.com/absmach/magistrala/tree/main/provision#configuration
-[env]: https://github.com/absmach/magistrala/blob/master/.env
-[conftoml]: https://github.com/absmach/magistrala/blob/master/docker/addons/provision/configs/config.toml
-[users]: https://github.com/absmach/magistrala/blob/master/users/README.md
+[config]: https://github.com/absmach/supermq/tree/main/provision#configuration
+[env]: https://github.com/absmach/supermq/blob/main/.env
+[conftoml]: https://github.com/absmach/supermq/blob/main/docker/addons/provision/configs/config.toml
+[users]: https://github.com/absmach/supermq/blob/main/users/README.md
 [exp]: https://github.com/absmach/export
-[cli]: https://github.com/absmach/magistrala/tree/main/cli
+[cli]: https://github.com/absmach/supermq/tree/main/cli
 [auth]: authentication.md
-[provision-api]: https://absmach.github.io/magistrala/?urls.primaryName=provision.yml
+[provision-api]: https://absmach.github.io/supermq/?urls.primaryName=provision.yml

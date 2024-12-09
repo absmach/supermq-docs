@@ -1,3 +1,7 @@
+---
+sidebar_position: 23
+---
+
 # Test spec
 
 ## Tools
@@ -63,7 +67,7 @@ For larger-scale tests we will set up MZBench to run each node as one of Amazon 
 
 This is basic architecture when running MZBench:
 
-![MZBench Architecture Running][mzbench-architecture-running]
+![MZBench Architecture Running](https://github.com/mzbench/mzbench/raw/master/doc/images/scheme_2.png)
 
 Every node that runs your scenarios will be one of Amazon EC2 instance; plus one more additional node — the director node. The director doesn't run scenarios, it collects the metrics from the other nodes and runs [post and pre hooks][mzbench-scenarios]. So, if you want to run jobs on 10 nodes, actually 11 EC2 instances will be created. All instances will be automatically terminated when the test finishes.
 
@@ -136,5 +140,4 @@ TBD
 [mzbench-cli]: https://github.com/mzbench/mzbench/blob/master/doc/cli.md
 [mzbench-dashboard]: https://github.com/mzbench/mzbench/blob/master/doc/dashboard.md
 [mg-benchmark]: https://github.com/absmach/benchmark/tree/master/mzbench
-[mzbench-architecture-running]: https://github.com/mzbench/mzbench/raw/master/doc/images/scheme_2.png
 [mzbench-scenarios]: https://github.com/mzbench/mzbench/blob/master/scenarios/spec.md#pre_hook-and-post_hook

@@ -1,10 +1,15 @@
+---
+sidebar_position: 13
+---
+
+
 # Certs
 
 Provisioning is a process of configuration of an IoT platform in which system operator creates and sets-up different entities used in the platform - users, groups, channels and things.
 
 ## Certs Service
 
-Issues certificates for things. `Certs` service can create certificates to be used when `Magistrala` is deployed to support mTLS.  
+Issues certificates for things. `Certs` service can create certificates to be used when `SuperMQ` is deployed to support mTLS.  
 `Certs` service will create certificate for valid thing ID if valid user token is passed and user is owner of the provided thing ID.
 
 Certificate service can create certificates in PKI mode - where certificates issued by PKI, when you deploy `Vault` as PKI certificate management `cert` service will proxy requests to `Vault` previously checking access rights and saving info on successfully created certificate.
@@ -28,9 +33,9 @@ MG_CERTS_VAULT_TOKEN=<vault_acces_token>
 
 For lab purposes you can use docker-compose and script for setting up PKI in [meodor-vault][meodor-vault].
 
-Make sure you have an already running instance of `Magistrala` , `Vault` and `Certs` service.
+Make sure you have an already running instance of `SuperMQ` , `Vault` and `Certs` service.
 
-To start Magistrala run:
+To start SuperMQ run:
 
 ```bash
 make run up args="-d"
@@ -42,7 +47,7 @@ To start vault run:
 make run_addons vault up args="-d"
 ```
 
-When vault service is up and running some initializations steps must be done to setup things for `Certs` service. For more information about this steps please check [magistrala-vault][magistrala-vault]
+When vault service is up and running some initializations steps must be done to setup things for `Certs` service. For more information about this steps please check [supermq-vault][supermq-vault]
 
 ```bash
 bash docker/addons/vault/vault-init.sh
@@ -65,7 +70,7 @@ make run_addons certs up args="-d"
 Provision a thing:
 
 ```bash
-magistrala-cli provision test
+supermq-cli provision test
 ```
 
 To stop certs service run:
@@ -85,13 +90,13 @@ This step can be skipped if you already have a thing ID.
 #### 1. Issue a certificate
 
 ```bash
-magistrala-cli certs issue <thing_id> <user_auth_token> [--ttl=8760h]
+supermq-cli certs issue <thing_id> <user_auth_token> [--ttl=8760h]
 ```
 
 For example:
 
 ```bash
-magistrala-cli certs issue f13f0f30-f923-4504-8a7a-6aa45bcb4866 $USER_TOKEN
+supermq-cli certs issue f13f0f30-f923-4504-8a7a-6aa45bcb4866 $USER_TOKEN
 
 {
   "cert_serial": "6f:35:d5:9d:47:9d:23:50:08:f7:31:13:82:22:e4:c8:e6:cf:2c:c1",
@@ -105,13 +110,13 @@ magistrala-cli certs issue f13f0f30-f923-4504-8a7a-6aa45bcb4866 $USER_TOKEN
 #### 2. Retrieve a certificate
 
 ```bash
-magistrala-cli certs get [<cert_serial> | thing <thing_id>] <user_auth_token>
+supermq-cli certs get [<cert_serial> | thing <thing_id>] <user_auth_token>
 ```
 
 For example:
 
 ```bash
-magistrala-cli certs get 6f:35:d5:9d:47:9d:23:50:08:f7:31:13:82:22:e4:c8:e6:cf:2c:c1 $USER_TOKEN
+supermq-cli certs get 6f:35:d5:9d:47:9d:23:50:08:f7:31:13:82:22:e4:c8:e6:cf:2c:c1 $USER_TOKEN
 {
   "cert_serial": "6f:35:d5:9d:47:9d:23:50:08:f7:31:13:82:22:e4:c8:e6:cf:2c:c1",
   "client_cert": "-----BEGIN CERTIFICATE-----\nMIIEATCCAumgAwIBAgIUbzXVnUedI1AI9zETgiLkyObPLMEwDQYJKoZIhvcNAQEL\nBQAwLjEsMCoGA1UEAxMjbWFpbmZsdXguY29tIEludGVybWVkaWF0ZSBBdXRob3Jp\ndHkwHhcNMjMwOTE0MTEwOTI5WhcNMjMxMDE0MTEwOTU4WjAvMS0wKwYDVQQDEyRi\nYTFmMmIxNi01MjA3LTQ2MDgtYTRkZS01ZmFiZmI4NjI3YzIwggEiMA0GCSqGSIb3\nDQEBAQUAA4IBDwAwggEKAoIBAQC9RxcHaTzn18vBdWWZf37K8Grc5dLW/m8vhwOJ\n8oe3iPUiE7xFijIXKw236R1NBh8fLT6/2lia/p4acZtls3yFRphooDwP7S2OiJRI\ngGb/r0SYmSnQKjHbdbixauNECGk1TDNSGvmpNSzvAZvYSJAvd5ZpYf/8Db9IBW0N\nvbI7TfIJHay8vC/0rn1BsmC3x+3nEm0W+Z5udC/UT4+pQn7QWrBsxjVT4r5WY0SQ\nkVhA9Wo+Wpzmy1CMC4X6yLmiIHmfRFlktDxKgPpyy/3zhAE2CkBpT7JEQ723Mv+m\n37oM2EJog+tgIZMExxDbw3Epqgo07B9DWpSZSBHCISeN/TzdAgMBAAGjggEUMIIB\nEDAOBgNVHQ8BAf8EBAMCA6gwHQYDVR0lBBYwFAYIKwYBBQUHAwEGCCsGAQUFBwMC\nMB0GA1UdDgQWBBTAoqWVu8ctNmw5CKUBxsUKVDX+PDAfBgNVHSMEGDAWgBS7dmaT\nr5vJJPtV5dReawbYKhxzYzA7BggrBgEFBQcBAQQvMC0wKwYIKwYBBQUHMAKGH2h0\ndHA6Ly92YXVsdDo4MjAwL3YxL3BraV9pbnQvY2EwLwYDVR0RBCgwJoIkYmExZjJi\nMTYtNTIwNy00NjA4LWE0ZGUtNWZhYmZiODYyN2MyMDEGA1UdHwQqMCgwJqAkoCKG\nIGh0dHA6Ly92YXVsdDo4MjAwL3YxL3BraV9pbnQvY3JsMA0GCSqGSIb3DQEBCwUA\nA4IBAQCKMmDzyWWmuSJPh3O9hppRJ6mkX9gut4jP2rwowNv7haj3iu+hR8+GnTix\nu5oy3bZdmRryhhW0XyJsbCKO/z+wsY/RfVgMxF/c1cbmEzki804+AB4a4yNhQD6g\noEEQBD58b6mFi/vPCRiGZmmo5TqMlA37jBRSVnKO/CoH1CAvjqmfWdSoO4IC4uD4\nJev+QNr9wlOimYcA/usmo7rmqz7IB9R/Laxcdkq9iZelKly/jhftEbKgGf2NR/d7\nEKVONjCEp6fL2iBaQSA/899oJJ7QPqE5X821HhBlXKvNmZnYRyUmAS2h1jnxtovp\nsNGcLFRgIAFdaGl1172C7mBZF4C3\n-----END CERTIFICATE-----",
@@ -121,7 +126,7 @@ magistrala-cli certs get 6f:35:d5:9d:47:9d:23:50:08:f7:31:13:82:22:e4:c8:e6:cf:2
 ```
 
 ```bash
-magistrala-cli certs get thing f13f0f30-f923-4504-8a7a-6aa45bcb4866 $USER_TOKEN
+supermq-cli certs get thing f13f0f30-f923-4504-8a7a-6aa45bcb4866 $USER_TOKEN
 {
   "certs": [
     {
@@ -138,13 +143,13 @@ magistrala-cli certs get thing f13f0f30-f923-4504-8a7a-6aa45bcb4866 $USER_TOKEN
 #### 3. Revoke a certificate
 
 ```bash
-magistrala-cli certs revoke <thing_id> <user_auth_token>
+supermq-cli certs revoke <thing_id> <user_auth_token>
 ```
 
 For example:
 
 ```bash
-magistrala-cli certs revoke f13f0f30-f923-4504-8a7a-6aa45bcb4866 $USER_TOKEN
+supermq-cli certs revoke f13f0f30-f923-4504-8a7a-6aa45bcb4866 $USER_TOKEN
 
 revoked: 2023-09-14 11:21:44 +0000 UTC
 ```
@@ -153,5 +158,5 @@ For more information about the Certification service API, please check out the [
 
 [vault-pki-engine]: https://learn.hashicorp.com/tutorials/vault/pki-engine
 [meodor-vault]: https://github.com/mteodor/vault
-[api-docs]: https://github.com/absmach/magistrala/blob/main/api/openapi/certs.yml
-[magistrala-vault]: https://github.com/absmach/magistrala/blob/main/docker/addons/vault/README.md#setup
+[api-docs]: https://github.com/absmach/supermq/blob/main/api/openapi/certs.yml
+[supermq-vault]: https://github.com/absmach/supermq/blob/main/docker/addons/vault/README.md#setup

@@ -1,6 +1,11 @@
+---
+sidebar_position: 4
+---
+
+
 # Entities
 
-Client is a component that will replace and unify the Magistrala Things and Users services. The purpose is to represent generic client accounts. Each client is identified using its identity and secret. The client will differ from Things service to Users service but we aim to achieve 1:1 implementation between the clients whilst changing how client secret works. This includes client secret generation, usage, modification and storage
+Client is a component that will replace and unify the SuperMQ Things and Users services. The purpose is to represent generic client accounts. Each client is identified using its identity and secret. The client will differ from Things service to Users service but we aim to achieve 1:1 implementation between the clients whilst changing how client secret works. This includes client secret generation, usage, modification and storage
 
 ## Generic Client Entity
 
@@ -51,7 +56,7 @@ Currently, we have the things service and the users service as 2 deployments of 
 
 ## Users service
 
-For grouping Magistrala entities there are `groups` object in the `users` service. The users groups can be used for grouping `users` only. Groups are organized like a tree, group can have one parent and children. Group with no parent is root of the tree.
+For grouping SuperMQ entities there are `groups` object in the `users` service. The users groups can be used for grouping `users` only. Groups are organized like a tree, group can have one parent and children. Group with no parent is root of the tree.
 
 ### Users
 
@@ -65,7 +70,7 @@ For grouping Magistrala entities there are `groups` object in the `users` servic
 
 ## Things service
 
-Things Service manages `things` and `channel`. `Thing` represents a device (or an application) connected to Magistrala that uses the platform for message exchange with other `things`.
+Things Service manages `things` and `channel`. `Thing` represents a device (or an application) connected to SuperMQ that uses the platform for message exchange with other `things`.
 `Channel` is a message conduit between things connected to it. It serves as a message topic that can be consumed by all of the things connected to it. Things can publish or subscribe to the Channel.
 
 ### Things
@@ -78,11 +83,11 @@ Things Service manages `things` and `channel`. `Thing` represents a device (or a
 - The API endpoint for interacting with channels are described in the [channels API][channels-api].
 - The CLI for interacting with channels are described in the [channels CLI][channels-cli].
 
-[users-api]: /api/#users
-[groups-api]: /api/#groups
-[things-api]: /api/#things
-[channels-api]: /api/#channels
-[users-cli]: /cli/#users-management
-[groups-cli]: /cli/#groups-management
-[things-cli]: /cli/#things-management
-[channels-cli]: /cli/#channels-management
+[users-api]: ./api.md#users
+[groups-api]: ./api.md#groups
+[things-api]: ./api.md#things
+[channels-api]: ./api.md#channels
+[users-cli]: ./cli.md#users-management
+[groups-cli]: ./cli.md#groups-management
+[things-cli]: ./cli.md#things-management
+[channels-cli]: ./cli.md#channels-management

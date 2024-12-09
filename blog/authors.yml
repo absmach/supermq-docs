@@ -1,0 +1,23 @@
+borovcanin:
+  name: 'Dusan borovcanin'
+  title: 'Software Engineer'
+  url: 'https://github.com/dborovcanin'
+
+draskovic:
+  name: 'Drasko Draskovic'
+  title: 'Software Engineer'
+  url: 'https://github.com/drasko'
+  email: 'drasko.draskovic@gmail.com'
+
+osodo:
+  name: 'Rodney Osodo'
+  title: 'Software Engineer'
+  url: 'http://rodneyosodo.com/'
+  socials:
+    twitter: 'https://twitter.com/b1ackd0t'
+
+musilah: 
+  name: 'Nataly Musilah'
+  title: 'Software Engineer'
+  url: 'https://github.com/Musilah'
+  email: 'nataleigh.nk@gmail.com'

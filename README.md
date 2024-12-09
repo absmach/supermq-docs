@@ -8,19 +8,19 @@ This repo collects the collaborative work on SuperMQ documentation.
 The official documentation is hosted at [SuperMQ Docs page][docs].
 Documentation is auto-generated from Markdown files in this repo.
 
-[MkDocs](https://www.mkdocs.org/) is used to serve the docs locally with different theming.
+This website is built using [Docusaurus](https://docusaurus.io/), a modern static website generator.
 
 > Additional practical information about SuperMQ system, news and tutorials can be found on the [SuperMQ blog][blog].
 
 ## Prerequisites
 
-Install [MkDocs](https://www.mkdocs.org/#installation)
+Install [Docusaurus](https://docusaurus.io/docs/installation)
 
-```bash
-pip install mkdocs
+### Installation
+
 ```
-
-## Install
+$ yarn
+```
 
 Doc repo can be fetched from GitHub:
 
@@ -28,15 +28,21 @@ Doc repo can be fetched from GitHub:
 git clone git@github.com:/absmach/supermq-docs.git
 ```
 
-## Usage
+### Local Development
+Use Docusaurus to serve documentation.
 
-Use MkDocs to serve documentation:
-
-```bash
-mkdocs serve
+```
+$ yarn start
 ```
 
-Then just point the browser to `http://127.0.0.1:8000`.
+This command starts a local development server and opens up a browser window. Most changes are reflected live without having to restart the server.
+
+### Build
+
+```
+$ yarn build
+```
+
 
 ## Contributing
 

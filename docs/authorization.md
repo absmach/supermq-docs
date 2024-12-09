@@ -1,6 +1,10 @@
+---
+sidebar_position: 8
+---
+
 # Authorization
 
-Magistrala allows for fine-grained control over user permissions, taking into account hierarchical relationships between entities domains, groups, channels, and things. The structure and functionality of an authorization system implemented using [SpiceDB](https://github.com/authzed/spicedb) and its associated [schema language](https://authzed.com/docs/reference/schema-lang). `auth` service backed by SpiceDB manages permissions for users, domains, groups, channels, and things.
+SuperMQ allows for fine-grained control over user permissions, taking into account hierarchical relationships between entities domains, groups, channels, and things. The structure and functionality of an authorization system implemented using [SpiceDB](https://github.com/authzed/spicedb) and its associated [schema language](https://authzed.com/docs/reference/schema-lang). `auth` service backed by SpiceDB manages permissions for users, domains, groups, channels, and things.
 
 ## Domains
 
@@ -10,7 +14,7 @@ Domain contains **Things**, **Channels**, and **Groups**. A **User** can be a me
 
 #### Overview
 
-In Magistrala, **things**, **channels**, and **groups** are inherently associated with one particular domain. This means that every **group**, including its sub-groups, every **thing**, and every **channel** is owned by and belongs to a specific domain. Domain acts like a kind of namespace.
+In SuperMQ, **things**, **channels**, and **groups** are inherently associated with one particular domain. This means that every **group**, including its sub-groups, every **thing**, and every **channel** is owned by and belongs to a specific domain. Domain acts like a kind of namespace.
 
 ```mermaid
 graph TD
@@ -70,7 +74,7 @@ graph
 
 ##### Channel Thing Connect/Disconnect
 
-`Thing` represents a device (or an application) connected to Magistrala that uses the platform for message exchange with other `things`.
+`Thing` represents a device (or an application) connected to SuperMQ that uses the platform for message exchange with other `things`.
 
 `Channel` is a message conduit between things connected to it. It serves as a message topic that can be consumed by all of the things connected to it.
 Things can publish or subscribe to the channel.
@@ -111,7 +115,7 @@ graph
 
 ##### Channel Group Relation
 
-A group serves as a parent entity that can contain both groups and channels as children. Child groups, in turn, can consist of further child groups or channels, forming a nested hierarchy. Notably, channels, which are distinct entities, cannot have child channels but can connect to multiple things. The concept of parentage signifies the relationship between higher-level entities and their subordinate components. Ancestors in this system refer to entities higher up in the hierarchy, and while a child group can have multiple ancestors, a channel can only belong to a single parent group. This hierarchical arrangement provides a structured and organized framework for managing information within the Magistrala.
+A group serves as a parent entity that can contain both groups and channels as children. Child groups, in turn, can consist of further child groups or channels, forming a nested hierarchy. Notably, channels, which are distinct entities, cannot have child channels but can connect to multiple things. The concept of parentage signifies the relationship between higher-level entities and their subordinate components. Ancestors in this system refer to entities higher up in the hierarchy, and while a child group can have multiple ancestors, a channel can only belong to a single parent group. This hierarchical arrangement provides a structured and organized framework for managing information within the SuperMQ.
 
 Assigning a group as the parent of a channel can be achieved through the following request.
 
@@ -295,13 +299,13 @@ graph
 
 ## User Domain Relationship
 
-In Magistrala, when a new user registers, they don't automatically have access to domains.
+In SuperMQ, when a new user registers, they don't automatically have access to domains.
 The domain administrator must invite the user to the domain and assign them a role, such as administrator, editor, viewer, or member.
 
-Domain administrator can invite an existing user in Magistrala or invite new users to the domain by e-mail ID.
-After the user registers with Magistrala, the user can accept the invitations to the domain.
+Domain administrator can invite an existing user in SuperMQ or invite new users to the domain by e-mail ID.
+After the user registers with SuperMQ, the user can accept the invitations to the domain.
 
-All the users in Magistrala are allowed to create a new domain.
+All the users in SuperMQ are allowed to create a new domain.
 The user who creates a domain automatically becomes the domain administrator.
 
 Users can have any one of the following relations with a domain
@@ -313,7 +317,7 @@ Users can have any one of the following relations with a domain
 
 **Let's take the below domain_1 with entities for explaining about user domain relationship.**
 
-![domain_users](diagrams/domain_users.drawio)
+![domain_users](diagrams/domain_users.svg)
 
 ### Domain Administrator
 
@@ -322,7 +326,7 @@ Users with administrator relations have full control over all entities (things, 
 **Example:**
 **user_1** is **administrator** of **domain_1**. **user_1 can view all entities created by others and have administrator access to all entities in the domain**.
 
-![domain_users_administrator](diagrams/domain_users_administrator.drawio)
+![domain_users_administrator](diagrams/domain_users_administrator.svg)
 
 ### Domain Editor
 
@@ -331,16 +335,16 @@ Users with editor relations have access to update all entities (things, channels
 **Example:**
 **user_2** is **editor** of **domain_1**. **user_2 can view all entities and have edit access to groups and channel entities, view access to thing entities in the domain, and also able to create & manage new things, channels & groups**.
 
-![domain_users_editor](diagrams/domain_users_editor.drawio)
+![domain_users_editor](diagrams/domain_users_editor.svg)
 
 ### Domain Viewer
 
 Users with viewer relations have access to view all entities (things, channels, groups) created by others within the domain. Viewer are also allowed to create their own entities and can view and update the ones they have created.
 
 **Example:**
-**user_3** is **viewer** of **domain_1**. **user_3 can only view entities that are created by others in the domain and <span style="color:blue"> also able to create & manage new things, channels & groups** </span>
+**user_3 can only view entities that are created by others in the domain and <span style={{ color:'blue' }}>also able to create & manage new things, channels & groups</span>**
 
-![domain_users_viewer](diagrams/domain_users_viewer.drawio)
+![domain_users_viewer](diagrams/domain_users_viewer.svg)
 
 ### Domain Member
 
@@ -351,9 +355,9 @@ Domain members will not have access by default to any of the entities in the Dom
 **user_4 , user_5, user_6, user_7, user_8, user_9** is **member** of **domain_1**. **These member relation users can able to create & manage new things, channels & groups in the domain. They can have access to the entities to which they have a relation in the domain. They could not view and manage other entities to which they don't have any relation in domain**.
 !!! note "Note: All other users having administrator, editor, viewer relation with domain will also have member relation inherit with domain, which allows them to create new things, channels & groups."
 
-![domain_users_member](diagrams/domain_users_member.drawio)
+![domain_users_member](diagrams/domain_users_member.svg)
 
-After the user sign-up to Magistrala, the user is allowed to create a new domain or join an existing domain via invitations, without domain user could not create _things_, _channels_, _groups_.
+After the user sign-up to SuperMQ, the user is allowed to create a new domain or join an existing domain via invitations, without domain user could not create _things_, _channels_, _groups_.
 
 All operations, including creating, updating, and deleting things, channels, and groups, occur at the domain level. For instance, when a user creates a new thing using an access token, the newly created thing automatically becomes associated with a specific domain. The domain information is extracted from the access token. When the user obtains a token, the user should specify the domain for which they want to operate.
 
@@ -361,7 +365,7 @@ So to do operations on a domain, an access token for the domain is required. Thi
 
 ## Tokens and Domain Tokens
 
-JWT token are used in Magistrala for authentication and authorization. The JWT token has domain, exp, iat, iss, sub, type, and user fields.
+JWT token are used in SuperMQ for authentication and authorization. The JWT token has domain, exp, iat, iss, sub, type, and user fields.
 
 Example JWT Token:
 
@@ -370,7 +374,7 @@ Example JWT Token:
   "domain": "",
   "exp": 1706544967,
   "iat": 1706541367,
-  "iss": "magistrala.auth",
+  "iss": "supermq.auth",
   "sub": "",
   "type": 0,
   "user": "266d00f8-2284-4613-b732-3bd16e7cf8f2"
@@ -385,7 +389,7 @@ If the domain field is empty, then with that JWT token following actions are per
 - Domain creation & listing,
 - Accept domain invitations
 
-Actions related to the creation, update, and deletion of things, channels, and groups are not permitted, requests will fail in authorization. Magistrala operations related to things, channels, and groups take place in domain level. So for these kinds of operations, a JWT token with a domain field containing the operating domain ID is required.
+Actions related to the creation, update, and deletion of things, channels, and groups are not permitted, requests will fail in authorization. SuperMQ operations related to things, channels, and groups take place in domain level. So for these kinds of operations, a JWT token with a domain field containing the operating domain ID is required.
 
 There are two ways to obtain JWT token for a particular domain
 
@@ -446,7 +450,7 @@ EOF
   "domain": "",
   "exp": 1706603526,
   "iat": 1706599926,
-  "iss": "magistrala.auth",
+  "iss": "supermq.auth",
   "sub": "",
   "type": 0,
   "user": "5748de69-2a66-40da-a829-1b47f02e9adb"
@@ -460,7 +464,7 @@ EOF
   "domain": "",
   "exp": 1706686326,
   "iat": 1706599926,
-  "iss": "magistrala.auth",
+  "iss": "supermq.auth",
   "sub": "",
   "type": 1,
   "user": "5748de69-2a66-40da-a829-1b47f02e9adb"
@@ -528,7 +532,7 @@ EOF
   "domain": "903f7ede-3308-4206-89c2-e99688b612f7",
   "exp": 1706603706,
   "iat": 1706600106,
-  "iss": "magistrala.auth",
+  "iss": "supermq.auth",
   "sub": "903f7ede-3308-4206-89c2-e99688b612f7_5748de69-2a66-40da-a829-1b47f02e9adb",
   "type": 0,
   "user": "5748de69-2a66-40da-a829-1b47f02e9adb"
@@ -542,7 +546,7 @@ EOF
   "domain": "903f7ede-3308-4206-89c2-e99688b612f7",
   "exp": 1706686506,
   "iat": 1706600106,
-  "iss": "magistrala.auth",
+  "iss": "supermq.auth",
   "sub": "903f7ede-3308-4206-89c2-e99688b612f7_5748de69-2a66-40da-a829-1b47f02e9adb",
   "type": 1,
   "user": "5748de69-2a66-40da-a829-1b47f02e9adb"
@@ -619,7 +623,7 @@ Like domains, groups also have four types of relations
 
 Group administrator users have access to update, delete, assign, and unassign to the group and also have access to update, delete, assign, and unassign all of its child entities
 
-From the [previous viewer example](#domain-viewer), let's take **user_3** who has **viewer relation** with **domain_1**, which means **user_3 will be able to view all the entities created by others but cannot make any edits or updates on them.** ***<span style="color:blue">user_3 will have access to create entities in domain_1 </span>***
+From the [previous viewer example](#domain-viewer), let's take **user_3** who has **viewer relation** with **domain_1**, which means **user_3 will be able to view all the entities created by others but cannot make any edits or updates on them.** ***<span style={{ color:'blue' }}>user_3 will have access to create entities in domain_1 </span>***
 
 **user_3 creates new thing_101, channel_101, and group_101**.
 
@@ -659,7 +663,7 @@ EOF
 The user who creates the entity will be the administrator of the entity by default.
 So **user_3** is **administrator** of **thing_101, channel_101 and group_101.**
 
-![group_users_administrator_1](diagrams/group_users_administrator_1.drawio)
+![group_users_administrator_1](diagrams/group_users_administrator_1.svg)
 
 !!! Note "user_3 will also have domain viewer relation to thing_101, channel_101, and group_101"
 
@@ -687,7 +691,7 @@ curl -sSiX POST 'http://localhost/channels/<channel_101_id>/groups/assign' -H "C
 EOF
 ```
 
-![group_users_administrator_2](diagrams/group_users_administrator_2.drawio)
+![group_users_administrator_2](diagrams/group_users_administrator_2.svg)
 
 ***Members of domain 1 will not have access by default to any of the entities in domain 1, access shall be granted for specific entities by domain administrator or individual entity administrator.***
 
@@ -704,7 +708,7 @@ curl -sSiX POST 'http://localhost/domains/<DOMINA_1_ID>/users/assign'  -H "Conte
 }
 ```
 
-![group_users_administrator_3](diagrams/group_users_administrator_3.drawio)
+![group_users_administrator_3](diagrams/group_users_administrator_3.svg)
 
 ### Group Editor
 
@@ -713,7 +717,7 @@ Group editor users have access to view, update, assign, and unassign to the grou
 **Administrator of group_101 (user_3/user_4), assigns user_5 with editor relation.**
 **When domain member user_5 becomes an editor of group_101, user_5 can able to update, assign, and unassign to group_101. Since group_101 has channel_101 and thing_101 as children. The user_5 has editor access to the group child entities channels, things, and groups. In this case, user_5 has editor access to group_101, and also has edit access to its child entities channel_101 and thing_101**
 
-![group_users_editor](diagrams/group_users_editor.drawio)
+![group_users_editor](diagrams/group_users_editor.svg)
 
 ### Group Viewer
 
@@ -721,7 +725,7 @@ Group viewer users have access to view group and also have access to view all of
 
 **When domain member user_6 becomes a viewer of group_101, user_6 can able to view all the child and nested child entities in group_101. user_6 can assign child entities under group_101 and also assign child entities under any other group and channels that are children of group_101.**
 
-![group_users_viewer](diagrams/group_users_viewer.drawio)
+![group_users_viewer](diagrams/group_users_viewer.svg)
 
 ## Examples
 
@@ -729,41 +733,41 @@ Group viewer users have access to view group and also have access to view all of
 
 user_6 creates new channel and thing with the names channel_201 and thing_201 respectively. Then connects both channel_201 and thing_201.
 
-![group_users_viewer_1](diagrams/group_users_viewer_1.drawio)
+![group_users_viewer_1](diagrams/group_users_viewer_1.svg)
 
 Now user_5 can able to assign group_101 as a parent for channel_201
 
-![group_users_viewer_2](diagrams/group_users_viewer_2.drawio)
+![group_users_viewer_2](diagrams/group_users_viewer_2.svg)
 
 When channel_201 was assigned as a child of group_101, all the administrators, editors, and viewers of group_101 got the same access (relation) to channel_201 and thing_201
 
-![group_users_viewer_3](diagrams/group_users_viewer_3.drawio)
+![group_users_viewer_3](diagrams/group_users_viewer_3.svg)
 
 ### Multiple Domain Members with Group, Channel & Thing
 
 user_8 creates a new group with the name group_301
 user_9 creates a new thing and channel with the names thing_301 and channel_301 respectively, then connects both thing and channel.
-![group_users_member_11](diagrams/group_users_member_11.drawio)
+![group_users_member_11](diagrams/group_users_member_11.svg)
 
 user_8 can able to assign channel_301 as a child of group_301
-![group_users_member_12](diagrams/group_users_member_12.drawio)
+![group_users_member_12](diagrams/group_users_member_12.svg)
 When channel_301 is assigned as a child of group_301, then the administrators, editors, and viewers of group_301 get the same respective access to channel_301.
 The administrator, editor, and viewer of channel_301 get the same respective access to thing_301.
 So here user_8 becomes the administrator of both channel_301 and thing_301
 
 user_5 can able to assign group_301 as a child of group_101
-![group_users_member_13](diagrams/group_users_member_13.drawio)
+![group_users_member_13](diagrams/group_users_member_13.svg)
 
 When group_301 becomes a child of group_101, then the administrator, editor, and viewer of group_101 get the same respective access to group_301.
 The administrator, editor, and viewer of group_301 get the same respective access to channel_301.
 The administrator, editor, and viewer of channel_301 get the same respective access to thing_301.
 So here user_5 becomes the editor of group_301, channel_301, and thing_301, user_4 becomes administrator of group_301, channel_301, and thing_301.
 user_8 has administrator access only to group_301 and its child entities channel_301 and thing_301.
-![group_users_member_14](diagrams/group_users_member_14.drawio)
+![group_users_member_14](diagrams/group_users_member_14.svg)
 
 ## User Registration
 
-There are two ways to user get registered to Magistrala, self-register and register new users by super admin.
+There are two ways to user get registered to SuperMQ, self-register and register new users by super admin.
 User registration is self register default which can be changed by following environment variable:
 
 ```env

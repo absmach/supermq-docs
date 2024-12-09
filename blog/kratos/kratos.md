@@ -1,6 +1,19 @@
+---
+slug: extending-users-repository
+title: Extending Magistrala Users Repository
+authors: osodo
+description: Learn how Magistrala integrates with Ory Kratos to enhance user management, featuring MFA, password recovery, and admin APIs.
+tags: ['Magistrala', 'Kratos', 'User Management', 'Identity']
+---
+
+
 # Extending Magistrala Users Repository
 
-For the past few months, we have been working on integrating Magistrala with [Ory Kratos](https://www.ory.sh/docs/kratos/ory-kratos-intro) as the user management service. Ory Kratos is a cloud-native identity and user management system, which can be used as the user management service for Magistrala. Let's delve deeper into the myriad capabilities that Kratos brings to the forefront:
+For the past few months, we have been working on integrating Magistrala with [Ory Kratos](https://www.ory.sh/docs/kratos/ory-kratos-intro) as the user management service. Ory Kratos is a cloud-native identity and user management system, which can be used as the user management service for Magistrala. 
+
+<!-- truncate -->
+
+Let's delve deeper into the myriad capabilities that Kratos brings to the forefront:
 
 - self-service user login and registration. This is the ability to register and log in to the system without the need for an administrator.
 - multi-factor authentication with Time-based One-time Passwords (TOTP).
@@ -21,7 +34,7 @@ Go kit is a collection of Go packages that help you build robust, reliable, main
 
 we added an extra layer to most of our services called the `repository layer`. This crucial layer acts as the intermediary responsible for interfacing with the database, thus fostering a clean separation of concerns wherein the repository layer remains blissfully unaware of the intricacies of the transport layer.
 
-![Users Service Architecture](../img/blogs/kratos/architecture.png)
+![Users Service Architecture](./architecture.png)
 
 With this architecture, we can decouple the services from the database and make it easier to switch between different databases.
 

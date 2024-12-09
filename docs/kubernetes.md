@@ -1,6 +1,10 @@
+---
+sidebar_position: 22
+---
+
 # Kubernetes
 
-Magistrala can be easily deployed on the Kubernetes platform using Helm Charts from the official [Magistrala DevOps GitHub repository](https://github.com/absmach/devops).
+SuperMQ can be easily deployed on the Kubernetes platform using Helm Charts from the official [SuperMQ DevOps GitHub repository](https://github.com/absmach/devops).
 
 ## Prerequisites
 
@@ -112,7 +116,7 @@ kubectl get pods -n ingress-nginx
 
 ## Deploying Magistrala (Manual Local Deployment)
 
-This method involves **manually deploying Magistrala** by cloning the Helm chart repository to your local machine, making any necessary customizations, and installing the chart from the local directory.
+This method involves **manually deploying SuperMQ** by cloning the Helm chart repository to your local machine, making any necessary customizations, and installing the chart from the local directory.
 
 #### Use Case:
 
@@ -124,7 +128,7 @@ This approach is useful if you want to:
 
 ### Steps:
 
-#### 1. Clone Magistrala Helm Chart Repository:
+#### 1. Clone SuperMQ Helm Chart Repository:
 
 ```bash
 git clone https://github.com/absmach/devops.git
@@ -160,9 +164,9 @@ kubectl create namespace mg
 
 ---
 
-### 4. Deploy Magistrala:
+### 4. Deploy SuperMQ:
 
-Deploy the Magistrala Helm chart into the `mg` namespace:
+Deploy the SuperMQ Helm chart into the `mg` namespace:
 
 ```bash
 helm install magistrala . -n mg
@@ -182,7 +186,7 @@ helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
 
 ### 5. Verifying the Deployment
 
-After deploying Magistrala, verify the services and pods using `kubectl` commands:
+After deploying SuperMQ, verify the services and pods using `kubectl` commands:
 
 **List all pods:**
 
@@ -202,15 +206,15 @@ kubectl get services -n mg
 kubectl logs <pod-name> -n mg
 ```
 
-### Interacting with Magistrala Services After Deployment
+### Interacting with SuperMQ Services After Deployment
 
-Once you have successfully deployed Magistrala, there are three primary ways you can interact with its services:
+Once you have successfully deployed SuperMQ, there are three primary ways you can interact with its services:
 
 - web-based User Interface (UI)
-- Magistrala CLI tool (learn more in the [CLI Documentation](https://docs.magistrala.abstractmachines.fr/cli/))
+- SuperMQ CLI tool (learn more in the [CLI Documentation](https://docs.magistrala.abstractmachines.fr/cli/))
 - HTTP API Clients (e.g., cURL, Postman)
 
-The ingress-nginx-controller handles the routing for your deployed services using Kubernetes Ingress resources. To interact with your Magistrala UI or any other service exposed through this load balancer, the first step is to retrieve the Public IP address of this load balancer.
+The ingress-nginx-controller handles the routing for your deployed services using Kubernetes Ingress resources. To interact with your SuperMQ UI or any other service exposed through this load balancer, the first step is to retrieve the Public IP address of this load balancer.
 
 You can usually find this IP address in your DigitalOcean dashboard under the "Networking" or "Load Balancers" section, or by using the following command in your terminal:
 
@@ -231,14 +235,14 @@ NOTE: The Public IP in this case is `138.68.126.8`.
 
 #### Using Postman
 
-If you prefer working with APIs, you can also interact with Magistrala services using Postman by sending requests to the Public IP address of your load balancer. For example, to create a user:
+If you prefer working with APIs, you can also interact with SuperMQ services using Postman by sending requests to the Public IP address of your load balancer. For example, to create a user:
 
 ###### 1. Set Up the Postman Request
 
 - **Method:** `POST`
 - **URL:** `http://138.68.126.8/users`
 
-This URL points to the endpoint that handles user creation on your Magistrala deployment. Replace `138.68.126.8` with the actual IP address or domain of your deployment if it differs.
+This URL points to the endpoint that handles user creation on your SuperMQ deployment. Replace `138.68.126.8` with the actual IP address or domain of your deployment if it differs.
 
 ###### 2. Set Up the Request Body
 
@@ -262,22 +266,22 @@ Switch to the `Body` tab in Postman and select `raw` as the format. Choose `JSON
 
 For more examples, refer to this [Postman Collection](https://elements.getpostman.com/redirect?entityId=38532610-ef9a0562-b353-4d2c-8aca-a5fae35ad0ad&entityType=collection).
 
-## Install Magistrala Charts (From Published Helm Repository)
+## Install SuperMQ Charts (From Published Helm Repository)
 
-This method is the **standard installation** approach, where you install the Magistrala chart directly from a Helm repository. This is quicker and ideal for end-users who do not need to modify the chart manually.
+This method is the **standard installation** approach, where you install the SuperMQ chart directly from a Helm repository. This is quicker and ideal for end-users who do not need to modify the chart manually.
 
 #### Use Case:
 
 This approach is suitable for:
 
-- End-users who simply want to install Magistrala without modifying the source code.
+- End-users who simply want to install SuperMQ without modifying the source code.
 - Production environments where the chart is deployed directly from a hosted Helm repository.
 
 ### Steps:
 
-#### 1. Add the Magistrala Helm Repository:
+#### 1. Add the SuperMQ Helm Repository:
 
-The Helm charts are published via GitHub Pages. After installing Helm, add the Magistrala DevOps Helm repository by running:
+The Helm charts are published via GitHub Pages. After installing Helm, add the SuperMQ DevOps Helm repository by running:
 
 ```bash
 helm repo add magistrala-devops https://absmach.github.io/devops/
@@ -286,7 +290,7 @@ helm repo update
 
 For a complete list of all available flags to use with the `helm repo add [NAME] [URL] [flags]` command, run `helm repo add --help`
 
-#### 2. Install the Magistrala Chart:
+#### 2. Install the SuperMQ Chart:
 
 ```bash
 helm install <release-name> magistrala-devops/magistrala [flags]
@@ -302,7 +306,7 @@ helm install my-magistrala magistrala-devops/magistrala --version 0.14.0
 
 ---
 
-#### 3. Upgrading the Magistrala Chart:
+#### 3. Upgrading the SuperMQ Chart:
 
 To upgrade the chart to a new version or update configurations:
 
@@ -312,19 +316,19 @@ helm upgrade <release-name> magistrala-devops/magistrala
 
 ---
 
-#### 4. Uninstalling Magistrala:
+#### 4. Uninstalling SuperMQ:
 
-To uninstall the Magistrala release:
+To uninstall the SuperMQ release:
 
 ```bash
 helm uninstall <release-name> -n mg
 ```
 
-This will remove the Magistrala release from the previously created `mg` namespace. Use the `--dry-run` flag to see which releases will be uninstalled without actually uninstalling them.
+This will remove the SuperMQ release from the previously created `mg` namespace. Use the `--dry-run` flag to see which releases will be uninstalled without actually uninstalling them.
 
 ---
 
-### Customizing Magistrala Installation:
+### Customizing SuperMQ Installation:
 
 To override values in the chart, use either the `--values` flag and pass in a file or use the `--set` flag and pass configuration from the command line, to force a string value use `--set-string`. You can use `--set-file` to set individual values from a file when the value itself is too long for the command line or is dynamically generated. You can also use `--set-json` to set json values (scalars/objects/arrays) from the command line.
 
@@ -342,9 +346,9 @@ helm upgrade magistrala -n mg --set ingress.hostname='example.com' --set users.i
 
 This will apply your changes to the existing installation. For a complete table of the configurable parameters and their default values, see [configurable parameters and their default values](https://github.com/absmach/devops/blob/master/charts/magistrala/README.md). For changes to any of the configurable parameters, equally update the documentation at `charts/magistrala/README.md` using `helm-docs` as described in [Autogenerating Helm Chart Documentation](https://github.com/absmach/devops/blob/master/README.md).
 
-### Magistrala Core
+### SuperMQ Core
 
-The Magistrala Core includes the essential services that are installed by default:
+The SuperMQ Core includes the essential services that are installed by default:
 
 - authn
 - users
@@ -354,11 +358,11 @@ The Magistrala Core includes the essential services that are installed by defaul
 - adapter_coap
 - ui
 
-These are the minimum required services to run Magistrala.
+These are the minimum required services to run SuperMQ.
 
-### Magistrala Add-ons
+### SuperMQ Add-ons
 
-Magistrala Add-ons are optional services that are not installed by default. To enable an add-on, you need to specify it during installation. For example, to enable the InfluxDB reader and writer, you would use the following command:
+SuperMQ Add-ons are optional services that are not installed by default. To enable an add-on, you need to specify it during installation. For example, to enable the InfluxDB reader and writer, you would use the following command:
 
 ```bash
 helm install magistrala . -n mg --set influxdb=true
@@ -484,6 +488,6 @@ mosquitto_pub -d -L mqtts://<thing_id>:<thing_secret>@example.com:8883/channels/
 [ingress-yaml]: https://github.com/absmach/devops/blob/master/charts/mainflux/templates/ingress.yaml#L141
 [ingress-controller-args]: https://kubernetes.github.io/ingress-nginx/user-guide/cli-arguments/
 [ingress-controller-tcp-udp]: https://kubernetes.github.io/ingress-nginx/user-guide/exposing-tcp-udp-services/
-[authentication]: /authentication
+[authentication]: ./authentication.md
 [makefile]: https://github.com/absmach/magistrala/blob/master/docker/ssl/Makefile
 [secrets]: https://github.com/absmach/devops/blob/master/charts/mainflux/secrets/secrets.sh

@@ -1,3 +1,7 @@
+---
+sidebar_position: 5
+---
+
 # API
 
 ## Reference
@@ -8,7 +12,7 @@ API reference in the Swagger UI can be found at: [https://api.magistrala.abstrac
 
 ### Create User
 
-To start working with the Magistrala system, you need to create a user account.
+To start working with the SuperMQ system, you need to create a user account.
 
 > Identity, which can be email-address (this must be unique as it identifies the user) and secret (password must contain at least 8 characters).
 
@@ -97,7 +101,7 @@ Access-Control-Expose-Headers: Location
 
 ### Create Token
 
-To log in to the Magistrala system, you need to create a `user_token`.
+To log in to the SuperMQ system, you need to create a `user_token`.
 
 ```bash
 curl -sSiX POST http://localhost/users/tokens/issue -H "Content-Type: application/json" -d @- << EOF
@@ -683,9 +687,9 @@ Access-Control-Expose-Headers: Location
 
 ### Create Thing with External ID
 
-It is often the case that the user will want to integrate the existing solutions, e.g. an asset management system, with the Magistrala platform. To simplify the integration between the systems and avoid artificial cross-platform reference, such as special fields in Magistrala Things metadata, it is possible to set Magistrala Thing ID with an existing unique ID while create the Thing. This way, the user can set the existing ID as the Thing ID of a newly created Thing to keep reference between Thing and the asset that Thing represents.
+It is often the case that the user will want to integrate the existing solutions, e.g. an asset management system, with the SuperMQ platform. To simplify the integration between the systems and avoid artificial cross-platform reference, such as special fields in SuperMQ Things metadata, it is possible to set SuperMQ Thing ID with an existing unique ID while create the Thing. This way, the user can set the existing ID as the Thing ID of a newly created Thing to keep reference between Thing and the asset that Thing represents.
 
-The limitation is that the existing ID has to be unique in the Magistrala domain.
+The limitation is that the existing ID has to be unique in the SuperMQ domain.
 
 To create a thing with an external ID, you need to provide the ID together with thing name, and other fields as well as a `user_token`
 
@@ -721,8 +725,8 @@ Access-Control-Expose-Headers: Location
 
 ### Create Thing with External Secret
 
-It is often the case that the user will want to integrate the existing solutions, e.g. an asset management system, with the Magistrala platform. To simplify the integration between the systems and avoid artificial cross-platform reference, such as special fields in Magistrala Things metadata, it is possible to set Magistrala Thing secret with an existing unique secret when creating the Thing. This way, the user can set the existing secret as the Thing secret of a newly created Thing to keep reference between Thing and the asset that Thing represents.
-The limitation is that the existing secret has to be unique in the Magistrala domain.
+It is often the case that the user will want to integrate the existing solutions, e.g. an asset management system, with the SuperMQ platform. To simplify the integration between the systems and avoid artificial cross-platform reference, such as special fields in SuperMQ Things metadata, it is possible to set SuperMQ Thing secret with an existing unique secret when creating the Thing. This way, the user can set the existing secret as the Thing secret of a newly created Thing to keep reference between Thing and the asset that Thing represents.
+The limitation is that the existing secret has to be unique in the SuperMQ domain.
 
 To create a thing with an external secret, you need to provide the secret together with thing name, and other fields as well as a `user_token`
 
@@ -1358,7 +1362,7 @@ Access-Control-Expose-Headers: Location
 
 ### Create Channel with external ID
 
-Channel is a group of things that could represent a special category in existing systems, e.g. a building level channel could represent the level of a smarting building system. For helping to keep the reference, it is possible to set an existing ID while creating the Magistrala channel. There are two limitations - the existing ID has to be in UUID V4 format and it has to be unique in the Magistrala domain.
+Channel is a group of things that could represent a special category in existing systems, e.g. a building level channel could represent the level of a smarting building system. For helping to keep the reference, it is possible to set an existing ID while creating the SuperMQ channel. There are two limitations - the existing ID has to be in UUID V4 format and it has to be unique in the SuperMQ domain.
 
 To create a channel with external ID, the user needs to provide a UUID v4 format unique ID, and a `user_token`
 
@@ -2682,7 +2686,7 @@ Access-Control-Expose-Headers: Location
 
 ### Delete policies
 
-Only policies defined on [Predefined Policies section][predefined-policies] are allowed.
+Only policies defined on Predefined Policies section are allowed.
 
 ```bash
 curl -sSiX DELETE http://localhost/users/policies/<user_id>/<channel_id> -H "Content-Type: application/json" -H "Authorization: Bearer <user_token>"
@@ -2706,4 +2710,3 @@ Access-Control-Expose-Headers: Location
 ```
 
 [api]: https://absmach.github.io/magistrala
-[predefined-policies]: /authorization/#summary-of-defined-policies

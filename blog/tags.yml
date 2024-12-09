@@ -1,0 +1,84 @@
+facebook:
+  label: Facebook
+  permalink: /facebook
+  description: Facebook tag description
+
+hello:
+  label: Hello
+  permalink: /hello
+  description: Hello tag description
+
+docusaurus:
+  label: Docusaurus
+  permalink: /docusaurus
+  description: Docusaurus tag description
+
+Magistrala:
+  label: Magistrala
+  permalink: /magistrala
+  description: All posts about Magistrala, the open-source IoT platform.
+
+IIoT:
+  label: IIoT
+  permalink: /iiot
+  description: Posts focusing on Industrial Internet of Things (IIoT) solutions and use cases.
+
+User Guide:
+  label: User Guide
+  permalink: /user-guide
+  description: Posts that serve as guides for using Magistrala.
+
+Industrial Automation:
+  label: Industrial Automation
+  permalink: /industrial-automation
+  description: Content related to automating industrial processes with Magistrala.
+
+Open Source:
+  label: Open Source
+  permalink: /open-source
+  description: Insights and updates on Magistrala as an open-source platform.
+
+OAuth2.0:
+  label: OAuth2.0
+  permalink: /oauth2
+  description: Posts about integrating OAuth2.0 with Magistrala for secure authentication.
+
+Authentication:
+  label: Authentication
+  permalink: /authentication
+  description: Content exploring authentication mechanisms like OAuth2.0.
+
+Google OAuth:
+  label: Google OAuth
+  permalink: /google-oauth
+  description: Posts about integrating Google OAuth with Magistrala.
+
+Kratos:
+  label: Kratos
+  permalink: /kratos
+  description: Posts about using Ory Kratos for user management in Magistrala.
+
+User Management:
+  label: User Management
+  permalink: /user-management
+  description: Posts focused on managing users within Magistrala.
+
+Identity:
+  label: Identity
+  permalink: /identity
+  description: Content about identity management and integration in Magistrala.
+
+release:
+  label: Release
+  permalink: /release
+  description: Updates and announcements about new releases of Magistrala.
+
+SuperMQ:
+  label: SuperMQ
+  permalink: /supermq
+  description: Posts related to SuperMQ, a scalable and secure IoT platform.
+
+update:
+  label: Update
+  permalink: /update
+  description: Blog posts about updates and changes to Magistrala.

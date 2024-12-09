@@ -1,28 +1,32 @@
+---
+sidebar_position: 6
+---
+
 # CLI
 
-Magistrala CLI makes it easy to manage users, things, channels and messages.
+SuperMQ CLI makes it easy to manage users, things, channels and messages.
 
 CLI can be downloaded as separate asset from [project realeses][releases] or it can be built with `GNU Make` tool:
 
-Get the Magistrala code
+Get the SuperMQ code
 
 ```bash
-go get github.com/absmach/magistrala
+go get github.com/absmach/supermq
 ```
 
-Build the magistrala-cli
+Build the supermq-cli
 
 ```bash
 make cli
 ```
 
-which will build `magistrala-cli` in `<project_root>/build` folder.
+which will build `supermq-cli` in `<project_root>/build` folder.
 
-Executing `build/magistrala-cli` without any arguments will output help with all available commands and flags:
+Executing `build/supermq-cli` without any arguments will output help with all available commands and flags:
 
 ```bash
 Usage:
-  magistrala-cli [command]
+  supermq-cli [command]
 
 Available Commands:
   bootstrap    Bootstrap management
@@ -48,7 +52,7 @@ Flags:
   -C, --contact string           Subscription contact query parameter
   -y, --content-type string      Message content type (default "application/senml+json")
   -d, --domains-url string       Domains service URL (default "http://localhost:8189")
-  -h, --help                     help for magistrala-cli
+  -h, --help                     help for supermq-cli
   -H, --host-url string          Host URL (default "http://localhost")
   -p, --http-url string          HTTP adapter URL (default "http://localhost/http")
   -I, --identity string          User identity query parameter
@@ -66,19 +70,19 @@ Flags:
   -T, --topic string             Subscription topic query parameter
   -u, --users-url string         Users service URL (default "http://localhost:9002")
 
-Use "magistrala-cli [command] --help" for more information about a command.
+Use "supermq-cli [command] --help" for more information about a command.
 ```
 
-It is also possible to use the docker image `magistrala/cli` to execute CLI command:
+It is also possible to use the docker image `supermq/cli` to execute CLI command:
 
 ```bash
-docker run -it --rm magistrala/cli -u http://<IP_SERVER> [command]
+docker run -it --rm supermq/cli -u http://<IP_SERVER> [command]
 ```
 
 For example:
 
 ```bash
-docker run -it --rm magistrala/cli -u http://192.168.160.1 users token admin@example.com 12345678
+docker run -it --rm supermq/cli -u http://192.168.160.1 users token admin@example.com 12345678
 
 {
   "access_token": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODA2MjEzMDcsImlhdCI6MTY4MDYyMDQwNywiaWRlbnRpdHkiOiJhZG1pbkBleGFtcGxlLmNvbSIsImlzcyI6ImNsaWVudHMuYXV0aCIsInN1YiI6ImYxZTA5Y2YxLTgzY2UtNDE4ZS1iZDBmLWU3M2I3M2MxNDM2NSIsInR5cGUiOiJhY2Nlc3MifQ.iKdBv3Ko7PKuhjTC6Xs-DvqfKScjKted3ZMorTwpXCd4QrRSsz6NK_lARG6LjpE0JkymaCMVMZlzykyQ6ZgwpA",
@@ -90,7 +94,7 @@ docker run -it --rm magistrala/cli -u http://192.168.160.1 users token admin@exa
 You can execute each command with `-h` flag for more information about that command, e.g.
 
 ```bash
-magistrala-cli channels -h
+supermq-cli channels -h
 ```
 
 Response should look like this:
@@ -99,7 +103,7 @@ Response should look like this:
 Channels management: create, get, update or delete Channel and get list of Things connected or not connected to a Channel
 
 Usage:
-  magistrala-cli channels [command]
+  supermq-cli channels [command]
 
 Available Commands:
   assign      Assign users or groups to a channel
@@ -141,15 +145,15 @@ Global Flags:
   -T, --topic string             Subscription topic query parameter
   -u, --users-url string         Users service URL (default "http://localhost:9002")
 
-Use "magistrala-cli channels [command] --help" for more information about a command.
+Use "supermq-cli channels [command] --help" for more information about a command.
 ```
 
 ## Service
 
-### Get Magistrala services health check
+### Get SuperMQ services health check
 
 ```bash
-magistrala-cli health <service>
+supermq-cli health <service>
 ```
 
 For "things" service, the response should look like this:
@@ -168,91 +172,91 @@ For "things" service, the response should look like this:
 
 #### Create User
 
-Magistrala has two options for user creation. Either the `<user_token>` is provided or not. If the `<user_token>` is provided then the created user will be owned by the user identified by the `<user_token>`. Otherwise, when the token is not used, since everybody can create new users, the user will not have an owner. However, the token is still required, in order to be consistent. For more details, please see [Authorization page](authorization.md).
+SuperMQ has two options for user creation. Either the `<user_token>` is provided or not. If the `<user_token>` is provided then the created user will be owned by the user identified by the `<user_token>`. Otherwise, when the token is not used, since everybody can create new users, the user will not have an owner. However, the token is still required, in order to be consistent. For more details, please see [Authorization page](authorization.md).
 
 ```bash
-magistrala-cli users create <user_name> <user_email> <user_password>
+supermq-cli users create <user_name> <user_email> <user_password>
 
-magistrala-cli users create <user_name> <user_email> <user_password> <user_token>
+supermq-cli users create <user_name> <user_email> <user_password> <user_token>
 ```
 
 #### Login User
 
 ```bash
-magistrala-cli users token <user_email> <user_password>
+supermq-cli users token <user_email> <user_password>
 ```
 
-Since v0.14.0, Magistrala supports domains. Domains are used to separate different tenants, and almost all the activities in Magistrala happen under a particular domain. Only two types of actions do not happen within a domain: login where you get to list domains and log in to them, and invitations management to accept domain membership sent by other users.
+Since v0.14.0, SuperMQ supports domains. Domains are used to separate different tenants, and almost all the activities in SuperMQ happen under a particular domain. Only two types of actions do not happen within a domain: login where you get to list domains and log in to them, and invitations management to accept domain membership sent by other users.
 An access token with a domain is required for all the other actions on Things, Channels, and Groups. To obtain token within the domain, use the following command:
 
 ```bash
-magistrala-cli users token <user_email> <user_password> <domain_id>
+supermq-cli users token <user_email> <user_password> <domain_id>
 ```
 
 #### Get User Token From Refresh Token
 
 ```bash
-magistrala-cli users refreshtoken <refresh_token>
+supermq-cli users refreshtoken <refresh_token>
 ```
 
 #### Get User
 
 ```bash
-magistrala-cli users get <user_id> <user_token>
+supermq-cli users get <user_id> <user_token>
 ```
 
 #### Get Users
 
 ```bash
-magistrala-cli users get all <user_token>
+supermq-cli users get all <user_token>
 ```
 
 #### Update User Metadata
 
 ```bash
-magistrala-cli users update <user_id> '{"name":"value1", "metadata":{"value2": "value3"}}' <user_token>
+supermq-cli users update <user_id> '{"name":"value1", "metadata":{"value2": "value3"}}' <user_token>
 ```
 
 #### Update User Tags
 
 ```bash
-magistrala-cli users update tags <user_id> '["tag1", "tag2"]' <user_token>
+supermq-cli users update tags <user_id> '["tag1", "tag2"]' <user_token>
 ```
 
 #### Update User Identity
 
 ```bash
-magistrala-cli users update identity <user_id> <user_email> <user_token>
+supermq-cli users update identity <user_id> <user_email> <user_token>
 ```
 
 #### Update User Owner
 
 ```bash
-magistrala-cli users update owner <user_id> <owner_id> <user_token>
+supermq-cli users update owner <user_id> <owner_id> <user_token>
 ```
 
 #### Update User Password
 
 ```bash
-magistrala-cli users password <old_password> <password> <user_token>
+supermq-cli users password <old_password> <password> <user_token>
 ```
 
 #### Enable User
 
 ```bash
-magistrala-cli users enable <user_id> <user_token>
+supermq-cli users enable <user_id> <user_token>
 ```
 
 #### Disable User
 
 ```bash
-magistrala-cli users disable <user_id> <user_token>
+supermq-cli users disable <user_id> <user_token>
 ```
 
 #### Get Profile of the User identified by the token
 
 ```bash
-magistrala-cli users profile <user_token>
+supermq-cli users profile <user_token>
 ```
 
 ### Groups management
@@ -260,61 +264,61 @@ magistrala-cli users profile <user_token>
 #### Create Group
 
 ```bash
-magistrala-cli groups create '{"name":"<group_name>","description":"<description>","parentID":"<parent_id>","metadata":"<metadata>"}' <user_token>
+supermq-cli groups create '{"name":"<group_name>","description":"<description>","parentID":"<parent_id>","metadata":"<metadata>"}' <user_token>
 ```
 
 #### Get Group
 
 ```bash
-magistrala-cli groups get <group_id> <user_token>
+supermq-cli groups get <group_id> <user_token>
 ```
 
 #### Get Groups
 
 ```bash
-magistrala-cli groups get all <user_token>
+supermq-cli groups get all <user_token>
 ```
 
 #### Update Group
 
 ```bash
-magistrala-cli groups update '{"id":"<group_id>","name":"<group_name>","description":"<description>","metadata":"<metadata>"}' <user_token>
+supermq-cli groups update '{"id":"<group_id>","name":"<group_name>","description":"<description>","metadata":"<metadata>"}' <user_token>
 ```
 
 #### Get Group Members
 
 ```bash
-magistrala-cli groups members <group_id> <user_token>
+supermq-cli groups members <group_id> <user_token>
 ```
 
 #### Get Memberships
 
 ```bash
-magistrala-cli groups membership <member_id> <user_token>
+supermq-cli groups membership <member_id> <user_token>
 ```
 
 #### Assign Members to Group
 
 ```bash
-magistrala-cli groups assign <member_ids> <member_type> <group_id> <user_token>
+supermq-cli groups assign <member_ids> <member_type> <group_id> <user_token>
 ```
 
 #### Unassign Members to Group
 
 ```bash
-magistrala-cli groups unassign <member_ids> <group_id>  <user_token>
+supermq-cli groups unassign <member_ids> <group_id>  <user_token>
 ```
 
 #### Enable Group
 
 ```bash
-magistrala-cli groups enable <group_id> <user_token>
+supermq-cli groups enable <group_id> <user_token>
 ```
 
 #### Disable Group
 
 ```bash
-magistrala-cli groups disable <group_id> <user_token>
+supermq-cli groups disable <group_id> <user_token>
 ```
 
 ### Domain management
@@ -322,7 +326,7 @@ magistrala-cli groups disable <group_id> <user_token>
 #### Creating a New Domain
 
 ```bash
-magistrala-cli domains create <domain_name> <domain_alias> <user_token>
+supermq-cli domains create <domain_name> <domain_alias> <user_token>
 ```
 
 In this command:
@@ -334,7 +338,7 @@ In this command:
 Here's an example creating a new domain with the name `mydomain` and the alias `myalias` with the user access token stored in the `ADMIN_ACCESS` environment variable:
 
 ```bash
-magistrala-cli domains create "mydomain" "myalias" $ADMIN_ACCESS
+supermq-cli domains create "mydomain" "myalias" $ADMIN_ACCESS
 ```
 
 After running the command, you should see output similar to this:
@@ -356,7 +360,7 @@ After running the command, you should see output similar to this:
 For a single domain
 
 ```bash
-magistrala-cli domains get <domain_id> <user_token>
+supermq-cli domains get <domain_id> <user_token>
 ```
 
 where:
@@ -367,7 +371,7 @@ where:
 For example
 
 ```bash
-magistrala-cli domains get "6fcfec51-423d-4f69-b5c5-1ed1c9ae547c" $ADMIN_ACCESS
+supermq-cli domains get "6fcfec51-423d-4f69-b5c5-1ed1c9ae547c" $ADMIN_ACCESS
 ```
 
 The ouptut should look like
@@ -387,13 +391,13 @@ The ouptut should look like
 For all domains
 
 ```bash
-magistrala-cli domains get all <user_token>
+supermq-cli domains get all <user_token>
 ```
 
 For example
 
 ```bash
-magistrala-cli domains get all $ADMIN_ACCESS
+supermq-cli domains get all $ADMIN_ACCESS
 ```
 
 After running this command, you will receive information about all domains. The output should look something like this:
@@ -430,7 +434,7 @@ After running this command, you will receive information about all domains. The 
 #### Updating Domains
 
 ```bash
-magistrala-cli domains update <domain_id> '{"name" : "<new_domain_name>", "alias" : "<new_domain_alias>", "metadata" : "<new_metadata>"}' <user_token>
+supermq-cli domains update <domain_id> '{"name" : "<new_domain_name>", "alias" : "<new_domain_alias>", "metadata" : "<new_metadata>"}' <user_token>
 ```
 
 In this command:
@@ -444,7 +448,7 @@ In this command:
 Here's an example in which we're updating the domain with the ID `6fcfec51-423d-4f69-b5c5-1ed1c9ae547c` to have the name `domain_name` instead of `mydomain`, the alias `domain_alias` instead of `myalias`, and adding new metadata `{"location" : "london"}`.
 
 ```bash
-magistrala-cli domains update "6fcfec51-423d-4f69-b5c5-1ed1c9ae547c" '{"name" : "domain_name", "alias" : "domain_alias", "metadata" : {"location" : "london"}}' $ADMIN_ACCESS
+supermq-cli domains update "6fcfec51-423d-4f69-b5c5-1ed1c9ae547c" '{"name" : "domain_name", "alias" : "domain_alias", "metadata" : {"location" : "london"}}' $ADMIN_ACCESS
 ```
 
 After running the command, you should see an output similar to this:
@@ -468,7 +472,7 @@ After running the command, you should see an output similar to this:
 #### Disable a domain
 
 ```bash
-magistrala-cli domains disable <domain_id> <user_token>
+supermq-cli domains disable <domain_id> <user_token>
 ```
 
 In this command:
@@ -479,13 +483,13 @@ In this command:
 For example,
 
 ```bash
-magistrala-cli domains disable "6fcfec51-423d-4f69-b5c5-1ed1c9ae547c" $ADMIN_ACCESS
+supermq-cli domains disable "6fcfec51-423d-4f69-b5c5-1ed1c9ae547c" $ADMIN_ACCESS
 ```
 
 #### Enable a domain
 
 ```bash
-magistrala-cli domains enable <domain_id> <user_token>
+supermq-cli domains enable <domain_id> <user_token>
 ```
 
 In this command:
@@ -496,13 +500,13 @@ In this command:
 For example,
 
 ```bash
-magistrala-cli domains enable "6fcfec51-423d-4f69-b5c5-1ed1c9ae547c" $ADMIN_ACCESS
+supermq-cli domains enable "6fcfec51-423d-4f69-b5c5-1ed1c9ae547c" $ADMIN_ACCESS
 ```
 
 #### Assigning Users to a Domain
 
 ```bash
-magistrala-cli domains assign users <relation> <user_ids> <domain_id> <user_token>
+supermq-cli domains assign users <relation> <user_ids> <domain_id> <user_token>
 ```
 
 In this command:
@@ -515,19 +519,19 @@ In this command:
 For example,
 
 ```bash
-magistrala-cli domains assign users "member" "6a8c0864-1d95-4053-a335-a6399c0ccb0a" "6fcfec51-423d-4f69-b5c5-1ed1c9ae547c" $ADMIN_ACCESS
+supermq-cli domains assign users "member" "6a8c0864-1d95-4053-a335-a6399c0ccb0a" "6fcfec51-423d-4f69-b5c5-1ed1c9ae547c" $ADMIN_ACCESS
 ```
 
 #### List Domain users
 
 ```bash
-magistrala-cli domains users <domain_id>  <user_token>
+supermq-cli domains users <domain_id>  <user_token>
 ```
 
 For example, if your domain ID is `6fcfec51-423d-4f69-b5c5-1ed1c9ae547c` and your user token is stored in the `ADMIN_ACCESS` environment variable, you would type:
 
 ```bash
-magistrala-cli domains users "6fcfec51-423d-4f69-b5c5-1ed1c9ae547c" $ADMIN_ACCESS
+supermq-cli domains users "6fcfec51-423d-4f69-b5c5-1ed1c9ae547c" $ADMIN_ACCESS
 ```
 
 After you run this command, the system will show you a list of users in the domain, like this:
@@ -574,13 +578,13 @@ This output tells you that there are currently 2 users in the domain.
 #### Unassign users from a domain
 
 ```bash
-magistrala-cli domains unassign users <relation> <user_ids> <domain_id> <user_token>
+supermq-cli domains unassign users <relation> <user_ids> <domain_id> <user_token>
 ```
 
 For example, if you want to remove a user with the ID `6a8c0864-1d95-4053-a335-a6399c0ccb0a` from a domain with the ID `6fcfec51-423d-4f69-b5c5-1ed1c9ae547c`, and the user is a member of the domain, you would type:
 
 ```bash
-magistrala-cli domains unassign users "member" "6a8c0864-1d95-4053-a335-a6399c0ccb0a" "6fcfec51-423d-4f69-b5c5-1ed1c9ae547c" $ADMIN_ACCESS
+supermq-cli domains unassign users "member" "6a8c0864-1d95-4053-a335-a6399c0ccb0a" "6fcfec51-423d-4f69-b5c5-1ed1c9ae547c" $ADMIN_ACCESS
 ```
 
 ### Things management
@@ -588,19 +592,19 @@ magistrala-cli domains unassign users "member" "6a8c0864-1d95-4053-a335-a6399c0c
 #### Create Thing
 
 ```bash
-magistrala-cli things create '{"name":"myThing"}' <user_token>
+supermq-cli things create '{"name":"myThing"}' <user_token>
 ```
 
 #### Create Thing with metadata
 
 ```bash
-magistrala-cli things create '{"name":"myThing", "metadata": {"key1":"value1"}}' <user_token>
+supermq-cli things create '{"name":"myThing", "metadata": {"key1":"value1"}}' <user_token>
 ```
 
 #### Bulk Provision Things
 
 ```bash
-magistrala-cli provision things <file> <user_token>
+supermq-cli provision things <file> <user_token>
 ```
 
 - `file` - A CSV or JSON file containing thing names (must have extension `.csv` or `.json`)
@@ -644,67 +648,67 @@ With JSON you can be able to specify more fields of the channels you want to cre
 #### Update Thing
 
 ```bash
-magistrala-cli things update <thing_id> '{"name":"value1", "metadata":{"key1": "value2"}}' <user_token>
+supermq-cli things update <thing_id> '{"name":"value1", "metadata":{"key1": "value2"}}' <user_token>
 ```
 
 #### Update Thing Tags
 
 ```bash
-magistrala-cli things update tags <thing_id> '["tag1", "tag2"]' <user_token>
+supermq-cli things update tags <thing_id> '["tag1", "tag2"]' <user_token>
 ```
 
 #### Update Thing Owner
 
 ```bash
-magistrala-cli things update owner <thing_id> <owner_id> <user_token>
+supermq-cli things update owner <thing_id> <owner_id> <user_token>
 ```
 
 #### Update Thing Secret
 
 ```bash
-magistrala-cli things update secret <thing_id> <secet> <user_token>
+supermq-cli things update secret <thing_id> <secet> <user_token>
 ```
 
 #### Identify Thing
 
 ```bash
-magistrala-cli things identify <thing_secret>
+supermq-cli things identify <thing_secret>
 ```
 
 #### Enable Thing
 
 ```bash
-magistrala-cli things enable <thing_id> <user_token>
+supermq-cli things enable <thing_id> <user_token>
 ```
 
 #### Disable Thing
 
 ```bash
-magistrala-cli things disable <thing_id> <user_token>
+supermq-cli things disable <thing_id> <user_token>
 ```
 
 #### Get Thing
 
 ```bash
-magistrala-cli things get <thing_id> <user_token>
+supermq-cli things get <thing_id> <user_token>
 ```
 
 #### Get Things
 
 ```bash
-magistrala-cli things get all <user_token>
+supermq-cli things get all <user_token>
 ```
 
 #### Get a subset list of provisioned Things
 
 ```bash
-magistrala-cli things get all --offset=1 --limit=5 <user_token>
+supermq-cli things get all --offset=1 --limit=5 <user_token>
 ```
 
 #### Share Thing
 
 ```bash
-magistrala-cli things share <channel_id> <user_id> <allowed_actions> <user_token>
+supermq-cli things share <channel_id> <user_id> <allowed_actions> <user_token>
 ```
 
 ### Channels management
@@ -712,13 +716,13 @@ magistrala-cli things share <channel_id> <user_id> <allowed_actions> <user_token
 #### Create Channel
 
 ```bash
-magistrala-cli channels create '{"name":"myChannel"}' <user_token>
+supermq-cli channels create '{"name":"myChannel"}' <user_token>
 ```
 
 #### Bulk Provision Channels
 
 ```bash
-magistrala-cli provision channels <file> <user_token>
+supermq-cli provision channels <file> <user_token>
 ```
 
 - `file` - A CSV or JSON file containing channel names (must have extension `.csv` or `.json`)
@@ -761,49 +765,49 @@ With JSON you can be able to specify more fields of the channels you want to cre
 #### Update Channel
 
 ```bash
-magistrala-cli channels update '{"id":"<channel_id>","name":"myNewName"}' <user_token>
+supermq-cli channels update '{"id":"<channel_id>","name":"myNewName"}' <user_token>
 ```
 
 #### Enable Channel
 
 ```bash
-magistrala-cli channels enable <channel_id> <user_token>
+supermq-cli channels enable <channel_id> <user_token>
 ```
 
 #### Disable Channel
 
 ```bash
-magistrala-cli channels disable <channel_id> <user_token>
+supermq-cli channels disable <channel_id> <user_token>
 ```
 
 #### Get Channel
 
 ```bash
-magistrala-cli channels get <channel_id> <user_token>
+supermq-cli channels get <channel_id> <user_token>
 ```
 
 #### Get Channels
 
 ```bash
-magistrala-cli channels get all <user_token>
+supermq-cli channels get all <user_token>
 ```
 
 #### Get a subset list of provisioned Channels
 
 ```bash
-magistrala-cli channels get all --offset=1 --limit=5 <user_token>
+supermq-cli channels get all --offset=1 --limit=5 <user_token>
 ```
 
 #### Connect Thing to Channel
 
 ```bash
-magistrala-cli things connect <thing_id> <channel_id> <user_token>
+supermq-cli things connect <thing_id> <channel_id> <user_token>
 ```
 
 #### Bulk Connect Things to Channels
 
 ```bash
-magistrala-cli provision connect <file> <user_token>
+supermq-cli provision connect <file> <user_token>
 ```
 
 - `file` - A CSV or JSON file containing thing and channel ids (must have extension `.csv` or `.json`)
@@ -830,19 +834,19 @@ A comparable JSON file would be
 #### Disconnect Thing from Channel
 
 ```bash
-magistrala-cli things disconnect <thing_id> <channel_id> <user_token>
+supermq-cli things disconnect <thing_id> <channel_id> <user_token>
 ```
 
 #### Get a subset list of Channels connected to Thing
 
 ```bash
-magistrala-cli things connections <thing_id> <user_token>
+supermq-cli things connections <thing_id> <user_token>
 ```
 
 #### Get a subset list of Things connected to Channel
 
 ```bash
-magistrala-cli channels connections <channel_id> <user_token>
+supermq-cli channels connections <channel_id> <user_token>
 ```
 
 ### Messaging
@@ -850,13 +854,13 @@ magistrala-cli channels connections <channel_id> <user_token>
 #### Send a message over HTTP
 
 ```bash
-magistrala-cli messages send <channel_id> '[{"bn":"Dev1","n":"temp","v":20}, {"n":"hum","v":40}, {"bn":"Dev2", "n":"temp","v":20}, {"n":"hum","v":40}]' <thing_secret>
+supermq-cli messages send <channel_id> '[{"bn":"Dev1","n":"temp","v":20}, {"n":"hum","v":40}, {"bn":"Dev2", "n":"temp","v":20}, {"n":"hum","v":40}]' <thing_secret>
 ```
 
 #### Read messages over HTTP
 
 ```bash
-magistrala-cli messages read <channel_id> <user_token> -R <reader_url>
+supermq-cli messages read <channel_id> <user_token> -R <reader_url>
 ```
 
 ### Bootstrap
@@ -864,39 +868,39 @@ magistrala-cli messages read <channel_id> <user_token> -R <reader_url>
 #### Add configuration
 
 ```bash
-magistrala-cli bootstrap create '{"external_id": "myExtID", "external_key": "myExtKey", "name": "myName", "content": "myContent"}' <user_token> -b <bootstrap-url>
+supermq-cli bootstrap create '{"external_id": "myExtID", "external_key": "myExtKey", "name": "myName", "content": "myContent"}' <user_token> -b <bootstrap-url>
 ```
 
 #### View configuration
 
 ```bash
-magistrala-cli bootstrap get <thing_id> <user_token> -b <bootstrap-url>
+supermq-cli bootstrap get <thing_id> <user_token> -b <bootstrap-url>
 ```
 
 #### Update configuration
 
 ```bash
-magistrala-cli bootstrap update '{"magistrala_id":"<thing_id>", "name": "newName", "content": "newContent"}' <user_token> -b <bootstrap-url>
+supermq-cli bootstrap update '{"supermq_id":"<thing_id>", "name": "newName", "content": "newContent"}' <user_token> -b <bootstrap-url>
 ```
 
 #### Remove configuration
 
 ```bash
-magistrala-cli bootstrap remove <thing_id> <user_token> -b <bootstrap-url>
+supermq-cli bootstrap remove <thing_id> <user_token> -b <bootstrap-url>
 ```
 
 #### Bootstrap configuration
 
 ```bash
-magistrala-cli bootstrap bootstrap <external_id> <external_key> -b <bootstrap-url>
+supermq-cli bootstrap bootstrap <external_id> <external_key> -b <bootstrap-url>
 ```
 
 ## Config
 
-Magistrala CLI tool supports configuration files that contain some of the basic settings so you don't have to specify them through flags. Once you set the settings, they remain stored locally.
+SuperMQ CLI tool supports configuration files that contain some of the basic settings so you don't have to specify them through flags. Once you set the settings, they remain stored locally.
 
 ```bash
-magistrala-cli config <parameter> <value>
+supermq-cli config <parameter> <value>
 ```
 
 Response should look like this:
@@ -908,7 +912,7 @@ Response should look like this:
 This command is used to set the flags to be used by CLI in a local TOML file. The default location of the TOML file is in the same directory as the CLI binary. To change the location of the TOML file you can run the command:
 
 ```
-  magistrala-cli config <parameter> <value> -c "cli/file_name.toml"
+  supermq-cli config <parameter> <value> -c "cli/file_name.toml"
 ```
 
 The possible parameters that can be set using the config command are:
@@ -934,4 +938,4 @@ The possible parameters that can be set using the config command are:
 | offset           | Offset query parameter                               |                          |
 | raw_output       | Enables raw output mode for easier parsing of output |                          |
 
-[releases]: https://github.com/absmach/magistrala/releases
+[releases]: https://github.com/absmach/supermq/releases

@@ -1,10 +1,15 @@
+---
+sidebar_position: 11
+---
+
+
 # Events
 
-In order to be easily integratable system, Magistrala is using [Redis Streams][redis-streams] as an event log for event sourcing. Services that are publishing events to Redis Streams are `users` service, `things` service, `bootstrap` service and `mqtt` adapter.
+In order to be easily integratable system, SuperMQ is using [Redis Streams][redis-streams] as an event log for event sourcing. Services that are publishing events to Redis Streams are `users` service, `things` service, `bootstrap` service and `mqtt` adapter.
 
 ## Users Service
 
-For every operation `users` service will generate new event and publish it to Redis Stream called `magistrala.users`. Every event has its own event ID that is automatically generated and `operation` field that can have one of the following values:
+For every operation `users` service will generate new event and publish it to Redis Stream called `supermq.users`. Every event has its own event ID that is automatically generated and `operation` field that can have one of the following values:
 
 - `user.create` for user creation
 - `user.update` for user update
@@ -31,7 +36,7 @@ For every operation `users` service will generate new event and publish it to Re
 - `policy.remove` for policy deletion
 - `policy.list` for listing policies
 
-By fetching and processing these events you can reconstruct `users` service state. If you store some of your custom data in `metadata` field, this is the perfect way to fetch it and process it. If you want to integrate through [docker-compose.yml][mg-docker-compose] you can use `magistrala-es-redis` service. Just connect to it and consume events from Redis Stream named `magistrala.users`.
+By fetching and processing these events you can reconstruct `users` service state. If you store some of your custom data in `metadata` field, this is the perfect way to fetch it and process it. If you want to integrate through [docker-compose.yml][mg-docker-compose] you can use `supermq-es-redis` service. Just connect to it and consume events from Redis Stream named `supermq.users`.
 
 ### User create event
 
@@ -64,7 +69,7 @@ As you can see from this example, every odd field represents field name while ev
 2. In Nats JetStream
 
    ```json
-   Subject: events.magistrala.users Received: 2023-10-05T15:41:04+03:00
+   Subject: events.supermq.users Received: 2023-10-05T15:41:04+03:00
 
    {"created_at":"2023-10-05T12:41:04.743529Z","id":"0a5f2e21-1a8b-460e-bfa9-732e570df095","identity":"wizardly_hopper@email.com","metadata":"e30=","name":"wizardly_hopper","occurred_at":1696509664755440542,"operation":"user.create","status":"enabled"}
    ```
@@ -114,7 +119,7 @@ Whenever user is viewed, `users` service will generate new `view` event. This ev
 2. In Nats JetStreams
 
    ```json
-   Subject: events.magistrala.users Received: 2023-10-05T18:38:40+03:00
+   Subject: events.supermq.users Received: 2023-10-05T18:38:40+03:00
 
    {"created_at":"2023-10-05T15:38:40.219889Z","id":"d4baecb8-adfa-4c7c-8257-deea5d7f9dba","identity":"-Hilling-Karole@email.com","metadata":"e30=","name":"-Doud-Varley","occurred_at":1696520320355145103,"operation":"user.view","owner":"3264e965-3fe5-4d4e-a857-48de43551d2e","status":"enabled"}
    ```
@@ -164,7 +169,7 @@ Whenever user profile is viewed, `users` service will generate new `view_profile
 2. In Nats JetStreams
 
    ```json
-   Subject: events.magistrala.users Received: 2023-10-05T19:41:01+03:00
+   Subject: events.supermq.users Received: 2023-10-05T19:41:01+03:00
 
    {"created_at":"2023-10-05T11:59:02.029606Z","id":"97466511-6317-4c98-8d58-7bd78bcaf587","identity":"admin@example.com","metadata":"eyJyb2xlIjoiYWRtaW4ifQ==","name":"admin","occurred_at":1696524061363472648,"operation":"user.view_profile","status":"enabled"}
    ```
@@ -194,7 +199,7 @@ Whenever user list is fetched, `users` service will generate new `list` event. T
 2. In Nats JetStreams
 
    ```json
-   Subject: events.magistrala.users Received: 2023-10-05T18:38:40+03:00
+   Subject: events.supermq.users Received: 2023-10-05T18:38:40+03:00
 
    {"limit":10,"occurred_at":1696520320382884278,"offset":0,"operation":"user.list","status":"enabled","total":0}
    ```
@@ -253,7 +258,7 @@ Whenever user is identified, `users` service will generate new `identify` event.
 2. In Nats JetStreams
 
    ```json
-   Subject: events.magistrala.users Received: 2023-10-05T15:11:22+03:00
+   Subject: events.supermq.users Received: 2023-10-05T15:11:22+03:00
 
    {"occurred_at":1696507882455392181,"operation":"user.identify","user_id":"733005f5-7a69-4da3-adac-1ac3bd6fdedf"}
    ```
@@ -303,7 +308,7 @@ Whenever user token is issued, `users` service will generate new `issue_token` e
 2. In Nats JetStreams
 
    ```json
-   Subject: events.magistrala.users Received: 2023-10-05T14:59:02+03:00
+   Subject: events.supermq.users Received: 2023-10-05T14:59:02+03:00
 
    {"identity":"admin@example.com","occurred_at":1696507142218064965,"operation":"user.issue_token"}
    ```
@@ -391,7 +396,7 @@ Whenever user instance is updated, `users` service will generate new `update` ev
 2. In Nats JetStreams
 
    ```json
-   Subject: events.magistrala.users Received: 2023-10-05T18:38:40+03:00
+   Subject: events.supermq.users Received: 2023-10-05T18:38:40+03:00
 
    {"created_at":"2023-10-05T15:38:40.219889Z","id":"d4baecb8-adfa-4c7c-8257-deea5d7f9dba","identity":"-Hilling-Karole@email.com","metadata":"eyJVcGRhdGUiOiJBbGVncmlhLVdvbGwifQ==","name":"Rhude-Parrillo","occurred_at":1696520320510448519,"operation":"user.update","status":"enabled","updated_at":"2023-10-05T15:38:40.500637Z","updated_by":"3264e965-3fe5-4d4e-a857-48de43551d2e"}
    ```
@@ -446,7 +451,7 @@ Whenever user identity is updated, `users` service will generate new `update_ide
 2. In Nats JetStream
 
    ```json
-   Subject: events.magistrala.users Received: 2023-10-05T18:38:40+03:00
+   Subject: events.supermq.users Received: 2023-10-05T18:38:40+03:00
 
    {"created_at":"2023-10-05T15:38:40.219889Z","id":"d4baecb8-adfa-4c7c-8257-deea5d7f9dba","identity":"Andes-Bahgat","metadata":"eyJVcGRhdGUiOiJBbGVncmlhLVdvbGwifQ==","name":"Rhude-Parrillo","occurred_at":1696520320527730565,"operation":"user.update_identity","status":"enabled","updated_at":"2023-10-05T15:38:40.518477Z","updated_by":"3264e965-3fe5-4d4e-a857-48de43551d2e"}
    ```
@@ -503,7 +508,7 @@ Whenever user tags are updated, `users` service will generate new `update_tags` 
 2. In Nats JetStreams
 
    ```json
-   Subject: events.magistrala.users Received: 2023-10-05T18:38:40+03:00
+   Subject: events.supermq.users Received: 2023-10-05T18:38:40+03:00
 
    {"created_at":"2023-10-05T15:38:40.219889Z","id":"d4baecb8-adfa-4c7c-8257-deea5d7f9dba","identity":"Andes-Bahgat","metadata":"eyJVcGRhdGUiOiJBbGVncmlhLVdvbGwifQ==","name":"Rhude-Parrillo","occurred_at":1696520320537588492,"operation":"user.update_tags","status":"enabled","tags":"[Tischler-Persechino]","updated_at":"2023-10-05T15:38:40.533159Z","updated_by":"3264e965-3fe5-4d4e-a857-48de43551d2e"}
    ```
@@ -565,7 +570,7 @@ Whenever user instance changes state in the system, `users` service will generat
 2. In Nats JetStream
 
    ```json
-   Subject: events.magistrala.users Received: 2023-10-05T17:59:29+03:00
+   Subject: events.supermq.users Received: 2023-10-05T17:59:29+03:00
 
    {"id":"0a5f2e21-1a8b-460e-bfa9-732e570df095","occurred_at":1696517969187562377,"operation":"user.remove","status":"disabled","updated_at":"0001-01-01T00:00:00Z","updated_by":""}
    ```
@@ -614,7 +619,7 @@ As you can see from this example, every odd field represents field name while ev
 2. In Nats JetStream
 
    ```json
-   Subject: events.magistrala.users Received: 2023-10-05T16:12:00+03:00
+   Subject: events.supermq.users Received: 2023-10-05T16:12:00+03:00
 
    {"created_at":"2023-10-05T13:12:00.88713Z","id":"f565885c-826d-4c4c-9277-a3c8537aadff","metadata":"e30=","name":"cyclopes","occurred_at":1696511520897093737,"operation":"group.create","owner":"97466511-6317-4c98-8d58-7bd78bcaf587","status":"enabled"}
    ```
@@ -667,7 +672,7 @@ Whenever group instance is updated, `users` service will generate new `update` e
 2. In Nats JetStreams
 
    ```json
-   Subject: events.magistrala.users Received: 2023-10-05T18:38:40+03:00
+   Subject: events.supermq.users Received: 2023-10-05T18:38:40+03:00
 
    {"created_at":"2023-10-05T15:38:40.22859Z","id":"cabccc8d-937b-4d92-832b-48d7a466e19e","metadata":"eyJVcGRhdGUiOiJSZWdvLVJlZHdheSJ9","name":"Reiger-Cheal","occurred_at":1696520320573615888,"operation":"group.update","owner":"3264e965-3fe5-4d4e-a857-48de43551d2e","status":"enabled","updated_at":"2023-10-05T15:38:40.56848Z","updated_by":"3264e965-3fe5-4d4e-a857-48de43551d2e"}
    ```
@@ -718,7 +723,7 @@ Whenever group is viewed, `users` service will generate new `view` event. This e
 2. In Nats JetStream
 
    ```json
-   Subject: events.magistrala.users Received: 2023-10-05T18:38:40+03:00
+   Subject: events.supermq.users Received: 2023-10-05T18:38:40+03:00
 
    {"created_at":"2023-10-05T15:38:40.22859Z","id":"cabccc8d-937b-4d92-832b-48d7a466e19e","metadata":"e30=","name":"-Conneely-Chiang","occurred_at":1696520320392002702,"operation":"group.view","owner":"3264e965-3fe5-4d4e-a857-48de43551d2e","status":"enabled"}
    ```
@@ -763,7 +768,7 @@ Whenever group list is fetched, `users` service will generate new `list` event. 
 2. In Nats JetStreams
 
    ```json
-   Subject: events.magistrala.users Received: 2023-10-05T19:41:01+03:00
+   Subject: events.supermq.users Received: 2023-10-05T19:41:01+03:00
 
    {"limit":100,"occurred_at":1696524061330756963,"offset":0,"operation":"group.list","status":"all","total":0}
    ```
@@ -808,7 +813,7 @@ Whenever group list by user is fetched, `users` service will generate new `list_
 2. In Nats JetStreams
 
    ```json
-   Subject: events.magistrala.users Received: 2023-10-05T19:41:01+03:00
+   Subject: events.supermq.users Received: 2023-10-05T19:41:01+03:00
 
    {"limit":100,"occurred_at":1696524061330756963,"offset":0,"operation":"group.list","status":"all","total":0}
    ```
@@ -852,11 +857,11 @@ Whenever group instance changes state in the system, `users` service will genera
 2. In Nats JetStreams
 
    ```json
-   Subject: events.magistrala.users Received: 2023-10-05T18:38:40+03:00
+   Subject: events.supermq.users Received: 2023-10-05T18:38:40+03:00
 
    {"id":"cabccc8d-937b-4d92-832b-48d7a466e19e","occurred_at":1696520320583695115,"operation":"group.remove","status":"disabled","updated_at":"2023-10-05T15:38:40.56848Z","updated_by":"3264e965-3fe5-4d4e-a857-48de43551d2e"}
 
-   Subject: events.magistrala.users Received: 2023-10-05T18:38:40+03:00
+   Subject: events.supermq.users Received: 2023-10-05T18:38:40+03:00
 
    {"id":"cabccc8d-937b-4d92-832b-48d7a466e19e","occurred_at":1696520320592509139,"operation":"group.remove","status":"enabled","updated_at":"2023-10-05T15:38:40.56848Z","updated_by":"3264e965-3fe5-4d4e-a857-48de43551d2e"}
    ```
@@ -897,7 +902,7 @@ Whenever policy is authorized, `users` service will generate new `authorize` eve
 2. In Nats JetStreams
 
    ```json
-   Subject: events.magistrala.users Received: 2023-10-05T15:12:07+03:00
+   Subject: events.supermq.users Received: 2023-10-05T15:12:07+03:00
 
    {"action":"c_list","entity_type":"client","object":"things","occurred_at":1696507927648459930,"operation":"policies.authorize"}
    ```
@@ -941,7 +946,7 @@ Whenever policy is added, `users` service will generate new `add` event. This ev
 2. In Nats JetStreams
 
    ```json
-   Subject: events.magistrala.users Received: 2023-10-05T16:13:21+03:00
+   Subject: events.supermq.users Received: 2023-10-05T16:13:21+03:00
 
    {"actions":"[m_read]","object":"f565885c-826d-4c4c-9277-a3c8537aadff","occurred_at":1696511601827118557,"operation":"policies.add","subject":"0a5f2e21-1a8b-460e-bfa9-732e570df095"}
    ```
@@ -1061,7 +1066,7 @@ Whenever policy list is fetched, `things` service will generate new `list` event
 
 ## Things Service
 
-For every operation that has side effects (that is changing service state) `things` service will generate new event and publish it to Redis Stream called `magistrala.things`. Every event has its own event ID that is automatically generated and `operation` field that can have one of the following values:
+For every operation that has side effects (that is changing service state) `things` service will generate new event and publish it to Redis Stream called `supermq.things`. Every event has its own event ID that is automatically generated and `operation` field that can have one of the following values:
 
 - `thing.create` for thing creation
 - `thing.update` for thing update
@@ -1082,7 +1087,7 @@ For every operation that has side effects (that is changing service state) `thin
 - `policy.remove` for policy deletion
 - `policy.list` for listing policies
 
-By fetching and processing these events you can reconstruct `things` service state. If you store some of your custom data in `metadata` field, this is the perfect way to fetch it and process it. If you want to integrate through [docker-compose.yml][mg-docker-compose] you can use `magistrala-es-redis` service. Just connect to it and consume events from Redis Stream named `magistrala.things`.
+By fetching and processing these events you can reconstruct `things` service state. If you store some of your custom data in `metadata` field, this is the perfect way to fetch it and process it. If you want to integrate through [docker-compose.yml][mg-docker-compose] you can use `supermq-es-redis` service. Just connect to it and consume events from Redis Stream named `supermq.things`.
 
 ### Thing create event
 
@@ -1115,7 +1120,7 @@ As you can see from this example, every odd field represents field name while ev
 2. In Nats JetStreams
 
    ```json
-   Subject: events.magistrala.things Received: 2023-10-05T15:41:04+03:00
+   Subject: events.supermq.things Received: 2023-10-05T15:41:04+03:00
 
    {"created_at":"2023-10-05T12:41:04.833207Z","id":"9745f2ea-f776-46b1-9b44-1cfd1ad4c6f1","metadata":"e30=","name":"d0","occurred_at":1696509664860397827,"operation":"thing.create","owner":"0a5f2e21-1a8b-460e-bfa9-732e570df095","status":"enabled"}
    ```
@@ -1168,7 +1173,7 @@ Whenever thing instance is updated, `things` service will generate new `update` 
 2. In Nats JetStreams
 
    ```json
-   Subject: events.magistrala.things Received: 2023-10-05T18:38:40+03:00
+   Subject: events.supermq.things Received: 2023-10-05T18:38:40+03:00
 
    {"created_at":"2023-10-05T15:38:40.264564Z","id":"47540f84-029b-436f-89b5-3c10f87e302b","metadata":"eyJVcGRhdGUiOiJCZXJuYXJkLUJyaWNrZXkifQ==","name":"Bence-Jefferson","occurred_at":1696520320614766498,"operation":"thing.update","owner":"3264e965-3fe5-4d4e-a857-48de43551d2e","status":"enabled","updated_at":"2023-10-05T15:38:40.606662Z","updated_by":"3264e965-3fe5-4d4e-a857-48de43551d2e"}
    ```
@@ -1223,7 +1228,7 @@ Whenever thing secret is updated, `things` service will generate new `update_sec
 2. In Nats JetStreams
 
    ```json
-   Subject: events.magistrala.things Received: 2023-10-05T18:38:40+03:00
+   Subject: events.supermq.things Received: 2023-10-05T18:38:40+03:00
 
    {"created_at":"2023-10-05T15:38:40.264564Z","id":"47540f84-029b-436f-89b5-3c10f87e302b","metadata":"eyJVcGRhdGUiOiJCZXJuYXJkLUJyaWNrZXkifQ==","name":"Bence-Jefferson","occurred_at":1696520320633637049,"operation":"thing.update_secret","owner":"3264e965-3fe5-4d4e-a857-48de43551d2e","status":"enabled","updated_at":"2023-10-05T15:38:40.625663Z","updated_by":"3264e965-3fe5-4d4e-a857-48de43551d2e"}
    ```
@@ -1280,7 +1285,7 @@ Whenever thing tags are updated, `things` service will generate new `update_tags
 2. In Nats JetStreams
 
    ```json
-   Subject: events.magistrala.things Received: 2023-10-05T18:38:40+03:00
+   Subject: events.supermq.things Received: 2023-10-05T18:38:40+03:00
 
    {"created_at":"2023-10-05T15:38:40.264564Z","id":"47540f84-029b-436f-89b5-3c10f87e302b","metadata":"eyJVcGRhdGUiOiJCZXJuYXJkLUJyaWNrZXkifQ==","name":"Bence-Jefferson","occurred_at":1696520320651750298,"operation":"thing.update_tags","owner":"3264e965-3fe5-4d4e-a857-48de43551d2e","status":"enabled","tags":"[Kac-Kimma]","updated_at":"2023-10-05T15:38:40.643285Z","updated_by":"3264e965-3fe5-4d4e-a857-48de43551d2e"}
    ```
@@ -1342,11 +1347,11 @@ Whenever thing instance is removed from the system, `things` service will genera
 2. In Nats JetsStreams
 
    ```json
-   Subject: events.magistrala.things Received: 2023-10-05T18:38:40+03:00
+   Subject: events.supermq.things Received: 2023-10-05T18:38:40+03:00
 
    {"id":"47540f84-029b-436f-89b5-3c10f87e302b","occurred_at":1696520320674227458,"operation":"thing.remove","status":"disabled","updated_at":"2023-10-05T15:38:40.643285Z","updated_by":"3264e965-3fe5-4d4e-a857-48de43551d2e"}
 
-   Subject: events.magistrala.things Received: 2023-10-05T18:38:40+03:00
+   Subject: events.supermq.things Received: 2023-10-05T18:38:40+03:00
 
    {"id":"47540f84-029b-436f-89b5-3c10f87e302b","occurred_at":1696520320692289306,"operation":"thing.remove","status":"enabled","updated_at":"2023-10-05T15:38:40.643285Z","updated_by":"3264e965-3fe5-4d4e-a857-48de43551d2e"}
    ```
@@ -1393,7 +1398,7 @@ Whenever thing is viewed, `things` service will generate new `view` event. This 
 2. In Nats JetStreams
 
    ```json
-   Subject: events.magistrala.things Received: 2023-10-05T15:42:00+03:00
+   Subject: events.supermq.things Received: 2023-10-05T15:42:00+03:00
 
    {"created_at":"2023-10-05T12:41:04.833207Z","id":"9745f2ea-f776-46b1-9b44-1cfd1ad4c6f1","metadata":"e30=","name":"d0","occurred_at":1696509720925490970,"operation":"thing.view","owner":"0a5f2e21-1a8b-460e-bfa9-732e570df095","status":"enabled"}
    ```
@@ -1438,7 +1443,7 @@ Whenever thing list is fetched, `things` service will generate new `list` event.
 2. In Nats JetStreams
 
    ```json
-   Subject: events.magistrala.things Received: 2023-10-05T18:38:40+03:00
+   Subject: events.supermq.things Received: 2023-10-05T18:38:40+03:00
 
    {"limit":10,"occurred_at":1696520320459999484,"offset":0,"operation":"thing.list","status":"enabled","total":0}
    ```
@@ -1497,7 +1502,7 @@ Whenever thing is identified, `things` service will generate new `identify` even
 2. In Nats JetStreams
 
    ```json
-   Subject: events.magistrala.things Received: 2023-10-05T18:38:40+03:00
+   Subject: events.supermq.things Received: 2023-10-05T18:38:40+03:00
 
    {"occurred_at":1696520320934964056,"operation":"thing.identify","thing_id":"47540f84-029b-436f-89b5-3c10f87e302b"}
    ```
@@ -1531,7 +1536,7 @@ Whenever channel instance is created, `things` service will generate and publish
 2. In Nats JetStreams
 
    ```json
-   Subject: events.magistrala.things Received: 2023-10-05T15:55:39+03:00
+   Subject: events.supermq.things Received: 2023-10-05T15:55:39+03:00
 
    {"created_at":"2023-10-05T12:55:39.175568Z","id":"45eb9f35-1360-4051-81e2-9582433a6607","metadata":"e30=","name":"hephaestus","occurred_at":1696510539182201160,"operation":"channel.create","owner":"97466511-6317-4c98-8d58-7bd78bcaf587","status":"enabled"}
    ```
@@ -1584,7 +1589,7 @@ Whenever channel instance is updated, `things` service will generate and publish
 2. In Nats JetStreams
 
    ```json
-   Subject: events.magistrala.things Received: 2023-10-05T16:00:29+03:00
+   Subject: events.supermq.things Received: 2023-10-05T16:00:29+03:00
 
    {"created_at":"2023-10-05T12:41:04.87198Z","id":"5f9d4b76-0717-4859-8ef8-6fcfb81f44d5","metadata":"e30=","name":"hestia","occurred_at":1696510829837578155,"operation":"channel.update","owner":"0a5f2e21-1a8b-460e-bfa9-732e570df095","status":"enabled","updated_at":"2023-10-05T13:00:29.828132Z","updated_by":"97466511-6317-4c98-8d58-7bd78bcaf587"}
    ```
@@ -1647,11 +1652,11 @@ Whenever channel instance is removed from the system, `things` service will gene
 2. In Nats JetStreams
 
    ```json
-   Subject: events.magistrala.things Received: 2023-10-05T18:38:40+03:00
+   Subject: events.supermq.things Received: 2023-10-05T18:38:40+03:00
 
    {"id":"e4fa015f-bfad-4f41-bebe-142d3e938d3a","occurred_at":1696520320726205997,"operation":"channel.remove","status":"disabled","updated_at":"2023-10-05T15:38:40.702159Z","updated_by":"3264e965-3fe5-4d4e-a857-48de43551d2e"}
 
-   Subject: events.magistrala.things Received: 2023-10-05T18:38:40+03:00
+   Subject: events.supermq.things Received: 2023-10-05T18:38:40+03:00
 
    {"id":"e4fa015f-bfad-4f41-bebe-142d3e938d3a","occurred_at":1696520320786154457,"operation":"channel.remove","status":"enabled","updated_at":"2023-10-05T15:38:40.702159Z","updated_by":"3264e965-3fe5-4d4e-a857-48de43551d2e"}
    ```
@@ -1698,7 +1703,7 @@ Whenever channel is viewed, `things` service will generate new `view` event. Thi
 2. In Nats JetStream
 
    ```json
-   Subject: events.magistrala.things Received: 2023-10-05T18:38:40+03:00
+   Subject: events.supermq.things Received: 2023-10-05T18:38:40+03:00
 
    {"created_at":"2023-10-05T15:38:40.31444Z","id":"e4fa015f-bfad-4f41-bebe-142d3e938d3a","metadata":"e30=","name":"-Cech-Hargreaves","occurred_at":1696520320475816826,"operation":"channel.view","owner":"3264e965-3fe5-4d4e-a857-48de43551d2e","status":"enabled"}
    ```
@@ -1743,7 +1748,7 @@ Whenever channel list is fetched, `things` service will generate new `list` even
 2. In Nats JetStreams
 
    ```json
-   Subject: events.magistrala.things Received: 2023-10-05T18:38:40+03:00
+   Subject: events.supermq.things Received: 2023-10-05T18:38:40+03:00
 
    {"limit":10,"occurred_at":1696520320495779280,"offset":0,"operation":"channel.list","status":"enabled","total":0}
    ```
@@ -1806,7 +1811,7 @@ Whenever policy is authorized, `things` service will generate new `authorize` ev
 2. In Nats JetStreams
 
    ```json
-   Subject: events.magistrala.things Received: 2023-10-05T18:38:40+03:00
+   Subject: events.supermq.things Received: 2023-10-05T18:38:40+03:00
 
    {"actions":"m_write","entity_type":"thing","object":"e4fa015f-bfad-4f41-bebe-142d3e938d3a","occurred_at":1696520320938561965,"operation":"policies.authorize"}
    ```
@@ -1850,7 +1855,7 @@ Whenever policy is added, `things` service will generate new `add` event. This e
 2. In Nats JetStreams
 
    ```json
-   Subject: events.magistrala.things Received: 2023-10-05T15:41:04+03:00
+   Subject: events.supermq.things Received: 2023-10-05T15:41:04+03:00
 
    {"actions":"[m_write,m_read]","created_at":"2023-10-05T12:41:04.901355Z","object":"5f9d4b76-0717-4859-8ef8-6fcfb81f44d5","occurred_at":1696509664928590911,"operation":"policies.add","owner_id":"0a5f2e21-1a8b-460e-bfa9-732e570df095","subject":"9745f2ea-f776-46b1-9b44-1cfd1ad4c6f1"}
    ```
@@ -1933,7 +1938,7 @@ Whenever policy is removed, `things` service will generate new `remove` event. T
 2. In Nats JetStreams
 
    ```json
-   Subject: events.magistrala.things Received: 2023-10-05T16:05:15+03:00
+   Subject: events.supermq.things Received: 2023-10-05T16:05:15+03:00
 
    {"actions":"[m_write,m_read]","object":"5f9d4b76-0717-4859-8ef8-6fcfb81f44d5","occurred_at":1696511115507500254,"operation":"policies.delete","subject":"9745f2ea-f776-46b1-9b44-1cfd1ad4c6f1"}
    ```
@@ -1988,7 +1993,7 @@ Whenever policy list is fetched, `things` service will generate new `list` event
 
 ## Bootstrap Service
 
-Bootstrap service publishes events to Redis Stream called `magistrala.bootstrap`. Every event from this service contains `operation` field which indicates one of the following event types:
+Bootstrap service publishes events to Redis Stream called `supermq.bootstrap`. Every event from this service contains `operation` field which indicates one of the following event types:
 
 - `config.create` for configuration creation,
 - `config.update` for configuration update,
@@ -1997,7 +2002,7 @@ Bootstrap service publishes events to Redis Stream called `magistrala.bootstrap`
 - `thing.state_change` for device state change,
 - `thing.update_connections` for device connection update.
 
-If you want to integrate through [docker-compose.yml][bootstrap-docker-compose] you can use `magistrala-es-redis` service. Just connect to it and consume events from Redis Stream named `magistrala.bootstrap`.
+If you want to integrate through [docker-compose.yml][bootstrap-docker-compose] you can use `supermq-es-redis` service. Just connect to it and consume events from Redis Stream named `supermq.bootstrap`.
 
 ### Configuration create event
 
@@ -2036,7 +2041,7 @@ Whenever configuration is created, `bootstrap` service will generate and publish
 2. In Nats Jet Streams
 
    ```json
-   Subject: events.magistrala.bootstrap Received: 2023-10-11T19:17:46+03:00
+   Subject: events.supermq.bootstrap Received: 2023-10-11T19:17:46+03:00
 
    {"client_cert":"-----BEGIN CERTIFICATE-----\nMIIEATCCAumgAwIBAgIUNl+p3eaPJsZRFvW/u5AGBLgx7YMwDQYJKoZIhvcNAQEL\nBQAwLjEsMCoGA1UEAxMjbWFpbmZsdXguY29tIEludGVybWVkaWF0ZSBBdXRob3Jp\ndHkwHhcNMjMxMDExMTYwMDQ0WhcNMjMxMTEwMTYwMTE0WjAvMS0wKwYDVQQDEyQ1\nNmRhNGU5NC0zZDFjLTRhMGQtYTNmNC1hNTdkZDBhNTVkN2IwggEiMA0GCSqGSIb3\nDQEBAQUAA4IBDwAwggEKAoIBAQCt3dFuSvEtihmHKBNCe8AUI/xTJn+JCUF90+ZY\njoz8hWVwd/UhJQKTblBhWL/osGOrr3PItcCVZ1JDaGQMQzhtaPYnBbwJDwMTbcey\nlb/E6O/DD4UCqWpjQjYhc0/z98oM70E+Szs6yp+68qYIGQDH669P91TaURtuGGMr\n8nLN6fQTb9mVZX1L3ps8zHoxb+i7oVhLmjGeGXjf3HP4U+L/hwYhZ/gqqXYZJli6\nR1j5BxJuk1aVKqwrm2qbuFYhWI7Wl6ZEoEk2Q3FV1onzxcVHB5xBacDcNHhyQmoE\nhIg4lt1DTaUKRxlZqbhJQtLrrCeI8NCvEpC/dh1eBwddIxKbAgMBAAGjggEUMIIB\nEDAOBgNVHQ8BAf8EBAMCA6gwHQYDVR0lBBYwFAYIKwYBBQUHAwEGCCsGAQUFBwMC\nMB0GA1UdDgQWBBTcmEIW7knfrwBTyBu6WwycgGqzwTAfBgNVHSMEGDAWgBQMxD1V\nt+J/aShmUQJJHmdmmZ/fXDA7BggrBgEFBQcBAQQvMC0wKwYIKwYBBQUHMAKGH2h0\ndHA6Ly92YXVsdDo4MjAwL3YxL3BraV9pbnQvY2EwLwYDVR0RBCgwJoIkNTZkYTRl\nOTQtM2QxYy00YTBkLWEzZjQtYTU3ZGQwYTU1ZDdiMDEGA1UdHwQqMCgwJqAkoCKG\nIGh0dHA6Ly92YXVsdDo4MjAwL3YxL3BraV9pbnQvY3JsMA0GCSqGSIb3DQEBCwUA\nA4IBAQCiCS+dPhXS/upfMieFbt8+QmYQFZ82Ct2oTsDTBaDczE7MiLxrl5iKbynk\nT47y+hyvWFIb31BhrIrS6mRR+9IoJdmje3KxyvNr/TtSw7T4spbfRo30uk2flnA0\nDhJv3bzcYRwjaLdBcZTUS0GETqztdqMThJIY2EAfhfKDM0ecM4tF2c8/RT14BpPO\nEVCUX69A0k6p80xTfmyhvKIfiMsJIcqsHuOiEsiXwgNNUqc332bIV+fQW+vXK8eS\nstp7N2v6axo016wf3qgEUPdPC0sPMHlwIc3s6ddZOoatk6LKH1nW2gIguUH4Ws7s\nAN5Cs0h2D+AWi+IJpDuUzvgrd4/3\n-----END CERTIFICATE-----","client_key":"-----BEGIN RSA PRIVATE KEY-----\nMIIEpQIBAAKCAQEArd3RbkrxLYoZhygTQnvAFCP8UyZ/iQlBfdPmWI6M/IVlcHf1\nISUCk25QYVi/6LBjq69zyLXAlWdSQ2hkDEM4bWj2JwW8CQ8DE23HspW/xOjvww+F\nAqlqY0I2IXNP8/fKDO9BPks7OsqfuvKmCBkAx+uvT/dU2lEbbhhjK/Jyzen0E2/Z\nlWV9S96bPMx6MW/ou6FYS5oxnhl439xz+FPi/4cGIWf4Kql2GSZYukdY+QcSbpNW\nlSqsK5tqm7hWIViO1pemRKBJNkNxVdaJ88XFRwecQWnA3DR4ckJqBISIOJbdQ02l\nCkcZWam4SULS66wniPDQrxKQv3YdXgcHXSMSmwIDAQABAoIBAGFvWKmdd/EUXl/+\n1mRAo5Dl5cbXYUtzk28nbAQexuXQ/9r6brYHXp0uif8z1EBbcU/KgHFvYaCYiWJb\nQw4YMawm0SNnNExDTG7765iqERERlSPUM68dMBC2D03JqHnJWELNZdu6H1RALyl+\nSAtrr6NZ8iI3MicyotOc+R6svSelUigaTKYGadWKNQJjOpLpFhu0D87iTdQ2dJyU\nJKGuB1YCp3rTNXTLuq/omMDyqJYPCNXbKW78bM9UExz0suYJi6URW/aQIK/A8CUh\nXAm40C2aQ8d5tHONsIGB9BlzOkHrXB2CvHKkQWl/TEfo6qcFI6qhx1Gx72SOK7F1\nAE0dDQkCgYEA5Vqq4/LrY/uzjTN918IYrcSi3gr0NoUY/KuZverBZdSR/fS0vMHX\nQ/X7XGE2gOGrzqWN2dtEAmMrisfo9zUlimU+7SWeetOKa5JTtmSZGFWvCrvsnWkH\narZT59t3yJ7YqwbjRmaSC3Uq7veFBsIEKbszm0eeMCtNcSLuykmBM/8CgYEAwhDd\nS3OLj4J62PlSjyBHSDP2Zv5sG6jXDDRPo8HQWcWoOq2stnwgrblkEXpsSpaRaUP8\nQabEtkobckYx3OK6/0Q4c0A6I4lHQpm2m6K2o+8lsG/OwwNplXA+kpYuqUYEjgBl\nFiGblZCtyDPdd4PnHDBjKLUzOYxgRDxfVLLKcWUCgYEAm4+ypyellswqzZPmQAhL\nOtlLanVdjPkbqI0vmwv2Hv5eAzUNvZVwT40w70iUcjgekuvhWamJ6GChMOFE1x96\nFfN0Cd9hLYf7s9is5OI4oLPFJO+vnliVikCein1mMnHjHaVvU9nQJutSsoC5/opr\nzm5Fo4Wg+qT0Qs9hzVyrwLsCgYEAoTk9f6d4dDskMAnByuI4FgYFWL9ZtQjpz1vO\nJe+oVkxdXJJYgCpTQ8BXICYivTylhVxTv376wa6DasZiOm2qiNN2Slk7c7ZimzP0\nfwwIy9yr5Q6eKWk2WE4tzb4y+bIPqqEtWduF1BWkKkTcYqQUZljUqEcRTWgPueCm\nGkmG4fkCgYEAk1rI1pAdfdxLrKTGu2WRfr0UgNx/eUjVuL5GT3Bu092QLXwFc3Py\nsIu7vHRQY1ASGRDvlyx76Uc+mtmXhowwBL1fTiKcfgD3SbqRTw8rwJbF6MNB7fOH\nSWlA4wuzpwVvg0j2DoY5LbwMN7AbrGS451E14xUwpEWdIDChWw14qag=\n-----END RSA PRIVATE KEY-----","external_id":"889","name":"ariadne","occurred_at":1697041066438195084,"operation":"config.create","owner":"1058552c-3f6a-4bfe-827e-ecbcdc95d344","state":"0","thing_id":"bb569875-a268-4ed4-b382-b88b181c61f3"}
    ```
@@ -2102,7 +2107,7 @@ Whenever configuration list is fetched, `bootstrap` service will generate new `l
 2. In Nats JetStreams
 
    ```json
-   Subject: events.magistrala.bootstrap Received: 2023-10-11T19:23:05+03:00
+   Subject: events.supermq.bootstrap Received: 2023-10-11T19:23:05+03:00
 
    {"external_id":"879","name":"aphrodite","occurred_at":1697042445469239430,"operation":"config.list","owner":"1058552c-3f6a-4bfe-827e-ecbcdc95d344","state":"0","thing_id":"1f9c0d1d-0d6b-4a83-83b9-50845e557a85"}
    ```
@@ -2154,7 +2159,7 @@ Whenever configuration is removed, `bootstrap` service will generate and publish
 2. In Nats JetStreams
 
    ```json
-   Subject: events.magistrala.bootstrap Received: 2023-10-11T19:24:50+03:00
+   Subject: events.supermq.bootstrap Received: 2023-10-11T19:24:50+03:00
 
    {"occurred_at":1697041490458439515,"operation":"config.remove","thing_id":"6a08150a-cd19-460f-99c9-a760ee50aed3"}
    ```
@@ -2223,7 +2228,7 @@ Whenever thing's state changes, `bootstrap` service will generate and publish ne
 2. In Nats JetStreams
 
    ```json
-   Subject: events.magistrala.bootstrap Received: 2023-10-11T19:26:31+03:00
+   Subject: events.supermq.bootstrap Received: 2023-10-11T19:26:31+03:00
 
    {"occurred_at":1697041591648042067,"operation":"thing.change_state","state":"0","thing_id":"1f9c0d1d-0d6b-4a83-83b9-50845e557a85"}
    ```
@@ -2278,7 +2283,7 @@ Whenever channel is removed, `bootstrap` service will generate and publish new `
 
 ## MQTT Adapter
 
-Instead of using heartbeat to know when client is connected through MQTT adapter one can fetch events from Redis Streams that MQTT adapter publishes. MQTT adapter publishes events every time client connects and disconnects to stream named `magistrala.mqtt`.
+Instead of using heartbeat to know when client is connected through MQTT adapter one can fetch events from Redis Streams that MQTT adapter publishes. MQTT adapter publishes events every time client connects and disconnects to stream named `supermq.mqtt`.
 
 Events that are coming from MQTT adapter have following fields:
 
@@ -2287,7 +2292,7 @@ Events that are coming from MQTT adapter have following fields:
 - `instance` represents MQTT adapter instance.
 - `occurred_at` is in Epoch UNIX Time Stamp format.
 
-If you want to integrate through [docker-compose.yml][mg-docker-compose] you can use `magistrala-es-redis` service. Just connect to it and consume events from Redis Stream named `magistrala.mqtt`.
+If you want to integrate through [docker-compose.yml][mg-docker-compose] you can use `supermq-es-redis` service. Just connect to it and consume events from Redis Stream named `supermq.mqtt`.
 
 Examples of connect event:
 
@@ -2308,7 +2313,7 @@ Examples of connect event:
 2. In Nats JetStreams
 
    ```json
-   Subject: events.magistrala.mqtt Received: 2023-10-09T14:57:36+03:00
+   Subject: events.supermq.mqtt Received: 2023-10-09T14:57:36+03:00
 
    {"event_type":"connect","instance":"","occurred_at":1696852656381976408,"thing_id":"9b23fec0-41a2-44ed-af13-7c54706b3291"}
    ```
@@ -2332,11 +2337,11 @@ Example of disconnect event:
 2. In Nats JetStreams
 
    ```json
-   Subject: events.magistrala.mqtt Received: 2023-10-09T14:57:36+03:00
+   Subject: events.supermq.mqtt Received: 2023-10-09T14:57:36+03:00
 
    {"event_type":"disconnect","instance":"","occurred_at":1696852656435238414,"thing_id":"9b23fec0-41a2-44ed-af13-7c54706b3291"}
    ```
 
 [redis-streams]: https://redis.io/topics/streams-intro
-[mg-docker-compose]: https://github.com/absmach/magistrala/blob/main/docker/docker-compose.yml
-[bootstrap-docker-compose]: https://github.com/absmach/magistrala/blob/main/docker/addons/bootstrap/docker-compose.yml
+[mg-docker-compose]: https://github.com/absmach/supermq/blob/main/docker/docker-compose.yml
+[bootstrap-docker-compose]: https://github.com/absmach/supermq/blob/main/docker/addons/bootstrap/docker-compose.yml
