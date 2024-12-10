@@ -344,8 +344,7 @@ Users with viewer relations have access to view all entities (things, channels, 
 
 ### Domain Member
 
-Users with member relations could not view and no access to entities (things, channels, groups) created by others within the domain. Members are also allowed to create their own entities and can view and update the ones they have created.
-Domain members will not have access by default to any of the entities in the Domain, access shall be granted for specific entities by the domain administrator or individual entity administrator.
+Users with ```member``` relation in a domain do not have default access to view or interact with entities (such as things, channels, or groups) created by others in the same domain. However, these members are permitted to create their own entities and have full access to view and update those they have personally created. Despite this, ```members``` do not automatically gain access to all entities within the domain. Instead, access to specific entities must be explicitly granted by either the domain administrator or the individual administrator of the entity in question.
 
 **Example:**
 **user_4 , user_5, user_6, user_7, user_8, user_9** is **member** of **domain_1**. **These member relation users can able to create & manage new things, channels & groups in the domain. They can have access to the entities to which they have a relation in the domain. They could not view and manage other entities to which they don't have any relation in domain**.
