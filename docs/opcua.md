@@ -2,7 +2,6 @@
 title: OPC-UA
 ---
 
-# OPC-UA
 
 OPC Unified Architecture (OPC-UA) is a communication protocol and framework that is widely used in industrial automation and the Industrial Internet of Things (IIoT). It provides a standard platform for connecting industrial devices and systems, allowing them to share data and information seamlessly. Data from the devices is sent to the OPC-UA Server where a client can consume it.
 
@@ -113,7 +112,7 @@ To forward OPC-UA messages the opcua-adapter subscribes to the Node ID of an OPC
 
 ### Sample Use Case
 
-The OPC-UA adapter can be used in an industrial setup to monitor process values from the different industrial devices and machines. The industrial devices which are controlled by controllers such as PLCs (Programmable Logic Controllers) send data to the OPC-UA server over TCP/IP, with each device containing a specific node ID. 
+The OPC-UA adapter can be used in an industrial setup to monitor process values from the different industrial devices and machines. The industrial devices which are controlled by controllers such as PLCs (Programmable Logic Controllers) send data to the OPC-UA server over TCP/IP, with each device containing a specific node ID.
 
 Things on SuperMQ can be created to represent these devices and the channels can be created to represent the data points on the devices. The OPC-UA adapter can then be used to subscribe to the OPC-UA server and forward the data to the NATS message broker. This data can then be consumed by other services in the SuperMQ system, and further processing done if need be.
 

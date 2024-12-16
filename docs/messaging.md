@@ -2,7 +2,6 @@
 title: Messaging
 ---
 
-# Messaging
 
 Once a channel is provisioned and thing is connected to it, it can start to publish messages on the channel. The following sections will provide an example of message publishing for each of the supported protocols.
 
@@ -103,74 +102,74 @@ ws.on("error", (e) => {
 package main
 
 import (
-	"log"
-	"os"
-	"os/signal"
-	"time"
+ "log"
+ "os"
+ "os/signal"
+ "time"
 
-	"github.com/gorilla/websocket"
+ "github.com/gorilla/websocket"
 )
 
 var done chan interface{}
 var interrupt chan os.Signal
 
 func receiveHandler(connection *websocket.Conn) {
-	defer close(done)
+ defer close(done)
 
-	for {
-		_, msg, err := connection.ReadMessage()
-		if err != nil {
-			log.Fatal("Error in receive: ", err)
-			return
-		}
+ for {
+  _, msg, err := connection.ReadMessage()
+  if err != nil {
+   log.Fatal("Error in receive: ", err)
+   return
+  }
 
-		log.Printf("Received: %s\n", msg)
-	}
+  log.Printf("Received: %s\n", msg)
+ }
 }
 
 func main() {
-	done = make(chan interface{})
-	interrupt = make(chan os.Signal)
+ done = make(chan interface{})
+ interrupt = make(chan os.Signal)
 
-	signal.Notify(interrupt, os.Interrupt)
+ signal.Notify(interrupt, os.Interrupt)
 
-	channelId := "30315311-56ba-484d-b500-c1e08305511f"
-	thingSecret := "c02ff576-ccd5-40f6-ba5f-c85377aad529"
+ channelId := "30315311-56ba-484d-b500-c1e08305511f"
+ thingSecret := "c02ff576-ccd5-40f6-ba5f-c85377aad529"
 
-	socketUrl := "ws://localhost:8186/channels/" + channelId + "/messages/?authorization=" + thingSecret
+ socketUrl := "ws://localhost:8186/channels/" + channelId + "/messages/?authorization=" + thingSecret
 
-	conn, _, err := websocket.DefaultDialer.Dial(socketUrl, nil)
-	if err != nil {
-		log.Fatal("Error connecting to Websocket Server: ", err)
-	} else {
-		log.Println("Connected to the ws adapter")
-	}
-	defer conn.Close()
+ conn, _, err := websocket.DefaultDialer.Dial(socketUrl, nil)
+ if err != nil {
+  log.Fatal("Error connecting to Websocket Server: ", err)
+ } else {
+  log.Println("Connected to the ws adapter")
+ }
+ defer conn.Close()
 
-	go receiveHandler(conn)
+ go receiveHandler(conn)
 
-	for {
-		select {
+ for {
+  select {
 
-		case <-interrupt:
-			log.Println("Interrupt occured, closing the connection...")
-			conn.Close()
-			err := conn.WriteMessage(websocket.TextMessage, []byte("closed this ws client just now"))
-			if err != nil {
-				log.Println("Error during closing websocket: ", err)
-				return
-			}
+  case <-interrupt:
+   log.Println("Interrupt occured, closing the connection...")
+   conn.Close()
+   err := conn.WriteMessage(websocket.TextMessage, []byte("closed this ws client just now"))
+   if err != nil {
+    log.Println("Error during closing websocket: ", err)
+    return
+   }
 
-			select {
-			case <-done:
-				log.Println("Receiver Channel Closed! Exiting...")
+   select {
+   case <-done:
+    log.Println("Receiver Channel Closed! Exiting...")
 
-			case <-time.After(time.Duration(1) * time.Second):
-				log.Println("Timeout in closing receiving channel. Exiting...")
-			}
-			return
-		}
-	}
+   case <-time.After(time.Duration(1) * time.Second):
+    log.Println("Timeout in closing receiving channel. Exiting...")
+   }
+   return
+  }
+ }
 }
 ```
 
@@ -344,7 +343,7 @@ Key features of VerneMQ include:
 - Lower Total Cost of Ownership (TCO): VerneMQ offers a favourable TCO compared to many messaging Platform-as-a-Service (PaaS) solutions.
 - Full MQTT Support: VerneMQ implements the full MQTT 3.1, 3.1.1, and 5.0 specifications, including various QoS levels, authentication and authorization options, TLS/SSL encryption, WebSockets support, clustering, and more.
 
-#### Architecture
+#### Vernemq MQTT Architecture
 
 VerneMQ is designed from the ground up to work as a distributed message broker, ensuring continued operation even in the event of node or network failures. It can easily scale both horizontally and vertically to handle large numbers of concurrent clients.
 
@@ -379,7 +378,7 @@ jetstream {
 
 These are the default values but you can change them by editing the configuration file. For more information about nats configuration checkout [official nats documentation][nats-jestream]. The health check endpoint is exposed on `SMQ_NATS_HTTP_PORT` and its `/healthz` path.
 
-#### Architecture
+#### NATS JetStream Architecture
 
 The main reason for using Nats with JetStream enabled is to have a distributed system with high availability and minimal dependencies. Nats is configure to run as the default message broker, but you can use any other message broker supported by SuperMQ. Nats is configured to use JetStream, which is a distributed streaming platform built on top of nats. JetStream is used to store messages and to provide high availability. This makes nats to be used as the default event store, but you can use any other event store supported by SuperMQ. Nats with JetStream enabled is also used as a key-value store for caching purposes. This makes nats to be used as the default cache store, but you can use any other cache store supported by SuperMQ.
 
@@ -391,7 +390,7 @@ Since SuperMQ uses a configurable message broker, you can use RabbitMQ as a mess
 
 Since SuperMQ is using `rabbitmq:3.9.20-management-alpine` docker image, the management console is available at port `SMQ_RABBITMQ_HTTP_PORT`
 
-#### Architecture
+#### RabbitMQ Architecture
 
 SuperMQ has one exchange for the entire platform called `messages`. This exchange is of type `topic`. The exchange is `durable` i.e. it will survive broker restarts and remain declared when there are no remaining bindings. The exchange does not `auto-delete` when all queues have finished using it. When declaring the exchange `no_wait` is set to `false` which means that the broker will wait for a confirmation from the server that the exchange was successfully declared. The exchange is not `internal` i.e. other exchanges can publish messages to it.
 
@@ -416,7 +415,7 @@ Since SuperMQ uses a configurable message broker, you can use Kafka as a message
 
 SuperMQ utilizes `spotify/kafka:latest` docker image. The image also exposes `kafka:9092` and `zookeeper:2181` ports. This is used for development purposes only. For production, it is assumed that you have your own Kafka cluster.
 
-##### Architecture
+#### Kafka Architecture
 
 The publisher implementation is based on the `segmentio/kafka-go` library. Publishing messages is well supported by the library, but subscribing to topics is not. The library does not provide a way to subscribe to all topics, but only to a specific topic. This is a problem because the SuperMQ platform uses a topic per channel, and the number of channels is not known in advance. The solution is to use the Zookeeper library to get a list of all topics and then subscribe to each of them. The list of topics is obtained by connecting to the Zookeeper server and reading the list of topics from the `/brokers/topics` node. The first message published from the topic can be lost if subscription happens closely followed by publishing. After the subscription, we guarantee that all messages will be received.
 

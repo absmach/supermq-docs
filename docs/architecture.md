@@ -2,8 +2,6 @@
 title: Architecture
 ---
 
-# Architecture
-
 ## Components
 
 SuperMQ IoT platform is comprised of the following services:

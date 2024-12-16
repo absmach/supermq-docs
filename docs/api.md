@@ -2,8 +2,6 @@
 title: API
 ---
 
-# API
-
 ## Reference
 
 API reference in the Swagger UI can be found at: [https://api.magistrala.abstractmachines.fr][api]
@@ -2588,7 +2586,7 @@ Access-Control-Expose-Headers: Location
 
 ### Add policies
 
-Only actions defined on [Predefined Policies section][predefined-policies] are allowed.
+Only actions defined on Predefined Policies section are allowed.
 
 ```bash
 curl -sSiX POST http://localhost/users/policies -H "Content-Type: application/json" -H "Authorization: Bearer <user_token>" -d @- << EOF
@@ -2643,7 +2641,7 @@ Access-Control-Expose-Headers: Location
 
 ### Update policies
 
-Only actions defined on [Predefined Policies section][predefined-policies] are allowed.
+Only actions defined on Predefined Policies section are allowed.
 
 ```bash
 curl -sSiX PUT http://localhost/users/policies -H "Content-Type: application/json" -H "Authorization: Bearer <user_token>" -d @- << EOF

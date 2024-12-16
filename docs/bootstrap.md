@@ -2,8 +2,6 @@
 title: Bootstrap
 ---
 
-# Bootstrap
-
 `Bootstrapping` refers to a self-starting process that is supposed to proceed without external input. SuperMQ platform supports bootstrapping process, but some of the preconditions need to be fulfilled in advance. The device can trigger a bootstrap when:s
 
 - device contains only bootstrap credentials and no SuperMQ credentials
@@ -124,7 +122,7 @@ In order to disconnect, the same request should be sent with the value of `state
 
 ### Using curl request for secure bootstrap configuration
 
-- *Encrypt the external key.*
+- _Encrypt the external key._
 
 First, encrypt the external key of your thing using AES encryption. The encryption key is specified by the `SMQ_BOOTSTRAP_ENCRYPT_KEY` environment variable. Use a library or utility that supports AES encryption to do this. Here's an example of how to encrypt using Go:
 
@@ -132,53 +130,52 @@ First, encrypt the external key of your thing using AES encryption. The encrypti
 package main
 
 import (
-	"crypto/aes"
-	"crypto/cipher"
-	"crypto/rand"
-	"fmt"
-	"io"
+ "crypto/aes"
+ "crypto/cipher"
+ "crypto/rand"
+ "fmt"
+ "io"
 )
 
 type reader struct {
-	encKey []byte
+ encKey []byte
 }
 
 func (r reader) encrypt(in []byte) ([]byte, error) {
-	block, err := aes.NewCipher(r.encKey)
-	if err != nil {
-		return nil, err
-	}
-	ciphertext := make([]byte, aes.BlockSize+len(in))
-	iv := ciphertext[:aes.BlockSize]
-	if _, err := io.ReadFull(rand.Reader, iv); err != nil {
-		return nil, err
-	}
-	stream := cipher.NewCFBEncrypter(block, iv)
-	stream.XORKeyStream(ciphertext[aes.BlockSize:], in)
-	return ciphertext, nil
+ block, err := aes.NewCipher(r.encKey)
+ if err != nil {
+  return nil, err
+ }
+ ciphertext := make([]byte, aes.BlockSize+len(in))
+ iv := ciphertext[:aes.BlockSize]
+ if _, err := io.ReadFull(rand.Reader, iv); err != nil {
+  return nil, err
+ }
+ stream := cipher.NewCFBEncrypter(block, iv)
+ stream.XORKeyStream(ciphertext[aes.BlockSize:], in)
+ return ciphertext, nil
 }
 
 func main() {
-	data := []byte("<external_key>")
+ data := []byte("<external_key>")
 
-	r := reader{
-		encKey: []byte("<crypto_key>"),
-	}
+ r := reader{
+  encKey: []byte("<crypto_key>"),
+ }
 
-	encryptedData, err := r.encrypt(data)
-	if err != nil {
-		fmt.Println("Error encrypting data:", err)
-		return
-	}
+ encryptedData, err := r.encrypt(data)
+ if err != nil {
+  fmt.Println("Error encrypting data:", err)
+  return
+ }
 
-	fmt.Printf("%x\n", encryptedData)
+ fmt.Printf("%x\n", encryptedData)
 }
 ```
 
 Replace `<external_key>` and `<crypto_key>` with the thing's external key and `SMQ_BOOTSTRAP_ENCRYPT_KEY` respectively.
 
-- *Make a request to the bootstrap service.*
-
+- _Make a request to the bootstrap service._
 
 Once the key is encrypted, make a request to the Bootstrap service. Here's how to do this using `curl`:
 
@@ -196,7 +193,7 @@ curl --location 'http://localhost:9013/things/bootstrap/secure/<external_id>' \
 --header 'authorization: Thing <encyrpted_external_key>' --output ~/<desired\>/<path\>/<file_name.txt>
 ```
 
-- *Decrypt the response*
+- _Decrypt the response_
 
 Finally, decrypt the response using a function. Here's an example of how to do this using Go:
 
@@ -204,38 +201,38 @@ Finally, decrypt the response using a function. Here's an example of how to do t
 package main
 
 import (
-	"crypto/aes"
-	"crypto/cipher"
-	"log"
-	"os"
+ "crypto/aes"
+ "crypto/cipher"
+ "log"
+ "os"
 )
 
 func main() {
-	encodedData, err := os.ReadFile("~/<desired\>/<path\>/<enc_file_name.txt>")
-	if err != nil {
-		log.Fatal(err)
-	}
+ encodedData, err := os.ReadFile("~/<desired\>/<path\>/<enc_file_name.txt>")
+ if err != nil {
+  log.Fatal(err)
+ }
 
-	key := []byte("<crypto_key>")
+ key := []byte("<crypto_key>")
 
-	block, err := aes.NewCipher(key)
-	if err != nil {
-		log.Fatal(err)
-	}
+ block, err := aes.NewCipher(key)
+ if err != nil {
+  log.Fatal(err)
+ }
 
-	if len(encodedData) < aes.BlockSize {
-		log.Fatal("ciphertext too short")
-	}
+ if len(encodedData) < aes.BlockSize {
+  log.Fatal("ciphertext too short")
+ }
 
-	iv := encodedData[:aes.BlockSize]
-	encodedData = encodedData[aes.BlockSize:]
-	stream := cipher.NewCFBDecrypter(block, iv)
-	stream.XORKeyStream(encodedData, encodedData)
+ iv := encodedData[:aes.BlockSize]
+ encodedData = encodedData[aes.BlockSize:]
+ stream := cipher.NewCFBDecrypter(block, iv)
+ stream.XORKeyStream(encodedData, encodedData)
 
-	err = os.WriteFile("~/<desired\>/<path\>/<decry_file_name.txt>", encodedData, 0644)
-	if err != nil {
-		log.Fatal(err)
-	}
+ err = os.WriteFile("~/<desired\>/<path\>/<decry_file_name.txt>", encodedData, 0644)
+ if err != nil {
+  log.Fatal(err)
+ }
 }
 ```
 
@@ -246,12 +243,12 @@ To use SuperMQ CLI for the secure bootstrap configuration, use the following com
 ```bash
 supermq-cli bootstrap secure <external_id> <external_key> <crypto_key>
 ```
+
 for example
 
 ```bash
 supermq-cli bootstrap bootstrap secure '09:6:0:sb:sa' 'key' 'v7aT0HGxJxt2gULzr3RHwf4WIf6DusPp'
 ```
-
 
 For more information about the Bootstrap service API, please check out the [API documentation][api-docs].
 

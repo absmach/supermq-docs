@@ -20,19 +20,19 @@ const FeatureList: FeatureItem[] = [
 
     description: (
       <>
-        SuperMQ provides a robust middleware for IoT, supporting HTTP, MQTT, WebSocket, and CoAP protocols.
+        SuperMQ provides a robust middleware solution, supporting HTTP, MQTT, WebSocket, and CoAP protocols for seamless communication.
       </>
     ),
   },
 
   {
-    title: "Device Management",
+    title: "Client Management",
 
     Svg: require("@site/static/img/device_management.svg").default,
 
     description: (
       <>
-        Manage your IoT devices and secure communications using fine-grained access control and token-based authentication.
+        Manage your clients, groups and secure communications using fine-grained access control and token-based authentication.
       </>
     ),
   },
@@ -44,7 +44,7 @@ const FeatureList: FeatureItem[] = [
 
     description: (
       <>
-        SuperMQ is fully open-source and patent-free, enabling community-driven innovation for IoT applications.
+        SuperMQ is fully open-source and patent-free, fostering community-driven innovation and collaboration.
       </>
     ),
   },

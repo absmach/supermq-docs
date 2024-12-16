@@ -2,7 +2,6 @@
 title: Getting Started
 ---
 
-# Getting Started
 
 ## Step 1 - Run the System
 

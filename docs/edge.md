@@ -3,8 +3,6 @@ title: Edge
 ---
 
 
-# Edge
-
 SuperMQ IoT platform provides services for supporting management of devices on the edge. Typically, IoT solution includes devices (sensors/actuators) deployed in far edge and connected through some proxy gateway. Although most devices could be connected to the SuperMQ directly, using gateways decentralizes system, decreases load on the cloud and makes setup less difficult. Also, gateways can provide additional data processing, filtering and storage.
 
 Services that can be used on gateway to enable data and control plane for edge:

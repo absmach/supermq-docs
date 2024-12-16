@@ -2,7 +2,6 @@
 title: CLI
 ---
 
-# CLI
 
 SuperMQ CLI makes it easy to manage users, things, channels and messages.
 

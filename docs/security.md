@@ -2,7 +2,6 @@
 title: Security
 ---
 
-# Security
 
 ## Server Configuration
 

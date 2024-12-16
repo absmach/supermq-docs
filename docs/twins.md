@@ -2,7 +2,6 @@
 title: Twins Service
 ---
 
-# Twins Service
 
 SuperMQ twins service is built on top of the SuperMQ platform. In order to fully understand what follows, be sure to get acquainted with [overall SuperMQ architecture][architecture].
 
@@ -291,7 +290,7 @@ curl -s -S -i -X DELETE -H "Authorization: Bearer <user_token>" http://localhost
 
 ## STATES operations
 
-### List
+### STATES List
 
 ```bash
 curl -s -S -i -X GET -H "Authorization: Bearer <user_token>" http://localhost:9018/states/<twin_id>

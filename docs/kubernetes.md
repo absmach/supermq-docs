@@ -2,7 +2,6 @@
 title: Kubernetes
 ---
 
-# Kubernetes
 
 SuperMQ can be easily deployed on the Kubernetes platform using Helm Charts from the official [SuperMQ DevOps GitHub repository](https://github.com/absmach/devops).
 
@@ -24,7 +23,7 @@ docker --version
 
 K3d is a lightweight Kubernetes distribution that runs inside Docker, ideal for local development.
 
-#### Steps to install K3d:
+#### Steps to install K3d
 
 ```bash
 curl -s https://raw.githubusercontent.com/k3d-io/k3d/main/install.sh | bash
@@ -36,7 +35,7 @@ For more information on K3d, refer to the official [K3d documentation](https://k
 
 `kubectl` is the command-line tool used to interact with your Kubernetes cluster.
 
-#### Steps to install kubectl:
+#### Steps to install kubectl
 
 ```bash
 curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
@@ -55,7 +54,7 @@ kubectl version --client
 
 Helm is a package manager for Kubernetes, simplifying application installation and management.
 
-#### Steps to install Helm:
+#### Steps to install Helm
 
 ```bash
 curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
@@ -71,7 +70,7 @@ helm version
 
 ### 5. Add Helm Repositories
 
-#### Add Stable Helm Repository:
+#### Add Stable Helm Repository
 
 The **Helm stable repository** contains Helm charts that you can use to install applications on Kubernetes.
 
@@ -80,7 +79,7 @@ helm repo add stable https://charts.helm.sh/stable
 helm repo update
 ```
 
-#### Add Bitnami Helm Repository:
+#### Add Bitnami Helm Repository
 
 Bitnami offers a collection of popular Helm charts for various applications.
 
@@ -95,7 +94,7 @@ helm repo update
 
 The Nginx Ingress Controller manages external access to services within your Kubernetes cluster.
 
-#### Install Nginx Ingress Controller using Helm:
+#### Install Nginx Ingress Controller using Helm
 
 ```bash
 helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
@@ -118,7 +117,7 @@ kubectl get pods -n ingress-nginx
 
 This method involves **manually deploying SuperMQ** by cloning the Helm chart repository to your local machine, making any necessary customizations, and installing the chart from the local directory.
 
-#### Use Case:
+### Deploy Use Case
 
 This approach is useful if you want to:
 
@@ -126,9 +125,9 @@ This approach is useful if you want to:
 - Modify the chart before installation.
 - Perform development or testing on the chart.
 
-### Steps:
+### Steps
 
-#### 1. Clone SuperMQ Helm Chart Repository:
+#### 1. Clone SuperMQ Helm Chart Repository
 
 ```bash
 git clone https://github.com/absmach/devops.git
@@ -156,7 +155,7 @@ helm dependency update
 
 If the repositories are set up correctly, this will resolve and download all chart dependencies to `charts/magistrala/charts`.
 
-### 3. Create a Namespace (if needed):
+### 3. Create a Namespace (if needed)
 
 ```bash
 kubectl create namespace mg
@@ -164,7 +163,7 @@ kubectl create namespace mg
 
 ---
 
-### 4. Deploy SuperMQ:
+### 4. Deploy SuperMQ
 
 Deploy the SuperMQ Helm chart into the `mg` namespace:
 
@@ -218,11 +217,15 @@ The ingress-nginx-controller handles the routing for your deployed services usin
 
 You can usually find this IP address in your DigitalOcean dashboard under the "Networking" or "Load Balancers" section, or by using the following command in your terminal:
 
+```bash
     kubectl get svc -A | grep LoadBalancer
+```
 
 This command searches all namespaces for services of type `LoadBalancer`. The output looks something like this:
 
+```plaintext
     ingress-nginx           ingress-nginx-controller                         LoadBalancer   10.245.192.202   138.68.126.8   80:30424/TCP,443:31752/TCP                        64d
+```
 
 NOTE: The Public IP in this case is `138.68.126.8`.
 
@@ -231,13 +234,15 @@ NOTE: The Public IP in this case is `138.68.126.8`.
 - Once you have the Public IP address, open your web browser.
 - In the address bar, enter the IP address followed by `/ui/login` as shown below:
 
-      http://138.68.126.8/ui/login
+```plaintext
+  http://138.68.126.8/ui/login
+```
 
 #### Using Postman
 
 If you prefer working with APIs, you can also interact with SuperMQ services using Postman by sending requests to the Public IP address of your load balancer. For example, to create a user:
 
-###### 1. Set Up the Postman Request
+##### 1. Set Up the Postman Request
 
 - **Method:** `POST`
 - **URL:** `http://138.68.126.8/users`
@@ -270,16 +275,16 @@ For more examples, refer to this [Postman Collection](https://elements.getpostma
 
 This method is the **standard installation** approach, where you install the SuperMQ chart directly from a Helm repository. This is quicker and ideal for end-users who do not need to modify the chart manually.
 
-#### Use Case:
+### Install Use Case
 
 This approach is suitable for:
 
 - End-users who simply want to install SuperMQ without modifying the source code.
 - Production environments where the chart is deployed directly from a hosted Helm repository.
 
-### Steps:
+### Install Steps
 
-#### 1. Add the SuperMQ Helm Repository:
+#### 1. Add the SuperMQ Helm Repository
 
 The Helm charts are published via GitHub Pages. After installing Helm, add the SuperMQ DevOps Helm repository by running:
 
@@ -290,7 +295,7 @@ helm repo update
 
 For a complete list of all available flags to use with the `helm repo add [NAME] [URL] [flags]` command, run `helm repo add --help`
 
-#### 2. Install the SuperMQ Chart:
+#### 2. Install the SuperMQ Chart
 
 ```bash
 helm install <release-name> magistrala-devops/magistrala [flags]
@@ -306,7 +311,7 @@ helm install my-magistrala magistrala-devops/magistrala --version 0.14.0
 
 ---
 
-#### 3. Upgrading the SuperMQ Chart:
+#### 3. Upgrading the SuperMQ Chart
 
 To upgrade the chart to a new version or update configurations:
 
@@ -316,7 +321,7 @@ helm upgrade <release-name> magistrala-devops/magistrala
 
 ---
 
-#### 4. Uninstalling SuperMQ:
+#### 4. Uninstalling SuperMQ
 
 To uninstall the SuperMQ release:
 
@@ -328,7 +333,7 @@ This will remove the SuperMQ release from the previously created `mg` namespace.
 
 ---
 
-### Customizing SuperMQ Installation:
+### Customizing SuperMQ Installation
 
 To override values in the chart, use either the `--values` flag and pass in a file or use the `--set` flag and pass configuration from the command line, to force a string value use `--set-string`. You can use `--set-file` to set individual values from a file when the value itself is too long for the command line or is dynamically generated. You can also use `--set-json` to set json values (scalars/objects/arrays) from the command line.
 
@@ -480,11 +485,6 @@ You can test sending an MQTT message with the following command:
 mosquitto_pub -d -L mqtts://<thing_id>:<thing_secret>@example.com:8883/channels/<channel_id>/messages  --cert  thing.crt --key thing.key --cafile ca.crt  -m "test-message"
 ```
 
-[devops-repo]: https://github.com/absmach/devops
-[kubernetes-setup]: https://kubernetes.io/docs/setup/
-[kubectl-setup]: https://kubernetes.io/docs/tasks/tools/install-kubectl/
-[helm-setup]: https://helm.sh/docs/intro/install/
-[nginx-ingress]: https://kubernetes.github.io/ingress-nginx/deploy/
 [ingress-yaml]: https://github.com/absmach/devops/blob/master/charts/mainflux/templates/ingress.yaml#L141
 [ingress-controller-args]: https://kubernetes.github.io/ingress-nginx/user-guide/cli-arguments/
 [ingress-controller-tcp-udp]: https://kubernetes.github.io/ingress-nginx/user-guide/exposing-tcp-udp-services/

@@ -2,10 +2,9 @@
 title: SMQ-Contrib Repository
 ---
 
-# SMQ-Contrib Repository
 
-The **SuperMQ-Contrib** repository serves as a collection of additional services, tools, and extensions that complement the SuperMQ platform. 
-These contributions include features that did not make it into the main SuperMQ platform but are invaluable for specific use cases. 
+The **SuperMQ-Contrib** repository serves as a collection of additional services, tools, and extensions that complement the SuperMQ platform.
+These contributions include features that did not make it into the main SuperMQ platform but are invaluable for specific use cases.
 The repository acts as a playground for exploring and testing new ideas and contributions to the ecosystem.
 
 This repository is an excellent starting point for developers looking to contribute new features or experiment with custom services and integrations for SuperMQ.
@@ -13,8 +12,9 @@ This repository is an excellent starting point for developers looking to contrib
 ## Available Services in smq-contrib
 
 ### LoRa
-The **[LoRa Adapter][lora]** bridges SuperMQ with LoRaWAN networks. 
-It forwards messages between SuperMQ and a LoRaWAN Server using MQTT while adhering to JSON and SenML formats. 
+
+The **[LoRa Adapter][lora]** bridges SuperMQ with LoRaWAN networks.
+It forwards messages between SuperMQ and a LoRaWAN Server using MQTT while adhering to JSON and SenML formats.
 This adapter is ideal for users integrating low-power, wide-area devices into the SuperMQ ecosystem.
 
 - [Learn more about the LoRa Adapter](./lora.md)
@@ -22,7 +22,8 @@ This adapter is ideal for users integrating low-power, wide-area devices into th
 ---
 
 ### OPC-UA
-The **[OPC-UA Adapter][opcua]** serves as a bridge between SuperMQ and OPC-UA servers, enabling seamless communication with industrial devices. 
+
+The **[OPC-UA Adapter][opcua]** serves as a bridge between SuperMQ and OPC-UA servers, enabling seamless communication with industrial devices.
 It supports browse and subscription methods for retrieving data from nodes on the OPC-UA server and forwards this data to the SuperMQ platform.
 
 - [Learn more about the OPC-UA Adapter](./opcua.md)
@@ -30,6 +31,7 @@ It supports browse and subscription methods for retrieving data from nodes on th
 ---
 
 ### Twins Service
+
 The **[Twins Service][twins]** introduces the concept of digital twins to SuperMQ.
 Digital twins provide a unified, abstract representation of complex real-world systems.
 The Twins Service maintains a history of system states, definitions, and metadata, offering an enhanced way to monitor and manage interconnected devices.
@@ -79,4 +81,3 @@ The **SuperMQ-Contrib** repository complements the SuperMQ platform by extending
 [influx]: https://github.com/absmach/smq-contrib/tree/main/readers/influxdb
 [readers]: https://github.com/absmach/smq-contrib/tree/main/readers
 [consumers]: https://github.com/absmach/smq-contrib/tree/main/consumers
-

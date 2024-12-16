@@ -2,8 +2,6 @@
 title: Test Spec
 ---
 
-# Test spec
-
 ## Tools
 
 - [MZBench][mzbench]
@@ -121,7 +119,7 @@ Testing environment to be determined.
 
 In this scenario, large number of requests are sent to HTTP adapter service every second. This test checks how much time HTTP adapter needs to respond to each request.
 
-#### Results
+#### Message Publishing Results
 
 TBD
 
@@ -129,7 +127,7 @@ TBD
 
 In this scenario, large number of requests are sent to things service to create things and than to retrieve their data. This test checks how much time things service needs to respond to each request.
 
-#### Results
+#### Create and Get Client Results
 
 TBD
 

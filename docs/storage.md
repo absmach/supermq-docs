@@ -2,7 +2,6 @@
 title: Storage
 ---
 
-# Storage
 
 SuperMQ supports various storage databases in which messages are stored:
 

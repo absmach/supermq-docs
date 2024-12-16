@@ -2,8 +2,6 @@
 title: Authorization
 ---
 
-# Authorization
-
 SuperMQ allows for fine-grained control over user permissions, taking into account hierarchical relationships between entities domains, groups, channels, and things. The structure and functionality of an authorization system implemented using [SpiceDB](https://github.com/authzed/spicedb) and its associated [schema language](https://authzed.com/docs/reference/schema-lang). `auth` service backed by SpiceDB manages permissions for users, domains, groups, channels, and things.
 
 ## Domains
