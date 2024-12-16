@@ -621,7 +621,7 @@ Like domains, groups also have four types of relations
 
 Group administrator users have access to update, delete, assign, and unassign to the group and also have access to update, delete, assign, and unassign all of its child entities
 
-From the [previous viewer example](#domain-viewer), let's take **user_3** who has **viewer relation** with **domain_1**, which means **user_3 will be able to view all the entities created by others but cannot make any edits or updates on them.** ***<span style={{ color:'blue' }}>user_3 will have access to create entities in domain_1 </span>***
+From the [previous viewer example](#domain-viewer), let's take **user_3** who has **viewer relation** with **domain_1**, which means **user_3 will be able to view all the entities created by others but cannot make any edits or updates on them.** **<span style={{ color:'blue' }}>user_3 will have access to create entities in domain_1 </span>**
 
 **user_3 creates new thing_101, channel_101, and group_101**.
 
@@ -691,7 +691,7 @@ EOF
 
 ![group_users_administrator_2](diagrams/group_users_administrator_2.svg)
 
-***Members of domain 1 will not have access by default to any of the entities in domain 1, access shall be granted for specific entities by domain administrator or individual entity administrator.***
+**Members of domain 1 will not have access by default to any of the entities in domain 1, access shall be granted for specific entities by domain administrator or individual entity administrator.**
 
 **Administrator of group_101 (user_3), assigns user_4 with administrator relation.**
 **When domain member user_4 becomes an administrator of group_101, user_4 can able to update, delete, assign, and unassign to group_101. Since group_101 has channel_101 and thing_101 as children. The user_5 has administrator access on group_101 child entities channel_101 and thing_101.**

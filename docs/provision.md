@@ -534,7 +534,7 @@ Provision service provides an HTTP API to interact with [SuperMQ][provision-api]
 
 For gateways to communicate with [SuperMQ][supermq] configuration is required (MQTT host, thing, channels, certificates...). Gateway will send a request to [Bootstrap][bootstrap] service providing `<external_id>` and `<external_key>` in HTTP request to get the configuration. To make a request to [Bootstrap][bootstrap] service you can use [Agent][agent] service on a gateway.
 
-To create bootstrap configuration you can use [Bootstrap][bootstrap] or `Provision` service. [SuperMQ UI][mfxui] uses [Bootstrap][bootstrap] service for creating gateway configurations. `Provision` service should provide an easy way of provisioning your gateways i.e creating bootstrap configuration and as many things and channels that your setup requires.
+To create bootstrap configuration you can use [Bootstrap][bootstrap] or `Provision` service. [SuperMQ UI][mgui] uses [Bootstrap][bootstrap] service for creating gateway configurations. `Provision` service should provide an easy way of provisioning your gateways i.e creating bootstrap configuration and as many things and channels that your setup requires.
 
 Also, you may use provision service to create certificates for each thing. Each service running on gateway may require more than one thing and channel for communication.
 If, for example, you are using services [Agent][agent] and [Export][exp] on a gateway you will need two channels for `Agent` (`data` and `control`) and one thing for `Export`.
@@ -796,6 +796,7 @@ For more information about the Provision service API, please check out the [API 
 [agent]: https://github.com/absmach/agent
 [config]: https://github.com/absmach/supermq/tree/main/provision#configuration
 [env]: https://github.com/absmach/supermq/blob/main/docker/.env
+[mgui]: https://github.com/absmach/magistrala-ui-new
 [conftoml]: https://github.com/absmach/supermq/blob/main/docker/addons/provision/configs/config.toml
 [users]: https://github.com/absmach/supermq/blob/main/users/README.md
 [exp]: https://github.com/absmach/export

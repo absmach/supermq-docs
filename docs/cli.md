@@ -910,7 +910,7 @@ Response should look like this:
 
 This command is used to set the flags to be used by CLI in a local TOML file. The default location of the TOML file is in the same directory as the CLI binary. To change the location of the TOML file you can run the command:
 
-```
+```bash
   supermq-cli config <parameter> <value> -c "cli/file_name.toml"
 ```
 
