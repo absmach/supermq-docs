@@ -26,7 +26,7 @@ jobs:
 
             - name: Lint Markdown Files
               run: |
-                  npx markdownlint 'docs/**/*.md'
+                  npx markdownlint '../../docs/**/*.md'
 
             - name: Test Build the website
               run: yarn build
