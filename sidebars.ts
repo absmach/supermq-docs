@@ -19,6 +19,8 @@ const sidebars: SidebarsConfig = {
         {type: 'doc', id: 'entities'},
         {type: 'doc', id: 'authentication'},
         {type: 'doc', id: 'authorization'},
+        {type: 'doc', id: 'roles'},
+        {type: 'doc', id: 'authz-spec'},
         {type: 'doc', id: 'security'},
         {type: 'doc', id: 'messaging'},
       ],
