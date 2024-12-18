@@ -1,7 +1,6 @@
 # SuperMQ
 
 [![license][license]](LICENSE)
-[build][build]
 [![Build](https://github.com/absmach/supermq-docs/actions/workflows/pages.yaml/badge.svg?branch=main)](https://github.com/absmach/supermq-docs/actions/workflows/pages.yaml)
 
 This repo collects the collaborative work on SuperMQ documentation.
@@ -18,8 +17,8 @@ Install [Docusaurus](https://docusaurus.io/docs/installation)
 
 ### Installation
 
-```
-$ yarn
+```bash
+yarn
 ```
 
 Doc repo can be fetched from GitHub:
@@ -29,20 +28,20 @@ git clone git@github.com:/absmach/supermq-docs.git
 ```
 
 ### Local Development
+
 Use Docusaurus to serve documentation.
 
-```
-$ yarn start
+```bash
+yarn start
 ```
 
 This command starts a local development server and opens up a browser window. Most changes are reflected live without having to restart the server.
 
 ### Build
 
+```bash
+yarn build
 ```
-$ yarn build
-```
-
 
 ## Contributing
 
