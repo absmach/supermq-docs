@@ -28,7 +28,7 @@ const FeatureList: FeatureItem[] = [
   {
     title: "Client Management",
 
-    Svg: require("@site/static/img/device_management.svg").default,
+    Svg: require("@site/static/img/scalability.svg").default,
 
     description: (
       <>

@@ -40,7 +40,7 @@ Please adhere to the coding conventions used throughout the project. If in doubt
 To contribute to the project, [fork](https://help.github.com/articles/fork-a-repo/) it,
 clone your fork repository and configure the remotes:
 
-```
+```bash
 git clone https://github.com/<your-username>/docs.git
 cd docs
 git remote add upstream https://github.com/absmach/magistrala-docs.git
@@ -48,7 +48,7 @@ git remote add upstream https://github.com/absmach/magistrala-docs.git
 
 If your cloned repository is behind the upstream commits, then get the latest changes from upstream:
 
-```
+```bash
 git checkout main
 git pull --rebase upstream main
 ```
@@ -56,7 +56,7 @@ git pull --rebase upstream main
 Create a new topic branch from `main` using the naming convention `SMQ-[issue-number]`
 to help us keep track of your contribution scope:
 
-```
+```bash
 git checkout -b SMQ-[issue-number]
 ```
 
@@ -73,13 +73,13 @@ and `user.email` git configs, you can sign your commit automatically with `git c
 
 Locally merge (or rebase) the upstream development branch into your topic branch:
 
-```
+```bash
 git pull --rebase upstream main
 ```
 
 Push your topic branch up to your fork:
 
-```
+```bash
 git push origin SMQ-[issue-number]
 ```
 
