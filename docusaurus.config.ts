@@ -25,6 +25,7 @@ const config: Config = {
       'classic',
       {
         docs: {
+          routeBasePath: '/', 
           sidebarPath: 'sidebars.ts',
           editUrl:
             'https://github.com/absmach/supermq-docs/blob/main',
@@ -86,7 +87,7 @@ const config: Config = {
           items: [
             {
               label: 'Overview',
-              to: '/docs/',
+              to: '/',
             },
           ],
         },
