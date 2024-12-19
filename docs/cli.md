@@ -918,14 +918,14 @@ The possible parameters that can be set using the config command are:
 
 | Flag             | Description                                          | Default                  |
 | ---------------- | ---------------------------------------------------- | ------------------------ |
-| bootstrap_url    | Bootstrap service URL                                | "http://localhost:9013"  |
-| certs_url        | Certs service URL                                    | "http://localhost:9019"  |
-| http_adapter_url | HTTP adapter URL                                     | "http://localhost/http"  |
+| bootstrap_url    | Bootstrap service URL                                |   [bootstrap_url][bootstrap]|
+| certs_url        | Certs service URL                                    | [certs_url][certs]  |
+| http_adapter_url | HTTP adapter URL                                     |  [http_adapter_url][http_adapter] |
 | msg_content_type | Message content type                                 | "application/senml+json" |
-| reader_url       | Reader URL                                           | "http://localhost"       |
-| things_url       | Things service URL                                   | "http://localhost:9000"  |
+| reader_url       | Reader URL                                           | [reader_url][reader]       |
+| things_url       | Things service URL                                   | [things_url][things]  |
 | tls_verification | Do not check for TLS cert                            |                          |
-| users_url        | Users service URL                                    | "http://localhost:9002"  |
+| users_url        | Users service URL                                    | [users_url][users]  |
 | state            | Bootstrap state query parameter                      |                          |
 | status           | User status query parameter                          |                          |
 | topic            | Subscription topic query parameter                   |                          |
@@ -938,3 +938,9 @@ The possible parameters that can be set using the config command are:
 | raw_output       | Enables raw output mode for easier parsing of output |                          |
 
 [releases]: https://github.com/absmach/supermq/releases
+[bootstrap]: http://localhost:9013
+[certs]: http://localhost:9019
+[http_adapter]:http://localhost/http
+[reader]: http://localhost
+[things]: http://localhost:9000
+[users]:http://localhost:9002

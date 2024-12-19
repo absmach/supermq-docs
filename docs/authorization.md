@@ -774,31 +774,35 @@ SMQ_USERS_ALLOW_SELF_REGISTER=true
 
 ## SuperMQ Personal Access Token (PAT) Authentication
 
-### Overview
+### PAT Overview
 
 Personal Access Tokens (PATs) in SuperMQ provide a secure method for authentication and authorization, similar to JSON Web Tokens (JWTs). PATs enable fine-grained access control with customizable scopes and permissions.
 
 ### PAT Fields
+
 PATs have the following fields:
-  - ID: Unique identifier for the token
-  - User: User ID associated with the token
-  - Name: User-defined name for easy identification
-  - Description: Explanation of the token's purpose
-  - Secret: Securely hashed token for authentication
-  - Scope: Defines the precise permissions and access levels
-  - IssuedAt: Timestamp of token creation
-  - ExpiresAt: Timestamp when the token becomes invalid
-  - UpdatedAt: Last modification timestamp
-  - LastUsedAt: Timestamp of most recent token usage
-  - Revoked: Boolean indicating token's active/inactive status
-  - RevokedAt: Timestamp of token revocation
+
+- ID: Unique identifier for the token
+- User: User ID associated with the token
+- Name: User-defined name for easy identification
+- Description: Explanation of the token's purpose
+- Secret: Securely hashed token for authentication
+- Scope: Defines the precise permissions and access levels
+- IssuedAt: Timestamp of token creation
+- ExpiresAt: Timestamp when the token becomes invalid
+- UpdatedAt: Last modification timestamp
+- LastUsedAt: Timestamp of most recent token usage
+- Revoked: Boolean indicating token's active/inactive status
+- RevokedAt: Timestamp of token revocation
 
 ### Scope Structure
+
   The PAT scope defines granular permissions across different system components:
-   - Users: Operations that can be performed by users
-   - Domains: Permissions for entities within domains (groups, channels, clients)
-   - Dashboard: Dashboard-related operations
-   - Messaging: Publish and subscribe permissions
+
+- Users: Operations that can be performed by users
+- Domains: Permissions for entities within domains (groups, channels, clients)
+- Dashboard: Dashboard-related operations
+- Messaging: Publish and subscribe permissions
 
 ### Example Scope JSON
 
@@ -833,7 +837,8 @@ PATs have the following fields:
 ```
 
 ### PAT Endpoint Operations
-SuperMQ exposes a couple of endpoints that allow the user to create,retrieve, update, delete and list pats. 
+
+SuperMQ exposes a couple of endpoints that allow the user to create,retrieve, update, delete and list pats.
 
 - **Create PAT**:
 
@@ -866,6 +871,7 @@ curl --location 'http://localhost:9001/pats' \
 ```
 
 Expected response:
+
 ```bash
 {
     "id": "ec562a21-3341-4776-81ea-165afc2a8a57",
@@ -905,6 +911,7 @@ curl --location 'http://localhost:9001/pats/{patID}' \
 ```
 
 Expected response:
+
 ```bash
 {
     "id": "ec562a21-3341-4776-81ea-165afc2a8a57",
@@ -946,6 +953,7 @@ curl --location --request PATCH 'http://localhost:9001/pats/{patID}/name' \
 ```
 
 Expected response:
+
 ```bash
 {
     "id": "ec562a21-3341-4776-81ea-165afc2a8a57",
@@ -986,6 +994,7 @@ curl --location --request DELETE 'http://localhost:9001/pats/{patID}' \
 With this lets use the PAT token/secret in platform to create a client and channel and connect them.
 
 lets create a PAT that can create any client and channel:
+
 ```bash
 curl --location 'http://localhost:9001/pats' \
 --header 'Content-Type: application/json' \
@@ -1019,7 +1028,6 @@ curl --location 'http://localhost:9001/pats' \
 
 1. **Authentication**: The system first verifies that the PAT was legitimately issued by the platform.
 2. **Authorization**: The system then checks if the requested API operation is permitted by the token's defined scope.
-
 
 Example of Using PAT
 
@@ -1059,6 +1067,7 @@ curl --location 'http://localhost:9005/{domainID}/channels' \
 ```
 
 - Connecting both using the created PAT:
+
 ```bash
 curl --location 'http://localhost:9005/{domainID}/channels/connect' \
 --header 'accept: */*' \
