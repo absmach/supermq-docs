@@ -1,5 +1,5 @@
-import {themes as prismThemes} from 'prism-react-renderer';
-import type {Config} from '@docusaurus/types';
+import { themes as prismThemes } from 'prism-react-renderer';
+import type { Config } from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
 
 const config: Config = {
@@ -25,7 +25,7 @@ const config: Config = {
       'classic',
       {
         docs: {
-          routeBasePath: '/', 
+          routeBasePath: '/',
           sidebarPath: 'sidebars.ts',
           editUrl:
             'https://github.com/absmach/supermq-docs/blob/main',
@@ -54,10 +54,12 @@ const config: Config = {
   plugins: [
     'docusaurus-plugin-drawio',
   ],
+  markdown: {
+    mermaid: true,
+  },
+  themes: ['@docusaurus/theme-mermaid'],
 
   themeConfig: {
-    // Replace with your project's social card - what is a social card?
-    // image: 'img/docusaurus-social-card.jpg',
     navbar: {
       logo: {
         alt: 'SuperMQ Logo',
@@ -71,7 +73,7 @@ const config: Config = {
           position: 'left',
           label: 'Docs',
         },
-        {to: '/blog', label: 'Blog', position: 'left'},
+        { to: '/blog', label: 'Blog', position: 'left' },
         {
           href: 'https://github.com/absmach/supermq',
           label: 'GitHub',
