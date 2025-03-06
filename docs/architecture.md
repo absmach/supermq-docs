@@ -20,7 +20,7 @@ SuperMQ IoT platform is comprised of the following services:
 | [coap-adapter][coap-adapter] | Provides a CoAP interface for sending and receiving messages via CoAP                       |
 | [supermq-cli][supermq-cli]   | Command line interface                                                                      |
 
-![arch](img/architecture.jpg)
+![arch](img/architecture.svg)
 
 ## Domain Model
 
