@@ -6,31 +6,35 @@ title: Architecture
 
 SuperMQ IoT platform is comprised of the following services:
 
-| Service                          | Description                                                                             |
-| :------------------------------- | :-------------------------------------------------------------------------------------- |
-| [users][users-service]           | Manages platform's users and auth concerns in regards to users and groups               |
-| [clients][clients-service]         | Manages platform's clients, channels and auth concerns in regards to clients and channels |
-| [http-adapter][http-adapter]     | Provides an HTTP interface for sending messages via HTTP                                |
-| [mqtt-adapter][mqtt-adapter]     | Provides an MQTT and MQTT over WS interface for sending and receiving messages via MQTT |
-| [ws-adapter][ws-adapter]         | Provides a WebSocket interface for sending and receiving messages via WS                |
-| [coap-adapter][coap-adapter]     | Provides a CoAP interface for sending and receiving messages via CoAP                   |
-| [opcua-adapter][opcua-adapter]   | Provides an OPC-UA interface for sending and receiving messages via OPC-UA              |
-| [lora-adapter][lora-adapter]     | Provides a LoRa Server forwarder for sending and receiving messages via LoRa            |
-| [supermq-cli][supermq-cli] | Command line interface                                                                  |
+| Service                      | Description                                                                                 |
+| :--------------------------- | :------------------------------------------------------------------------------------------ |
+| [auth][auth-service]         | Handles authorization and authentication for the platfomr as well as managing keys and PATS |
+| [users][users-service]       | Manages platform's users and auth concerns in regards to users                              |
+| [groups][groups-service]     | Manages platform's groups and auth concerns in regards to groups                            |
+| [clients][clients-service]   | Manages platform's clients and auth concerns in regards to clients                          |
+| [channels][channels-service] | Manages platform's channels and auth concerns in regards to channels                        |
+| [domains][domains-service]   | Manages platform's domains and auth concerns in regards to domains                          |
+| [http-adapter][http-adapter] | Provides an HTTP interface for sending messages via HTTP                                    |
+| [mqtt-adapter][mqtt-adapter] | Provides an MQTT and MQTT over WS interface for sending and receiving messages via MQTT     |
+| [ws-adapter][ws-adapter]     | Provides a WebSocket interface for sending and receiving messages via WS                    |
+| [coap-adapter][coap-adapter] | Provides a CoAP interface for sending and receiving messages via CoAP                       |
+| [supermq-cli][supermq-cli]   | Command line interface                                                                      |
 
 ![arch](img/architecture.jpg)
 
 ## Domain Model
 
-The platform is built around 2 main entities: **users** and **clients**.
+The platform consists of the following core entities: **user**,**client**,**channel**, **group** and **domain**.
 
-`User` represents the real (human) user of the system. Users are represented via their email address used as their identity, and password used as their secret, which they use as platform access credentials in order to obtain an access token. Once logged into the system, a user can manage their resources (i.e. groups, clients and channels) in CRUD fashion and define access control policies by connecting them.
+`User` represents the real (human) user of the system. Users are identified by their username and password, which are used as platform access credentials in order to obtain an access token. Once logged into the system, a user can manage their resources (i.e. domains,groups, clients and channels) in CRUD fashion and define access control policies by creating and managing roles for them.
 
-`Group` represents a logical groupping of users. It is used to simplify access control management by allowing users to be grouped together. When assigning a user to a group, we create a policy that defines what that user can do with the resources of the group. This way, a user can be assigned to multiple groups, and each group can have multiple users assigned to it. Users in one group have access to other users in the same group as long as they have the required policy. A group can also be assigned to another group, thus creating a group hierarchy. When assigning a user to a group we create a policy that defines what that user can do with the group and other users in the group.
+`Group` represents a logical grouping of clients, channels or other groups. It is used to simplify access control management by allowing these entities to be grouped together. When a user becomes the member of a role of a group, they are able to access the entities encompassed by the group. A user can have a role in multiple groups, and each group can have multiple members(users). As previously mentioned a group can have a parent group, this creates a hierarichial structure. Groups can have a single parent group and many children groups, this enables shared access to entities to users. A role created for a group determines what a member(user) of the role can do with the group and entities associated with the group.
 
-`Client` represents devices (or applications) connected to SuperMQ that uses the platform for message exchange with other "clients".
+`Clients` represents devices (or applications) connected to SuperMQ that uses the platform for message exchange with other "clients".Clients also have roles to which users are members to determining which actions the role member(user) can perform on them.
 
-`Channel` represents a communication channel. It serves as a message topic that can be consumed by all of the clients connected to it. It also servers as grouping mechanism for clients. A client can be connected to multiple channels, and a channel can have multiple clients connected to it. A user can be connected to a channel as well, thus allowing them to have an access to the messages published to that channel and also clients connected to that channel with the required policy. A channel can also be assigned to another channel, thus creating a channel hierarchy. Both clients and users can be assigned to a channel. When assigning a client to a channel, we create a policy that defines what that client can do to the channel, for example reading or writing messages to it. When assigning a user to a channel, we create a policy that defines what that user can do with the channel and clients connected to it, hereby enabling the sharing of clients between users.
+`Channel` represents a communication channel. It serves as a message topic that can be consumed by all of the clients connected to it. It also servers as grouping mechanism for clientss. A client can be connected to multiple channels, and a channel can have multiple clients connected to it. A user can also have access to a channel thus allowing them to have an access to the messages published to that channel. As mentioned before a channel can belong to a group.A client connected to a channel forms a connection in SuperMQ.The connection can be of three types: a Publish type where the client can only publish messages to the channel, a Subscribe type meaning a client can only receive messages sent to the channel and Publish and Subscribe type where the client can both publish and receive messages on the channel. Channels have roles which determines the actions a role member(user) can perform on them.
+
+`Domain` represents a top level organizational unit which encompases entities such as groups, channels and clients. All these entities have to belong to a domain. A user has a role on a domain which determines what actipns the user can perform on the domain as well as the entities in the domain. The domain enables access to clients,channels, groups and messages to be shared with other users on the platform. They alsoe offer the collaborative space to perfom CRUD operations on these entities.
 
 ## Messaging
 
@@ -49,14 +53,16 @@ SuperMQ platform can be run on the edge as well. Deploying SuperMQ on a gateway 
 
 Running SuperMQ on gateway moves computation from cloud towards the edge thus decentralizing IoT system. Since we can deploy same SuperMQ code on gateway and in the cloud there are many benefits but the biggest one is easy deployment and adoption - once engineers understand how to deploy and maintain the platform, they will be able to apply those same skills to any part of the edge-fog-cloud continuum. This is because the platform is designed to be consistent, making it easy for engineers to move between them. This consistency will save engineers time and effort, and it will also help to improve the reliability and security of the platform. Same set of tools can be used, same patches and bug fixes can be applied. The whole system is much easier to reason about, and the maintenance is much easier and less costly.
 
+[auth-service]: https://github.com/absmach/supermq/tree/main/auth
 [users-service]: https://github.com/absmach/supermq/tree/main/users
+[groups-service]: https://github.com/absmach/supermq/tree/main/groups
 [clients-service]: https://github.com/absmach/supermq/tree/main/clients
+[channels-service]: https://github.com/absmach/supermq/tree/main/channels
+[domains-service]: https://github.com/absmach/supermq/tree/main/domains
 [http-adapter]: https://github.com/absmach/supermq/tree/main/http
 [mqtt-adapter]: https://github.com/absmach/supermq/tree/main/mqtt
 [coap-adapter]: https://github.com/absmach/supermq/tree/main/coap
 [ws-adapter]: https://github.com/absmach/supermq/tree/main/ws
-[opcua-adapter]: https://github.com/absmach/supermq/tree/main/opcua
-[lora-adapter]: https://github.com/absmach/supermq/tree/main/lora
 [supermq-cli]: https://github.com/absmach/supermq/tree/main/cli
 [nats]: https://nats.io/
 [rabbitmq]: https://www.rabbitmq.com/
