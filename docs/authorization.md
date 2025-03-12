@@ -407,7 +407,7 @@ EOF
 
 Domain creator becomes administrator of the domain by default as they are a member of the default _*`admin`*_ role. Domain administrator can create roles with various actions on the domain and add other users as members to these roles. More about roles is highlighted in the [roles page](./authz-spec.md)
 
-The process of adding a user as a member to a domain role is a as follows:
+The process of adding a user as a member to a domain role is as follows:
 
 ### 1. Create domain role
 
@@ -479,7 +479,7 @@ Users who are members of a domain role will have access to entities i.e groups, 
 
 Like domains, groups also have roles. A user has access to a group if they create it, are assigned as a group role member, are added to a domain with the group or have a role in a the parent group of the group.
 
-A user is able to perform actions on a group if they are members of a group role. Managing roles in groups is simila to managing roles in domains.
+A user is able to perform actions on a group if they are members of a group role. Managing roles in groups is similar to managing roles in domains.
 
 To add a user to a group role, the process is as follows:
 
