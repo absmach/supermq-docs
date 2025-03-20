@@ -36,6 +36,12 @@ The platform consists of the following core entities: **user**,**client**,**chan
 
 `Domain` represents a top level organizational unit which encompases entities such as groups, channels and clients. All these entities have to belong to a domain. A user has a role on a domain which determines what actions the user can perform on the domain as well as the entities in the domain. The domain enables access to clients,channels, groups and messages to be shared with other users on the platform. They also offer the collaborative space to perfom CRUD operations on these entities.
 
+Additional functionality is provided by the following services:
+
+`auth` handles authentication and authorization functionality for the platform. The service is used to issue keys and tokens. The service also facilitates fine grained access control to core entities.
+
+`protocol-adapters` These include adapters for HTTP, CoAP, WS and MQTT. These services handle bidirectional communication between the platform and devices and applications. The adapters enable message handling in the system, supporting the PubSub model of the platform.
+
 ## Messaging
 
 SuperMQ uses [NATS][nats] as its default messaging backbone, due to its lightweight and performant nature. You can treat its _subjects_ as physical representation of SuperMQ channels, where subject name is constructed using channel unique identifier. SuperMQ also provides the ability to change your default message broker to [RabbitMQ][rabbitmq], [VerneMQ][vernemq] or [Kafka][kafka].
