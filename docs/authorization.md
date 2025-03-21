@@ -2,28 +2,28 @@
 title: Authorization
 ---
 
-SuperMQ allows for fine-grained control over user permissions, taking into account hierarchical relationships between entities domains, groups, channels, and things. The structure and functionality of an authorization system implemented using [SpiceDB](https://github.com/authzed/spicedb) and its associated [schema language](https://authzed.com/docs/reference/schema-lang). `auth` service backed by SpiceDB manages permissions for users, domains, groups, channels, and things.
+SuperMQ allows for fine-grained control over permitted user actions, taking into account hierarchical relationships between entities domains, groups, channels, and clients. The structure and functionality of an authorization system implemented using [SpiceDB](https://github.com/authzed/spicedb) and its associated [schema language](https://authzed.com/docs/reference/schema-lang). The `auth` service backed by SpiceDB manages permissions for users, domains, groups, channels, and clients.
 
 ## Domains
 
-Domain contains **Things**, **Channels**, and **Groups**. A **User** can be a member of a domain with different types of available relations. This relation provides access control to the entities in the domain.
+Domain contains **Clients**, **Channels** and **Groups**. A **User** can be a member of a domain role. The role determines the actions that are the user is permitted to perform on the domains and subsequently entities belonging to the domain i.e clients, channels and groups.
 
 ### Domain Entities
 
 #### Overview
 
-In SuperMQ, **things**, **channels**, and **groups** are inherently associated with one particular domain. This means that every **group**, including its sub-groups, every **thing**, and every **channel** is owned by and belongs to a specific domain. Domain acts like a kind of namespace.
+In SuperMQ, **clients**, **channels**, and **groups** are inherently associated with one particular domain. This means that every **group**, including its sub-groups, every **client**, and every **channel** is owned by and belongs to a specific domain. Domain acts like a kind of namespace.
 
 ```mermaid
 graph TD
    Do[Domain]
    Gr["Groups + Sub Groups"]
-   Th[Things]
+   Cl[Clients]
    Ch[Channels]
 
    Do --->|owns| Gr
    Do --->|owns| Ch
-   Do --->|owns| Th
+   Do --->|owns| Cl
 
 ```
 
@@ -34,11 +34,12 @@ graph
    subgraph Domain
       direction BT
       Gr[Group]
-      Th[Thing]
+      Cl[Client]
       SG["Group (Sub Group)"]
       Ch[Channel]
 
-      Th --->|connects| Ch
+      Cl --->|connects| Ch
+      Cl --->|parent| Gr
       Ch --->|parent| SG
       Ch --->|parent| Gr
       SG --->|parent| Gr
@@ -48,10 +49,10 @@ style Domain stroke-width:3px,margin-top:10px,margin-bottom:10px
 
 #### Domain Entities Relations
 
-Domain holds entities such as `groups`, `channels`, and `things`.
+Domain holds entities such as `groups`, `channels`, and `clients`.
 The entities created in a domain don't have any hierarchical structure between them.
 
-Example: In `domain_1` a user creates the following entities `group_1`, `group_2`, `thing_1`, `thing_2`, `channel_1`, `channel_2`. By default, there is no relation between the entities, until the user assigns a relation between the entities
+Example: In `domain_1` a user creates the following entities `group_1`, `group_2`, `client_1`, `client_2`, `channel_1`, `channel_2`. By default, there is no relation between the entities, until the user assigns a relation between the entities
 
 ```mermaid
 graph
@@ -60,8 +61,8 @@ graph
       Gr1["group_1"]
       Gr2["group_2"]
 
-      Th1["thing_1"]
-      Th2["thing_2"]
+      Cl1["client_1"]
+      Cl2["client_2"]
 
 
       Ch1["channel_1"]
@@ -70,25 +71,35 @@ graph
    end
 ```
 
-##### Channel Thing Connect/Disconnect
+##### Channel Client Connect/Disconnect
 
-`Thing` represents a device (or an application) connected to SuperMQ that uses the platform for message exchange with other `things`.
+`Client` represents a device (or an application) connected to SuperMQ that uses the platform for message exchange with other `clients`.
 
-`Channel` is a message conduit between things connected to it. It serves as a message topic that can be consumed by all of the things connected to it.
-Things can publish or subscribe to the channel.
+`Channel` is a message conduit between clients connected to it. It serves as a message topic that can be consumed by all of the clients connected to it.
+Clients can publish, subscribe or publish and subscribe to the channel.
 
-Thing and channel can be connected to multiple channels using the following API.
+Multiple clients and channels can be connected using the following API.
 
 ```bash
-curl -sSiX POST http://localhost/connect -H "Content-Type: application/json" -H "Authorization: Bearer <domain_user_access_token>" -d @- << EOF
-{  
-  "thing_id": "<thing_id>",
-  "channel_id": "<channel_id>"
-}  
-EOF 
+curl -sSiX POST http://localhost/<domain_id>/channels/connect -H "Content-Type: application/json" -H "Authorization: Bearer <user_access_token>" -d @- << EOF
+{
+  "channel_ids": [
+    "<channel_1_id",
+    "<channel_2_id"
+  ],
+  "client_ids": [
+    "<client_1_id>",
+    "<client_2_id>"
+  ],
+  "types": [
+    "subscribe",
+    "publish"
+  ]
+}
+EOF
 ```
 
-_*The below diagram shows `thing_1` is connected to `channel_1` and `channel_2` , then `thing_2` is connected to `channel_2`. This relationship can be established using the provided request*_
+_*The below diagram shows `client_1` is connected to `channel_1` and `channel_2` , then `client_2` is connected to `channel_1` and `channel_2`. This relationship can be established using the provided request*_
 
 ```mermaid
 graph
@@ -97,35 +108,36 @@ graph
       Gr1["group_1"]
       Gr2["group_2"]
 
-      Th1["thing_1"]
-      Th2["thing_2"]
+      Cl1["client_1"]
+      Cl2["client_2"]
 
       Ch1["channel_1"]
       Ch2["channel_2"]
 
 
-      Th1 --->|connect| Ch1
-      Th1 --->|connect| Ch2
+      Cl1 --->|connect| Ch1
+      Cl1 --->|connect| Ch2
 
-      Th2 --->|connect| Ch2
+      Cl2 --->|connect| Ch2
+      Cl2 --->|connect| Ch2
    end
 ```
 
 ##### Channel Group Relation
 
-A group serves as a parent entity that can contain both groups and channels as children. Child groups, in turn, can consist of further child groups or channels, forming a nested hierarchy. Notably, channels, which are distinct entities, cannot have child channels but can connect to multiple things. The concept of parentage signifies the relationship between higher-level entities and their subordinate components. Ancestors in this system refer to entities higher up in the hierarchy, and while a child group can have multiple ancestors, a channel can only belong to a single parent group. This hierarchical arrangement provides a structured and organized framework for managing information within the SuperMQ.
+A group serves as a parent entity that can contain both groups, clients and channels as children. Child groups, in turn, can consist of further child groups, clients or channels, forming a nested hierarchy. Notably, channels, which are distinct entities, cannot have child channels but can connect to multiple clients. The concept of parentage signifies the relationship between higher-level entities and their subordinate components. Ancestors in this system refer to entities higher up in the hierarchy, and while a child group can have multiple ancestors, a channel can only belong to a single parent group. This hierarchical arrangement provides a structured and organized framework for managing information within the SuperMQ.
 
 Assigning a group as the parent of a channel can be achieved through the following request.
 
 ```bash
-curl -sSiX POST 'http://localhost/channels/<channel_id>/groups/assign' -H "Content-Type: application/json" -H "Authorization: Bearer <domain_user_access_token>" -d @- << EOF
+curl -sSiX POST 'http://localhost/<domain_id>/channels/<channel_id>/parent' -H "Content-Type: application/json" -H "Authorization: Bearer <user_access_token>" -d @- << EOF
 {
-  "group_ids" : [ "<group_id_1>", "<group_id_2>" ]
+  "parent_group_id": "<parent_group_id>"
 }
 EOF
 ```
 
-_*The diagram below illustrates the parent relationship between `channel_1` and `channel_2` with `group_2`. This relationship can be established using the provided request.*_
+_*The diagram below illustrates the parent relationship between `channel_1` with `group_2`. This relationship can be established using the provided request.*_
 
 ```mermaid
 graph
@@ -134,20 +146,20 @@ graph
       Gr1["group_1"]
       Gr2["group_2"]
 
-      Th1["thing_1"]
-      Th2["thing_2"]
+      Cl1["client_1"]
+      Cl2["client_2"]
 
       Ch1["channel_1"]
       Ch2["channel_2"]
 
 
-      Th1 --->|connect| Ch1
-      Th1 --->|connect| Ch2
+      Cl1 --->|connect| Ch1
+      Cl1 --->|connect| Ch2
 
-      Th2 --->|connect| Ch2
+      Cl2 --->|connect| Ch1
+      Cl2 --->|connect| Ch2
 
       Ch1 --->|parent| Gr2
-      Ch2 --->|parent| Gr2
    end
 ```
 
@@ -158,9 +170,9 @@ Groups can establish a parent-child relationship with other groups. The children
 Assigning a group as the parent to another group can be achieved through the following request.
 
 ```bash
-curl -sSiX POST 'http://localhost/groups/<parent_group_id>/groups/assign' -H "Content-Type: application/json" -H "Authorization: Bearer <domain_user_access_token>" -d @- << EOF
+curl -sSiX POST 'http://localhost/<domain_id>/groups/<group_id>/children' -H "Content-Type: application/json" -H "Authorization: Bearer <user_access_token>" -d @- << EOF
 {
-  "group_ids": ["<child_group_id_1>","<child_group_id_2>"]
+  "groups": ["<child_group_id_1>","<child_group_id_2>"]
 }
 EOF
 ```
@@ -174,20 +186,20 @@ graph
       Gr1["group_1"]
       Gr2["group_2"]
 
-      Th1["thing_1"]
-      Th2["thing_2"]
+      Cl1["client_1"]
+      Cl2["client_2"]
 
       Ch1["channel_1"]
       Ch2["channel_2"]
 
 
-      Th1 --->|connect| Ch1
-      Th1 --->|connect| Ch2
+       Cl1 --->|connect| Ch1
+      Cl1 --->|connect| Ch2
 
-      Th2 --->|connect| Ch2
+      Cl2 --->|connect| Ch1
+      Cl2 --->|connect| Ch2
 
       Ch1 --->|parent| Gr2
-      Ch2 --->|parent| Gr2
 
       Gr2 --->|parent| Gr1
    end
@@ -195,7 +207,7 @@ graph
 
 ##### Domain Entities Relation Examples
 
-An example group with channels, things, and groups (sub-groups) within the domain.
+An example group with channels, clients, and groups (sub-groups) within the domain.
 Groups have parent-child relationships, forming a hierarchy where top-level groups (`group_1` and `group_2`) have groups (sub-groups - `group_11`, `group_12`, `group_21`, and `group_22`) or channels (`channel_2`) beneath them.
 
 ```mermaid
@@ -211,12 +223,12 @@ graph
       Gr21["group_21 (Sub Group)"]
       Gr22["group_22 (Sub Group)"]
 
-      Th1["thing_1"]
-      Th2["thing_2"]
-      Th3["thing_3"]
-      Th4["thing_4"]
-      Th5["thing_5"]
-      Th6["thing_6"]
+      Cl1["client_1"]
+      Cl2["client_2"]
+      Cl3["client_3"]
+      Cl4["client_4"]
+      Cl5["client_5"]
+      Cl6["client_6"]
 
 
 
@@ -229,20 +241,20 @@ graph
       Gr12 --->|parent| Gr1
 
       Ch1 --->|parent| Gr11
-      Th1 --->|connects| Ch1
-      Th5 --->|connects| Ch1
+      Cl1 --->|connects| Ch1
+      Cl5 --->|connects| Ch1
 
       Ch2 --->|parent| Gr1
-      Th2 --->|connects| Ch2
+      Cl2 --->|connects| Ch2
 
       Gr21 --->|parent| Gr2
       Ch3 --->|parent| Gr21
-      Th3 --->|connects| Ch3
+      Cl3 --->|connects| Ch3
 
       Gr22 --->|parent| Gr21
       Ch4 --->|parent| Gr22
-      Th4 --->|connects| Ch4
-      Th6 --->|connects| Ch4
+      Cl4 --->|connects| Ch4
+      Cl6 --->|connects| Ch4
    end
 ```
 
@@ -260,13 +272,13 @@ graph
     Gr13["group_13 (Sub Group)"]
 
 
-    Th1["thing_1"]
-    Th2["thing_2"]
-    Th3["thing_3"]
-    Th4["thing_4"]
-    Th11["thing_11"]
-    Th22["thing_22"]
-    Th33["thing_33"]
+    Cl1["client_1"]
+    Cl2["client_2"]
+    Cl3["client_3"]
+    Cl4["client_4"]
+    Cl11["client_11"]
+    Cl22["client_22"]
+    Cl33["client_33"]
 
     Ch1["channel_1"]
     Ch2["channel_2"]
@@ -283,14 +295,14 @@ graph
     Ch3 --->|parent| Gr13
 
 
-    Th1 --->|connects| Ch1
-    Th11 --->|connects| Ch1
+    Cl1 --->|connects| Ch1
+    Cl11 --->|connects| Ch1
 
-    Th2 --->|connects| Ch2
-    Th22 --->|connects| Ch2
-    Th3 --->|connects| Ch3
-    Th33 --->|connects| Ch3
-    Th4 --->|connects| Ch4
+    Cl2 --->|connects| Ch2
+    Cl22 --->|connects| Ch2
+    Cl3 --->|connects| Ch3
+    Cl33 --->|connects| Ch3
+    Cl4 --->|connects| Ch4
 
   end
 ```
@@ -298,78 +310,221 @@ graph
 ## User Domain Relationship
 
 In SuperMQ, when a new user registers, they don't automatically have access to domains.
-The domain administrator must invite the user to the domain and assign them a role, such as administrator, editor, viewer, or member.
+The domain administrator must invite the user to a role or add them manually to a role associated with the domain.
 
 Domain administrator can invite an existing user in SuperMQ or invite new users to the domain by e-mail ID.
-After the user registers with SuperMQ, the user can accept the invitations to the domain.
+After the user registers with SuperMQ, the user can accept the invitation to the domain.
 
 All the users in SuperMQ are allowed to create a new domain.
-The user who creates a domain automatically becomes the domain administrator.
+The user who creates a domain automatically becomes a member of the default _*`admin`*_ role.
 
-Users can have any one of the following relations with a domain
-
-- [Administrator](#domain-administrator)
-- [Editor](#domain-editor)
-- [Viewer](#domain-viewer)
-- [Member](#domain-member)
+Users can have any one role that is associated with the domain. The administrator can create a role wth any number of actions associated to the role and give the role a custom name. A user who is invited or assigned to the role is able to perform the actions that are specified by the role.
 
 **Let's take the below domain_1 with entities for explaining about user domain relationship.**
 
 ![domain_users](diagrams/domain_users.svg)
 
-### Domain Administrator
+A user can be a member of the built in role `admin` of the domain. This enables the user to perform the following actions on the domain:
 
-Users with administrator relations have full control over all entities (things, channels, groups) within the domain. They can perform actions like creating, updating, and deleting entities created by others. Administrators are also allowed to create their own entities and can view and update the ones they have created.
+1. Related to the domain:
 
-**Example:**
-**user_1** is **administrator** of **domain_1**. **user_1 can view all entities created by others and have administrator access to all entities in the domain**.
+   - delete",
+   - disable",
+   - enable",
+   - read",
+   - update",
 
-![domain_users_administrator](diagrams/domain_users_administrator.svg)
+2. Related to channels in the domain:
 
-### Domain Editor
+   - channel_add_role_users,
+   - channel_connect_to_client,
+   - channel_create,
+   - channel_delete,
+   - channel_manage_role,
+   - channel_publish,
+   - channel_read,
+   - channel_remove_role_users,
+   - channel_set_parent_group,
+   - channel_subscribe,
+   - channel_update,
+   - channel_view_role_users,
+   - client_add_role_users,
+   - client_connect_to_channel,`
 
-Users with editor relations have access to update all entities (things, channels, groups) created by others within the domain. Editor are also allowed to create their own entities and can view and update the ones they have created.
+3. Related to clients in the domain:
 
-**Example:**
-**user_2** is **editor** of **domain_1**. **user_2 can view all entities and have edit access to groups and channel entities, view access to thing entities in the domain, and also able to create & manage new things, channels & groups**.
+   - client_create,
+   - client_delete,
+   - client_manage_role,
+   - client_read,
+   - client_remove_role_users,
+   - client_set_parent_group,
+   - client_update,
+   - client_view_role_users,
 
-![domain_users_editor](diagrams/domain_users_editor.svg)
+4. Related to groups in the domain:
 
-### Domain Viewer
+   - group_add_role_users,
+   - group_create,
+   - group_delete,
+   - group_manage_role,
+   - group_membership,
+   - group_read,
+   - group_remove_role_users,
+   - group_set_child,
+   - group_set_parent,
+   - group_update,
+   - group_view_role_users,
 
-Users with viewer relations have access to view all entities (things, channels, groups) created by others within the domain. Viewer are also allowed to create their own entities and can view and update the ones they have created.
+5. Related to roles for the domain:
+   - add_role_users,
+   - manage_role,
+   - remove_role_users,
+   - view_role_users,
 
-**Example:**
-**user_3 can only view entities that are created by others in the domain and <span style={{ color:'blue' }}>also able to create & manage new things, channels & groups</span>**
+The `admin` can create roles with any combination of the above actions allowing fine grained access control to the domain and all entities in the domain.
 
-![domain_users_viewer](diagrams/domain_users_viewer.svg)
+**Let's take the below domain_1 with entities for explaining about user group relationship.**
 
-### Domain Member
+![groups_roles](diagrams/groups_roles.svg)
 
-Users with member relations could not view and no access to entities (things, channels, groups) created by others within the domain. Members are also allowed to create their own entities and can view and update the ones they have created.
-Domain members will not have access by default to any of the entities in the Domain, access shall be granted for specific entities by the domain administrator or individual entity administrator.
+A user who is a member of `role_1` can the following actions that enable them to act on entities to which group_1 is a parent of:
 
-**Example:**
-**user_4 , user_5, user_6, user_7, user_8, user_9** is **member** of **domain_1**. **These member relation users can able to create & manage new things, channels & groups in the domain. They can have access to the entities to which they have a relation in the domain. They could not view and manage other entities to which they don't have any relation in domain**.
-!!! note "Note: All other users having administrator, editor, viewer relation with domain will also have member relation inherit with domain, which allows them to create new things, channels & groups."
+1. Related to the group itself:
 
-![domain_users_member](diagrams/domain_users_member.svg)
+   - client_create,
+   - channel_create
+   - update,
+   - read,
+   - membership,
+   - delete,
+   - set_child,
+   - set_parent,
+   - manage_role,
 
-After the user sign-up to SuperMQ, the user is allowed to create a new domain or join an existing domain via invitations, without domain user could not create _things_, _channels_, _groups_.
+2. Related to the subgroup
+   - subgroup_create,
+   - subgroup_client_create,
+   - subgroup_channel_create,
+   - subgroup_update,
+   - subgroup_read,
+   - subgroup_membership,
+   - subgroup_delete,
+   - subgroup_set_child,
+   - subgroup_set_parent,
+   - subgroup_manage_role,
+   - subgroup_add_role_users,
+   - subgroup_remove_role_users,
+   - subgroup_view_role_users,
+   - subgroup_client_update,
+   - subgroup_client_read,
+   - subgroup_client_delete,
+   - subgroup_client_set_parent_group,
+   - subgroup_client_connect_to_channel,
+   - subgroup_client_manage_role,
+   - subgroup_client_add_role_users,
+   - subgroup_client_remove_role_users,
+   - subgroup_client_view_role_users,
+   - subgroup_channel_update,
+   - subgroup_channel_read,
+   - subgroup_channel_delete,
+   - subgroup_channel_set_parent_group,
+   - subgroup_channel_connect_to_client,
+   - subgroup_channel_publish,
+   - subgroup_channel_subscribe,
+   - subgroup_channel_manage_role,
+   - subgroup_channel_add_role_users,
+   - subgroup_channel_remove_role_users,
+   - subgroup_channel_view_role_users"
+3. Related to the roles of the group
+   - add_role_users,
+   - remove_role_users,
+   - view_role_users,
 
-All operations, including creating, updating, and deleting things, channels, and groups, occur at the domain level. For instance, when a user creates a new thing using an access token, the newly created thing automatically becomes associated with a specific domain. The domain information is extracted from the access token. When the user obtains a token, the user should specify the domain for which they want to operate.
+A user who is a member of `role_2` or `role_12` can have the following actiosn associated with `clients` and `channels` that are child entities of the group:
 
-So to do operations on a domain, an access token for the domain is required. This can be obtained in two ways which is explained in [next section](#tokens-and-domain-tokens).
+1. Related to the clients:
+    - client_create,
+    - client_update,
+    - client_read,
+    - client_delete,
+    - client_set_parent_group,
+    - client_connect_to_channel,
+    - client_manage_role,
+    - client_add_role_users,
+    - client_remove_role_users,
+    - client_view_role_users,
 
-## Tokens and Domain Tokens
+2. Related to the channels:
+    - channel_create,
+    - channel_update,
+    - channel_read,
+    - channel_delete,
+    - channel_set_parent_group,
+    - channel_connect_to_client,
+    - channel_publish,
+    - channel_subscribe,
+    - channel_manage_role,
+    - channel_add_role_users,
+    - channel_remove_role_users,
+    - channel_view_role_users,
 
-JWT token are used in SuperMQ for authentication and authorization. The JWT token has domain, exp, iat, iss, sub, type, and user fields.
+A role can be created with any combinatin of the above actions to allow fine grained access control to the group and child entities such as subgroups, clients and channels.
+
+**Let's take the below domain_1 with entities for explaining about user channel relationship.**
+
+![channels_roles](diagrams/channels_roles.svg)
+
+A user can have a role such as `role_1`, `role_2`, `role_3` or `role_4` shown above which can allow them to perform the following actions on the channel:
+
+1. Related to the channel itself:
+    - connect_to_client,
+    - delete,
+    - manage_role,
+    - publish,
+    - read,
+    - set_parent_group,
+    - subscribe,
+    - update,
+
+2. Related to the roles of the channel:
+    - add_role_users,
+    - remove_role_users,
+    - view_role_users,
+
+A role can be created with any combinatin of the above actions to allow fine grained access control to the channel.
+An `admin` role for the channel is able to perfomr all the above actions.
+
+**Let's take the below domain_1 with entities for explaining about user client relationship.**
+
+![clients_roles](diagrams/clients_roles.svg)
+
+A user can have a role such as `role_1`, `role_2`, `role_3`, `role_4`, `role_5` or `role_6` shown above which can allow them to perform the following actions on the client:
+
+1. Related to the client itself:
+    - update",
+    - read",
+    - delete",
+    - set_parent_group",
+    - connect_to_channel"
+
+2. Related to the roles of the client:
+    - manage_role",
+    - add_role_users",
+    - remove_role_users",
+    - view_role_users"
+
+A role can be created with any combinatin of the above actions to allow fine grained access control to the client.
+An `admin` role for the client is able to perform all the above actions.
+
+## Tokens
+
+JWT token are used in SuperMQ for authentication and authorization. The JWT token has exp, iat, iss, sub, type, and user fields.
 
 Example JWT Token:
 
 ```json
 {
-  "domain": "",
   "exp": 1706544967,
   "iat": 1706541367,
   "iss": "supermq.auth",
@@ -379,55 +534,21 @@ Example JWT Token:
 }
 ```
 
-In JWT token, the domain field has **domain ID** and the user field has **user ID**.
+In JWT token the user field has **user ID**.
 
-If the domain field is empty, then with that JWT token following actions are permitted
+All actions involving CRUD operations on users, domains, groups, channels and clients will require a token.
 
-- User profile update
-- Domain creation & listing,
-- Accept domain invitations
+An access token is generated by sending user credentials to the `tokens/issue` endpoint. _\*This endpoint does not require an access token to be provided._\*
 
-Actions related to the creation, update, and deletion of things, channels, and groups are not permitted, requests will fail in authorization. SuperMQ operations related to things, channels, and groups take place in domain level. So for these kinds of operations, a JWT token with a domain field containing the operating domain ID is required.
-
-There are two ways to obtain JWT token for a particular domain
-
-### Option 1: Passing domain_id while obtaining new token
+### Obtaining a new token
 
 **Request:**
 
 ```bash
-curl -sSiX POST 'http://localhost/users/tokens/issue'  -H "Content-Type: application/json" -H "Authorization: Bearer <domain_user_access_token>" -d @- << EOF
+curl -sSiX POST 'http://localhost/users/tokens/issue'  -H "Content-Type: application/json" -d @- << EOF
 {
-  "identity": "user1@example.com",
-  "secret": "12345678",
-  "domain_id": "903f7ede-3308-4206-89c2-e99688b612f7"
-}
-EOF
-```
-
-In this request, if the domain ID is empty or if the field is not added, then in response JWT token will have an empty domain field.
-
-**Response:**
-
-```json
-{
-  "access_token": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJkb21haW4iOiI5MDNmN2VkZS0zMzA4LTQyMDYtODljMi1lOTk2ODhiNjEyZjciLCJleHAiOjE3MDY2MDM0NDcsImlhdCI6MTcwNjU5OTg0NywiaXNzIjoibWFnaXN0cmFsYS5hdXRoIiwic3ViIjoiOTAzZjdlZGUtMzMwOC00MjA2LTg5YzItZTk5Njg4YjYxMmY3XzU3NDhkZTY5LTJhNjYtNDBkYS1hODI5LTFiNDdmMDJlOWFkYiIsInR5cGUiOjAsInVzZXIiOiI1NzQ4ZGU2OS0yYTY2LTQwZGEtYTgyOS0xYjQ3ZjAyZTlhZGIifQ.c8a8HhVAbkdq_qZnd1DWHtkoNDPQc6XJY6-UcqqCygRR9svjgkwetN3rmIOWPNV5CjPh5lqlzWv1cOLruKBmzw",
-  "refresh_token": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJkb21haW4iOiI5MDNmN2VkZS0zMzA4LTQyMDYtODljMi1lOTk2ODhiNjEyZjciLCJleHAiOjE3MDY2ODYyNDcsImlhdCI6MTcwNjU5OTg0NywiaXNzIjoibWFnaXN0cmFsYS5hdXRoIiwic3ViIjoiOTAzZjdlZGUtMzMwOC00MjA2LTg5YzItZTk5Njg4YjYxMmY3XzU3NDhkZTY5LTJhNjYtNDBkYS1hODI5LTFiNDdmMDJlOWFkYiIsInR5cGUiOjEsInVzZXIiOiI1NzQ4ZGU2OS0yYTY2LTQwZGEtYTgyOS0xYjQ3ZjAyZTlhZGIifQ.SEMvEw2hchsvPYJWqnHMKlUmgjfqAvFcjeCDXyvS2xSGsscEci3bMrUohaJNkNDWzTBiBinV7nEcPrwbxDfPBQ"
-}
-```
-
-### Option 2: Get new access and refresh token through the refresh endpoint by passing domain_id
-
-In most of the cases user login domain is under determinable. This method will be useful for those kind of cases.
-
-**Step 1: Get token without domain ID**
-**Request:**
-
-```bash
-curl -sSiX POST 'http://localhost/users/tokens/issue'  -H "Content-Type: application/json" -H "Authorization: Bearer <domain_user_access_token>" -d @- << EOF
-{
-  "identity": "user1@example.com",
-  "secret": "12345678"
+  "username": "user1@example.com",
+  "password": "12345678",
 }
 EOF
 ```
@@ -436,8 +557,8 @@ EOF
 
 ```json
 {
-  "access_token": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJkb21haW4iOiIiLCJleHAiOjE3MDY2MDM1MjYsImlhdCI6MTcwNjU5OTkyNiwiaXNzIjoibWFnaXN0cmFsYS5hdXRoIiwic3ViIjoiIiwidHlwZSI6MCwidXNlciI6IjU3NDhkZTY5LTJhNjYtNDBkYS1hODI5LTFiNDdmMDJlOWFkYiJ9.Cc2Qj_z3gcUTjDo7lpcUVx9ymnUfClwt28kayHvMhY27eDu1vWMAZb_twQ85pbSlf12juo8P_YJcWKl3rDEokQ",
-  "refresh_token": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJkb21haW4iOiIiLCJleHAiOjE3MDY2ODYzMjYsImlhdCI6MTcwNjU5OTkyNiwiaXNzIjoibWFnaXN0cmFsYS5hdXRoIiwic3ViIjoiIiwidHlwZSI6MSwidXNlciI6IjU3NDhkZTY5LTJhNjYtNDBkYS1hODI5LTFiNDdmMDJlOWFkYiJ9.SiVsctItdR0WFhRbg7omZgR_WDPlLfLF2ov2eqkE1EP8c7RruOEv-KST3xVsohY33t2xevrtorwbjMQsl1YV7Q"
+  "access_token": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJkb21haW4iOiI5MDNmN2VkZS0zMzA4LTQyMDYtODljMi1lOTk2ODhiNjEyZjciLCJleHAiOjE3MDY2MDM0NDcsImlhdCI6MTcwNjU5OTg0NywiaXNzIjoibWFnaXN0cmFsYS5hdXRoIiwic3ViIjoiOTAzZjdlZGUtMzMwOC00MjA2LTg5YzItZTk5Njg4YjYxMmY3XzU3NDhkZTY5LTJhNjYtNDBkYS1hODI5LTFiNDdmMDJlOWFkYiIsInR5cGUiOjAsInVzZXIiOiI1NzQ4ZGU2OS0yYTY2LTQwZGEtYTgyOS0xYjQ3ZjAyZTlhZGIifQ",
+  "refresh_token": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJkb21haW4iOiI5MDNmN2VkZS0zMzA4LTQyMDYtODljMi1lOTk2ODhiNjEyZjciLCJleHAiOjE3MDY2ODYyNDcsImlhdCI6MTcwNjU5OTg0NywiaXNzIjoibWFnaXN0cmFsYS5hdXRoIiwic3ViIjoiOTAzZjdlZGUtMzMwOC00MjA2LTg5YzItZTk5Njg4YjYxMmY3XzU3NDhkZTY5LTJhNjYtNDBkYS1hODI5LTFiNDdmMDJlOWFkYiIsInR5cGUiOjEsInVzZXIiOiI1NzQ4ZGU2OS0yYTY2LTQwZGEtYTgyOS0xYjQ3ZjAyZTlhZGIifQ"
 }
 ```
 
@@ -445,7 +566,6 @@ EOF
 
 ```json
 {
-  "domain": "",
   "exp": 1706603526,
   "iat": 1706599926,
   "iss": "supermq.auth",
@@ -459,7 +579,6 @@ EOF
 
 ```json
 {
-  "domain": "",
   "exp": 1706686326,
   "iat": 1706599926,
   "iss": "supermq.auth",
@@ -469,299 +588,242 @@ EOF
 }
 ```
 
-In these tokens, the domain field will be empty. As said earlier, this token can be to for user profile update, domain creation & listing, accept domain invitations
+## Add User to Domain Role
 
-**Step 2: List domains users have access**
-**Request:**
+Domain creator becomes administrator of the domain by default as they are a member of the default _*`admin`*_ role. Domain administrator can create roles with various actions on the domain and add other users as members to these roles. More about roles is highlighted in the [roles page](./authz-spec.md)
 
-```bash
-curl -sSiX GET 'http://localhost/domains' -H "Authorization: Bearer <ACCESS_TOKEN_FROM_STEP_1>"
-```
+The process of adding a user as a member to a domain role is as follows:
 
-**Response:**
+### 1. Create domain role
 
-```json
-{
-  "total": 1,
-  "offset": 0,
-  "limit": 10,
-  "status": "all",
-  "domains": [
-    {
-      "id": "903f7ede-3308-4206-89c2-e99688b612f7",
-      "name": "Domain 1",
-      "alias": "domain_1",
-      "status": "enabled",
-      "permission": "administrator",
-      "created_by": "5748de69-2a66-40da-a829-1b47f02e9adb",
-      "created_at": "2024-01-30T07:30:36.89495Z",
-      "updated_at": "0001-01-01T00:00:00Z"
-    }
-  ]
-}
-```
-
-**Step 3: Send Request to Refresh endpoint with domain id**
-**Request:**
-
-```bash
-curl -sSiX POST 'http://localhost/users/tokens/refresh' -H "Content-Type: application/json" -H "Authorization: Bearer <REFRESH_TOKEN_FROM_STEP_1>" -d @- << EOF
-{
-  "domain_id": "903f7ede-3308-4206-89c2-e99688b612f7"
-}
-EOF
-```
-
-!!! note "Note: Same request also used for switching between domains."
-
-**Response:**
-
-```json
-{
-  "access_token": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJkb21haW4iOiI5MDNmN2VkZS0zMzA4LTQyMDYtODljMi1lOTk2ODhiNjEyZjciLCJleHAiOjE3MDY2MDM3MDYsImlhdCI6MTcwNjYwMDEwNiwiaXNzIjoibWFnaXN0cmFsYS5hdXRoIiwic3ViIjoiOTAzZjdlZGUtMzMwOC00MjA2LTg5YzItZTk5Njg4YjYxMmY3XzU3NDhkZTY5LTJhNjYtNDBkYS1hODI5LTFiNDdmMDJlOWFkYiIsInR5cGUiOjAsInVzZXIiOiI1NzQ4ZGU2OS0yYTY2LTQwZGEtYTgyOS0xYjQ3ZjAyZTlhZGIifQ.3_q4F9CWxmBVjItiE8uR01vlm0du_ISl75E-nfEcc-3IMqHEOLbz1WrDvGbaYcPZ-CQufZuP2j-zqR4lShnu2Q",
-  "refresh_token": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJkb21haW4iOiI5MDNmN2VkZS0zMzA4LTQyMDYtODljMi1lOTk2ODhiNjEyZjciLCJleHAiOjE3MDY2ODY1MDYsImlhdCI6MTcwNjYwMDEwNiwiaXNzIjoibWFnaXN0cmFsYS5hdXRoIiwic3ViIjoiOTAzZjdlZGUtMzMwOC00MjA2LTg5YzItZTk5Njg4YjYxMmY3XzU3NDhkZTY5LTJhNjYtNDBkYS1hODI5LTFiNDdmMDJlOWFkYiIsInR5cGUiOjEsInVzZXIiOiI1NzQ4ZGU2OS0yYTY2LTQwZGEtYTgyOS0xYjQ3ZjAyZTlhZGIifQ.KFUEGEx0LZStpokGnQHoMbpPRA5RUH7AR5RHRC46KcBIUoD4EcuWBiSreFwyRc4v-tcbp-CQQaBNGhqYMW4QZw"
-}
-```
-
-**Decoded Access Token:**
-
-```json
-{
-  "domain": "903f7ede-3308-4206-89c2-e99688b612f7",
-  "exp": 1706603706,
-  "iat": 1706600106,
-  "iss": "supermq.auth",
-  "sub": "903f7ede-3308-4206-89c2-e99688b612f7_5748de69-2a66-40da-a829-1b47f02e9adb",
-  "type": 0,
-  "user": "5748de69-2a66-40da-a829-1b47f02e9adb"
-}
-```
-
-**Decoded Refresh Token:**
-
-```json
-{
-  "domain": "903f7ede-3308-4206-89c2-e99688b612f7",
-  "exp": 1706686506,
-  "iat": 1706600106,
-  "iss": "supermq.auth",
-  "sub": "903f7ede-3308-4206-89c2-e99688b612f7_5748de69-2a66-40da-a829-1b47f02e9adb",
-  "type": 1,
-  "user": "5748de69-2a66-40da-a829-1b47f02e9adb"
-}
-```
-
-## Assign Users to Domain
-
-Domain creator becomes administrator of the domain by default. Domain administrator can assign users to a domain with the following relations administrator, editor, viewer, member. The details about these relations are described in this [section](#user-domain-relationship)
-
-User can be assigned to domain with endpoint `/domain/<domain_id>/users/assign` with JSON body like below:
-
-```json
-{
-  "user_ids" : ["<user_id>"],
-  "relation" : "editor"
-}
-```
-
-- **user_ids** : field contains an array of users' IDs
-- **relation** : field contains any one of the following relations **administrator**, **editor**, **viewer**, **member**, The details about these relations are described in this [section](#user-domain-relationship)
+This is done by making a post request to the `domain/<domain_id>/roles` endpoint.
 
 **Example Request:**
 
 ```bash
-curl -sSiX POST 'http://localhost/domains/903f7ede-3308-4206-89c2-e99688b612f7/users/assign'  -H "Content-Type: application/json" -H "Authorization: Bearer <DOMAIN_ACCESS_TOKEN_>"  -d @- << EOF
+curl -sSiX POST 'http://localhost/domains/c01ed106-e52d-4aa4-bed3-39f360177cfa/roles'  -H "Content-Type: application/json" -H "Authorization: Bearer <user_access_token>"  -d @- << EOF
 {
-  "user_ids" : ["05dbd66a-ce38-4928-ac86-c1b44909be0d"],
-  "relation" : "editor"
+ "role_name": "roleName",
+  "optional_actions": [
+    "read",
+    "update",
+    "delete"
+  ],
 }
-EOF
 ```
 
-## Unassign Users from Domain
-
-User can be unassigned to domain with endpoint `/domain/<domain_id>/users/unassign` with JSON body like below:
+**Example Response:**
 
 ```json
 {
-  "user_ids" : ["<user_id>"],
-  "relation" : "editor"
+  "role_id": "bb7edb32-2eac-4aad-aebe-ed96fe073879",
+  "role_name": "roleName",
+  "entity_id": "bb7edb32-2eac-4aad-aebe-ed96fe073879",
+  "created_by": "bb7edb32-2eac-4aad-aebe-ed96fe073879",
+  "created_at": "2019-11-26 13:31:52",
+  "updated_by": "",
+  "updated_at": ""
 }
 ```
 
-- **user_ids** : field contains an array of users' IDs
-- **relation** : field contains any one of the following relations **administrator**, **editor**, **viewer**, **member**, The details about these relations are described in this [section](#user-domain-relationship)
+### 2. Add user as domain role member
 
-**Example request:**
+This is done by making a post request to the `domains/<domain_id>/roles/<role_id>/members` endpoint.
+
+**Example Reqest:**
 
 ```bash
-curl -sSiX POST 'http://localhost/domains/903f7ede-3308-4206-89c2-e99688b612f7/users/unassign' -H "Content-Type: application/json" -H "Authorization: Bearer <DOMAIN_ACCESS_TOKEN_>" -d @- << EOF
+curl -sSiX POST 'http://localhost/domains/c01ed106-e52d-4aa4-bed3-39f360177cfa/roles/bb7edb32-2eac-4aad-aebe-ed96fe073879/members'  -H "Content-Type: application/json" -H "Authorization: Bearer <user_access_token>"  -d @- << EOF
 {
-  "user_ids" : ["05dbd66a-ce38-4928-ac86-c1b44909be0d"],
-  "relation" : "administrator"
+  "members": [
+    "5dc1ce4b-7cc9-4f12-98a6-9d74cc4980bb"
+  ]
 }
-EOF
+```
+
+## Remove User from domain role
+
+A user can be removed as a member of a domain role by making a post request to the `domains/<domain_id>/roles/<role_id>members/delete` endpoint.
+
+**Example Request:**
+
+```bash
+curl -sSiX POST 'http://localhost/domains/c01ed106-e52d-4aa4-bed3-39f360177cfa/roles/bb7edb32-2eac-4aad-aebe-ed96fe073879/members/delete'  -H "Content-Type: application/json" -H "Authorization: Bearer <user_access_token>"  -d @- << EOF
+{
+  "members": [
+    "5dc1ce4b-7cc9-4f12-98a6-9d74cc4980bb"
+  ]
+}
 ```
 
 ## User Entities Relationship
 
-Users assigned to a domain with any relationship (administrator, editor, viewer, member ) will have access to create entities (things, groups, channels).
-
-Domain administrator or individual entity administrator shall grant access to domain member for specific entities.
+Users who are members of a domain role will have access to entities i.e groups, channels and clients belonging to the domain. The user has a _*`domain`*_ access type to the entities and can only perform the actions specified by the domain role on the entities in the domain.
 
 ## Groups Relations
 
-Like domains, groups also have four types of relations
+Like domains, groups also have roles. A user has access to a group if they create it, are assigned as a group role member, are added to a domain with the group or have a role in a the parent group of the group.
 
-- [Administrator](#group-administrator)
-- [Editor](#group-editor)
-- [Viewer](#group-viewer)
+A user is able to perform actions on a group if they are members of a group role. Managing roles in groups is similar to managing roles in domains.
 
-### Group Administrator
+To add a user to a group role, the process is as follows:
 
-Group administrator users have access to update, delete, assign, and unassign to the group and also have access to update, delete, assign, and unassign all of its child entities
+### 1. Create group role
 
-From the [previous viewer example](#domain-viewer), let's take **user_3** who has **viewer relation** with **domain_1**, which means **user_3 will be able to view all the entities created by others but cannot make any edits or updates on them.** **<span style={{ color:'blue' }}>user_3 will have access to create entities in domain_1 </span>**
+This is done by making a post request to the `/<domain_id>/groups/<group_id>/roles` endpoint.
 
-**user_3 creates new thing_101, channel_101, and group_101**.
-
-**user_3 request to create thing_101:**
+**Example Request:**
 
 ```bash
-curl -sSiX POST 'http://localhost/things' -H "Content-Type: application/json" -H "Authorization: Bearer <DOMAIN_ACCESS_TOKEN_>" -d @- << EOF
+curl -sSiX POST 'http://localhost/c01ed106-e52d-4aa4-bed3-39f360177cfa/groups/bad9b020-b71c-4ed3-8b7d-6099bb2ffbc5/roles'  -H "Content-Type: application/json" -H "Authorization: Bearer <user_access_token>"  -d @- << EOF
 {
-  "credentials": {
-    "secret": "a1ca33c0-367e-402b-a239-ff1255fdc440"
-  },
-  "name": "thing_101"
-}
-EOF
-```
-
-**user_3 request to create channel_101:**
-
-```bash
-curl -sSiX POST 'http://localhost/channels' -H "Content-Type: application/json" -H "Authorization: Bearer <DOMAIN_ACCESS_TOKEN_>" -d @- << EOF
-{
-  "name": "chanel_101"
-}
-EOF
-```
-
-**user_3 request to create group_101:**
-
-```bash
-curl -sSiX POST 'http://localhost/groups' -H "Content-Type: application/json" -H "Authorization: Bearer <DOMAIN_ACCESS_TOKEN_>" -d @- << EOF
-{
-  "name": "group_101"
-}
-EOF
-```
-
-The user who creates the entity will be the administrator of the entity by default.
-So **user_3** is **administrator** of **thing_101, channel_101 and group_101.**
-
-![group_users_administrator_1](diagrams/group_users_administrator_1.svg)
-
-!!! Note "user_3 will also have domain viewer relation to thing_101, channel_101, and group_101"
-
-user_3 can make these entities (thing_101, channel_101, group_101) in a hierarchical structure by assigning relations between entities
-Example: Connect thing_101 & channel_101, assign group_101 as parent of channel_101.
-
-**user_3 request for connect thing_101 & channel_101:**
-
-```bash
-curl -sSiX POST 'http://localhost/connect' -H "Content-Type: application/json" -H "Authorization: Bearer <DOMAIN_ACCESS_TOKEN_>" -d @- << EOF
-{
-  "thing_id": "<thing_101_id>",
-  "channel_id": "<channel_101_id>"
-}
-EOF
-```
-
-**user_3 request for assign group_101 as parent of channel_101:**
-
-```bash
-curl -sSiX POST 'http://localhost/channels/<channel_101_id>/groups/assign' -H "Content-Type: application/json" -H "Authorization: Bearer <DOMAIN_ACCESS_TOKEN_>" -d @- << EOF
-{
-  "group_ids" : [ "<group_101_id>" ]
-}
-EOF
-```
-
-![group_users_administrator_2](diagrams/group_users_administrator_2.svg)
-
-**Members of domain 1 will not have access by default to any of the entities in domain 1, access shall be granted for specific entities by domain administrator or individual entity administrator.**
-
-**Administrator of group_101 (user_3), assigns user_4 with administrator relation.**
-**When domain member user_4 becomes an administrator of group_101, user_4 can able to update, delete, assign, and unassign to group_101. Since group_101 has channel_101 and thing_101 as children. The user_5 has administrator access on group_101 child entities channel_101 and thing_101.**
-
-**user_3 request for assign user_4 as administrator for group_101:**
-
-```bash
-curl -sSiX POST 'http://localhost/domains/<DOMINA_1_ID>/users/assign'  -H "Content-Type: application/json" -H "Authorization: Bearer <DOMAIN_ACCESS_TOKEN_>" -d @- << EOF
-{
-  "user_ids" : ["<user_4 ID>"],
-  "relation" : "administrator"
+ "role_name": "roleName",
+  "optional_actions": [
+    "read",
+    "update",
+    "delete"
+  ],
 }
 ```
 
-![group_users_administrator_3](diagrams/group_users_administrator_3.svg)
+**Example Response:**
 
-### Group Editor
+```json
+{
+  "role_id": "bb7edb32-2eac-4aad-aebe-ed96fe073879",
+  "role_name": "roleName",
+  "entity_id": "bb7edb32-2eac-4aad-aebe-ed96fe073879",
+  "created_by": "bb7edb32-2eac-4aad-aebe-ed96fe073879",
+  "created_at": "2019-11-26 13:31:52",
+  "updated_by": "",
+  "updated_at": ""
+}
+```
 
-Group editor users have access to view, update, assign, and unassign to the group and also have access to view, update, assign, and unassign all of its child channel and group entities, group editor have only view access to child thing entities in group
+### 2. Add user as group role member
 
-**Administrator of group_101 (user_3/user_4), assigns user_5 with editor relation.**
-**When domain member user_5 becomes an editor of group_101, user_5 can able to update, assign, and unassign to group_101. Since group_101 has channel_101 and thing_101 as children. The user_5 has editor access to the group child entities channels, things, and groups. In this case, user_5 has editor access to group_101, and also has edit access to its child entities channel_101 and thing_101**
+This is done by making a post request to the `/<domain_id>/groups/<group_id>/roles/<role_id>/members` endpoint.
 
-![group_users_editor](diagrams/group_users_editor.svg)
+**Example Reqest:**
 
-### Group Viewer
+```bash
+curl -sSiX POST 'http://localhost/c01ed106-e52d-4aa4-bed3-39f360177cfa/groups/bad9b020-b71c-4ed3-8b7d-6099bb2ffbc5/roles/bb7edb32-2eac-4aad-aebe-ed96fe073879/members'  -H "Content-Type: application/json" -H "Authorization: Bearer <user_access_token>"  -d @- << EOF
+{
+  "members": [
+    "5dc1ce4b-7cc9-4f12-98a6-9d74cc4980bb"
+  ]
+}
+```
 
-Group viewer users have access to view group and also have access to view all of its child entities
+## Clients Relations
 
-**When domain member user_6 becomes a viewer of group_101, user_6 can able to view all the child and nested child entities in group_101. user_6 can assign child entities under group_101 and also assign child entities under any other group and channels that are children of group_101.**
+Like domains, clients also have roles. A user has access to a client if they create it, are assigned as a client role member, are added to a domain with the client or have a role in a the parent group of the client.
 
-![group_users_viewer](diagrams/group_users_viewer.svg)
+A user is able to perform actions on a group if they are members of a client role. Managing roles in groups is simila to managing roles in clients.
 
-## Examples
+To add a user to a client role, the process is as follows:
 
-### Domain Viewer with Channel & Thing
+### 1. Create client role
 
-user_6 creates new channel and thing with the names channel_201 and thing_201 respectively. Then connects both channel_201 and thing_201.
+This is done by making a post request to the `/<domain_id>/clients/<client_id>/roles` endpoint.
 
-![group_users_viewer_1](diagrams/group_users_viewer_1.svg)
+**Example Request:**
 
-Now user_5 can able to assign group_101 as a parent for channel_201
+```bash
+curl -sSiX POST 'http://localhost/c01ed106-e52d-4aa4-bed3-39f360177cfa/clients/bad9b020-b71c-4ed3-8b7d-6099bb2ffbc5/roles'  -H "Content-Type: application/json" -H "Authorization: Bearer <user_access_token>"  -d @- << EOF
+{
+ "role_name": "roleName",
+  "optional_actions": [
+    "read",
+    "update",
+    "delete"
+  ],
+}
+```
 
-![group_users_viewer_2](diagrams/group_users_viewer_2.svg)
+**Example Response:**
 
-When channel_201 was assigned as a child of group_101, all the administrators, editors, and viewers of group_101 got the same access (relation) to channel_201 and thing_201
+```json
+{
+  "role_id": "bb7edb32-2eac-4aad-aebe-ed96fe073879",
+  "role_name": "roleName",
+  "entity_id": "bb7edb32-2eac-4aad-aebe-ed96fe073879",
+  "created_by": "bb7edb32-2eac-4aad-aebe-ed96fe073879",
+  "created_at": "2019-11-26 13:31:52",
+  "updated_by": "",
+  "updated_at": ""
+}
+```
 
-![group_users_viewer_3](diagrams/group_users_viewer_3.svg)
+### 2. Add user as client role member
 
-### Multiple Domain Members with Group, Channel & Thing
+This is done by making a post request to the `/<domain_id>/clients/<client_id>/roles/<role_id>/members` endpoint.
 
-user_8 creates a new group with the name group_301
-user_9 creates a new thing and channel with the names thing_301 and channel_301 respectively, then connects both thing and channel.
-![group_users_member_11](diagrams/group_users_member_11.svg)
+**Example Reqest:**
 
-user_8 can able to assign channel_301 as a child of group_301
-![group_users_member_12](diagrams/group_users_member_12.svg)
-When channel_301 is assigned as a child of group_301, then the administrators, editors, and viewers of group_301 get the same respective access to channel_301.
-The administrator, editor, and viewer of channel_301 get the same respective access to thing_301.
-So here user_8 becomes the administrator of both channel_301 and thing_301
+```bash
+curl -sSiX POST 'http://localhost/c01ed106-e52d-4aa4-bed3-39f360177cfa/clients/bad9b020-b71c-4ed3-8b7d-6099bb2ffbc5/roles/bb7edb32-2eac-4aad-aebe-ed96fe073879/members'  -H "Content-Type: application/json" -H "Authorization: Bearer <user_access_token>"  -d @- << EOF
+{
+  "members": [
+    "5dc1ce4b-7cc9-4f12-98a6-9d74cc4980bb"
+  ]
+}
+```
 
-user_5 can able to assign group_301 as a child of group_101
-![group_users_member_13](diagrams/group_users_member_13.svg)
+## Channels Relations
 
-When group_301 becomes a child of group_101, then the administrator, editor, and viewer of group_101 get the same respective access to group_301.
-The administrator, editor, and viewer of group_301 get the same respective access to channel_301.
-The administrator, editor, and viewer of channel_301 get the same respective access to thing_301.
-So here user_5 becomes the editor of group_301, channel_301, and thing_301, user_4 becomes administrator of group_301, channel_301, and thing_301.
-user_8 has administrator access only to group_301 and its child entities channel_301 and thing_301.
-![group_users_member_14](diagrams/group_users_member_14.svg)
+Like domains, channels also have roles. A user has access to a channel if they create it, are assigned as a channel role member, are added to a domain with the channel or have a role in a the parent group of the channel.
+
+A user is able to perform actions on a channel if they are members of a client role. Managing roles in groups is simila to managing roles in clients.
+
+To add a user to a client role, the process is as follows:
+
+### 1. Create channel role
+
+This is done by making a post request to the `/<domain_id>/channels/<channel_id>/roles` endpoint.
+
+**Example Request:**
+
+```bash
+curl -sSiX POST 'http://localhost/c01ed106-e52d-4aa4-bed3-39f360177cfa/channels/bad9b020-b71c-4ed3-8b7d-6099bb2ffbc5/roles'  -H "Content-Type: application/json" -H "Authorization: Bearer <user_access_token>"  -d @- << EOF
+{
+ "role_name": "roleName",
+  "optional_actions": [
+    "read",
+    "update",
+    "delete"
+  ],
+}
+```
+
+**Example Response:**
+
+```json
+{
+  "role_id": "bb7edb32-2eac-4aad-aebe-ed96fe073879",
+  "role_name": "roleName",
+  "entity_id": "bb7edb32-2eac-4aad-aebe-ed96fe073879",
+  "created_by": "bb7edb32-2eac-4aad-aebe-ed96fe073879",
+  "created_at": "2019-11-26 13:31:52",
+  "updated_by": "",
+  "updated_at": ""
+}
+```
+
+### 2. Add user as channel role member
+
+This is done by making a post request to the `/<domain_id>/channels/<channel_id>/roles/<role_id>/members` endpoint.
+
+**Example Reqest:**
+
+```bash
+curl -sSiX POST 'http://localhost/c01ed106-e52d-4aa4-bed3-39f360177cfa/channels/bad9b020-b71c-4ed3-8b7d-6099bb2ffbc5/roles/bb7edb32-2eac-4aad-aebe-ed96fe073879/members'  -H "Content-Type: application/json" -H "Authorization: Bearer <user_access_token>"  -d @- << EOF
+{
+  "members": [
+    "5dc1ce4b-7cc9-4f12-98a6-9d74cc4980bb"
+  ]
+}
+```
 
 ## User Registration
 
@@ -797,7 +859,7 @@ PATs have the following fields:
 
 ### Scope Structure
 
-  The PAT scope defines granular permissions across different system components:
+The PAT scope defines granular permissions across different system components:
 
 - Users: Operations that can be performed by users
 - Domains: Permissions for entities within domains (groups, channels, clients)
@@ -809,29 +871,27 @@ PATs have the following fields:
 ```json
 {
   "users": {
-          "create": ["*"],
-          "read": ["*"],
-          "list": ["*"],
-          "update": ["*"],
-          "delete": ["*"]
+    "create": ["*"],
+    "read": ["*"],
+    "list": ["*"],
+    "update": ["*"],
+    "delete": ["*"]
   },
   "domains": {
-      "domain_1": {
-          "entities": {
-              "groups": {
-                  "create": ["*"] // this for all groups in domain
-              },
-              "channels": {
-                  // for particular channel in domain
-                  "delete": [
-                      "0241e6fe-2113-4731-9cfa-5c74626652b8",
-                  ]
-              },
-              "clients": {
-                  "update": ["*"] // this for all clients in domain
-              }
-          }
+    "domain_1": {
+      "entities": {
+        "groups": {
+          "create": ["*"] // this for all groups in domain
+        },
+        "channels": {
+          // for particular channel in domain
+          "delete": ["0241e6fe-2113-4731-9cfa-5c74626652b8"]
+        },
+        "clients": {
+          "update": ["*"] // this for all clients in domain
+        }
       }
+    }
   }
 }
 ```
