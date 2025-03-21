@@ -328,9 +328,200 @@ Users can have any one role that is associated with the domain. The administrato
 
 **Let's take the below domain_1 with entities for explaining about user domain relationship.**
 
-![domain_users](diagrams/domain_users.svg) <!-- to be replaced -->
+![domain_users](diagrams/domain_users.svg)
 
-The following are the available actions on a domin are specified in the [roles page](./authz-spec.md)
+A user can be a member of the built in role `admin` of the domain. This enables the user to perform the following actions on the domain:
+
+1. Related to the domain:
+
+   - delete",
+   - disable",
+   - enable",
+   - read",
+   - update",
+
+2. Related to channels in the domain:
+
+   - channel_add_role_users,
+   - channel_connect_to_client,
+   - channel_create,
+   - channel_delete,
+   - channel_manage_role,
+   - channel_publish,
+   - channel_read,
+   - channel_remove_role_users,
+   - channel_set_parent_group,
+   - channel_subscribe,
+   - channel_update,
+   - channel_view_role_users,
+   - client_add_role_users,
+   - client_connect_to_channel,`
+
+3. Related to clients in the domain:
+
+   - client_create,
+   - client_delete,
+   - client_manage_role,
+   - client_read,
+   - client_remove_role_users,
+   - client_set_parent_group,
+   - client_update,
+   - client_view_role_users,
+
+4. Related to groups in the domain:
+
+   - group_add_role_users,
+   - group_create,
+   - group_delete,
+   - group_manage_role,
+   - group_membership,
+   - group_read,
+   - group_remove_role_users,
+   - group_set_child,
+   - group_set_parent,
+   - group_update,
+   - group_view_role_users,
+
+5. Related to roles for the domain:
+   - add_role_users,
+   - manage_role,
+   - remove_role_users,
+   - view_role_users,
+
+The `admin` can create roles with any combination of the above actions allowing fine grained access control to the domain and all entities in the domain.
+
+**Let's take the below domain_1 with entities for explaining about user group relationship.**
+
+![groups_roles](diagrams/groups_roles.svg)
+
+A user who is a member of `role_1` can the following actions that enable them to act on entities to which group_1 is a parent of:
+
+1. Related to the group itself:
+
+   - client_create,
+   - channel_create
+   - update,
+   - read,
+   - membership,
+   - delete,
+   - set_child,
+   - set_parent,
+   - manage_role,
+
+2. Related to the subgroup
+   - subgroup_create,
+   - subgroup_client_create,
+   - subgroup_channel_create,
+   - subgroup_update,
+   - subgroup_read,
+   - subgroup_membership,
+   - subgroup_delete,
+   - subgroup_set_child,
+   - subgroup_set_parent,
+   - subgroup_manage_role,
+   - subgroup_add_role_users,
+   - subgroup_remove_role_users,
+   - subgroup_view_role_users,
+   - subgroup_client_update,
+   - subgroup_client_read,
+   - subgroup_client_delete,
+   - subgroup_client_set_parent_group,
+   - subgroup_client_connect_to_channel,
+   - subgroup_client_manage_role,
+   - subgroup_client_add_role_users,
+   - subgroup_client_remove_role_users,
+   - subgroup_client_view_role_users,
+   - subgroup_channel_update,
+   - subgroup_channel_read,
+   - subgroup_channel_delete,
+   - subgroup_channel_set_parent_group,
+   - subgroup_channel_connect_to_client,
+   - subgroup_channel_publish,
+   - subgroup_channel_subscribe,
+   - subgroup_channel_manage_role,
+   - subgroup_channel_add_role_users,
+   - subgroup_channel_remove_role_users,
+   - subgroup_channel_view_role_users"
+3. Related to the roles of the group
+   - add_role_users,
+   - remove_role_users,
+   - view_role_users,
+
+A user who is a member of `role_2` or `role_12` can have the following actiosn associated with `clients` and `channels` that are child entities of the group:
+
+1. Related to the clients:
+    - client_create,
+    - client_update,
+    - client_read,
+    - client_delete,
+    - client_set_parent_group,
+    - client_connect_to_channel,
+    - client_manage_role,
+    - client_add_role_users,
+    - client_remove_role_users,
+    - client_view_role_users,
+
+2. Related to the channels:
+    - channel_create,
+    - channel_update,
+    - channel_read,
+    - channel_delete,
+    - channel_set_parent_group,
+    - channel_connect_to_client,
+    - channel_publish,
+    - channel_subscribe,
+    - channel_manage_role,
+    - channel_add_role_users,
+    - channel_remove_role_users,
+    - channel_view_role_users,
+
+A role can be created with any combinatin of the above actions to allow fine grained access control to the group and child entities such as subgroups, clients and channels.
+
+**Let's take the below domain_1 with entities for explaining about user channel relationship.**
+
+![channels_roles](diagrams/channels_roles.svg)
+
+A user can have a role such as `role_1`, `role_2`, `role_3` or `role_4` shown above which can allow them to perform the following actions on the channel:
+
+1. Related to the channel itself:
+    - connect_to_client,
+    - delete,
+    - manage_role,
+    - publish,
+    - read,
+    - set_parent_group,
+    - subscribe,
+    - update,
+
+2. Related to the roles of the channel:
+    - add_role_users,
+    - remove_role_users,
+    - view_role_users,
+
+A role can be created with any combinatin of the above actions to allow fine grained access control to the channel.
+An `admin` role for the channel is able to perfomr all the above actions.
+
+**Let's take the below domain_1 with entities for explaining about user client relationship.**
+
+![clients_roles](diagrams/clients_roles.svg)
+
+A user can have a role such as `role_1`, `role_2`, `role_3`, `role_4`, `role_5` or `role_6` shown above which can allow them to perform the following actions on the client:
+
+1. Related to the client itself:
+    - update",
+    - read",
+    - delete",
+    - set_parent_group",
+    - connect_to_channel"
+
+2. Related to the roles of the client:
+    - manage_role",
+    - add_role_users",
+    - remove_role_users",
+    - view_role_users"
+
+A role can be created with any combinatin of the above actions to allow fine grained access control to the client.
+An `admin` role for the client is able to perform all the above actions.
 
 ## Tokens
 

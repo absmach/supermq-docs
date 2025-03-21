@@ -8,7 +8,7 @@ SuperMQ IoT platform is comprised of the following services:
 
 | Service                      | Description                                                                                 |
 | :--------------------------- | :------------------------------------------------------------------------------------------ |
-| [auth][auth-service]         | Handles authorization and authentication for the platfomr as well as managing keys and PATS |
+| [auth][auth-service]         | Handles authorization and authentication for the platform as well as managing keys and tokens |
 | [users][users-service]       | Manages platform's users and auth concerns in regards to users                              |
 | [groups][groups-service]     | Manages platform's groups and auth concerns in regards to groups                            |
 | [clients][clients-service]   | Manages platform's clients and auth concerns in regards to clients                          |
