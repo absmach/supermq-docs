@@ -2,15 +2,14 @@
 title: Messaging
 ---
 
-
-Once a channel is provisioned and thing is connected to it, it can start to publish messages on the channel. The following sections will provide an example of message publishing for each of the supported protocols.
+Once a channel is provisioned and client is connected to it, it can start to publish messages on the channel. The following sections will provide an example of message publishing for each of the supported protocols.
 
 ## HTTP
 
-To publish message over channel, thing should send following request:
+To publish message over channel, client should send following request:
 
 ```bash
-curl -s -S -i --cacert docker/ssl/certs/ca.crt -X POST -H "Content-Type: application/senml+json" -H "Authorization: Thing <thing_secret>" https://localhost/http/channels/<channel_id>/messages -d '[{"bn":"some-base-name:","bt":1.276020076001e+09, "bu":"A","bver":5, "n":"voltage","u":"V","v":120.1}, {"n":"current","t":-5,"v":1.2}, {"n":"current","t":-4,"v":1.3}]'
+curl -s -S -i --cacert docker/ssl/certs/ca.crt -X POST -H "Content-Type: application/senml+json" -H "Authorization: Client <client_secret>" https://localhost/http/c/<channel_id>/m -d '[{"bn":"some-base-name:","bt":1.276020076001e+09, "bu":"A","bver":5, "n":"voltage","u":"V","v":120.1}, {"n":"current","t":-5,"v":1.2}, {"n":"current","t":-4,"v":1.3}]'
 ```
 
 Note that if you're going to use senml message format, you should always send messages as an array.
@@ -21,19 +20,19 @@ For more information about the HTTP messaging service API, please check out the 
 
 To send and receive messages over MQTT you could use [Mosquitto tools][mosquitto], or [Paho][paho] if you want to use MQTT over WebSocket.
 
-To publish message over channel, thing should call following command:
+To publish message over channel, client should call following command:
 
 ```bash
-mosquitto_pub -u <thing_id> -P <thing_secret> -t channels/<channel_id>/messages -h localhost -m '[{"bn":"some-base-name:","bt":1.276020076001e+09, "bu":"A","bver":5, "n":"voltage","u":"V","v":120.1}, {"n":"current","t":-5,"v":1.2}, {"n":"current","t":-4,"v":1.3}]'
+mosquitto_pub -u <client_id> -P <client_secret> -t c/<channel_id>/m -h localhost -m '[{"bn":"some-base-name:","bt":1.276020076001e+09, "bu":"A","bver":5, "n":"voltage","u":"V","v":120.1}, {"n":"current","t":-5,"v":1.2}, {"n":"current","t":-4,"v":1.3}]'
 ```
 
-To subscribe to channel, thing should call following command:
+To subscribe to channel, client should call following command:
 
 ```bash
-mosquitto_sub -u <thing_id> -P <thing_secret> -t channels/<channel_id>/messages -h localhost
+mosquitto_sub -u <client_id> -P <client_secret> -t c/<channel_id>/m -h localhost
 ```
 
-If you want to use standard topic such as `channels/<channel_id>/messages` with SenML content type (JSON or CBOR), you should use following topic `channels/<channel_id>/messages`.
+If you want to use standard topic such as `c/<channel_id>/m` with SenML content type (JSON or CBOR), you should use following topic `c/<channel_id>/m`.
 
 If you are using TLS to secure MQTT connection, add `--cafile docker/ssl/certs/ca.crt`
 to every command.
@@ -45,15 +44,15 @@ CoAP adapter implements CoAP protocol using underlying UDP and according to [RFC
 Examples:
 
 ```bash
-coap-cli get channels/<channel_id>/messages/subtopic -auth <thing_secret> -o
+coap-cli get c/<channel_id>/m/subtopic -auth <client_secret> -o
 ```
 
 ```bash
-coap-cli post channels/<channel_id>/messages/subtopic -auth <thing_secret> -d "hello world"
+coap-cli post c/<channel_id>/m/subtopic -auth <client_secret> -d "hello world"
 ```
 
 ```bash
-coap-cli post channels/<channel_id>/messages/subtopic -auth <thing_secret> -d "hello world" -h 0.0.0.0 -p 1234
+coap-cli post c/<channel_id>/m/subtopic -auth <client_secret> -d "hello world" -h 0.0.0.0 -p 1234
 ```
 
 To send a message, use `POST` request. To subscribe, send `GET` request with Observe option (flag `o`) set to false. There are two ways to unsubscribe:
@@ -69,11 +68,11 @@ CoAP Adapter sends these notifications every 12 hours. To configure this period,
 
 ## WebSocket
 
-To publish and receive messages over channel using web socket, you should first send handshake request to `/channels/<channel_id>/messages` path. Don't forget to send `Authorization` header with thing authorization token. In order to pass message content type to WS adapter you can use `Content-Type` header.
+To publish and receive messages over channel using web socket, you should first send handshake request to `/c/<channel_id>/m` path. Don't forget to send `Authorization` header with client authorization token. In order to pass message content type to WS adapter you can use `Content-Type` header.
 
-If you are not able to send custom headers in your handshake request, send them as query parameter `authorization` and `content-type`. Then your path should look like this `/channels/<channel_id>/messages?authorization=<thing_secret>&content-type=<content-type>`.
+If you are not able to send custom headers in your handshake request, send them as query parameter `authorization` and `content-type`. Then your path should look like this `/c/<channel_id>/m?authorization=<client_secret>&content-type=<content-type>`.
 
-If you are using the docker environment prepend the url with `ws`. So for example `/ws/channels/<channel_id>/messages?authorization=<thing_secret>&content-type=<content-type>`.
+If you are using the docker environment prepend the url with `ws`. So for example `/ws/c/<channel_id>/m?authorization=<client_secret>&content-type=<content-type>`.
 
 ### Basic nodejs example
 
@@ -81,9 +80,9 @@ If you are using the docker environment prepend the url with `ws`. So for exampl
 const WebSocket = require("ws");
 // do not verify self-signed certificates if you are using one
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
-// c02ff576-ccd5-40f6-ba5f-c85377aad529 is an example of a thing_auth_key
+// c02ff576-ccd5-40f6-ba5f-c85377aad529 is an example of a client_auth_key
 const ws = new WebSocket(
-  "ws://localhost:8186/ws/channels/1/messages?authorization=c02ff576-ccd5-40f6-ba5f-c85377aad529"
+  "ws://localhost:8186/ws/c/1/m?authorization=c02ff576-ccd5-40f6-ba5f-c85377aad529"
 );
 ws.on("open", () => {
   ws.send("something");
@@ -134,9 +133,9 @@ func main() {
  signal.Notify(interrupt, os.Interrupt)
 
  channelId := "30315311-56ba-484d-b500-c1e08305511f"
- thingSecret := "c02ff576-ccd5-40f6-ba5f-c85377aad529"
+ clientSecret := "c02ff576-ccd5-40f6-ba5f-c85377aad529"
 
- socketUrl := "ws://localhost:8186/channels/" + channelId + "/messages/?authorization=" + thingSecret
+ socketUrl := "ws://localhost:8186/c/" + channelId + "/m/?authorization=" + clientSecret
 
  conn, _, err := websocket.DefaultDialer.Dial(socketUrl, nil)
  if err != nil {
@@ -207,7 +206,7 @@ Here is an example of a browser application connecting to SuperMQ server and sen
     }
 
     var channelId = '08676a76-101d-439c-b62e-d4bb3b014337'
-    var topic = 'channels/' + channelId + '/messages'
+    var topic = 'c/' + channelId + '/m'
 
     // Connect string, and specify the connection method by the protocol
     // ws Unencrypted WebSocket connection
@@ -251,15 +250,15 @@ client.connect({ onSuccess: onConnect });
 
 ## Subtopics
 
-In order to use subtopics and give more meaning to your pub/sub channel, you can simply add any suffix to base `/channels/<channel_id>/messages` topic.
+In order to use subtopics and give more meaning to your pub/sub channel, you can simply add any suffix to base `/c/<channel_id>/m` topic.
 
-Example subtopic publish/subscribe for bedroom temperature would be `channels/<channel_id>/messages/bedroom/temperature`.
+Example subtopic publish/subscribe for bedroom temperature would be `c/<channel_id>/m/bedroom/temperature`.
 
 Subtopics are generic and multilevel. You can use almost any suffix with any depth.
 
 Topics with subtopics are propagated to Message broker in the following format `channels.<channel_id>.<optional_subtopic>`.
 
-Our example topic `channels/<channel_id>/messages/bedroom/temperature` will be translated to appropriate Message Broker topic `channels.<channel_id>.bedroom.temperature`.
+Our example topic `c/<channel_id>/m/bedroom/temperature` will be translated to appropriate Message Broker topic `channels.<channel_id>.bedroom.temperature`.
 
 You can use multilevel subtopics, that have multiple parts. These parts are separated by `.` or `/` separators.
 When you use combination of these two, have in mind that behind the scene, `/` separator will be replaced with `.`.

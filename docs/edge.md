@@ -108,10 +108,10 @@ TH=`curl -s  -S -X GET http://some-domain-name:9013/things/bootstrap/34:e1:2d:e6
 KEY=`curl -s  -S -X GET http://some-domain-name:9013/things/bootstrap/34:e1:2d:e6:cf:03 -H "Authorization: Thing <BOOTSTRAP_KEY>" -H 'Content-Type: application/json' | jq -r .magistrala_key`
 
 # Subscribe for response
-mosquitto_sub -d -u $TH -P $KEY  -t "channels/${CH}/messages/res/#" -h some-domain-name -p 1883
+mosquitto_sub -d -u $TH -P $KEY  -t "c/${CH}/m/res/#" -h some-domain-name -p 1883
 
 # Publish command e.g `ls`
-mosquitto_pub -d -u $TH -P $KEY  -t channels/$CH/messages/req -h some-domain-name -p 1883  -m '[{"bn":"1:", "n":"exec", "vs":"ls, -l"}]'
+mosquitto_pub -d -u $TH -P $KEY  -t c/$CH/m/req -h some-domain-name -p 1883  -m '[{"bn":"1:", "n":"exec", "vs":"ls, -l"}]'
 ```
 
 #### Remote terminal
@@ -125,10 +125,10 @@ You can get the list of services by sending following mqtt message
 
 ```bash
 # View services that are sending heartbeat
-mosquitto_pub -d -u $TH -P $KEY  -t channels/$CH/messages/req -h some-domain-name -p 1883  -m '[{"bn":"1:", "n":"service", "vs":"view"}]'
+mosquitto_pub -d -u $TH -P $KEY  -t c/$CH/m/req -h some-domain-name -p 1883  -m '[{"bn":"1:", "n":"service", "vs":"view"}]'
 ```
 
-Response can be observed on `channels/$CH/messages/res/#`
+Response can be observed on `c/$CH/m/res/#`
 
 ### Proxying commands
 
@@ -136,7 +136,7 @@ You can send commands to services running on the same edge gateway as Agent if t
 
 Service commands are being sent via MQTT to topic:
 
-`channels/<control_channel_id>/messages/services/<service_name>/<subtopic>`
+`c/<control_channel_id>/m/services/<service_name>/<subtopic>`
 
 when messages is received Agent forwards them to the Message Broker on subject:
 
@@ -178,25 +178,25 @@ Commands are:
 #### Operation
 
 ```bash
-mosquitto_pub -u <thing_id> -P <thing_secret> -t channels/<channel_id>/messages/req -h localhost -m '[{"bn":"1:", "n":"control", "vs":"edgex-operation, start, edgex-support-notifications, edgex-core-data"}]'
+mosquitto_pub -u <thing_id> -P <thing_secret> -t c/<channel_id>/m/req -h localhost -m '[{"bn":"1:", "n":"control", "vs":"edgex-operation, start, edgex-support-notifications, edgex-core-data"}]'
 ```
 
 #### Config
 
 ```bash
-mosquitto_pub -u <thing_id> -P <thing_secret> -t channels/<channel_id>/messages/req -h localhost -m '[{"bn":"1:", "n":"control", "vs":"edgex-config, edgex-support-notifications, edgex-core-data"}]'
+mosquitto_pub -u <thing_id> -P <thing_secret> -t c/<channel_id>/m/req -h localhost -m '[{"bn":"1:", "n":"control", "vs":"edgex-config, edgex-support-notifications, edgex-core-data"}]'
 ```
 
 #### Metrics
 
 ```bash
-mosquitto_pub -u <thing_id> -P <thing_secret> -t channels/<channel_id>/messages/req -h localhost -m '[{"bn":"1:", "n":"control", "vs":"edgex-metrics, edgex-support-notifications, edgex-core-data"}]'
+mosquitto_pub -u <thing_id> -P <thing_secret> -t c/<channel_id>/m/req -h localhost -m '[{"bn":"1:", "n":"control", "vs":"edgex-metrics, edgex-support-notifications, edgex-core-data"}]'
 ```
 
 If you subscribe to
 
 ```bash
-mosquitto_sub -u <thing_id> -P <thing_secret> -t channels/<channel_id>/messages/#
+mosquitto_sub -u <thing_id> -P <thing_secret> -t c/<channel_id>/m/#
 ```
 
 You can observe commands and response from commands executed against edgex
@@ -257,14 +257,14 @@ By default `Export` service looks for config file at [`../configs/config.toml`][
   url = "tcp://magistrala.com:1883"
 
 [[routes]]
-  mqtt_topic = "channel/<channel_id>/messages"
+  mqtt_topic = "c/<channel_id>/m"
   subtopic = "subtopic"
   nats_topic = "export"
   type = "default"
   workers = 10
 
 [[routes]]
-  mqtt_topic = "channel/<channel_id>/messages"
+  mqtt_topic = "c/<channel_id>/m"
   subtopic = "subtopic"
   nats_topic = "channels"
   type = "mfx"
@@ -322,9 +322,9 @@ To setup `MTLS` connection `Export` service requires client certificate and `mtl
 
 #### Routes
 
-Routes are being used for specifying which subscriber's topic(subject) goes to which publishing topic. Currently only MQTT is supported for publishing. To match SuperMQ requirements `mqtt_topic` must contain `channel/<channel_id>/messages`, additional subtopics can be appended.
+Routes are being used for specifying which subscriber's topic(subject) goes to which publishing topic. Currently only MQTT is supported for publishing. To match SuperMQ requirements `mqtt_topic` must contain `c/<channel_id>/m`, additional subtopics can be appended.
 
-- `mqtt_topic` - `channel/<channel_id>/messages/<custom_subtopic>`
+- `mqtt_topic` - `c/<channel_id>/m/<custom_subtopic>`
 - `nats_topic` - `Export` service will be subscribed to the Message Broker subject `<nats_topic>.>`
 - `subtopic` - messages will be published to MQTT topic `<mqtt_topic>/<subtopic>/<nats_subject>`, where dots in nats_subject are replaced with '/'
 - `workers` - specifies number of workers that will be used for message forwarding.
@@ -336,7 +336,7 @@ Before running `Export` service edit `configs/config.toml` and provide `username
 
 - `username` - matches `thing_id` in SuperMQ cloud instance
 - `password` - matches `thing_secret`
-- `channel` - MQTT part of the topic where to publish MQTT data (`channel/<channel_id>/messages` is format of supermq MQTT topic) and plays a part in authorization.
+- `channel` - MQTT part of the topic where to publish MQTT data (`c/<channel_id>/m` is format of supermq MQTT topic) and plays a part in authorization.
 
 If SuperMQ and Export service are deployed on same gateway `Export` can be configured to send messages from SuperMQ internal Message Broker bus to SuperMQ in a cloud. In order for `Export` service to listen on SuperMQ Message Broker deployed on the same machine Message Broker port must be exposed. Edit SuperMQ [docker-compose.yml][docker-compose]. Default Message Broker, NATS, section must look like below:
 
@@ -356,7 +356,7 @@ nats:
 Configuration file for `Export` service can be sent over MQTT using [Agent][agent] service.
 
 ```bash
-mosquitto_pub -u <thing_id> -P <thing_secret> -t channels/<control_ch_id>/messages/req -h localhost -p 18831  -m  "[{\"bn\":\"1:\", \"n\":\"config\", \"vs\":\"save, export, <config_file_path>, <file_content_base64>\"}]"
+mosquitto_pub -u <thing_id> -P <thing_secret> -t c/<control_ch_id>/m/req -h localhost -p 18831  -m  "[{\"bn\":\"1:\", \"n\":\"config\", \"vs\":\"save, export, <config_file_path>, <file_content_base64>\"}]"
 ```
 
 `vs="save, export, config_file_path, file_content_base64"` - vs determines where to save file and contains file content in base64 encoding payload:
@@ -502,7 +502,7 @@ Edit the `configs/config.toml` setting
 
 - `username` - thing from the results of provision request.
 - `password` - key from the results of provision request.
-- `mqtt_topic` - in routes set to `channels/<channel_data_id>/messages` from results of provision.
+- `mqtt_topic` - in routes set to `c/<channel_data_id>/m` from results of provision.
 - `nats_topic` - whatever you need, export will subscribe to `export.<nats_topic>` and forward messages to MQTT.
 - `host` - url of MQTT broker.
 
@@ -527,7 +527,7 @@ Edit the `configs/config.toml` setting
   username = "88529fb2-6c1e-4b60-b9ab-73b5d89f7404"
 
 [[routes]]
-  mqtt_topic = "channels/e2adcfa6-96b2-425d-8cd4-ff8cb9c056ce/messages"
+  mqtt_topic = "c/e2adcfa6-96b2-425d-8cd4-ff8cb9c056ce/m"
   nats_topic = ">"
   workers = 10
 ```
@@ -547,7 +547,7 @@ git clone https://github.com/absmach/agent.git
 go run ./examples/publish/main.go -s http://localhost:4222 export.test "[{\"bn\":\"test\"}]";
 ```
 
-We have configured route for export, `nats_topic = ">"` means that it will listen to `NATS` subject `export.>` and `mqtt_topic` is configured so that data will be sent to MQTT broker on topic `channels/e2adcfa6-96b2-425d-8cd4-ff8cb9c056ce/messages` with appended `NATS` subject. Other brokers can such as `rabbitmq` can be used, for more detail refer to [dev-guide][dev-guide].
+We have configured route for export, `nats_topic = ">"` means that it will listen to `NATS` subject `export.>` and `mqtt_topic` is configured so that data will be sent to MQTT broker on topic `c/e2adcfa6-96b2-425d-8cd4-ff8cb9c056ce/m` with appended `NATS` subject. Other brokers can such as `rabbitmq` can be used, for more detail refer to [dev-guide][dev-guide].
 
 In terminal where export is started you should see following message:
 
@@ -558,7 +558,7 @@ In terminal where export is started you should see following message:
 In SuperMQ `mqtt` service:
 
 ```log
-supermq-mqtt   | {"level":"info","message":"Publish - client ID export-88529fb2-6c1e-4b60-b9ab-73b5d89f7404 to the topic: channels/e2adcfa6-96b2-425d-8cd4-ff8cb9c056ce/messages/export/test","ts":"2020-05-08T15:16:02.999684791Z"}
+supermq-mqtt   | {"level":"info","message":"Publish - client ID export-88529fb2-6c1e-4b60-b9ab-73b5d89f7404 to the topic: c/e2adcfa6-96b2-425d-8cd4-ff8cb9c056ce/m/export/test","ts":"2020-05-08T15:16:02.999684791Z"}
 ```
 
 [agent]: ./edge.md#agent

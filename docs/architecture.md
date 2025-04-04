@@ -9,7 +9,7 @@ SuperMQ IoT platform is comprised of the following services:
 | Service                          | Description                                                                             |
 | :------------------------------- | :-------------------------------------------------------------------------------------- |
 | [users][users-service]           | Manages platform's users and auth concerns in regards to users and groups               |
-| [things][things-service]         | Manages platform's things, channels and auth concerns in regards to things and channels |
+| [clients][clients-service]         | Manages platform's clients, channels and auth concerns in regards to clients and channels |
 | [http-adapter][http-adapter]     | Provides an HTTP interface for sending messages via HTTP                                |
 | [mqtt-adapter][mqtt-adapter]     | Provides an MQTT and MQTT over WS interface for sending and receiving messages via MQTT |
 | [ws-adapter][ws-adapter]         | Provides a WebSocket interface for sending and receiving messages via WS                |
@@ -22,15 +22,15 @@ SuperMQ IoT platform is comprised of the following services:
 
 ## Domain Model
 
-The platform is built around 2 main entities: **users** and **things**.
+The platform is built around 2 main entities: **users** and **clients**.
 
-`User` represents the real (human) user of the system. Users are represented via their email address used as their identity, and password used as their secret, which they use as platform access credentials in order to obtain an access token. Once logged into the system, a user can manage their resources (i.e. groups, things and channels) in CRUD fashion and define access control policies by connecting them.
+`User` represents the real (human) user of the system. Users are represented via their email address used as their identity, and password used as their secret, which they use as platform access credentials in order to obtain an access token. Once logged into the system, a user can manage their resources (i.e. groups, clients and channels) in CRUD fashion and define access control policies by connecting them.
 
 `Group` represents a logical groupping of users. It is used to simplify access control management by allowing users to be grouped together. When assigning a user to a group, we create a policy that defines what that user can do with the resources of the group. This way, a user can be assigned to multiple groups, and each group can have multiple users assigned to it. Users in one group have access to other users in the same group as long as they have the required policy. A group can also be assigned to another group, thus creating a group hierarchy. When assigning a user to a group we create a policy that defines what that user can do with the group and other users in the group.
 
-`Thing` represents devices (or applications) connected to SuperMQ that uses the platform for message exchange with other "things".
+`Client` represents devices (or applications) connected to SuperMQ that uses the platform for message exchange with other "clients".
 
-`Channel` represents a communication channel. It serves as a message topic that can be consumed by all of the things connected to it. It also servers as grouping mechanism for things. A thing can be connected to multiple channels, and a channel can have multiple things connected to it. A user can be connected to a channel as well, thus allowing them to have an access to the messages published to that channel and also things connected to that channel with the required policy. A channel can also be assigned to another channel, thus creating a channel hierarchy. Both things and users can be assigned to a channel. When assigning a thing to a channel, we create a policy that defines what that thing can do to the channel, for example reading or writing messages to it. When assigning a user to a channel, we create a policy that defines what that user can do with the channel and things connected to it, hereby enabling the sharing of things between users.
+`Channel` represents a communication channel. It serves as a message topic that can be consumed by all of the clients connected to it. It also servers as grouping mechanism for clients. A client can be connected to multiple channels, and a channel can have multiple clients connected to it. A user can be connected to a channel as well, thus allowing them to have an access to the messages published to that channel and also clients connected to that channel with the required policy. A channel can also be assigned to another channel, thus creating a channel hierarchy. Both clients and users can be assigned to a channel. When assigning a client to a channel, we create a policy that defines what that client can do to the channel, for example reading or writing messages to it. When assigning a user to a channel, we create a policy that defines what that user can do with the channel and clients connected to it, hereby enabling the sharing of clients between users.
 
 ## Messaging
 
@@ -50,7 +50,7 @@ SuperMQ platform can be run on the edge as well. Deploying SuperMQ on a gateway 
 Running SuperMQ on gateway moves computation from cloud towards the edge thus decentralizing IoT system. Since we can deploy same SuperMQ code on gateway and in the cloud there are many benefits but the biggest one is easy deployment and adoption - once engineers understand how to deploy and maintain the platform, they will be able to apply those same skills to any part of the edge-fog-cloud continuum. This is because the platform is designed to be consistent, making it easy for engineers to move between them. This consistency will save engineers time and effort, and it will also help to improve the reliability and security of the platform. Same set of tools can be used, same patches and bug fixes can be applied. The whole system is much easier to reason about, and the maintenance is much easier and less costly.
 
 [users-service]: https://github.com/absmach/supermq/tree/main/users
-[things-service]: https://github.com/absmach/supermq/tree/main/things
+[clients-service]: https://github.com/absmach/supermq/tree/main/clients
 [http-adapter]: https://github.com/absmach/supermq/tree/main/http
 [mqtt-adapter]: https://github.com/absmach/supermq/tree/main/mqtt
 [coap-adapter]: https://github.com/absmach/supermq/tree/main/coap

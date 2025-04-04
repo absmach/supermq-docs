@@ -102,7 +102,7 @@ A `channel` is an entity which represent the topic to which clients and user can
 3. Parent groups roles actions can be inherited to channel.  
 4. A Channel can be connect to multiple channels, with publish action or subscribe action or both publish and subscribe actions.  
 5. Only authorized client and user should able to do publish/subscribe to channels,
-6. To publish or subscribe messages to channels, following topic should starts with should `channels/<channel_id>/messages` for by it can have it own subtopic path. example: `channels/<channel_id>/messages/subtopic1/subtopic2/subtopic3`
+6. To publish or subscribe messages to channels, following topic should starts with should `c/<channel_id>/m` for by it can have it own subtopic path. example: `c/<channel_id>/m/subtopic1/subtopic2/subtopic3`
 7. Both clients and users should able use channels to interact and exchange data with other clients or users.
 
 #### Channel Actions

@@ -2,8 +2,7 @@
 title: CLI
 ---
 
-
-SuperMQ CLI makes it easy to manage users, things, channels and messages.
+SuperMQ CLI makes it easy to manage users, clients, channels and messages.
 
 CLI can be downloaded as separate asset from [project realeses][releases] or it can be built with `GNU Make` tool:
 
@@ -39,9 +38,9 @@ Available Commands:
   help         Help about any command
   invitations  Invitations management
   messages     Send or read messages
-  provision    Provision things and channels from a config file
+  provision    Provision clients and channels from a config file
   subscription Subscription management
-  things       Things management
+  clients       Clients management
   users        Users management
 
 Flags:
@@ -65,7 +64,7 @@ Flags:
   -R, --reader-url string        Reader URL (default "http://localhost")
   -z, --state string             Bootstrap state query parameter
   -S, --status string            User status query parameter
-  -t, --things-url string        Things service URL (default "http://localhost:9000")
+  -t, --clients-url string        Clients service URL (default "http://localhost:9000")
   -T, --topic string             Subscription topic query parameter
   -u, --users-url string         Users service URL (default "http://localhost:9002")
 
@@ -99,7 +98,7 @@ supermq-cli channels -h
 Response should look like this:
 
 ```bash
-Channels management: create, get, update or delete Channel and get list of Things connected or not connected to a Channel
+Channels management: create, get, update or delete Channel and get list of Clients connected or not connected to a Channel
 
 Usage:
   supermq-cli channels [command]
@@ -140,7 +139,7 @@ Global Flags:
   -R, --reader-url string        Reader URL (default "http://localhost")
   -z, --state string             Bootstrap state query parameter
   -S, --status string            User status query parameter
-  -t, --things-url string        Things service URL (default "http://localhost:9000")
+  -t, --clients-url string        Clients service URL (default "http://localhost:9000")
   -T, --topic string             Subscription topic query parameter
   -u, --users-url string         Users service URL (default "http://localhost:9002")
 
@@ -155,13 +154,13 @@ Use "supermq-cli channels [command] --help" for more information about a command
 supermq-cli health <service>
 ```
 
-For "things" service, the response should look like this:
+For "clients" service, the response should look like this:
 
 ```json
 {
   "build_time": "2024-03-13_16:12:26",
   "commit": "3bf59689fb74388415d2655eb43b5d736ac82fc2",
-  "description": "things service",
+  "description": "clients service",
   "status": "pass",
   "version": "v0.14.0"
 }
@@ -194,7 +193,7 @@ supermq-cli users token <user_email> <user_password>
 ```
 
 Since v0.14.0, SuperMQ supports domains. Domains are used to separate different tenants, and almost all the activities in SuperMQ happen under a particular domain. Only two types of actions do not happen within a domain: login where you get to list domains and log in to them, and invitations management to accept domain membership sent by other users.
-An access token with a domain is required for all the other actions on Things, Channels, and Groups. To obtain token within the domain, use the following command:
+An access token with a domain is required for all the other actions on Clients, Channels, and Groups. To obtain token within the domain, use the following command:
 
 ```bash
 supermq-cli users token <user_email> <user_password> <domain_id>
@@ -401,7 +400,7 @@ For example
 supermq-cli domains get all $ADMIN_ACCESS
 ```
 
-After running this command, you will receive information about all domains. The output should look something like this:
+After running this command, you will receive information about all domains. The output should look someclient like this:
 
 ```bash
 {
@@ -588,57 +587,57 @@ For example, if you want to remove a user with the ID `6a8c0864-1d95-4053-a335-a
 supermq-cli domains unassign users "member" "6a8c0864-1d95-4053-a335-a6399c0ccb0a" "6fcfec51-423d-4f69-b5c5-1ed1c9ae547c" $ADMIN_ACCESS
 ```
 
-### Things management
+### Clients management
 
-#### Create Thing
-
-```bash
-supermq-cli things create '{"name":"myThing"}' <user_token>
-```
-
-#### Create Thing with metadata
+#### Create Client
 
 ```bash
-supermq-cli things create '{"name":"myThing", "metadata": {"key1":"value1"}}' <user_token>
+supermq-cli clients create '{"name":"myClient"}' <user_token>
 ```
 
-#### Bulk Provision Things
+#### Create Client with metadata
 
 ```bash
-supermq-cli provision things <file> <user_token>
+supermq-cli clients create '{"name":"myClient", "metadata": {"key1":"value1"}}' <user_token>
 ```
 
-- `file` - A CSV or JSON file containing thing names (must have extension `.csv` or `.json`)
+#### Bulk Provision Clients
+
+```bash
+supermq-cli provision clients <file> <user_token>
+```
+
+- `file` - A CSV or JSON file containing client names (must have extension `.csv` or `.json`)
 - `user_token` - A valid user auth token for the current system
 
 An example CSV file might be:
 
 ```csv
-thing1,
-thing2,
-thing3,
+client1,
+client2,
+client3,
 ```
 
-in which the first column is thing names.
+in which the first column is client names.
 
 A comparable JSON file would be
 
 ```json
 [
   {
-    "name": "<thing1_name>",
+    "name": "<client1_name>",
     "status": "enabled"
   },
   {
-    "name": "<thing2_name>",
+    "name": "<client2_name>",
     "status": "disabled"
   },
   {
-    "name": "<thing3_name>",
+    "name": "<client3_name>",
     "status": "enabled",
     "credentials": {
-      "identity": "<thing3_identity>",
-      "secret": "<thing3_secret>"
+      "identity": "<client3_identity>",
+      "secret": "<client3_secret>"
     }
   }
 ]
@@ -646,70 +645,70 @@ A comparable JSON file would be
 
 With JSON you can be able to specify more fields of the channels you want to create
 
-#### Update Thing
+#### Update Client
 
 ```bash
-supermq-cli things update <thing_id> '{"name":"value1", "metadata":{"key1": "value2"}}' <user_token>
+supermq-cli clients update <client_id> '{"name":"value1", "metadata":{"key1": "value2"}}' <user_token>
 ```
 
-#### Update Thing Tags
+#### Update Client Tags
 
 ```bash
-supermq-cli things update tags <thing_id> '["tag1", "tag2"]' <user_token>
+supermq-cli clients update tags <client_id> '["tag1", "tag2"]' <user_token>
 ```
 
-#### Update Thing Owner
+#### Update Client Owner
 
 ```bash
-supermq-cli things update owner <thing_id> <owner_id> <user_token>
+supermq-cli clients update owner <client_id> <owner_id> <user_token>
 ```
 
-#### Update Thing Secret
+#### Update Client Secret
 
 ```bash
-supermq-cli things update secret <thing_id> <secet> <user_token>
+supermq-cli clients update secret <client_id> <secet> <user_token>
 ```
 
-#### Identify Thing
+#### Identify Client
 
 ```bash
-supermq-cli things identify <thing_secret>
+supermq-cli clients identify <client_secret>
 ```
 
-#### Enable Thing
+#### Enable Client
 
 ```bash
-supermq-cli things enable <thing_id> <user_token>
+supermq-cli clients enable <client_id> <user_token>
 ```
 
-#### Disable Thing
+#### Disable Client
 
 ```bash
-supermq-cli things disable <thing_id> <user_token>
+supermq-cli clients disable <client_id> <user_token>
 ```
 
-#### Get Thing
+#### Get Client
 
 ```bash
-supermq-cli things get <thing_id> <user_token>
+supermq-cli clients get <client_id> <user_token>
 ```
 
-#### Get Things
+#### Get Clients
 
 ```bash
-supermq-cli things get all <user_token>
+supermq-cli clients get all <user_token>
 ```
 
-#### Get a subset list of provisioned Things
+#### Get a subset list of provisioned Clients
 
 ```bash
-supermq-cli things get all --offset=1 --limit=5 <user_token>
+supermq-cli clients get all --offset=1 --limit=5 <user_token>
 ```
 
-#### Share Thing
+#### Share Client
 
 ```bash
-supermq-cli things share <channel_id> <user_id> <allowed_actions> <user_token>
+supermq-cli clients share <channel_id> <user_id> <allowed_actions> <user_token>
 ```
 
 ### Channels management
@@ -799,52 +798,52 @@ supermq-cli channels get all <user_token>
 supermq-cli channels get all --offset=1 --limit=5 <user_token>
 ```
 
-#### Connect Thing to Channel
+#### Connect Client to Channel
 
 ```bash
-supermq-cli things connect <thing_id> <channel_id> <user_token>
+supermq-cli clients connect <client_id> <channel_id> <user_token>
 ```
 
-#### Bulk Connect Things to Channels
+#### Bulk Connect Clients to Channels
 
 ```bash
 supermq-cli provision connect <file> <user_token>
 ```
 
-- `file` - A CSV or JSON file containing thing and channel ids (must have extension `.csv` or `.json`)
+- `file` - A CSV or JSON file containing client and channel ids (must have extension `.csv` or `.json`)
 - `user_token` - A valid user auth token for the current system
 
 An example CSV file might be
 
 ```csv
-<thing_id1>,<channel_id1>
-<thing_id2>,<channel_id2>
+<client_id1>,<channel_id1>
+<client_id2>,<channel_id2>
 ```
 
-in which the first column is thing IDs and the second column is channel IDs. A connection will be created for each thing to each channel. This example would result in 4 connections being created.
+in which the first column is client IDs and the second column is channel IDs. A connection will be created for each client to each channel. This example would result in 4 connections being created.
 
 A comparable JSON file would be
 
 ```json
 {
-  "subjects": ["<thing_id1>", "<thing_id2>"],
+  "subjects": ["<client_id1>", "<client_id2>"],
   "objects": ["<channel_id1>", "<channel_id2>"]
 }
 ```
 
-#### Disconnect Thing from Channel
+#### Disconnect Client from Channel
 
 ```bash
-supermq-cli things disconnect <thing_id> <channel_id> <user_token>
+supermq-cli clients disconnect <client_id> <channel_id> <user_token>
 ```
 
-#### Get a subset list of Channels connected to Thing
+#### Get a subset list of Channels connected to Client
 
 ```bash
-supermq-cli things connections <thing_id> <user_token>
+supermq-cli clients connections <client_id> <user_token>
 ```
 
-#### Get a subset list of Things connected to Channel
+#### Get a subset list of Clients connected to Channel
 
 ```bash
 supermq-cli channels connections <channel_id> <user_token>
@@ -855,7 +854,7 @@ supermq-cli channels connections <channel_id> <user_token>
 #### Send a message over HTTP
 
 ```bash
-supermq-cli messages send <channel_id> '[{"bn":"Dev1","n":"temp","v":20}, {"n":"hum","v":40}, {"bn":"Dev2", "n":"temp","v":20}, {"n":"hum","v":40}]' <thing_secret>
+supermq-cli messages send <channel_id> '[{"bn":"Dev1","n":"temp","v":20}, {"n":"hum","v":40}, {"bn":"Dev2", "n":"temp","v":20}, {"n":"hum","v":40}]' <client_secret>
 ```
 
 #### Read messages over HTTP
@@ -875,19 +874,19 @@ supermq-cli bootstrap create '{"external_id": "myExtID", "external_key": "myExtK
 #### View configuration
 
 ```bash
-supermq-cli bootstrap get <thing_id> <user_token> -b <bootstrap-url>
+supermq-cli bootstrap get <client_id> <user_token> -b <bootstrap-url>
 ```
 
 #### Update configuration
 
 ```bash
-supermq-cli bootstrap update '{"supermq_id":"<thing_id>", "name": "newName", "content": "newContent"}' <user_token> -b <bootstrap-url>
+supermq-cli bootstrap update '{"supermq_id":"<client_id>", "name": "newName", "content": "newContent"}' <user_token> -b <bootstrap-url>
 ```
 
 #### Remove configuration
 
 ```bash
-supermq-cli bootstrap remove <thing_id> <user_token> -b <bootstrap-url>
+supermq-cli bootstrap remove <client_id> <user_token> -b <bootstrap-url>
 ```
 
 #### Bootstrap configuration
@@ -918,31 +917,31 @@ This command is used to set the flags to be used by CLI in a local TOML file. Th
 
 The possible parameters that can be set using the config command are:
 
-| Flag             | Description                                          | Default                  |
-| ---------------- | ---------------------------------------------------- | ------------------------ |
-| bootstrap_url    | Bootstrap service URL                                |   [bootstrap_url][bootstrap]|
-| certs_url        | Certs service URL                                    | [certs_url][certs]  |
-| http_adapter_url | HTTP adapter URL                                     |  [http_adapter_url][http_adapter] |
-| msg_content_type | Message content type                                 | "application/senml+json" |
-| reader_url       | Reader URL                                           | [reader_url][reader]       |
-| things_url       | Things service URL                                   | [things_url][things]  |
-| tls_verification | Do not check for TLS cert                            |                          |
-| users_url        | Users service URL                                    | [users_url][users]  |
-| state            | Bootstrap state query parameter                      |                          |
-| status           | User status query parameter                          |                          |
-| topic            | Subscription topic query parameter                   |                          |
-| contact          | Subscription contact query parameter                 |                          |
-| email            | User email query parameter                           |                          |
-| limit            | Limit query parameter                                | 10                       |
-| metadata         | Metadata query parameter                             |                          |
-| name             | Name query parameter                                 |                          |
-| offset           | Offset query parameter                               |                          |
-| raw_output       | Enables raw output mode for easier parsing of output |                          |
+| Flag             | Description                                          | Default                          |
+| ---------------- | ---------------------------------------------------- | -------------------------------- |
+| bootstrap_url    | Bootstrap service URL                                | [bootstrap_url][bootstrap]       |
+| certs_url        | Certs service URL                                    | [certs_url][certs]               |
+| http_adapter_url | HTTP adapter URL                                     | [http_adapter_url][http_adapter] |
+| msg_content_type | Message content type                                 | "application/senml+json"         |
+| reader_url       | Reader URL                                           | [reader_url][reader]             |
+| clients_url      | Clients service URL                                  | [clients_url][clients]           |
+| tls_verification | Do not check for TLS cert                            |                                  |
+| users_url        | Users service URL                                    | [users_url][users]               |
+| state            | Bootstrap state query parameter                      |                                  |
+| status           | User status query parameter                          |                                  |
+| topic            | Subscription topic query parameter                   |                                  |
+| contact          | Subscription contact query parameter                 |                                  |
+| email            | User email query parameter                           |                                  |
+| limit            | Limit query parameter                                | 10                               |
+| metadata         | Metadata query parameter                             |                                  |
+| name             | Name query parameter                                 |                                  |
+| offset           | Offset query parameter                               |                                  |
+| raw_output       | Enables raw output mode for easier parsing of output |                                  |
 
 [releases]: https://github.com/absmach/supermq/releases
 [bootstrap]: http://localhost:9013
 [certs]: http://localhost:9019
-[http_adapter]:http://localhost/http
+[http_adapter]: http://localhost/http
 [reader]: http://localhost
-[things]: http://localhost:9000
-[users]:http://localhost:9002
+[clients]: http://localhost:9006
+[users]: http://localhost:9005
