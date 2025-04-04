@@ -127,7 +127,7 @@ As you can see, `Authorization` header does not have to be present in the HTTP r
 ### HTTPS
 
 ```bash
-curl -s -S -i --cacert docker/ssl/certs/ca.crt --cert docker/ssl/certs/<thing_cert_name>.crt --key docker/ssl/certs/<thing_cert_key>.key -X POST -H "Content-Type: application/senml+json" https://localhost/http/c/<channel_id>/m -d '[{"bn":"some-base-name:","bt":1.276020076001e+09, "bu":"A","bver":5, "n":"voltage","u":"V","v":120.1}, {"n":"current","t":-5,"v":1.2}, {"n":"current","t":-4,"v":1.3}]'
+curl -s -S -i --cacert docker/ssl/certs/ca.crt --cert docker/ssl/certs/<client_cert_name>.crt --key docker/ssl/certs/<client_cert_key>.key -X POST -H "Content-Type: application/senml+json" https://localhost/http/c/<channel_id>/m -d '[{"bn":"some-base-name:","bt":1.276020076001e+09, "bu":"A","bver":5, "n":"voltage","u":"V","v":120.1}, {"n":"current","t":-5,"v":1.2}, {"n":"current","t":-4,"v":1.3}]'
 ```
 
 ### MQTTS
@@ -135,13 +135,13 @@ curl -s -S -i --cacert docker/ssl/certs/ca.crt --cert docker/ssl/certs/<thing_ce
 #### Publish
 
 ```bash
-mosquitto_pub -u <thing_id> -P <thing_secret> -t c/<channel_id>/m -h localhost -p 8883  --cafile docker/ssl/certs/ca.crt --cert docker/ssl/certs/<thing_cert_name>.crt --key docker/ssl/certs/<thing_cert_key>.key -m '[{"bn":"some-base-name:","bt":1.276020076001e+09, "bu":"A","bver":5, "n":"voltage","u":"V","v":120.1}, {"n":"current","t":-5,"v":1.2}, {"n":"current","t":-4,"v":1.3}]'
+mosquitto_pub -u <client_id> -P <client_secret> -t c/<channel_id>/m -h localhost -p 8883  --cafile docker/ssl/certs/ca.crt --cert docker/ssl/certs/<client_cert_name>.crt --key docker/ssl/certs/<client_cert_key>.key -m '[{"bn":"some-base-name:","bt":1.276020076001e+09, "bu":"A","bver":5, "n":"voltage","u":"V","v":120.1}, {"n":"current","t":-5,"v":1.2}, {"n":"current","t":-4,"v":1.3}]'
 ```
 
 #### Subscribe
 
 ```bash
-mosquitto_sub -u <thing_id> -P <thing_secret> --cafile docker/ssl/certs/ca.crt --cert docker/ssl/certs/<thing_cert_name>.crt --key docker/ssl/certs/<thing_cert_key>.key -t c/<channel_id>/m -h localhost -p 8883
+mosquitto_sub -u <client_id> -P <client_secret> --cafile docker/ssl/certs/ca.crt --cert docker/ssl/certs/<client_cert_name>.crt --key docker/ssl/certs/<client_cert_key>.key -t c/<channel_id>/m -h localhost -p 8883
 ```
 
 [jwt]: https://jwt.io/
