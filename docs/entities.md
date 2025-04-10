@@ -208,7 +208,7 @@ type Credentials struct {
 - `AccessProviderRoleActions` is an optional list of actions assigned by the access provider.
 - `ConnectionTypes` is an optional field representing different connection protocols the client can use. It is a slice of connection types.
 
-Hence any phsical device with an embeded system can be handed a unique key (**secret**) that will be used as a token during publishing and subscribing to a channel can be classified as a thing.
+Hence any phsical device with an embeded system can be handed a unique key (**secret**) that will be used as a token during publishing and subscribing to a channel can be classified as a client.
 
 The API endpoint for interacting with clients are described in the [clients API][clients-api].
 

@@ -482,7 +482,7 @@ For mTLS you need to set `nginx_internal.mtls.tls="magistrala-server"` and `ngin
 You can test sending an MQTT message with the following command:
 
 ```bash
-mosquitto_pub -d -L mqtts://<client_id>:<thing_secret>@example.com:8883/c/<channel_id>/m  --cert  client.crt --key client.key --cafile ca.crt  -m "test-message"
+mosquitto_pub -d -L mqtts://<client_id>:<thing_secret>@example.com:8883/m/<domain_id>/c/<channel_id>  --cert  client.crt --key client.key --cafile ca.crt  -m "test-message"
 ```
 
 [ingress-yaml]: https://github.com/absmach/devops/blob/master/charts/mainflux/templates/ingress.yaml#L141

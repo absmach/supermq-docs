@@ -76,7 +76,7 @@ make docker_http
 
 > N.B. SuperMQ creates `FROM scratch` docker containers which are compact and small in size.
 >
-> N.B. The `things-db` and `users-db` containers are built from a vanilla PostgreSQL docker image downloaded from docker hub which does not persist the data when these containers are rebuilt. Thus, **rebuilding of all docker containers with `make dockers` or rebuilding the `things-db` and `users-db` containers separately with `make docker_things-db` and `make docker_users-db` respectively, will cause data loss. All your users, things, channels and connections between them will be lost!** As we use this setup only for development, we don't guarantee any permanent data persistence. Though, in order to enable data retention, we have configured persistent volumes for each container that stores some data. If you want to update your SuperMQ dockerized installation and want to keep your data, use `make cleandocker` to clean the containers and images and keep the data (stored in docker persistent volumes) and then `make run` to update the images and the containers. Check the [Cleaning up your dockerized SuperMQ setup][cleanup-docker] section for details. Please note that this kind of updating might not work if there are database changes.
+> N.B. The `clients-db` and `users-db` containers are built from a vanilla PostgreSQL docker image downloaded from docker hub which does not persist the data when these containers are rebuilt. Thus, **rebuilding of all docker containers with `make dockers` or rebuilding the `clients-db` and `users-db` containers separately with `make docker_clients-db` and `make docker_users-db` respectively, will cause data loss. All your users, clients, channels and connections between them will be lost!** As we use this setup only for development, we don't guarantee any permanent data persistence. Though, in order to enable data retention, we have configured persistent volumes for each container that stores some data. If you want to update your SuperMQ dockerized installation and want to keep your data, use `make cleandocker` to clean the containers and images and keep the data (stored in docker persistent volumes) and then `make run` to update the images and the containers. Check the [Cleaning up your dockerized SuperMQ setup][cleanup-docker] section for details. Please note that this kind of updating might not work if there are database changes.
 
 #### Building Docker images for development
 
@@ -166,7 +166,7 @@ To do this by hand, execute:
 ```bash
 protoc -I. --go_out=. --go_opt=paths=source_relative pkg/messaging/*.proto
 protoc -I. --go_out=. --go_opt=paths=source_relative --go-grpc_out=. --go-grpc_opt=paths=source_relative users/policies/*.proto
-protoc -I. --go_out=. --go_opt=paths=source_relative --go-grpc_out=. --go-grpc_opt=paths=source_relative things/policies/*.proto
+protoc -I. --go_out=. --go_opt=paths=source_relative --go-grpc_out=. --go-grpc_opt=paths=source_relative clients/policies/*.proto
 ```
 
 A shorthand to do this via `make` tool is:
@@ -243,14 +243,14 @@ SMQ_BROKER_TYPE=<broker-type> make run
 
 #### PostgreSQL
 
-SuperMQ uses PostgreSQL to store metadata (`users`, `things` and `channels` entities alongside with authorization tokens). It expects that PostgreSQL DB is installed, set up and running on the local system.
+SuperMQ uses PostgreSQL to store metadata (`users`, `clients` and `channels` entities alongside with authorization tokens). It expects that PostgreSQL DB is installed, set up and running on the local system.
 
 Information how to set-up (prepare) PostgreSQL database can be found [here][postgres-roles], and it is done by executing following commands:
 
 ```bash
-# Create `users` and `things` databases
+# Create `users` and `clients` databases
 sudo -u postgres createdb users
-sudo -u postgres createdb things
+sudo -u postgres createdb clients
 
 # Set-up Postgres roles
 sudo su - postgres

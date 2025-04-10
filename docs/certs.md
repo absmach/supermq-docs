@@ -3,12 +3,12 @@ title: Certs
 ---
 
 
-Provisioning is a process of configuration of an IoT platform in which system operator creates and sets-up different entities used in the platform - users, groups, channels and things.
+Provisioning is a process of configuration of an IoT platform in which system operator creates and sets-up different entities used in the platform - users, groups, channels and clients.
 
 ## Certs Service
 
-Issues certificates for things. `Certs` service can create certificates to be used when `SuperMQ` is deployed to support mTLS.  
-`Certs` service will create certificate for valid thing ID if valid user token is passed and user is owner of the provided thing ID.
+Issues certificates for clients. `Certs` service can create certificates to be used when `SuperMQ` is deployed to support mTLS.  
+`Certs` service will create certificate for valid client ID if valid user token is passed and user is owner of the provided client ID.
 
 Certificate service can create certificates in PKI mode - where certificates issued by PKI, when you deploy `Vault` as PKI certificate management `cert` service will proxy requests to `Vault` previously checking access rights and saving info on successfully created certificate.
 
@@ -45,7 +45,7 @@ To start vault run:
 make run_addons vault up args="-d"
 ```
 
-When vault service is up and running some initializations steps must be done to setup things for `Certs` service. For more information about this steps please check [supermq-vault][supermq-vault]
+When vault service is up and running some initializations steps must be done to setup clients for `Certs` service. For more information about this steps please check [supermq-vault][supermq-vault]
 
 ```bash
 bash docker/addons/vault/vault-init.sh
@@ -65,7 +65,7 @@ To start certs service run:
 make run_addons certs up args="-d"
 ```
 
-Provision a thing:
+Provision a client:
 
 ```bash
 supermq-cli provision test
@@ -83,12 +83,12 @@ To stop vault service run:
 make run_addons vault down
 ```
 
-This step can be skipped if you already have a thing ID.
+This step can be skipped if you already have a client ID.
 
 #### 1. Issue a certificate
 
 ```bash
-supermq-cli certs issue <thing_id> <user_auth_token> [--ttl=8760h]
+supermq-cli certs issue <client_id> <user_auth_token> [--ttl=8760h]
 ```
 
 For example:
@@ -101,14 +101,14 @@ supermq-cli certs issue f13f0f30-f923-4504-8a7a-6aa45bcb4866 $USER_TOKEN
   "client_cert": "-----BEGIN CERTIFICATE-----\nMIIEATCCAumgAwIBAgIUbzXVnUedI1AI9zETgiLkyObPLMEwDQYJKoZIhvcNAQEL\nBQAwLjEsMCoGA1UEAxMjbWFpbmZsdXguY29tIEludGVybWVkaWF0ZSBBdXRob3Jp\ndHkwHhcNMjMwOTE0MTEwOTI5WhcNMjMxMDE0MTEwOTU4WjAvMS0wKwYDVQQDEyRi\nYTFmMmIxNi01MjA3LTQ2MDgtYTRkZS01ZmFiZmI4NjI3YzIwggEiMA0GCSqGSIb3\nDQEBAQUAA4IBDwAwggEKAoIBAQC9RxcHaTzn18vBdWWZf37K8Grc5dLW/m8vhwOJ\n8oe3iPUiE7xFijIXKw236R1NBh8fLT6/2lia/p4acZtls3yFRphooDwP7S2OiJRI\ngGb/r0SYmSnQKjHbdbixauNECGk1TDNSGvmpNSzvAZvYSJAvd5ZpYf/8Db9IBW0N\nvbI7TfIJHay8vC/0rn1BsmC3x+3nEm0W+Z5udC/UT4+pQn7QWrBsxjVT4r5WY0SQ\nkVhA9Wo+Wpzmy1CMC4X6yLmiIHmfRFlktDxKgPpyy/3zhAE2CkBpT7JEQ723Mv+m\n37oM2EJog+tgIZMExxDbw3Epqgo07B9DWpSZSBHCISeN/TzdAgMBAAGjggEUMIIB\nEDAOBgNVHQ8BAf8EBAMCA6gwHQYDVR0lBBYwFAYIKwYBBQUHAwEGCCsGAQUFBwMC\nMB0GA1UdDgQWBBTAoqWVu8ctNmw5CKUBxsUKVDX+PDAfBgNVHSMEGDAWgBS7dmaT\nr5vJJPtV5dReawbYKhxzYzA7BggrBgEFBQcBAQQvMC0wKwYIKwYBBQUHMAKGH2h0\ndHA6Ly92YXVsdDo4MjAwL3YxL3BraV9pbnQvY2EwLwYDVR0RBCgwJoIkYmExZjJi\nMTYtNTIwNy00NjA4LWE0ZGUtNWZhYmZiODYyN2MyMDEGA1UdHwQqMCgwJqAkoCKG\nIGh0dHA6Ly92YXVsdDo4MjAwL3YxL3BraV9pbnQvY3JsMA0GCSqGSIb3DQEBCwUA\nA4IBAQCKMmDzyWWmuSJPh3O9hppRJ6mkX9gut4jP2rwowNv7haj3iu+hR8+GnTix\nu5oy3bZdmRryhhW0XyJsbCKO/z+wsY/RfVgMxF/c1cbmEzki804+AB4a4yNhQD6g\noEEQBD58b6mFi/vPCRiGZmmo5TqMlA37jBRSVnKO/CoH1CAvjqmfWdSoO4IC4uD4\nJev+QNr9wlOimYcA/usmo7rmqz7IB9R/Laxcdkq9iZelKly/jhftEbKgGf2NR/d7\nEKVONjCEp6fL2iBaQSA/899oJJ7QPqE5X821HhBlXKvNmZnYRyUmAS2h1jnxtovp\nsNGcLFRgIAFdaGl1172C7mBZF4C3\n-----END CERTIFICATE-----",
   "client_key": "-----BEGIN RSA PRIVATE KEY-----\nMIIEowIBAAKCAQEAvUcXB2k859fLwXVlmX9+yvBq3OXS1v5vL4cDifKHt4j1IhO8\nRYoyFysNt+kdTQYfHy0+v9pYmv6eGnGbZbN8hUaYaKA8D+0tjoiUSIBm/69EmJkp\n0Cox23W4sWrjRAhpNUwzUhr5qTUs7wGb2EiQL3eWaWH//A2/SAVtDb2yO03yCR2s\nvLwv9K59QbJgt8ft5xJtFvmebnQv1E+PqUJ+0FqwbMY1U+K+VmNEkJFYQPVqPlqc\n5stQjAuF+si5oiB5n0RZZLQ8SoD6csv984QBNgpAaU+yREO9tzL/pt+6DNhCaIPr\nYCGTBMcQ28NxKaoKNOwfQ1qUmUgRwiEnjf083QIDAQABAoIBADKd7kSnGgiOJwkn\nUfJIrCmtPYaxVz7zb9xv6LxdRXoJgDSKvpCCMn8LnnGOP623c18tBFjeFU/tw24i\n74G1DBnAFUX1g9pmfQZe8/injePWhSuh2hK3FfowcyHPCdPJxAjixd6xJA7iD5Aj\nCABA934aJvkrof9P1dV2zgEct6sv6GPwUgSZxTYVNyU93T/pmvodvpNTYd3uk71A\nLCC5Ojv2gEOkHUWHhMntz7bl6wcH/atk//uYoYxcjZ811tL7/7xwUbyRxFD/b6kP\niptdoXBv27eWWKOtFMgF9iNkhefSKkmHZZWIL1J5CFE8fUdddeLoOa0e7a9vhYS9\n5TMzC2kCgYEA+TJf60QP3rjEgm6bJw1h48ffkPkZTsdp083GoJB77yXUH7m9Wt9g\nlYSALN+67fnkXPEe/C9SInMDRMp9VoswOHeJCFbCNdx5Klv8KKuMZMk0yCZifhx6\nBl7IsVlmlzq3EhK1ZjOVWMxvwS7MlMpPAcsc8DGhwhv9sXW3k2nMevsCgYEAwnHx\nheuaYgE/HrE/GEcPNAwy/uyBb8wxoKavl8OKEyPH+LK8powo9xss8zi+yEYHfSQP\nnJ45Rdz/HGl5QIwD4CjA3Vrm0sTMh094DPp9KhxcOwIhK/IvUJ0deKwHRWek/+c8\nwbD6HfX2Vtu5RU9z2KS7VtazjU5TkIbKP29LoAcCgYAUKAv0JrQ16rISbsnj9cQm\nPYOK4Ws3oQ+hTzKyyB0OMfwfeNGlKQ5R6b7IYmxnVWAwWFyOP3GgUbdA+DP9LRMA\nbkLKRuI8oxG16GzUCVQ4zsGTMu+ijcEdBMus9LNEpj4qmxLLKn75CMg9UwC/REHx\nvjEgCJOx9LungAMSTGt6wwKBgQCXvSGUt6pvhreCNSGeyX1EyaxWIaxU2U11J/7p\neQ/cJdUc8Cal9cTWKV/nokXHtlaLwsNoHlVlfrOasXiM9XbkzAjN9O0iV6+gfFSc\nFDHu1djnt565U7K2vxVLoTu/XsV1ajeQk5JsJRCK8cbgHsOxscP8XWobAJ/XrkhQ\nPoMOqwKBgD8goECBKj+SofUfqKCnGf3E2MWF3kTZMfPaBcuV8TaGMWRRljMmK8YT\npew6IIkAFrsIaXxQsym2JQ+j/L2AoxQkzlf2VF4SaBfUUByT3NijSBpD/d3xRlWA\n7UUO0d72YFnPTqY98Ch/fbKnaCRL/Usv8c9nCt5IdmnihYnuvxYT\n-----END RSA PRIVATE KEY-----",
   "expiration": "2023-10-14T11:09:58Z",
-  "thing_id": "f13f0f30-f923-4504-8a7a-6aa45bcb4866"
+  "client_id": "f13f0f30-f923-4504-8a7a-6aa45bcb4866"
 }
 ```
 
 #### 2. Retrieve a certificate
 
 ```bash
-supermq-cli certs get [<cert_serial> | thing <thing_id>] <user_auth_token>
+supermq-cli certs get [<cert_serial> | client <client_id>] <user_auth_token>
 ```
 
 For example:
@@ -119,12 +119,12 @@ supermq-cli certs get 6f:35:d5:9d:47:9d:23:50:08:f7:31:13:82:22:e4:c8:e6:cf:2c:c
   "cert_serial": "6f:35:d5:9d:47:9d:23:50:08:f7:31:13:82:22:e4:c8:e6:cf:2c:c1",
   "client_cert": "-----BEGIN CERTIFICATE-----\nMIIEATCCAumgAwIBAgIUbzXVnUedI1AI9zETgiLkyObPLMEwDQYJKoZIhvcNAQEL\nBQAwLjEsMCoGA1UEAxMjbWFpbmZsdXguY29tIEludGVybWVkaWF0ZSBBdXRob3Jp\ndHkwHhcNMjMwOTE0MTEwOTI5WhcNMjMxMDE0MTEwOTU4WjAvMS0wKwYDVQQDEyRi\nYTFmMmIxNi01MjA3LTQ2MDgtYTRkZS01ZmFiZmI4NjI3YzIwggEiMA0GCSqGSIb3\nDQEBAQUAA4IBDwAwggEKAoIBAQC9RxcHaTzn18vBdWWZf37K8Grc5dLW/m8vhwOJ\n8oe3iPUiE7xFijIXKw236R1NBh8fLT6/2lia/p4acZtls3yFRphooDwP7S2OiJRI\ngGb/r0SYmSnQKjHbdbixauNECGk1TDNSGvmpNSzvAZvYSJAvd5ZpYf/8Db9IBW0N\nvbI7TfIJHay8vC/0rn1BsmC3x+3nEm0W+Z5udC/UT4+pQn7QWrBsxjVT4r5WY0SQ\nkVhA9Wo+Wpzmy1CMC4X6yLmiIHmfRFlktDxKgPpyy/3zhAE2CkBpT7JEQ723Mv+m\n37oM2EJog+tgIZMExxDbw3Epqgo07B9DWpSZSBHCISeN/TzdAgMBAAGjggEUMIIB\nEDAOBgNVHQ8BAf8EBAMCA6gwHQYDVR0lBBYwFAYIKwYBBQUHAwEGCCsGAQUFBwMC\nMB0GA1UdDgQWBBTAoqWVu8ctNmw5CKUBxsUKVDX+PDAfBgNVHSMEGDAWgBS7dmaT\nr5vJJPtV5dReawbYKhxzYzA7BggrBgEFBQcBAQQvMC0wKwYIKwYBBQUHMAKGH2h0\ndHA6Ly92YXVsdDo4MjAwL3YxL3BraV9pbnQvY2EwLwYDVR0RBCgwJoIkYmExZjJi\nMTYtNTIwNy00NjA4LWE0ZGUtNWZhYmZiODYyN2MyMDEGA1UdHwQqMCgwJqAkoCKG\nIGh0dHA6Ly92YXVsdDo4MjAwL3YxL3BraV9pbnQvY3JsMA0GCSqGSIb3DQEBCwUA\nA4IBAQCKMmDzyWWmuSJPh3O9hppRJ6mkX9gut4jP2rwowNv7haj3iu+hR8+GnTix\nu5oy3bZdmRryhhW0XyJsbCKO/z+wsY/RfVgMxF/c1cbmEzki804+AB4a4yNhQD6g\noEEQBD58b6mFi/vPCRiGZmmo5TqMlA37jBRSVnKO/CoH1CAvjqmfWdSoO4IC4uD4\nJev+QNr9wlOimYcA/usmo7rmqz7IB9R/Laxcdkq9iZelKly/jhftEbKgGf2NR/d7\nEKVONjCEp6fL2iBaQSA/899oJJ7QPqE5X821HhBlXKvNmZnYRyUmAS2h1jnxtovp\nsNGcLFRgIAFdaGl1172C7mBZF4C3\n-----END CERTIFICATE-----",
   "expiration": "2023-10-14T11:09:58Z",
-  "thing_id": "f13f0f30-f923-4504-8a7a-6aa45bcb4866"
+  "client_id": "f13f0f30-f923-4504-8a7a-6aa45bcb4866"
 }
 ```
 
 ```bash
-supermq-cli certs get thing f13f0f30-f923-4504-8a7a-6aa45bcb4866 $USER_TOKEN
+supermq-cli certs get client f13f0f30-f923-4504-8a7a-6aa45bcb4866 $USER_TOKEN
 {
   "certs": [
     {
@@ -141,7 +141,7 @@ supermq-cli certs get thing f13f0f30-f923-4504-8a7a-6aa45bcb4866 $USER_TOKEN
 #### 3. Revoke a certificate
 
 ```bash
-supermq-cli certs revoke <thing_id> <user_auth_token>
+supermq-cli certs revoke <client_id> <user_auth_token>
 ```
 
 For example:

@@ -3,7 +3,7 @@ title: Events
 ---
 
 
-In order to be easily integratable system, SuperMQ is using [Redis Streams][redis-streams] as an event log for event sourcing. Services that are publishing events to Redis Streams are `users` service, `things` service, `bootstrap` service and `mqtt` adapter.
+In order to be easily integratable system, SuperMQ is using [Redis Streams][redis-streams] as an event log for event sourcing. Services that are publishing events to Redis Streams are `users` service, `clients` service, `bootstrap` service and `mqtt` adapter.
 
 ## Users Service
 
@@ -887,7 +887,7 @@ Whenever policy is authorized, `users` service will generate new `authorize` eve
    ```redis
    1) "1693311470724-0"
    2)  1) "entity_type"
-       2) "thing"
+       2) "client"
        3) "object"
        4) "8a85e2d5-e783-43ee-8bea-d6d0f8039e78"
        5) "actions"
@@ -903,7 +903,7 @@ Whenever policy is authorized, `users` service will generate new `authorize` eve
    ```json
    Subject: events.supermq.users Received: 2023-10-05T15:12:07+03:00
 
-   {"action":"c_list","entity_type":"client","object":"things","occurred_at":1696507927648459930,"operation":"policies.authorize"}
+   {"action":"c_list","entity_type":"client","object":"clients","occurred_at":1696507927648459930,"operation":"policies.authorize"}
    ```
 
 3. In rabbitmq streams
@@ -912,7 +912,7 @@ Whenever policy is authorized, `users` service will generate new `authorize` eve
    {
      "action": "g_list",
      "entity_type": "group",
-     "object": "things",
+     "object": "clients",
      "occurred_at": 1697536686571995884,
      "operation": "policies.authorize"
    }
@@ -1033,7 +1033,7 @@ Whenever policy is removed, `users` service will generate new `remove` event. Th
 
 ### Policy list event
 
-Whenever policy list is fetched, `things` service will generate new `list` event. This event will have the following format:
+Whenever policy list is fetched, `clients` service will generate new `list` event. This event will have the following format:
 
 1. In Redis Streams
 
@@ -1063,34 +1063,34 @@ Whenever policy list is fetched, `things` service will generate new `list` event
    }
    ```
 
-## Things Service
+## Clients Service
 
-For every operation that has side effects (that is changing service state) `things` service will generate new event and publish it to Redis Stream called `supermq.things`. Every event has its own event ID that is automatically generated and `operation` field that can have one of the following values:
+For every operation that has side effects (that is changing service state) `clients` service will generate new event and publish it to Redis Stream called `supermq.clients`. Every event has its own event ID that is automatically generated and `operation` field that can have one of the following values:
 
-- `thing.create` for thing creation
-- `thing.update` for thing update
-- `thing.remove` for thing change of state
-- `thing.view` for thing view
-- `thing.list` for listing things
-- `thing.list_by_channel` for listing things by channel
-- `thing.identify` for thing identification
+- `client.create` for client creation
+- `client.update` for client update
+- `client.remove` for client change of state
+- `client.view` for client view
+- `client.list` for listing clients
+- `client.list_by_channel` for listing clients by channel
+- `client.identify` for client identification
 - `channel.create` for channel creation
 - `channel.update` for channel update
 - `channel.remove` for channel change of state
 - `channel.view` for channel view
 - `channel.list` for listing channels
-- `channel.list_by_thing` for listing channels by thing
+- `channel.list_by_client` for listing channels by client
 - `policy.authorize` for policy authorization
 - `policy.add` for policy creation
 - `policy.update` for policy update
 - `policy.remove` for policy deletion
 - `policy.list` for listing policies
 
-By fetching and processing these events you can reconstruct `things` service state. If you store some of your custom data in `metadata` field, this is the perfect way to fetch it and process it. If you want to integrate through [docker-compose.yml][mg-docker-compose] you can use `supermq-es-redis` service. Just connect to it and consume events from Redis Stream named `supermq.things`.
+By fetching and processing these events you can reconstruct `clients` service state. If you store some of your custom data in `metadata` field, this is the perfect way to fetch it and process it. If you want to integrate through [docker-compose.yml][mg-docker-compose] you can use `supermq-es-redis` service. Just connect to it and consume events from Redis Stream named `supermq.clients`.
 
-### Thing create event
+### Client create event
 
-Whenever thing is created, `things` service will generate new `create` event. This event will have the following format:
+Whenever client is created, `clients` service will generate new `create` event. This event will have the following format:
 
 1. In Redis Streams
 

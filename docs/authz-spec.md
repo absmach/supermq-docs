@@ -85,7 +85,7 @@ A `client` is an entity that can represent a software application, IoT device, s
 #### Client Actions
 
 - `update`, `read`, `delete`: The ability to create, update, read, or delete a client.
-- `connect_to_channel`: Allows to connect thing to a client.
+- `connect_to_channel`: Allows to connect client to a client.
 - `manage_role`: Allows managing roles within a client, to edit, read, delete the role and actions.
 - `add_role_users`: Allows to add user to a role.
 - `remove_role_users`: Allows to remove user from a role.
@@ -102,14 +102,14 @@ A `channel` is an entity which represent the topic to which clients and user can
 3. Parent groups roles actions can be inherited to channel.  
 4. A Channel can be connect to multiple channels, with publish action or subscribe action or both publish and subscribe actions.  
 5. Only authorized client and user should able to do publish/subscribe to channels,
-6. To publish or subscribe messages to channels, following topic should starts with should `c/<channel_id>/m` for by it can have it own subtopic path. example: `c/<channel_id>/m/subtopic1/subtopic2/subtopic3`
+6. To publish or subscribe messages to channels, following topic should starts with should `m/<domain_id>/c/<channel_id>` for by it can have it own subtopic path. example: `m/<domain_id>/c/<channel_id>/subtopic1/subtopic2/subtopic3`
 7. Both clients and users should able use channels to interact and exchange data with other clients or users.
 
 #### Channel Actions
 
 - `update`, `read`, `delete`: The ability to create, update, read, or delete a channel.
 - `publish`, `subscribe`: These allow `user` or `client` publish and subscribe over channel.
-- `connect_to_client`: Allows to connect thing to a channel.
+- `connect_to_client`: Allows to connect client to a channel.
 - `manage_role`: Allows managing roles within a channel, to edit, read, delete the role and actions.
 - `add_role_users`: Allows to add user to a role.
 - `remove_role_users`: Allows to remove user from a role.
@@ -146,7 +146,7 @@ Each group can have only a single parent, forming a structured hierarchy that de
 - `channel_create`: The ability to create children channels in group.
 - `channel_update`, `channel_read`, `channel_delete`: The ability to update, read, or delete all the channels in group.
 - `channel_publish`, `channel_subscribe`: These allow `user`  publish and subscribe over all the channels in group.
-- `channel_connect_to_channel`: The ability to connect all channels in group to the things in same domain.
+- `channel_connect_to_channel`: The ability to connect all channels in group to the clients in same domain.
 - `channel_manage_role`:  The ability to manage all the channels roles in the group.
 - `channel_add_role_users`: Allows to add user to role for all channels in group.
 - `channel_remove_role_users`: Allows to remove user from a role for all channels in group.
@@ -170,7 +170,7 @@ Each group can have only a single parent, forming a structured hierarchy that de
 - `sub_group_channel_create`: The ability to create children channels in all sub-groups.
 - `sub_group_channel_update`, `sub_group_channel_read`, `sub_group_channel_delete`: The ability to update, read, or delete all the channels in group.
 - `sub_group_channel_publish`, `sub_group_channel_subscribe`: These allow `user`  publish and subscribe over all the channels in all sub-groups.
-- `sub_group_channel_connect_to_channel`: The ability to connect all channels in all sub-groups to the things in same domain.
+- `sub_group_channel_connect_to_channel`: The ability to connect all channels in all sub-groups to the clients in same domain.
 - `sub_group_channel_manage_role`:  The ability to manage all the channels roles in all sub-groups.
 - `sub_group_channel_add_role_users`: Allows to add user to role for all channels in all sub-groups.
 - `sub_group_channel_remove_role_users`: Allows to remove user from a role for all channels in all sub-groups.
@@ -205,7 +205,7 @@ A `Domain` is a the top-level organizational unit that manages and governs vario
 - `channel_create`: The ability to create channels in Domain.
 - `channel_update`, `channel_read`, `channel_delete`: The ability to update, read, or delete all the channels in domain.
 - `channel_publish`, `channel_subscribe`: These allow `user`  publish and subscribe over all the channels in domain.
-- `channel_connect_to_channel`: The ability to connect all channels in domain to the things in same domain.
+- `channel_connect_to_channel`: The ability to connect all channels in domain to the clients in same domain.
 - `channel_manage_role`:  The ability to manage all the channels roles in the domain.
 - `channel_add_role_users`: Allows to add user to role for all channels in domain.
 - `channel_remove_role_users`: Allows to remove user from a role for all channels in domain.

@@ -1842,7 +1842,7 @@ Access-Control-Expose-Headers: Location
 Sends message via HTTP protocol
 
 ```bash
-curl -sSiX POST http://localhost/http/c/<channel_id>/m -H "Content-Type: application/senml+json" -H "Authorization: Client <client_secret>" -d @- << EOF
+curl -sSiX POST http://localhost/http/m/<domain_id>/c/<channel_id> -H "Content-Type: application/senml+json" -H "Authorization: Client <client_secret>" -d @- << EOF
 [
   {
     "bn": "<base_name>",

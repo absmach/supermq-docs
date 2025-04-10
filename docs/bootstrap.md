@@ -19,34 +19,34 @@ _1) Configure device with Bootstrap service URL, an external key and external ID
 >
 > _Optionally create SuperMQ channels if they don't exist_
 >
-> ![Provision SuperMQ things](img/bootstrap/3.png)
+> ![Provision SuperMQ clients](img/bootstrap/3.png)
 >
-> _Optionally create SuperMQ thing if it doesn't exist_
+> _Optionally create SuperMQ client if it doesn't exist_
 
 ![Upload configuration](img/bootstrap/4.png)
-_2) Upload configuration for the SuperMQ thing_
+_2) Upload configuration for the SuperMQ client_
 
 ![Bootstrap](img/bootstrap/5.png)
 _3) Bootstrap - send a request for the configuration_
 
 ![Update, enable/disable, remove](img/bootstrap/6.png)
-_4) Connect/disconnect thing from channels, update or remove configuration_
+_4) Connect/disconnect client from channels, update or remove configuration_
 
 ## Configuration
 
-The configuration of SuperMQ thing consists of three major parts:
+The configuration of SuperMQ client consists of three major parts:
 
-- The list of SuperMQ channels the thing is connected to
-- Custom configuration related to the specific thing
-- Thing Secret and certificate data related to that thing
+- The list of SuperMQ channels the client is connected to
+- Custom configuration related to the specific client
+- Client Secret and certificate data related to that client
 
 Also, the configuration contains an external ID and external key, which will be explained later.
-In order to enable the thing to start bootstrapping process, the user needs to upload a valid configuration for that specific thing. This can be done using the following HTTP request:
+In order to enable the client to start bootstrapping process, the user needs to upload a valid configuration for that specific client. This can be done using the following HTTP request:
 
 ```bash
-curl -s -S -i -X POST -H "Authorization: Bearer <user_token>" -H "Content-Type: application/json" http://localhost:9013/things/configs -d '{
+curl -s -S -i -X POST -H "Authorization: Bearer <user_token>" -H "Content-Type: application/json" http://localhost:9013/clients/configs -d '{
         "external_id":"09:6:0:sb:sa",
-        "thing_id": "7d63b564-3092-4cda-b441-e65fc1f285f0",
+        "client_id": "7d63b564-3092-4cda-b441-e65fc1f285f0",
         "external_key":"key",
         "name":"some",
         "channels":[
@@ -60,9 +60,9 @@ curl -s -S -i -X POST -H "Authorization: Bearer <user_token>" -H "Content-Type: 
 }'
 ```
 
-In this example, `channels` field represents the list of SuperMQ channel IDs the thing is connected to. These channels need to be provisioned before the configuration is uploaded. Field `content` represents custom configuration. This custom configuration contains parameters that can be used to set up the thing. It can also be empty if no additional set up is needed. Field `name` is human readable name and `thing_id` is an ID of the SuperMQ thing. This field is not required. If `thing_id` is empty, corresponding SuperMQ thing will be created implicitly and its ID will be sent as a part of `Location` header of the response. Fields `client_cert`, `client_key` and `ca_cert` represent PEM or base64-encoded DER client certificate, client certificate key and trusted CA, respectively.
+In this example, `channels` field represents the list of SuperMQ channel IDs the client is connected to. These channels need to be provisioned before the configuration is uploaded. Field `content` represents custom configuration. This custom configuration contains parameters that can be used to set up the client. It can also be empty if no additional set up is needed. Field `name` is human readable name and `client_id` is an ID of the SuperMQ client. This field is not required. If `client_id` is empty, corresponding SuperMQ client will be created implicitly and its ID will be sent as a part of `Location` header of the response. Fields `client_cert`, `client_key` and `ca_cert` represent PEM or base64-encoded DER client certificate, client certificate key and trusted CA, respectively.
 
-There are two more fields: `external_id` and `external_key`. External ID represents an ID of the device that corresponds to the given thing. For example, this can be a MAC address or the serial number of the device. The external key represents the device key. This is the secret key that's safely stored on the device and it is used to authorize the thing during the bootstrapping process. Please note that external ID and external key and SuperMQ ID and SuperMQ key are _completely different concepts_. External id and key are only used to authenticate a device that corresponds to the specific SuperMQ thing during the bootstrapping procedure. As Configuration optionally contains client certificate and issuing CA, it's possible that device is not able to establish TLS encrypted communication with SuperMQ before bootstrapping. For that purpose, Bootstrap service exposes endpoint used for secure bootstrapping which can be used regardless of protocol (HTTP or HTTPS). Both device and Bootstrap service use a secret key to encrypt the content. Encryption is done as follows:
+There are two more fields: `external_id` and `external_key`. External ID represents an ID of the device that corresponds to the given client. For example, this can be a MAC address or the serial number of the device. The external key represents the device key. This is the secret key that's safely stored on the device and it is used to authorize the client during the bootstrapping process. Please note that external ID and external key and SuperMQ ID and SuperMQ key are _completely different concepts_. External id and key are only used to authenticate a device that corresponds to the specific SuperMQ client during the bootstrapping procedure. As Configuration optionally contains client certificate and issuing CA, it's possible that device is not able to establish TLS encrypted communication with SuperMQ before bootstrapping. For that purpose, Bootstrap service exposes endpoint used for secure bootstrapping which can be used regardless of protocol (HTTP or HTTPS). Both device and Bootstrap service use a secret key to encrypt the content. Encryption is done as follows:
 
 1. Device uses the secret encryption key to encrypt the value of that exact external key
 2. Device sends a bootstrap request using the value from 1 as an Authorization header
@@ -77,18 +77,18 @@ For more details on which encryption mechanisms are used, please take a look at 
 
 ### Bootstrapping
 
-Currently, the bootstrapping procedure is executed over the HTTP protocol. Bootstrapping is nothing else but fetching and applying the configuration that corresponds to the given SuperMQ thing. In order to fetch the configuration, _the thing_ needs to send a bootstrapping request:
+Currently, the bootstrapping procedure is executed over the HTTP protocol. Bootstrapping is noclient else but fetching and applying the configuration that corresponds to the given SuperMQ client. In order to fetch the configuration, _the client_ needs to send a bootstrapping request:
 
 ```bash
-curl -s -S -i -H "Authorization: Thing <external_key>" http://localhost:9013/things/bootstrap/<external_id>
+curl -s -S -i -H "Authorization: Client <external_key>" http://localhost:9013/clients/bootstrap/<external_id>
 ```
 
-The response body should look something like:
+The response body should look someclient like:
 
 ```json
 {
-   "thing_id":"7d63b564-3092-4cda-b441-e65fc1f285f0",
-   "thing_key":"d0f6ff22-f521-4674-9065-e265a9376a78",
+   "client_id":"7d63b564-3092-4cda-b441-e65fc1f285f0",
+   "client_key":"d0f6ff22-f521-4674-9065-e265a9376a78",
    "channels":[
       {
          "id":"c4d6edb2-4e23-49f2-b6ea-df8bc6769591",
@@ -108,14 +108,14 @@ The response body should look something like:
 }
 ```
 
-The response consists of an ID and key of the SuperMQ thing, the list of channels and custom configuration (`content` field). The list of channels contains not just channel IDs, but the additional SuperMQ channel data (`name` and `metadata` fields), as well.
+The response consists of an ID and key of the SuperMQ client, the list of channels and custom configuration (`content` field). The list of channels contains not just channel IDs, but the additional SuperMQ channel data (`name` and `metadata` fields), as well.
 
-### Enabling and disabling things
+### Enabling and disabling clients
 
-Uploading configuration does not automatically connect thing to the given list of channels. In order to connect the thing to the channels, user needs to send the following HTTP request:
+Uploading configuration does not automatically connect client to the given list of channels. In order to connect the client to the channels, user needs to send the following HTTP request:
 
 ```bash
-curl -s -S -i -X PUT -H "Authorization: Bearer <user_token>" -H "Content-Type: application/json" http://localhost:9013/things/state/<thing_id> -d '{"state": 1}'
+curl -s -S -i -X PUT -H "Authorization: Bearer <user_token>" -H "Content-Type: application/json" http://localhost:9013/clients/state/<client_id> -d '{"state": 1}'
 ```
 
 In order to disconnect, the same request should be sent with the value of `state` set to 0.
@@ -124,7 +124,7 @@ In order to disconnect, the same request should be sent with the value of `state
 
 - _Encrypt the external key._
 
-First, encrypt the external key of your thing using AES encryption. The encryption key is specified by the `SMQ_BOOTSTRAP_ENCRYPT_KEY` environment variable. Use a library or utility that supports AES encryption to do this. Here's an example of how to encrypt using Go:
+First, encrypt the external key of your client using AES encryption. The encryption key is specified by the `SMQ_BOOTSTRAP_ENCRYPT_KEY` environment variable. Use a library or utility that supports AES encryption to do this. Here's an example of how to encrypt using Go:
 
 ```go
 package main
@@ -173,24 +173,24 @@ func main() {
 }
 ```
 
-Replace `<external_key>` and `<crypto_key>` with the thing's external key and `SMQ_BOOTSTRAP_ENCRYPT_KEY` respectively.
+Replace `<external_key>` and `<crypto_key>` with the client's external key and `SMQ_BOOTSTRAP_ENCRYPT_KEY` respectively.
 
 - _Make a request to the bootstrap service._
 
 Once the key is encrypted, make a request to the Bootstrap service. Here's how to do this using `curl`:
 
 ```bash
-curl --location 'http://localhost:9013/things/bootstrap/secure/<external_id>' \
+curl --location 'http://localhost:9013/clients/bootstrap/secure/<external_id>' \
 --header 'Accept: application/json' \
---header 'authorization: Thing <encyrpted_external_key>' --output -
+--header 'authorization: Client <encyrpted_external_key>' --output -
 ```
 
 The response from the Bootstrap service will be in encrypted binary format. Store this response in a file for later use.
 
 ```bash
-curl --location 'http://localhost:9013/things/bootstrap/secure/<external_id>' \
+curl --location 'http://localhost:9013/clients/bootstrap/secure/<external_id>' \
 --header 'Accept: application/json' \
---header 'authorization: Thing <encyrpted_external_key>' --output ~/<desired\>/<path\>/<file_name.txt>
+--header 'authorization: Client <encyrpted_external_key>' --output ~/<desired\>/<path\>/<file_name.txt>
 ```
 
 - _Decrypt the response_

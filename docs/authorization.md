@@ -2,23 +2,23 @@
 title: Authorization
 ---
 
-SuperMQ allows for fine-grained control over user permissions, taking into account hierarchical relationships between entities domains, groups, channels, and things. The structure and functionality of an authorization system implemented using [SpiceDB](https://github.com/authzed/spicedb) and its associated [schema language](https://authzed.com/docs/reference/schema-lang). `auth` service backed by SpiceDB manages permissions for users, domains, groups, channels, and things.
+SuperMQ allows for fine-grained control over user permissions, taking into account hierarchical relationships between entities domains, groups, channels, and clients. The structure and functionality of an authorization system implemented using [SpiceDB](https://github.com/authzed/spicedb) and its associated [schema language](https://authzed.com/docs/reference/schema-lang). `auth` service backed by SpiceDB manages permissions for users, domains, groups, channels, and clients.
 
 ## Domains
 
-Domain contains **Things**, **Channels**, and **Groups**. A **User** can be a member of a domain with different types of available relations. This relation provides access control to the entities in the domain.
+Domain contains **Clients**, **Channels**, and **Groups**. A **User** can be a member of a domain with different types of available relations. This relation provides access control to the entities in the domain.
 
 ### Domain Entities
 
 #### Overview
 
-In SuperMQ, **things**, **channels**, and **groups** are inherently associated with one particular domain. This means that every **group**, including its sub-groups, every **thing**, and every **channel** is owned by and belongs to a specific domain. Domain acts like a kind of namespace.
+In SuperMQ, **clients**, **channels**, and **groups** are inherently associated with one particular domain. This means that every **group**, including its sub-groups, every **client**, and every **channel** is owned by and belongs to a specific domain. Domain acts like a kind of namespace.
 
 ```mermaid
 graph TD
    Do[Domain]
    Gr["Groups + Sub Groups"]
-   Th[Things]
+   Th[Clients]
    Ch[Channels]
 
    Do --->|owns| Gr
@@ -34,7 +34,7 @@ graph
    subgraph Domain
       direction BT
       Gr[Group]
-      Th[Thing]
+      Th[Client]
       SG["Group (Sub Group)"]
       Ch[Channel]
 
@@ -48,10 +48,10 @@ style Domain stroke-width:3px,margin-top:10px,margin-bottom:10px
 
 #### Domain Entities Relations
 
-Domain holds entities such as `groups`, `channels`, and `things`.
+Domain holds entities such as `groups`, `channels`, and `clients`.
 The entities created in a domain don't have any hierarchical structure between them.
 
-Example: In `domain_1` a user creates the following entities `group_1`, `group_2`, `thing_1`, `thing_2`, `channel_1`, `channel_2`. By default, there is no relation between the entities, until the user assigns a relation between the entities
+Example: In `domain_1` a user creates the following entities `group_1`, `group_2`, `client_1`, `client_2`, `channel_1`, `channel_2`. By default, there is no relation between the entities, until the user assigns a relation between the entities
 
 ```mermaid
 graph
@@ -60,8 +60,8 @@ graph
       Gr1["group_1"]
       Gr2["group_2"]
 
-      Th1["thing_1"]
-      Th2["thing_2"]
+      Th1["client_1"]
+      Th2["client_2"]
 
 
       Ch1["channel_1"]
@@ -70,25 +70,25 @@ graph
    end
 ```
 
-##### Channel Thing Connect/Disconnect
+##### Channel Client Connect/Disconnect
 
-`Thing` represents a device (or an application) connected to SuperMQ that uses the platform for message exchange with other `things`.
+`Client` represents a device (or an application) connected to SuperMQ that uses the platform for message exchange with other `clients`.
 
-`Channel` is a message conduit between things connected to it. It serves as a message topic that can be consumed by all of the things connected to it.
-Things can publish or subscribe to the channel.
+`Channel` is a message conduit between clients connected to it. It serves as a message topic that can be consumed by all of the clients connected to it.
+Clients can publish or subscribe to the channel.
 
-Thing and channel can be connected to multiple channels using the following API.
+Client and channel can be connected to multiple channels using the following API.
 
 ```bash
 curl -sSiX POST http://localhost/connect -H "Content-Type: application/json" -H "Authorization: Bearer <domain_user_access_token>" -d @- << EOF
 {  
-  "thing_id": "<thing_id>",
+  "client_id": "<client_id>",
   "channel_id": "<channel_id>"
 }  
 EOF 
 ```
 
-_*The below diagram shows `thing_1` is connected to `channel_1` and `channel_2` , then `thing_2` is connected to `channel_2`. This relationship can be established using the provided request*_
+_*The below diagram shows `client_1` is connected to `channel_1` and `channel_2` , then `client_2` is connected to `channel_2`. This relationship can be established using the provided request*_
 
 ```mermaid
 graph
@@ -97,8 +97,8 @@ graph
       Gr1["group_1"]
       Gr2["group_2"]
 
-      Th1["thing_1"]
-      Th2["thing_2"]
+      Th1["client_1"]
+      Th2["client_2"]
 
       Ch1["channel_1"]
       Ch2["channel_2"]
@@ -113,7 +113,7 @@ graph
 
 ##### Channel Group Relation
 
-A group serves as a parent entity that can contain both groups and channels as children. Child groups, in turn, can consist of further child groups or channels, forming a nested hierarchy. Notably, channels, which are distinct entities, cannot have child channels but can connect to multiple things. The concept of parentage signifies the relationship between higher-level entities and their subordinate components. Ancestors in this system refer to entities higher up in the hierarchy, and while a child group can have multiple ancestors, a channel can only belong to a single parent group. This hierarchical arrangement provides a structured and organized framework for managing information within the SuperMQ.
+A group serves as a parent entity that can contain both groups and channels as children. Child groups, in turn, can consist of further child groups or channels, forming a nested hierarchy. Notably, channels, which are distinct entities, cannot have child channels but can connect to multiple clients. The concept of parentage signifies the relationship between higher-level entities and their subordinate components. Ancestors in this system refer to entities higher up in the hierarchy, and while a child group can have multiple ancestors, a channel can only belong to a single parent group. This hierarchical arrangement provides a structured and organized framework for managing information within the SuperMQ.
 
 Assigning a group as the parent of a channel can be achieved through the following request.
 
@@ -134,8 +134,8 @@ graph
       Gr1["group_1"]
       Gr2["group_2"]
 
-      Th1["thing_1"]
-      Th2["thing_2"]
+      Th1["client_1"]
+      Th2["client_2"]
 
       Ch1["channel_1"]
       Ch2["channel_2"]
@@ -174,8 +174,8 @@ graph
       Gr1["group_1"]
       Gr2["group_2"]
 
-      Th1["thing_1"]
-      Th2["thing_2"]
+      Th1["client_1"]
+      Th2["client_2"]
 
       Ch1["channel_1"]
       Ch2["channel_2"]
@@ -195,7 +195,7 @@ graph
 
 ##### Domain Entities Relation Examples
 
-An example group with channels, things, and groups (sub-groups) within the domain.
+An example group with channels, clients, and groups (sub-groups) within the domain.
 Groups have parent-child relationships, forming a hierarchy where top-level groups (`group_1` and `group_2`) have groups (sub-groups - `group_11`, `group_12`, `group_21`, and `group_22`) or channels (`channel_2`) beneath them.
 
 ```mermaid
@@ -211,12 +211,12 @@ graph
       Gr21["group_21 (Sub Group)"]
       Gr22["group_22 (Sub Group)"]
 
-      Th1["thing_1"]
-      Th2["thing_2"]
-      Th3["thing_3"]
-      Th4["thing_4"]
-      Th5["thing_5"]
-      Th6["thing_6"]
+      Th1["client_1"]
+      Th2["client_2"]
+      Th3["client_3"]
+      Th4["client_4"]
+      Th5["client_5"]
+      Th6["client_6"]
 
 
 
@@ -260,13 +260,13 @@ graph
     Gr13["group_13 (Sub Group)"]
 
 
-    Th1["thing_1"]
-    Th2["thing_2"]
-    Th3["thing_3"]
-    Th4["thing_4"]
-    Th11["thing_11"]
-    Th22["thing_22"]
-    Th33["thing_33"]
+    Th1["client_1"]
+    Th2["client_2"]
+    Th3["client_3"]
+    Th4["client_4"]
+    Th11["client_11"]
+    Th22["client_22"]
+    Th33["client_33"]
 
     Ch1["channel_1"]
     Ch2["channel_2"]
@@ -319,7 +319,7 @@ Users can have any one of the following relations with a domain
 
 ### Domain Administrator
 
-Users with administrator relations have full control over all entities (things, channels, groups) within the domain. They can perform actions like creating, updating, and deleting entities created by others. Administrators are also allowed to create their own entities and can view and update the ones they have created.
+Users with administrator relations have full control over all entities (clients, channels, groups) within the domain. They can perform actions like creating, updating, and deleting entities created by others. Administrators are also allowed to create their own entities and can view and update the ones they have created.
 
 **Example:**
 **user_1** is **administrator** of **domain_1**. **user_1 can view all entities created by others and have administrator access to all entities in the domain**.
@@ -328,36 +328,36 @@ Users with administrator relations have full control over all entities (things, 
 
 ### Domain Editor
 
-Users with editor relations have access to update all entities (things, channels, groups) created by others within the domain. Editor are also allowed to create their own entities and can view and update the ones they have created.
+Users with editor relations have access to update all entities (clients, channels, groups) created by others within the domain. Editor are also allowed to create their own entities and can view and update the ones they have created.
 
 **Example:**
-**user_2** is **editor** of **domain_1**. **user_2 can view all entities and have edit access to groups and channel entities, view access to thing entities in the domain, and also able to create & manage new things, channels & groups**.
+**user_2** is **editor** of **domain_1**. **user_2 can view all entities and have edit access to groups and channel entities, view access to client entities in the domain, and also able to create & manage new clients, channels & groups**.
 
 ![domain_users_editor](diagrams/domain_users_editor.svg)
 
 ### Domain Viewer
 
-Users with viewer relations have access to view all entities (things, channels, groups) created by others within the domain. Viewer are also allowed to create their own entities and can view and update the ones they have created.
+Users with viewer relations have access to view all entities (clients, channels, groups) created by others within the domain. Viewer are also allowed to create their own entities and can view and update the ones they have created.
 
 **Example:**
-**user_3 can only view entities that are created by others in the domain and <span style={{ color:'blue' }}>also able to create & manage new things, channels & groups</span>**
+**user_3 can only view entities that are created by others in the domain and <span style={{ color:'blue' }}>also able to create & manage new clients, channels & groups</span>**
 
 ![domain_users_viewer](diagrams/domain_users_viewer.svg)
 
 ### Domain Member
 
-Users with member relations could not view and no access to entities (things, channels, groups) created by others within the domain. Members are also allowed to create their own entities and can view and update the ones they have created.
+Users with member relations could not view and no access to entities (clients, channels, groups) created by others within the domain. Members are also allowed to create their own entities and can view and update the ones they have created.
 Domain members will not have access by default to any of the entities in the Domain, access shall be granted for specific entities by the domain administrator or individual entity administrator.
 
 **Example:**
-**user_4 , user_5, user_6, user_7, user_8, user_9** is **member** of **domain_1**. **These member relation users can able to create & manage new things, channels & groups in the domain. They can have access to the entities to which they have a relation in the domain. They could not view and manage other entities to which they don't have any relation in domain**.
-!!! note "Note: All other users having administrator, editor, viewer relation with domain will also have member relation inherit with domain, which allows them to create new things, channels & groups."
+**user_4 , user_5, user_6, user_7, user_8, user_9** is **member** of **domain_1**. **These member relation users can able to create & manage new clients, channels & groups in the domain. They can have access to the entities to which they have a relation in the domain. They could not view and manage other entities to which they don't have any relation in domain**.
+!!! note "Note: All other users having administrator, editor, viewer relation with domain will also have member relation inherit with domain, which allows them to create new clients, channels & groups."
 
 ![domain_users_member](diagrams/domain_users_member.svg)
 
-After the user sign-up to SuperMQ, the user is allowed to create a new domain or join an existing domain via invitations, without domain user could not create _things_, _channels_, _groups_.
+After the user sign-up to SuperMQ, the user is allowed to create a new domain or join an existing domain via invitations, without domain user could not create _clients_, _channels_, _groups_.
 
-All operations, including creating, updating, and deleting things, channels, and groups, occur at the domain level. For instance, when a user creates a new thing using an access token, the newly created thing automatically becomes associated with a specific domain. The domain information is extracted from the access token. When the user obtains a token, the user should specify the domain for which they want to operate.
+All operations, including creating, updating, and deleting clients, channels, and groups, occur at the domain level. For instance, when a user creates a new client using an access token, the newly created client automatically becomes associated with a specific domain. The domain information is extracted from the access token. When the user obtains a token, the user should specify the domain for which they want to operate.
 
 So to do operations on a domain, an access token for the domain is required. This can be obtained in two ways which is explained in [next section](#tokens-and-domain-tokens).
 
@@ -387,7 +387,7 @@ If the domain field is empty, then with that JWT token following actions are per
 - Domain creation & listing,
 - Accept domain invitations
 
-Actions related to the creation, update, and deletion of things, channels, and groups are not permitted, requests will fail in authorization. SuperMQ operations related to things, channels, and groups take place in domain level. So for these kinds of operations, a JWT token with a domain field containing the operating domain ID is required.
+Actions related to the creation, update, and deletion of clients, channels, and groups are not permitted, requests will fail in authorization. SuperMQ operations related to clients, channels, and groups take place in domain level. So for these kinds of operations, a JWT token with a domain field containing the operating domain ID is required.
 
 There are two ways to obtain JWT token for a particular domain
 
@@ -605,7 +605,7 @@ EOF
 
 ## User Entities Relationship
 
-Users assigned to a domain with any relationship (administrator, editor, viewer, member ) will have access to create entities (things, groups, channels).
+Users assigned to a domain with any relationship (administrator, editor, viewer, member ) will have access to create entities (clients, groups, channels).
 
 Domain administrator or individual entity administrator shall grant access to domain member for specific entities.
 
@@ -623,17 +623,17 @@ Group administrator users have access to update, delete, assign, and unassign to
 
 From the [previous viewer example](#domain-viewer), let's take **user_3** who has **viewer relation** with **domain_1**, which means **user_3 will be able to view all the entities created by others but cannot make any edits or updates on them.** **<span style={{ color:'blue' }}>user_3 will have access to create entities in domain_1 </span>**
 
-**user_3 creates new thing_101, channel_101, and group_101**.
+**user_3 creates new client_101, channel_101, and group_101**.
 
-**user_3 request to create thing_101:**
+**user_3 request to create client_101:**
 
 ```bash
-curl -sSiX POST 'http://localhost/things' -H "Content-Type: application/json" -H "Authorization: Bearer <DOMAIN_ACCESS_TOKEN_>" -d @- << EOF
+curl -sSiX POST 'http://localhost/clients' -H "Content-Type: application/json" -H "Authorization: Bearer <DOMAIN_ACCESS_TOKEN_>" -d @- << EOF
 {
   "credentials": {
     "secret": "a1ca33c0-367e-402b-a239-ff1255fdc440"
   },
-  "name": "thing_101"
+  "name": "client_101"
 }
 EOF
 ```
@@ -659,21 +659,21 @@ EOF
 ```
 
 The user who creates the entity will be the administrator of the entity by default.
-So **user_3** is **administrator** of **thing_101, channel_101 and group_101.**
+So **user_3** is **administrator** of **client_101, channel_101 and group_101.**
 
 ![group_users_administrator_1](diagrams/group_users_administrator_1.svg)
 
-!!! Note "user_3 will also have domain viewer relation to thing_101, channel_101, and group_101"
+!!! Note "user_3 will also have domain viewer relation to client_101, channel_101, and group_101"
 
-user_3 can make these entities (thing_101, channel_101, group_101) in a hierarchical structure by assigning relations between entities
-Example: Connect thing_101 & channel_101, assign group_101 as parent of channel_101.
+user_3 can make these entities (client_101, channel_101, group_101) in a hierarchical structure by assigning relations between entities
+Example: Connect client_101 & channel_101, assign group_101 as parent of channel_101.
 
-**user_3 request for connect thing_101 & channel_101:**
+**user_3 request for connect client_101 & channel_101:**
 
 ```bash
 curl -sSiX POST 'http://localhost/connect' -H "Content-Type: application/json" -H "Authorization: Bearer <DOMAIN_ACCESS_TOKEN_>" -d @- << EOF
 {
-  "thing_id": "<thing_101_id>",
+  "client_id": "<client_101_id>",
   "channel_id": "<channel_101_id>"
 }
 EOF
@@ -694,7 +694,7 @@ EOF
 **Members of domain 1 will not have access by default to any of the entities in domain 1, access shall be granted for specific entities by domain administrator or individual entity administrator.**
 
 **Administrator of group_101 (user_3), assigns user_4 with administrator relation.**
-**When domain member user_4 becomes an administrator of group_101, user_4 can able to update, delete, assign, and unassign to group_101. Since group_101 has channel_101 and thing_101 as children. The user_5 has administrator access on group_101 child entities channel_101 and thing_101.**
+**When domain member user_4 becomes an administrator of group_101, user_4 can able to update, delete, assign, and unassign to group_101. Since group_101 has channel_101 and client_101 as children. The user_5 has administrator access on group_101 child entities channel_101 and client_101.**
 
 **user_3 request for assign user_4 as administrator for group_101:**
 
@@ -710,10 +710,10 @@ curl -sSiX POST 'http://localhost/domains/<DOMINA_1_ID>/users/assign'  -H "Conte
 
 ### Group Editor
 
-Group editor users have access to view, update, assign, and unassign to the group and also have access to view, update, assign, and unassign all of its child channel and group entities, group editor have only view access to child thing entities in group
+Group editor users have access to view, update, assign, and unassign to the group and also have access to view, update, assign, and unassign all of its child channel and group entities, group editor have only view access to child client entities in group
 
 **Administrator of group_101 (user_3/user_4), assigns user_5 with editor relation.**
-**When domain member user_5 becomes an editor of group_101, user_5 can able to update, assign, and unassign to group_101. Since group_101 has channel_101 and thing_101 as children. The user_5 has editor access to the group child entities channels, things, and groups. In this case, user_5 has editor access to group_101, and also has edit access to its child entities channel_101 and thing_101**
+**When domain member user_5 becomes an editor of group_101, user_5 can able to update, assign, and unassign to group_101. Since group_101 has channel_101 and client_101 as children. The user_5 has editor access to the group child entities channels, clients, and groups. In this case, user_5 has editor access to group_101, and also has edit access to its child entities channel_101 and client_101**
 
 ![group_users_editor](diagrams/group_users_editor.svg)
 
@@ -727,9 +727,9 @@ Group viewer users have access to view group and also have access to view all of
 
 ## Examples
 
-### Domain Viewer with Channel & Thing
+### Domain Viewer with Channel & Client
 
-user_6 creates new channel and thing with the names channel_201 and thing_201 respectively. Then connects both channel_201 and thing_201.
+user_6 creates new channel and client with the names channel_201 and client_201 respectively. Then connects both channel_201 and client_201.
 
 ![group_users_viewer_1](diagrams/group_users_viewer_1.svg)
 
@@ -737,30 +737,30 @@ Now user_5 can able to assign group_101 as a parent for channel_201
 
 ![group_users_viewer_2](diagrams/group_users_viewer_2.svg)
 
-When channel_201 was assigned as a child of group_101, all the administrators, editors, and viewers of group_101 got the same access (relation) to channel_201 and thing_201
+When channel_201 was assigned as a child of group_101, all the administrators, editors, and viewers of group_101 got the same access (relation) to channel_201 and client_201
 
 ![group_users_viewer_3](diagrams/group_users_viewer_3.svg)
 
-### Multiple Domain Members with Group, Channel & Thing
+### Multiple Domain Members with Group, Channel & Client
 
 user_8 creates a new group with the name group_301
-user_9 creates a new thing and channel with the names thing_301 and channel_301 respectively, then connects both thing and channel.
+user_9 creates a new client and channel with the names client_301 and channel_301 respectively, then connects both client and channel.
 ![group_users_member_11](diagrams/group_users_member_11.svg)
 
 user_8 can able to assign channel_301 as a child of group_301
 ![group_users_member_12](diagrams/group_users_member_12.svg)
 When channel_301 is assigned as a child of group_301, then the administrators, editors, and viewers of group_301 get the same respective access to channel_301.
-The administrator, editor, and viewer of channel_301 get the same respective access to thing_301.
-So here user_8 becomes the administrator of both channel_301 and thing_301
+The administrator, editor, and viewer of channel_301 get the same respective access to client_301.
+So here user_8 becomes the administrator of both channel_301 and client_301
 
 user_5 can able to assign group_301 as a child of group_101
 ![group_users_member_13](diagrams/group_users_member_13.svg)
 
 When group_301 becomes a child of group_101, then the administrator, editor, and viewer of group_101 get the same respective access to group_301.
 The administrator, editor, and viewer of group_301 get the same respective access to channel_301.
-The administrator, editor, and viewer of channel_301 get the same respective access to thing_301.
-So here user_5 becomes the editor of group_301, channel_301, and thing_301, user_4 becomes administrator of group_301, channel_301, and thing_301.
-user_8 has administrator access only to group_301 and its child entities channel_301 and thing_301.
+The administrator, editor, and viewer of channel_301 get the same respective access to client_301.
+So here user_5 becomes the editor of group_301, channel_301, and client_301, user_4 becomes administrator of group_301, channel_301, and client_301.
+user_8 has administrator access only to group_301 and its child entities channel_301 and client_301.
 ![group_users_member_14](diagrams/group_users_member_14.svg)
 
 ## User Registration

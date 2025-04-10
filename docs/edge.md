@@ -33,18 +33,18 @@ Agent service has following features:
 
 ### Run Agent
 
-Before running agent we need to provision a thing and DATA and CONTROL channel. Thing that will be used as gateway representation and make bootstrap configuration. If using SuperMQ UI this is done automatically when adding gateway through UI. Gateway can be provisioned with [`provision`][provision] service.
+Before running agent we need to provision a client and DATA and CONTROL channel. Client that will be used as gateway representation and make bootstrap configuration. If using SuperMQ UI this is done automatically when adding gateway through UI. Gateway can be provisioned with [`provision`][provision] service.
 
 When you provisioned gateway as described in [provision][provision] you can check results
 
 ```bash
-curl -s -S -X GET http://magistrala-domain.com:9013/things/bootstrap/<external_id> -H "Authorization: Thing <external_key>" -H 'Content-Type: application/json' |jq
+curl -s -S -X GET http://magistrala-domain.com:9013/clients/bootstrap/<external_id> -H "Authorization: Client <external_key>" -H 'Content-Type: application/json' |jq
 ```
 
 ```json
 {
-  "thing_id": "e22c383a-d2ab-47c1-89cd-903955da993d",
-  "thing_key": "fc987711-1828-461b-aa4b-16d5b2c642fe",
+  "client_id": "e22c383a-d2ab-47c1-89cd-903955da993d",
+  "client_key": "fc987711-1828-461b-aa4b-16d5b2c642fe",
   "channels": [
     {
       "id": "fa5f9ba8-a1fc-4380-9edb-d0c23eaa24ec",
@@ -68,14 +68,14 @@ curl -s -S -X GET http://magistrala-domain.com:9013/things/bootstrap/<external_i
       }
     }
   ],
-  "content": "{\"agent\":{\"edgex\":{\"url\":\"http://localhost:48090/api/v1/\"},\"heartbeat\":{\"interval\":\"30s\"},\"log\":{\"level\":\"debug\"},\"mqtt\":{\"mtls\":false,\"qos\":0,\"retain\":false,\"skip_tls_ver\":true,\"url\":\"tcp://magistrala-domain.com:1883\"},\"server\":{\"nats_url\":\"localhost:4222\",\"port\":\"9000\"},\"terminal\":{\"session_timeout\":\"30s\"}},\"export\":{\"exp\":{\"cache_db\":\"0\",\"cache_pass\":\"\",\"cache_url\":\"localhost:6379\",\"log_level\":\"debug\",\"nats\":\"nats://localhost:4222\",\"port\":\"8172\"},\"mqtt\":{\"ca_path\":\"ca.crt\",\"cert_path\":\"thing.crt\",\"channel\":\"\",\"host\":\"tcp://magistrala-domain.com:1883\",\"mtls\":false,\"password\":\"\",\"priv_key_path\":\"thing.key\",\"qos\":0,\"retain\":false,\"skip_tls_ver\":false,\"username\":\"\"},\"routes\":[{\"mqtt_topic\":\"\",\"nats_topic\":\"channels\",\"subtopic\":\"\",\"type\":\"mfx\",\"workers\":10},{\"mqtt_topic\":\"\",\"nats_topic\":\"export\",\"subtopic\":\"\",\"type\":\"default\",\"workers\":10}]}}"
+  "content": "{\"agent\":{\"edgex\":{\"url\":\"http://localhost:48090/api/v1/\"},\"heartbeat\":{\"interval\":\"30s\"},\"log\":{\"level\":\"debug\"},\"mqtt\":{\"mtls\":false,\"qos\":0,\"retain\":false,\"skip_tls_ver\":true,\"url\":\"tcp://magistrala-domain.com:1883\"},\"server\":{\"nats_url\":\"localhost:4222\",\"port\":\"9000\"},\"terminal\":{\"session_timeout\":\"30s\"}},\"export\":{\"exp\":{\"cache_db\":\"0\",\"cache_pass\":\"\",\"cache_url\":\"localhost:6379\",\"log_level\":\"debug\",\"nats\":\"nats://localhost:4222\",\"port\":\"8172\"},\"mqtt\":{\"ca_path\":\"ca.crt\",\"cert_path\":\"client.crt\",\"channel\":\"\",\"host\":\"tcp://magistrala-domain.com:1883\",\"mtls\":false,\"password\":\"\",\"priv_key_path\":\"client.key\",\"qos\":0,\"retain\":false,\"skip_tls_ver\":false,\"username\":\"\"},\"routes\":[{\"mqtt_topic\":\"\",\"nats_topic\":\"channels\",\"subtopic\":\"\",\"type\":\"mfx\",\"workers\":10},{\"mqtt_topic\":\"\",\"nats_topic\":\"export\",\"subtopic\":\"\",\"type\":\"default\",\"workers\":10}]}}"
 }
 ```
 
 - `external_id` is usually MAC address, but anything that suits applications requirements can be used
 - `external_key` is key that will be provided to agent process
-- `thing_id` is SuperMQ thing id
-- `channels` is 2-element array where first channel is CONTROL and second is DATA, both channels should be assigned to thing
+- `client_id` is SuperMQ client id
+- `channels` is 2-element array where first channel is CONTROL and second is DATA, both channels should be assigned to client
 - `content` is used for configuring parameters of agent and export service.
 
 Then to start the agent service you can do it like this
@@ -89,8 +89,8 @@ MG_AGENT_LOG_LEVEL=debug \
 MG_AGENT_BOOTSTRAP_KEY=edged \
 MG_AGENT_BOOTSTRAP_ID=34:e1:2d:e6:cf:03 ./magistrala-agent
 
-{"level":"info","message":"Requesting config for 34:e1:2d:e6:cf:03 from http://localhost:9013/things/bootstrap","ts":"2019-12-05T04:47:24.98411512Z"}
-{"level":"info","message":"Getting config for 34:e1:2d:e6:cf:03 from http://localhost:9013/things/bootstrap succeeded","ts":"2019-12-05T04:47:24.995465239Z"}
+{"level":"info","message":"Requesting config for 34:e1:2d:e6:cf:03 from http://localhost:9013/clients/bootstrap","ts":"2019-12-05T04:47:24.98411512Z"}
+{"level":"info","message":"Getting config for 34:e1:2d:e6:cf:03 from http://localhost:9013/clients/bootstrap succeeded","ts":"2019-12-05T04:47:24.995465239Z"}
 {"level":"info","message":"Connected to MQTT broker","ts":"2019-12-05T04:47:25.009645082Z"}
 {"level":"info","message":"Agent service started, exposed port 9000","ts":"2019-12-05T04:47:25.009755345Z"}
 {"level":"info","message":"Subscribed to MQTT broker","ts":"2019-12-05T04:47:25.012930443Z"}
@@ -103,15 +103,15 @@ MG_AGENT_BOOTSTRAP_ID=34:e1:2d:e6:cf:03 ./magistrala-agent
 
 ```bash
 # Set connection parameters as environment variables in shell
-CH=`curl -s -S -X GET http://some-domain-name:9013/things/bootstrap/34:e1:2d:e6:cf:03 -H "Authorization: Thing <BOOTSTRAP_KEY>" -H 'Content-Type: application/json' | jq -r '.magistrala_channels[0].id'`
-TH=`curl -s  -S -X GET http://some-domain-name:9013/things/bootstrap/34:e1:2d:e6:cf:03 -H "Authorization: Thing <BOOTSTRAP_KEY>" -H 'Content-Type: application/json' | jq -r .magistrala_id`
-KEY=`curl -s  -S -X GET http://some-domain-name:9013/things/bootstrap/34:e1:2d:e6:cf:03 -H "Authorization: Thing <BOOTSTRAP_KEY>" -H 'Content-Type: application/json' | jq -r .magistrala_key`
+CH=`curl -s -S -X GET http://some-domain-name:9013/clients/bootstrap/34:e1:2d:e6:cf:03 -H "Authorization: Client <BOOTSTRAP_KEY>" -H 'Content-Type: application/json' | jq -r '.magistrala_channels[0].id'`
+TH=`curl -s  -S -X GET http://some-domain-name:9013/clients/bootstrap/34:e1:2d:e6:cf:03 -H "Authorization: Client <BOOTSTRAP_KEY>" -H 'Content-Type: application/json' | jq -r .magistrala_id`
+KEY=`curl -s  -S -X GET http://some-domain-name:9013/clients/bootstrap/34:e1:2d:e6:cf:03 -H "Authorization: Client <BOOTSTRAP_KEY>" -H 'Content-Type: application/json' | jq -r .magistrala_key`
 
 # Subscribe for response
-mosquitto_sub -d -u $TH -P $KEY  -t "c/${CH}/m/res/#" -h some-domain-name -p 1883
+mosquitto_sub -d -u $TH -P $KEY  -t "m/<domain_id>/c/${CH}/res/#" -h some-domain-name -p 1883
 
 # Publish command e.g `ls`
-mosquitto_pub -d -u $TH -P $KEY  -t c/$CH/m/req -h some-domain-name -p 1883  -m '[{"bn":"1:", "n":"exec", "vs":"ls, -l"}]'
+mosquitto_pub -d -u $TH -P $KEY  -t m/<domain_id>/c/$CH/req -h some-domain-name -p 1883  -m '[{"bn":"1:", "n":"exec", "vs":"ls, -l"}]'
 ```
 
 #### Remote terminal
@@ -125,10 +125,10 @@ You can get the list of services by sending following mqtt message
 
 ```bash
 # View services that are sending heartbeat
-mosquitto_pub -d -u $TH -P $KEY  -t c/$CH/m/req -h some-domain-name -p 1883  -m '[{"bn":"1:", "n":"service", "vs":"view"}]'
+mosquitto_pub -d -u $TH -P $KEY  -t m/<domain_id>/c/$CH/req -h some-domain-name -p 1883  -m '[{"bn":"1:", "n":"service", "vs":"view"}]'
 ```
 
-Response can be observed on `c/$CH/m/res/#`
+Response can be observed on `m/<domain_id>/c/$CH/res/#`
 
 ### Proxying commands
 
@@ -136,7 +136,7 @@ You can send commands to services running on the same edge gateway as Agent if t
 
 Service commands are being sent via MQTT to topic:
 
-`c/<control_channel_id>/m/services/<service_name>/<subtopic>`
+`m/<domain_id>/c/<control_channel_id>/services/<service_name>/<subtopic>`
 
 when messages is received Agent forwards them to the Message Broker on subject:
 
@@ -178,25 +178,25 @@ Commands are:
 #### Operation
 
 ```bash
-mosquitto_pub -u <thing_id> -P <thing_secret> -t c/<channel_id>/m/req -h localhost -m '[{"bn":"1:", "n":"control", "vs":"edgex-operation, start, edgex-support-notifications, edgex-core-data"}]'
+mosquitto_pub -u <client_id> -P <client_secret> -t m/<domain_id>/c/<channel_id>/req -h localhost -m '[{"bn":"1:", "n":"control", "vs":"edgex-operation, start, edgex-support-notifications, edgex-core-data"}]'
 ```
 
 #### Config
 
 ```bash
-mosquitto_pub -u <thing_id> -P <thing_secret> -t c/<channel_id>/m/req -h localhost -m '[{"bn":"1:", "n":"control", "vs":"edgex-config, edgex-support-notifications, edgex-core-data"}]'
+mosquitto_pub -u <client_id> -P <client_secret> -t m/<domain_id>/c/<channel_id>/req -h localhost -m '[{"bn":"1:", "n":"control", "vs":"edgex-config, edgex-support-notifications, edgex-core-data"}]'
 ```
 
 #### Metrics
 
 ```bash
-mosquitto_pub -u <thing_id> -P <thing_secret> -t c/<channel_id>/m/req -h localhost -m '[{"bn":"1:", "n":"control", "vs":"edgex-metrics, edgex-support-notifications, edgex-core-data"}]'
+mosquitto_pub -u <client_id> -P <client_secret> -t m/<domain_id>/c/<channel_id>/req -h localhost -m '[{"bn":"1:", "n":"control", "vs":"edgex-metrics, edgex-support-notifications, edgex-core-data"}]'
 ```
 
 If you subscribe to
 
 ```bash
-mosquitto_sub -u <thing_id> -P <thing_secret> -t c/<channel_id>/m/#
+mosquitto_sub -u <client_id> -P <client_secret> -t m/<domain_id>/c/<channel_id>/#
 ```
 
 You can observe commands and response from commands executed against edgex
@@ -243,28 +243,28 @@ By default `Export` service looks for config file at [`../configs/config.toml`][
   port = "8170"
 
 [mqtt]
-  username = "<thing_id>"
-  password = "<thing_password>"
+  username = "<client_id>"
+  password = "<client_password>"
   ca_path = "ca.crt"
   client_cert = ""
   client_cert_key = ""
-  client_cert_path = "thing.crt"
-  client_priv_key_path = "thing.key"
+  client_cert_path = "client.crt"
+  client_priv_key_path = "client.key"
   mtls = "false"
-  priv_key = "thing.key"
+  priv_key = "client.key"
   retain = "false"
   skip_tls_ver = "false"
   url = "tcp://magistrala.com:1883"
 
 [[routes]]
-  mqtt_topic = "c/<channel_id>/m"
+  mqtt_topic = "m/<domain_id>/c/<channel_id>"
   subtopic = "subtopic"
   nats_topic = "export"
   type = "default"
   workers = 10
 
 [[routes]]
-  mqtt_topic = "c/<channel_id>/m"
+  mqtt_topic = "m/<domain_id>/c/<channel_id>"
   subtopic = "subtopic"
   nats_topic = "channels"
   type = "mfx"
@@ -283,14 +283,14 @@ If you run with environment variables you can create config file:
 MG_EXPORT_PORT=8178 \
 MG_EXPORT_LOG_LEVEL=debug \
 MG_EXPORT_MQTT_HOST=tcp://localhost:1883 \
-MG_EXPORT_MQTT_USERNAME=<thing_id> \
-MG_EXPORT_MQTT_PASSWORD=<thing_secret> \
+MG_EXPORT_MQTT_USERNAME=<client_id> \
+MG_EXPORT_MQTT_PASSWORD=<client_secret> \
 MG_EXPORT_MQTT_CHANNEL=<channel_id> \
 MG_EXPORT_MQTT_SKIP_TLS=true \
 MG_EXPORT_MQTT_MTLS=false \
 MG_EXPORT_MQTT_CA=ca.crt \
-MG_EXPORT_MQTT_CLIENT_CERT=thing.crt \
-MG_EXPORT_MQTT_CLIENT_PK=thing.key \
+MG_EXPORT_MQTT_CLIENT_CERT=client.crt \
+MG_EXPORT_MQTT_CLIENT_PK=client.key \
 MG_EXPORT_CONFIG_FILE=export.toml \
 ../build/magistrala-export&
 ```
@@ -310,11 +310,11 @@ curl -X GET http://localhost:8170/health
 
 To establish connection to MQTT broker following settings are needed:
 
-- `username` - SuperMQ [thing_id]
-- `password` - SuperMQ [thing_secret]
+- `username` - SuperMQ [client_id]
+- `password` - SuperMQ [client_secret]
 - `url` - url of MQTT broker
 
-Additionally, you will need MQTT client certificates if you enable mTLS. To obtain certificates `ca.crt`, `thing.crt` and key `thing.key` follow instructions [here][mutual-tls] or [here][certs-service].
+Additionally, you will need MQTT client certificates if you enable mTLS. To obtain certificates `ca.crt`, `client.crt` and key `client.key` follow instructions [here][mutual-tls] or [here][certs-service].
 
 #### MTLS
 
@@ -322,9 +322,9 @@ To setup `MTLS` connection `Export` service requires client certificate and `mtl
 
 #### Routes
 
-Routes are being used for specifying which subscriber's topic(subject) goes to which publishing topic. Currently only MQTT is supported for publishing. To match SuperMQ requirements `mqtt_topic` must contain `c/<channel_id>/m`, additional subtopics can be appended.
+Routes are being used for specifying which subscriber's topic(subject) goes to which publishing topic. Currently only MQTT is supported for publishing. To match SuperMQ requirements `mqtt_topic` must contain `m/<domain_id>/c/<channel_id>`, additional subtopics can be appended.
 
-- `mqtt_topic` - `c/<channel_id>/m/<custom_subtopic>`
+- `mqtt_topic` - `m/<domain_id>/c/<channel_id>/<custom_subtopic>`
 - `nats_topic` - `Export` service will be subscribed to the Message Broker subject `<nats_topic>.>`
 - `subtopic` - messages will be published to MQTT topic `<mqtt_topic>/<subtopic>/<nats_subject>`, where dots in nats_subject are replaced with '/'
 - `workers` - specifies number of workers that will be used for message forwarding.
@@ -334,9 +334,9 @@ Routes are being used for specifying which subscriber's topic(subject) goes to w
 
 Before running `Export` service edit `configs/config.toml` and provide `username`, `password` and `url`
 
-- `username` - matches `thing_id` in SuperMQ cloud instance
-- `password` - matches `thing_secret`
-- `channel` - MQTT part of the topic where to publish MQTT data (`c/<channel_id>/m` is format of supermq MQTT topic) and plays a part in authorization.
+- `username` - matches `client_id` in SuperMQ cloud instance
+- `password` - matches `client_secret`
+- `channel` - MQTT part of the topic where to publish MQTT data (`m/<domain_id>/c/<channel_id>` is format of supermq MQTT topic) and plays a part in authorization.
 
 If SuperMQ and Export service are deployed on same gateway `Export` can be configured to send messages from SuperMQ internal Message Broker bus to SuperMQ in a cloud. In order for `Export` service to listen on SuperMQ Message Broker deployed on the same machine Message Broker port must be exposed. Edit SuperMQ [docker-compose.yml][docker-compose]. Default Message Broker, NATS, section must look like below:
 
@@ -356,7 +356,7 @@ nats:
 Configuration file for `Export` service can be sent over MQTT using [Agent][agent] service.
 
 ```bash
-mosquitto_pub -u <thing_id> -P <thing_secret> -t c/<control_ch_id>/m/req -h localhost -p 18831  -m  "[{\"bn\":\"1:\", \"n\":\"config\", \"vs\":\"save, export, <config_file_path>, <file_content_base64>\"}]"
+mosquitto_pub -u <client_id> -P <client_secret> -t m/<domain_id>/c/<control_ch_id>/req -h localhost -p 18831  -m  "[{\"bn\":\"1:\", \"n\":\"config\", \"vs\":\"save, export, <config_file_path>, <file_content_base64>\"}]"
 ```
 
 `vs="save, export, config_file_path, file_content_base64"` - vs determines where to save file and contains file content in base64 encoding payload:
@@ -437,10 +437,10 @@ curl -s -S  -X POST  http://localhost:9016/mapping -H "Authorization: Bearer $US
 
 ```json
 {
-  "things": [
+  "clients": [
     {
       "id": "88529fb2-6c1e-4b60-b9ab-73b5d89f7404",
-      "name": "thing",
+      "name": "client",
       "key": "3529c1bb-7211-4d40-9cd8-b05833196093",
       "metadata": {
         "external_id": "54:FG:66:DC:43"
@@ -469,7 +469,7 @@ curl -s -S  -X POST  http://localhost:9016/mapping -H "Authorization: Bearer $US
 }
 ```
 
-Parameters `external_id` and `external_key` are representing the gateway. `Provision` will use them to create a bootstrap configuration that will make a relation with SuperMQ entities used for connection, authentication and authorization `thing` and `channel`. These parameters will be used by `Agent` service on the gateway to retrieve that information and establish a connection with the cloud.
+Parameters `external_id` and `external_key` are representing the gateway. `Provision` will use them to create a bootstrap configuration that will make a relation with SuperMQ entities used for connection, authentication and authorization `client` and `channel`. These parameters will be used by `Agent` service on the gateway to retrieve that information and establish a connection with the cloud.
 
 ## Services on the Edge
 
@@ -481,10 +481,10 @@ Start the [NATS][nats] and [Agent][agent] service:
 gnatsd
 MG_AGENT_BOOTSTRAP_ID=54:FG:66:DC:43 \
 MG_AGENT_BOOTSTRAP_KEY="223334fw2" \
-MG_AGENT_BOOTSTRAP_URL=http://localhost:9013/things/bootstrap \
+MG_AGENT_BOOTSTRAP_URL=http://localhost:9013/clients/bootstrap \
 build/magistrala-agent
-{"level":"info","message":"Requesting config for 54:FG:66:DC:43 from http://localhost:9013/things/bootstrap","ts":"2020-05-07T15:50:58.041145096Z"}
-{"level":"info","message":"Getting config for 54:FG:66:DC:43 from http://localhost:9013/things/bootstrap succeeded","ts":"2020-05-07T15:50:58.120779415Z"}
+{"level":"info","message":"Requesting config for 54:FG:66:DC:43 from http://localhost:9013/clients/bootstrap","ts":"2020-05-07T15:50:58.041145096Z"}
+{"level":"info","message":"Getting config for 54:FG:66:DC:43 from http://localhost:9013/clients/bootstrap succeeded","ts":"2020-05-07T15:50:58.120779415Z"}
 {"level":"info","message":"Saving export config file /configs/export/config.toml","ts":"2020-05-07T15:50:58.121602229Z"}
 {"level":"warn","message":"Failed to save export config file Error writing config file: open /configs/export/config.toml: no such file or directory","ts":"2020-05-07T15:50:58.121752142Z"}
 {"level":"info","message":"Client agent-88529fb2-6c1e-4b60-b9ab-73b5d89f7404 connected","ts":"2020-05-07T15:50:58.128500603Z"}
@@ -500,9 +500,9 @@ make
 
 Edit the `configs/config.toml` setting
 
-- `username` - thing from the results of provision request.
+- `username` - client from the results of provision request.
 - `password` - key from the results of provision request.
-- `mqtt_topic` - in routes set to `c/<channel_data_id>/m` from results of provision.
+- `mqtt_topic` - in routes set to `m/<domain_id>/c/<channel_data_id>` from results of provision.
 - `nats_topic` - whatever you need, export will subscribe to `export.<nats_topic>` and forward messages to MQTT.
 - `host` - url of MQTT broker.
 
@@ -527,7 +527,7 @@ Edit the `configs/config.toml` setting
   username = "88529fb2-6c1e-4b60-b9ab-73b5d89f7404"
 
 [[routes]]
-  mqtt_topic = "c/e2adcfa6-96b2-425d-8cd4-ff8cb9c056ce/m"
+  mqtt_topic = "m/6a45444c-4c89-46f9-a284-9e731674726a/c/e2adcfa6-96b2-425d-8cd4-ff8cb9c056ce"
   nats_topic = ">"
   workers = 10
 ```
@@ -558,7 +558,7 @@ In terminal where export is started you should see following message:
 In SuperMQ `mqtt` service:
 
 ```log
-supermq-mqtt   | {"level":"info","message":"Publish - client ID export-88529fb2-6c1e-4b60-b9ab-73b5d89f7404 to the topic: c/e2adcfa6-96b2-425d-8cd4-ff8cb9c056ce/m/export/test","ts":"2020-05-08T15:16:02.999684791Z"}
+supermq-mqtt   | {"level":"info","message":"Publish - client ID export-88529fb2-6c1e-4b60-b9ab-73b5d89f7404 to the topic: m/6a45444c-4c89-46f9-a284-9e731674726a/c/e2adcfa6-96b2-425d-8cd4-ff8cb9c056ce/export/test","ts":"2020-05-08T15:16:02.999684791Z"}
 ```
 
 [agent]: ./edge.md#agent
