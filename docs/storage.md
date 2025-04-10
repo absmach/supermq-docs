@@ -161,7 +161,7 @@ Readers provide an implementation of various `message readers`. Message readers 
 
 Each of the Reader services exposes the same [HTTP API][readers-api] for fetching messages on its default port.
 
-To read sent messages on channel with id `channel_id` you should send `GET` request to `/channels/<channel_id>/messages` with thing access token in `Authorization` header. That thing must be connected to channel with `channel_id`
+To read sent messages on channel with id `channel_id` you should send `GET` request to `/channels/<channel_id>/messages` with client access token in `Authorization` header. That client must be connected to channel with `channel_id`
 
 Response should look like this:
 
@@ -198,7 +198,7 @@ Content-Length: 228
 Note that you will receive only those messages that were sent by authorization token's owner. You can specify `offset` and `limit` parameters in order to fetch specific group of messages. An example of HTTP request looks like:
 
 ```bash
-curl -s -S -i  -H "Authorization: Thing <thing_secret>" http://localhost:<service_port>/channels/<channel_id>/messages?offset=0&limit=5&format=<subtopic>
+curl -s -S -i  -H "Authorization: Client <client_secret>" http://localhost:<service_port>/channels/<channel_id>/messages?offset=0&limit=5&format=<subtopic>
 ```
 
 If you don't provide `offset` and `limit` parameters, default values will be used instead: 0 for `offset` and 10 for `limit`. The `format` parameter indicates the last subtopic of the message. As indicated under the [`Writers`][writers] section, the message format is stored in the subtopic as the last part of the subtopic. In the example:

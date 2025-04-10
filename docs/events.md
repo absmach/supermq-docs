@@ -1097,7 +1097,7 @@ Whenever client is created, `clients` service will generate new `create` event. 
    ```redis
    1) 1) "1693311470576-0"
    2)  1) "operation"
-       2) "thing.create"
+       2) "client.create"
        3) "id"
        4) "12510af8-b6a7-410d-944c-9feded199d6d"
        5) "status"
@@ -1119,9 +1119,9 @@ Whenever client is created, `clients` service will generate new `create` event. 
 2. In Nats JetStreams
 
    ```json
-   Subject: events.supermq.things Received: 2023-10-05T15:41:04+03:00
+   Subject: events.supermq.clients Received: 2023-10-05T15:41:04+03:00
 
-   {"created_at":"2023-10-05T12:41:04.833207Z","id":"9745f2ea-f776-46b1-9b44-1cfd1ad4c6f1","metadata":"e30=","name":"d0","occurred_at":1696509664860397827,"operation":"thing.create","owner":"0a5f2e21-1a8b-460e-bfa9-732e570df095","status":"enabled"}
+   {"created_at":"2023-10-05T12:41:04.833207Z","id":"9745f2ea-f776-46b1-9b44-1cfd1ad4c6f1","metadata":"e30=","name":"d0","occurred_at":1696509664860397827,"operation":"client.create","owner":"0a5f2e21-1a8b-460e-bfa9-732e570df095","status":"enabled"}
    ```
 
 3. In rabbitmq streams
@@ -1133,22 +1133,22 @@ Whenever client is created, `clients` service will generate new `create` event. 
      "metadata": "e30=",
      "name": "-Maune-Tuttle",
      "occurred_at": 1697532232459167722,
-     "operation": "thing.create",
+     "operation": "client.create",
      "owner": "b2941bd6-ca98-4c56-8d94-05fbf6a967c4",
      "status": "enabled"
    }
    ```
 
-### Thing update event
+### client update event
 
-Whenever thing instance is updated, `things` service will generate new `update` event. This event will have the following format:
+Whenever client instance is updated, `clients` service will generate new `update` event. This event will have the following format:
 
 1. In Redis
 
    ```redis
    1) "1693311470669-0"
    2)  1) "operation"
-       2) "thing.update"
+       2) "client.update"
        3) "updated_at"
        4) "2023-08-29T12:17:50.665752Z"
        5) "updated_by"
@@ -1172,9 +1172,9 @@ Whenever thing instance is updated, `things` service will generate new `update` 
 2. In Nats JetStreams
 
    ```json
-   Subject: events.supermq.things Received: 2023-10-05T18:38:40+03:00
+   Subject: events.supermq.clients Received: 2023-10-05T18:38:40+03:00
 
-   {"created_at":"2023-10-05T15:38:40.264564Z","id":"47540f84-029b-436f-89b5-3c10f87e302b","metadata":"eyJVcGRhdGUiOiJCZXJuYXJkLUJyaWNrZXkifQ==","name":"Bence-Jefferson","occurred_at":1696520320614766498,"operation":"thing.update","owner":"3264e965-3fe5-4d4e-a857-48de43551d2e","status":"enabled","updated_at":"2023-10-05T15:38:40.606662Z","updated_by":"3264e965-3fe5-4d4e-a857-48de43551d2e"}
+   {"created_at":"2023-10-05T15:38:40.264564Z","id":"47540f84-029b-436f-89b5-3c10f87e302b","metadata":"eyJVcGRhdGUiOiJCZXJuYXJkLUJyaWNrZXkifQ==","name":"Bence-Jefferson","occurred_at":1696520320614766498,"operation":"client.update","owner":"3264e965-3fe5-4d4e-a857-48de43551d2e","status":"enabled","updated_at":"2023-10-05T15:38:40.606662Z","updated_by":"3264e965-3fe5-4d4e-a857-48de43551d2e"}
    ```
 
 3. In rabbitmq streams
@@ -1186,7 +1186,7 @@ Whenever thing instance is updated, `things` service will generate new `update` 
      "metadata": "eyJVcGRhdGUiOiJTdGV2ZW5zb24tTW9udHNpb24ifQ==",
      "name": "Marner-Shapiro",
      "occurred_at": 1697532242575070481,
-     "operation": "thing.update",
+     "operation": "client.update",
      "owner": "b2941bd6-ca98-4c56-8d94-05fbf6a967c4",
      "status": "enabled",
      "updated_at": "2023-10-17T08:44:02.571677Z",
@@ -1194,9 +1194,9 @@ Whenever thing instance is updated, `things` service will generate new `update` 
    }
    ```
 
-### Thing update secret event
+### client update secret event
 
-Whenever thing secret is updated, `things` service will generate new `update_secret` event. This event will have the following format:
+Whenever client secret is updated, `clients` service will generate new `update_secret` event. This event will have the following format:
 
 1. In Redis
 
@@ -1213,7 +1213,7 @@ Whenever thing secret is updated, `things` service will generate new `update_sec
        9) "occurred_at"
        10) "1693311470676563107"
        11) "operation"
-       12) "thing.update_secret"
+       12) "client.update_secret"
        13) "updated_at"
        14) "2023-08-29T12:17:50.672865Z"
        15) "updated_by"
@@ -1227,9 +1227,9 @@ Whenever thing secret is updated, `things` service will generate new `update_sec
 2. In Nats JetStreams
 
    ```json
-   Subject: events.supermq.things Received: 2023-10-05T18:38:40+03:00
+   Subject: events.supermq.clients Received: 2023-10-05T18:38:40+03:00
 
-   {"created_at":"2023-10-05T15:38:40.264564Z","id":"47540f84-029b-436f-89b5-3c10f87e302b","metadata":"eyJVcGRhdGUiOiJCZXJuYXJkLUJyaWNrZXkifQ==","name":"Bence-Jefferson","occurred_at":1696520320633637049,"operation":"thing.update_secret","owner":"3264e965-3fe5-4d4e-a857-48de43551d2e","status":"enabled","updated_at":"2023-10-05T15:38:40.625663Z","updated_by":"3264e965-3fe5-4d4e-a857-48de43551d2e"}
+   {"created_at":"2023-10-05T15:38:40.264564Z","id":"47540f84-029b-436f-89b5-3c10f87e302b","metadata":"eyJVcGRhdGUiOiJCZXJuYXJkLUJyaWNrZXkifQ==","name":"Bence-Jefferson","occurred_at":1696520320633637049,"operation":"client.update_secret","owner":"3264e965-3fe5-4d4e-a857-48de43551d2e","status":"enabled","updated_at":"2023-10-05T15:38:40.625663Z","updated_by":"3264e965-3fe5-4d4e-a857-48de43551d2e"}
    ```
 
 3. In rabbitmq streams
@@ -1241,7 +1241,7 @@ Whenever thing secret is updated, `things` service will generate new `update_sec
      "metadata": "eyJVcGRhdGUiOiJTdGV2ZW5zb24tTW9udHNpb24ifQ==",
      "name": "Marner-Shapiro",
      "occurred_at": 1697532242583980252,
-     "operation": "thing.update_secret",
+     "operation": "client.update_secret",
      "owner": "b2941bd6-ca98-4c56-8d94-05fbf6a967c4",
      "status": "enabled",
      "updated_at": "2023-10-17T08:44:02.580896Z",
@@ -1249,16 +1249,16 @@ Whenever thing secret is updated, `things` service will generate new `update_sec
    }
    ```
 
-### Thing update tags event
+### client update tags event
 
-Whenever thing tags are updated, `things` service will generate new `update_tags` event. This event will have the following format:
+Whenever client tags are updated, `clients` service will generate new `update_tags` event. This event will have the following format:
 
 1. In Redis
 
    ```redis
    1) "1693311470682-0"
    2)  1) "operation"
-       2) "thing.update_tags"
+       2) "client.update_tags"
        3) "owner"
        4) "fe2e5de0-9900-4ac5-b364-eae0c35777fb"
        5) "metadata"
@@ -1284,9 +1284,9 @@ Whenever thing tags are updated, `things` service will generate new `update_tags
 2. In Nats JetStreams
 
    ```json
-   Subject: events.supermq.things Received: 2023-10-05T18:38:40+03:00
+   Subject: events.supermq.clients Received: 2023-10-05T18:38:40+03:00
 
-   {"created_at":"2023-10-05T15:38:40.264564Z","id":"47540f84-029b-436f-89b5-3c10f87e302b","metadata":"eyJVcGRhdGUiOiJCZXJuYXJkLUJyaWNrZXkifQ==","name":"Bence-Jefferson","occurred_at":1696520320651750298,"operation":"thing.update_tags","owner":"3264e965-3fe5-4d4e-a857-48de43551d2e","status":"enabled","tags":"[Kac-Kimma]","updated_at":"2023-10-05T15:38:40.643285Z","updated_by":"3264e965-3fe5-4d4e-a857-48de43551d2e"}
+   {"created_at":"2023-10-05T15:38:40.264564Z","id":"47540f84-029b-436f-89b5-3c10f87e302b","metadata":"eyJVcGRhdGUiOiJCZXJuYXJkLUJyaWNrZXkifQ==","name":"Bence-Jefferson","occurred_at":1696520320651750298,"operation":"client.update_tags","owner":"3264e965-3fe5-4d4e-a857-48de43551d2e","status":"enabled","tags":"[Kac-Kimma]","updated_at":"2023-10-05T15:38:40.643285Z","updated_by":"3264e965-3fe5-4d4e-a857-48de43551d2e"}
    ```
 
 3. In rabbitmq streams
@@ -1298,7 +1298,7 @@ Whenever thing tags are updated, `things` service will generate new `update_tags
      "metadata": "eyJVcGRhdGUiOiJTdGV2ZW5zb24tTW9udHNpb24ifQ==",
      "name": "Marner-Shapiro",
      "occurred_at": 1697532242593091501,
-     "operation": "thing.update_tags",
+     "operation": "client.update_tags",
      "owner": "b2941bd6-ca98-4c56-8d94-05fbf6a967c4",
      "status": "enabled",
      "tags": "[Donni-Planting]",
@@ -1307,9 +1307,9 @@ Whenever thing tags are updated, `things` service will generate new `update_tags
    }
    ```
 
-### Thing remove event
+### client remove event
 
-Whenever thing instance is removed from the system, `things` service will generate and publish new `remove` event. This event will have the following format:
+Whenever client instance is removed from the system, `clients` service will generate and publish new `remove` event. This event will have the following format:
 
 1. In Redis Streams
 
@@ -1320,7 +1320,7 @@ Whenever thing instance is removed from the system, `things` service will genera
        3) "occurred_at"
        4) "1693311470688911826"
        5) "operation"
-       6) "thing.remove"
+       6) "client.remove"
        7) "id"
        8) "12510af8-b6a7-410d-944c-9feded199d6d"
        9) "status"
@@ -1330,7 +1330,7 @@ Whenever thing instance is removed from the system, `things` service will genera
 
    1) "1693311470695-0"
    2)  1) "operation"
-       2) "thing.remove"
+       2) "client.remove"
        3) "id"
        4) "12510af8-b6a7-410d-944c-9feded199d6d"
        5) "status"
@@ -1346,13 +1346,13 @@ Whenever thing instance is removed from the system, `things` service will genera
 2. In Nats JetsStreams
 
    ```json
-   Subject: events.supermq.things Received: 2023-10-05T18:38:40+03:00
+   Subject: events.supermq.clients Received: 2023-10-05T18:38:40+03:00
 
-   {"id":"47540f84-029b-436f-89b5-3c10f87e302b","occurred_at":1696520320674227458,"operation":"thing.remove","status":"disabled","updated_at":"2023-10-05T15:38:40.643285Z","updated_by":"3264e965-3fe5-4d4e-a857-48de43551d2e"}
+   {"id":"47540f84-029b-436f-89b5-3c10f87e302b","occurred_at":1696520320674227458,"operation":"client.remove","status":"disabled","updated_at":"2023-10-05T15:38:40.643285Z","updated_by":"3264e965-3fe5-4d4e-a857-48de43551d2e"}
 
-   Subject: events.supermq.things Received: 2023-10-05T18:38:40+03:00
+   Subject: events.supermq.clients Received: 2023-10-05T18:38:40+03:00
 
-   {"id":"47540f84-029b-436f-89b5-3c10f87e302b","occurred_at":1696520320692289306,"operation":"thing.remove","status":"enabled","updated_at":"2023-10-05T15:38:40.643285Z","updated_by":"3264e965-3fe5-4d4e-a857-48de43551d2e"}
+   {"id":"47540f84-029b-436f-89b5-3c10f87e302b","occurred_at":1696520320692289306,"operation":"client.remove","status":"enabled","updated_at":"2023-10-05T15:38:40.643285Z","updated_by":"3264e965-3fe5-4d4e-a857-48de43551d2e"}
    ```
 
 3. In rabbitmq streams
@@ -1361,23 +1361,23 @@ Whenever thing instance is removed from the system, `things` service will genera
    {
      "id": "83c884cc-51b7-40ab-a98f-83ea93f4cdd6",
      "occurred_at": 1697532242603326333,
-     "operation": "thing.remove",
+     "operation": "client.remove",
      "status": "disabled",
      "updated_at": "2023-10-17T08:44:02.589939Z",
      "updated_by": "b2941bd6-ca98-4c56-8d94-05fbf6a967c4"
    }
    ```
 
-### Thing view event
+### client view event
 
-Whenever thing is viewed, `things` service will generate new `view` event. This event will have the following format:
+Whenever client is viewed, `clients` service will generate new `view` event. This event will have the following format:
 
 1. In Redis Streams
 
    ```redis
    1) "1693311470608-0"
    2)  1) "operation"
-       2) "thing.view"
+       2) "client.view"
        3) "id"
        4) "12510af8-b6a7-410d-944c-9feded199d6d"
        5) "name"
@@ -1397,9 +1397,9 @@ Whenever thing is viewed, `things` service will generate new `view` event. This 
 2. In Nats JetStreams
 
    ```json
-   Subject: events.supermq.things Received: 2023-10-05T15:42:00+03:00
+   Subject: events.supermq.clients Received: 2023-10-05T15:42:00+03:00
 
-   {"created_at":"2023-10-05T12:41:04.833207Z","id":"9745f2ea-f776-46b1-9b44-1cfd1ad4c6f1","metadata":"e30=","name":"d0","occurred_at":1696509720925490970,"operation":"thing.view","owner":"0a5f2e21-1a8b-460e-bfa9-732e570df095","status":"enabled"}
+   {"created_at":"2023-10-05T12:41:04.833207Z","id":"9745f2ea-f776-46b1-9b44-1cfd1ad4c6f1","metadata":"e30=","name":"d0","occurred_at":1696509720925490970,"operation":"client.view","owner":"0a5f2e21-1a8b-460e-bfa9-732e570df095","status":"enabled"}
    ```
 
 3. In rabbitmq streams
@@ -1411,15 +1411,15 @@ Whenever thing is viewed, `things` service will generate new `view` event. This 
      "metadata": "e30=",
      "name": "-Maune-Tuttle",
      "occurred_at": 1697532237490995357,
-     "operation": "thing.view",
+     "operation": "client.view",
      "owner": "b2941bd6-ca98-4c56-8d94-05fbf6a967c4",
      "status": "enabled"
    }
    ```
 
-### Thing list event
+### client list event
 
-Whenever thing list is fetched, `things` service will generate new `list` event. This event will have the following format:
+Whenever client list is fetched, `clients` service will generate new `list` event. This event will have the following format:
 
 1. In Redis Streams
 
@@ -1428,7 +1428,7 @@ Whenever thing list is fetched, `things` service will generate new `list` event.
    2)  1) "occurred_at"
        2) "1693311470613173088"
        3) "operation"
-       4) "thing.list"
+       4) "client.list"
        5) "total"
        6) "0"
        7) "offset"
@@ -1442,9 +1442,9 @@ Whenever thing list is fetched, `things` service will generate new `list` event.
 2. In Nats JetStreams
 
    ```json
-   Subject: events.supermq.things Received: 2023-10-05T18:38:40+03:00
+   Subject: events.supermq.clients Received: 2023-10-05T18:38:40+03:00
 
-   {"limit":10,"occurred_at":1696520320459999484,"offset":0,"operation":"thing.list","status":"enabled","total":0}
+   {"limit":10,"occurred_at":1696520320459999484,"offset":0,"operation":"client.list","status":"enabled","total":0}
    ```
 
 3. In rabbitmq streams
@@ -1454,20 +1454,20 @@ Whenever thing list is fetched, `things` service will generate new `list` event.
      "limit": 10,
      "occurred_at": 1697532237496534968,
      "offset": 0,
-     "operation": "thing.list",
+     "operation": "client.list",
      "status": "enabled",
      "total": 0
    }
    ```
 
-### Thing list by channel event
+### client list by channel event
 
-Whenever thing list by channel is fetched, `things` service will generate new `list_by_channel` event. This event will have the following format:
+Whenever client list by channel is fetched, `clients` service will generate new `list_by_channel` event. This event will have the following format:
 
 ```redis
 1) "1693312322620-0"
 2)  1) "operation"
-    2) "thing.list_by_channel"
+    2) "client.list_by_channel"
     3) "total"
     4) "0"
     5) "offset"
@@ -1482,17 +1482,17 @@ Whenever thing list by channel is fetched, `things` service will generate new `l
     14) "1693312322620481072"
 ```
 
-### Thing identify event
+### client identify event
 
-Whenever thing is identified, `things` service will generate new `identify` event. This event will have the following format:
+Whenever client is identified, `clients` service will generate new `identify` event. This event will have the following format:
 
 1. In Redis Streams
 
    ```redis
    1) "1693312391155-0"
    2) 1) "operation"
-       2) "thing.identify"
-       3) "thing_id"
+       2) "client.identify"
+       3) "client_id"
        4) "dc82d6bf-973b-4582-9806-0230cee11c20"
        5) "occurred_at"
        6) "1693312391155123548"
@@ -1501,14 +1501,14 @@ Whenever thing is identified, `things` service will generate new `identify` even
 2. In Nats JetStreams
 
    ```json
-   Subject: events.supermq.things Received: 2023-10-05T18:38:40+03:00
+   Subject: events.supermq.clients Received: 2023-10-05T18:38:40+03:00
 
-   {"occurred_at":1696520320934964056,"operation":"thing.identify","thing_id":"47540f84-029b-436f-89b5-3c10f87e302b"}
+   {"occurred_at":1696520320934964056,"operation":"client.identify","client_id":"47540f84-029b-436f-89b5-3c10f87e302b"}
    ```
 
 ### Channel create event
 
-Whenever channel instance is created, `things` service will generate and publish new `create` event. This event will have the following format:
+Whenever channel instance is created, `clients` service will generate and publish new `create` event. This event will have the following format:
 
 1. In Redis Streams
 
@@ -1535,7 +1535,7 @@ Whenever channel instance is created, `things` service will generate and publish
 2. In Nats JetStreams
 
    ```json
-   Subject: events.supermq.things Received: 2023-10-05T15:55:39+03:00
+   Subject: events.supermq.clients Received: 2023-10-05T15:55:39+03:00
 
    {"created_at":"2023-10-05T12:55:39.175568Z","id":"45eb9f35-1360-4051-81e2-9582433a6607","metadata":"e30=","name":"hephaestus","occurred_at":1696510539182201160,"operation":"channel.create","owner":"97466511-6317-4c98-8d58-7bd78bcaf587","status":"enabled"}
    ```
@@ -1557,7 +1557,7 @@ Whenever channel instance is created, `things` service will generate and publish
 
 ### Channel update event
 
-Whenever channel instance is updated, `things` service will generate and publish new `update` event. This event will have the following format:
+Whenever channel instance is updated, `clients` service will generate and publish new `update` event. This event will have the following format:
 
 1. In Redis Streams
 
@@ -1588,7 +1588,7 @@ Whenever channel instance is updated, `things` service will generate and publish
 2. In Nats JetStreams
 
    ```json
-   Subject: events.supermq.things Received: 2023-10-05T16:00:29+03:00
+   Subject: events.supermq.clients Received: 2023-10-05T16:00:29+03:00
 
    {"created_at":"2023-10-05T12:41:04.87198Z","id":"5f9d4b76-0717-4859-8ef8-6fcfb81f44d5","metadata":"e30=","name":"hestia","occurred_at":1696510829837578155,"operation":"channel.update","owner":"0a5f2e21-1a8b-460e-bfa9-732e570df095","status":"enabled","updated_at":"2023-10-05T13:00:29.828132Z","updated_by":"97466511-6317-4c98-8d58-7bd78bcaf587"}
    ```
@@ -1614,7 +1614,7 @@ Note that update channel event will contain only those fields that were updated 
 
 ### Channel remove event
 
-Whenever channel instance is removed from the system, `things` service will generate and publish new `remove` event. This event will have the following format:
+Whenever channel instance is removed from the system, `clients` service will generate and publish new `remove` event. This event will have the following format:
 
 1. In Redis Streams
 
@@ -1651,11 +1651,11 @@ Whenever channel instance is removed from the system, `things` service will gene
 2. In Nats JetStreams
 
    ```json
-   Subject: events.supermq.things Received: 2023-10-05T18:38:40+03:00
+   Subject: events.supermq.clients Received: 2023-10-05T18:38:40+03:00
 
    {"id":"e4fa015f-bfad-4f41-bebe-142d3e938d3a","occurred_at":1696520320726205997,"operation":"channel.remove","status":"disabled","updated_at":"2023-10-05T15:38:40.702159Z","updated_by":"3264e965-3fe5-4d4e-a857-48de43551d2e"}
 
-   Subject: events.supermq.things Received: 2023-10-05T18:38:40+03:00
+   Subject: events.supermq.clients Received: 2023-10-05T18:38:40+03:00
 
    {"id":"e4fa015f-bfad-4f41-bebe-142d3e938d3a","occurred_at":1696520320786154457,"operation":"channel.remove","status":"enabled","updated_at":"2023-10-05T15:38:40.702159Z","updated_by":"3264e965-3fe5-4d4e-a857-48de43551d2e"}
    ```
@@ -1675,7 +1675,7 @@ Whenever channel instance is removed from the system, `things` service will gene
 
 ### Channel view event
 
-Whenever channel is viewed, `things` service will generate new `view` event. This event will have the following format:
+Whenever channel is viewed, `clients` service will generate new `view` event. This event will have the following format:
 
 1. In Redis Streams
 
@@ -1702,7 +1702,7 @@ Whenever channel is viewed, `things` service will generate new `view` event. Thi
 2. In Nats JetStream
 
    ```json
-   Subject: events.supermq.things Received: 2023-10-05T18:38:40+03:00
+   Subject: events.supermq.clients Received: 2023-10-05T18:38:40+03:00
 
    {"created_at":"2023-10-05T15:38:40.31444Z","id":"e4fa015f-bfad-4f41-bebe-142d3e938d3a","metadata":"e30=","name":"-Cech-Hargreaves","occurred_at":1696520320475816826,"operation":"channel.view","owner":"3264e965-3fe5-4d4e-a857-48de43551d2e","status":"enabled"}
    ```
@@ -1724,7 +1724,7 @@ Whenever channel is viewed, `things` service will generate new `view` event. Thi
 
 ### Channel list event
 
-Whenever channel list is fetched, `things` service will generate new `list` event. This event will have the following format:
+Whenever channel list is fetched, `clients` service will generate new `list` event. This event will have the following format:
 
 1. In Redis
 
@@ -1747,7 +1747,7 @@ Whenever channel list is fetched, `things` service will generate new `list` even
 2. In Nats JetStreams
 
    ```json
-   Subject: events.supermq.things Received: 2023-10-05T18:38:40+03:00
+   Subject: events.supermq.clients Received: 2023-10-05T18:38:40+03:00
 
    {"limit":10,"occurred_at":1696520320495779280,"offset":0,"operation":"channel.list","status":"enabled","total":0}
    ```
@@ -1765,38 +1765,38 @@ Whenever channel list is fetched, `things` service will generate new `list` even
    }
    ```
 
-### Channel list by thing event
+### Channel list by client event
 
-Whenever channel list by thing is fetched, `things` service will generate new `list_by_thing` event. This event will have the following format:
+Whenever channel list by client is fetched, `clients` service will generate new `list_by_client` event. This event will have the following format:
 
 ```redis
 1) "1693312299484-0"
 2)  1) "occurred_at"
     2) "1693312299484000183"
     3) "operation"
-    4) "channel.list_by_thing"
+    4) "channel.list_by_client"
     5) "total"
     6) "0"
     7) "offset"
     8) "0"
     9) "limit"
     10) "10"
-    11) "thing_id"
+    11) "client_id"
     12) "dc82d6bf-973b-4582-9806-0230cee11c20"
     13) "status"
     14) "enabled"
 ```
 
-### Thing Policy authorize event
+### client Policy authorize event
 
-Whenever policy is authorized, `things` service will generate new `authorize` event. This event will have the following format:
+Whenever policy is authorized, `clients` service will generate new `authorize` event. This event will have the following format:
 
 1. In Redis Streams
 
    ```redis
    1) "1693311470724-0"
    2)  1) "entity_type"
-       2) "thing"
+       2) "client"
        3) "object"
        4) "8a85e2d5-e783-43ee-8bea-d6d0f8039e78"
        5) "actions"
@@ -1810,9 +1810,9 @@ Whenever policy is authorized, `things` service will generate new `authorize` ev
 2. In Nats JetStreams
 
    ```json
-   Subject: events.supermq.things Received: 2023-10-05T18:38:40+03:00
+   Subject: events.supermq.clients Received: 2023-10-05T18:38:40+03:00
 
-   {"actions":"m_write","entity_type":"thing","object":"e4fa015f-bfad-4f41-bebe-142d3e938d3a","occurred_at":1696520320938561965,"operation":"policies.authorize"}
+   {"actions":"m_write","entity_type":"client","object":"e4fa015f-bfad-4f41-bebe-142d3e938d3a","occurred_at":1696520320938561965,"operation":"policies.authorize"}
    ```
 
 3. In Rabbitmq streams
@@ -1821,15 +1821,15 @@ Whenever policy is authorized, `things` service will generate new `authorize` ev
    {
      "action": "c_list",
      "entity_type": "client",
-     "object": "things",
+     "object": "clients",
      "occurred_at": 1697536682155214702,
      "operation": "policies.authorize"
    }
    ```
 
-### Thing Policy add event
+### client Policy add event
 
-Whenever policy is added, `things` service will generate new `add` event. This event will have the following format:
+Whenever policy is added, `clients` service will generate new `add` event. This event will have the following format:
 
 1. In Redis Streams
 
@@ -1854,7 +1854,7 @@ Whenever policy is added, `things` service will generate new `add` event. This e
 2. In Nats JetStreams
 
    ```json
-   Subject: events.supermq.things Received: 2023-10-05T15:41:04+03:00
+   Subject: events.supermq.clients Received: 2023-10-05T15:41:04+03:00
 
    {"actions":"[m_write,m_read]","created_at":"2023-10-05T12:41:04.901355Z","object":"5f9d4b76-0717-4859-8ef8-6fcfb81f44d5","occurred_at":1696509664928590911,"operation":"policies.add","owner_id":"0a5f2e21-1a8b-460e-bfa9-732e570df095","subject":"9745f2ea-f776-46b1-9b44-1cfd1ad4c6f1"}
    ```
@@ -1873,9 +1873,9 @@ Whenever policy is added, `things` service will generate new `add` event. This e
    }
    ```
 
-### Thing Policy update event
+### client Policy update event
 
-Whenever policy is updated, `things` service will generate new `update` event. This event will have the following format:
+Whenever policy is updated, `clients` service will generate new `update` event. This event will have the following format:
 
 1. In Redis Streams
 
@@ -1914,9 +1914,9 @@ Whenever policy is updated, `things` service will generate new `update` event. T
    }
    ```
 
-### Thing Policy remove event
+### client Policy remove event
 
-Whenever policy is removed, `things` service will generate new `remove` event. This event will have the following format:
+Whenever policy is removed, `clients` service will generate new `remove` event. This event will have the following format:
 
 1. In Redis Streams
 
@@ -1937,7 +1937,7 @@ Whenever policy is removed, `things` service will generate new `remove` event. T
 2. In Nats JetStreams
 
    ```json
-   Subject: events.supermq.things Received: 2023-10-05T16:05:15+03:00
+   Subject: events.supermq.clients Received: 2023-10-05T16:05:15+03:00
 
    {"actions":"[m_write,m_read]","object":"5f9d4b76-0717-4859-8ef8-6fcfb81f44d5","occurred_at":1696511115507500254,"operation":"policies.delete","subject":"9745f2ea-f776-46b1-9b44-1cfd1ad4c6f1"}
    ```
@@ -1954,9 +1954,9 @@ Whenever policy is removed, `things` service will generate new `remove` event. T
    }
    ```
 
-### Thing Policy list event
+### client Policy list event
 
-Whenever policy list is fetched, `things` service will generate new `list` event. This event will have the following format:
+Whenever policy list is fetched, `clients` service will generate new `list` event. This event will have the following format:
 
 1. In Redis Streams
 
@@ -1997,9 +1997,9 @@ Bootstrap service publishes events to Redis Stream called `supermq.bootstrap`. E
 - `config.create` for configuration creation,
 - `config.update` for configuration update,
 - `config.remove` for configuration removal,
-- `thing.bootstrap` for device bootstrap,
-- `thing.state_change` for device state change,
-- `thing.update_connections` for device connection update.
+- `client.bootstrap` for device bootstrap,
+- `client.state_change` for device state change,
+- `client.update_connections` for device connection update.
 
 If you want to integrate through [docker-compose.yml][bootstrap-docker-compose] you can use `supermq-es-redis` service. Just connect to it and consume events from Redis Stream named `supermq.bootstrap`.
 
@@ -2025,7 +2025,7 @@ Whenever configuration is created, `bootstrap` service will generate and publish
        12) "-----BEGIN ENCRYPTED PRIVATE KEY-----MIIFHDBOBgkqhkiG9w0BBQ0wQTApBgkqhkiG9w0BBQwwHAQIc+VAU9JPnIkCAggAMAwGCCqGSIb3DQIJBQAwFAYIKoZIhvcNAwcECImSB+9qZ8dmBIIEyBW/rZlECWnEcMuTXhfJFe+3HP4rV+TXEEuigwCbtVPHWXoZj7KqGiOFgFaDL5Ne/GRwVD6geaTeQVl3aoHzo8mY0yuX2L36Ho2yHF/Bw89WT3hgP0lZ1lVO7O7n8DwybOaoJ+1S3akyb6OPbqcxJou1IGzKV1kz77R8V8nOFSd1BOepNbanGxVG8Jkgc37dQnICXwwaYkTx9PQBtSux1j3KgX0p+VAUNoUFi7N6b0MeO8iEuLU1dUiVwlH/jtitg0W3AvSV+5gezTT2VQW3CVlz6IBTPI1Rfl/3ss18Tao0NiPUmXMIgreBCamXvb0aJm8JxVbhoFYqWVNVocBD+n1+NwhCRlZM5Kgaes5S2JuFnjTAqEYytlQqEySbaN57XYCDNVmQz2iViz/+npuR9SCGwnNvV/TNsKRwav+0NC0pbf3LNk/KL9/X5ccmPhB5Rl7IS/v1BBLYX/jYWVN0dJiSA7fVIr9Acr7IbxWEQ2Y2qh1wdhayi4FBUHY3weivYSU3uGZizsSGJP/N6DutBgS1aXd5X/CqfF7VzRaKF4cfLO4XxTYUEjOztUNMN2XmW0o+ULjQmbouRPs/PIFmh6rc+h42m6p4SkjcsIKOy+mPTeJqhOVmYoMzO8+7mmXDOjFwvi/w97sdmbjII8Zn2iR/N8GuY23vv5h6LQ3tQ5kTA4IuPbYCVLeggd4iMM6TgpuJn0aG7yo4tDFqMeadCVhP2Bp3JQa8r3B2IJstTTF1OtZCrInjSus9ViOiM02Iz3ZmyglsMonJDlWeJL5jKBgqPbLR82IDhIY4IO6SqoVsWu4iWuLW5/TM3fdfYG3Wdvu7Suz7/anLAaMQEzKhObwgDdKmv4PkF75frex969CB1pQqSVnXmz4GrtxVUzWtlflaTSdSegpUXWLhG+jUNKTu+ptxDNM/JBxRNLSzdvsGbkI0qycOCliVpKkkvuiBGtiDWNax6KhV4/oRjkEkTRks9Xeko+q3uY4B//AGxsotsVhF5vhUDTOl5IX7a7wCPtbTGiaR79eprRzGnP9yP38djVrvXprJFU8P7GUr/f2qJt2jDYuCkaqAMsfjdu6YHitjj3ty4vrASgxJ0vsroWhjgiCwgASqM7GnweHSHy5/OZK8jCZX+g+B63Mu4ec+/nNnjvuLqBBZN/FSzXU5fVmYznfPaqW+1Xep+Aj1yGk3L3tvnKLc3sZ1HAJQEjud5dbME6e0JGxh5xOCnzWUR+YL/96KJAcgkxDJ1DxxHv0Uu/5kO5InOsPjs4YKuzqD4nUmGsFsJzTxG626wdGXJMO4YCRKkKtnNeWqMaslM3paN19/tTWyEbaDqc5mVzYLIb3Mzju+OV4GniDeVIvSIsXK5aFGj1PEhfCprQCqUzdNhFU8hF4kUVhn9dp0ExveT7btHSMlEZAWHRkDuLqaImpQkjYmwt90cxtdZwQvjTDtsFmQrvcSp8n1K3P5PwZpVtIw2UHpx+NjE8ZYwOozpXl/oOMzVTB8mi1dQGFkpac9cwnzCZof0ub4iutBeKc4WeEOytvY+CY7hc+/ncCprZ08nlkQarQV7jhfJj658GfBMLGzJtYkCrHwi/AoseIXa5W7eX+lz7O92H2M5QnEkPStQ9lsz2VkYA==-----END ENCRYPTED PRIVATE KEY-----"
        13) "occurred_at"
        14) "1693313286544243035"
-       15) "thing_id"
+       15) "client_id"
        16) "dc82d6bf-973b-4582-9806-0230cee11c20"
        17) "content"
        18) "{   \"server\": {     \"address\": \"127.0.0.1\",     \"port\": 8080   },   \"database\": {     \"host\": \"localhost\",     \"port\": 5432,     \"username\": \"user\",     \"password\": \"password\",     \"dbname\": \"mydb\"   },   \"logging\": {     \"level\": \"info\",     \"file\": \"app.log\"   } }"
@@ -2042,7 +2042,7 @@ Whenever configuration is created, `bootstrap` service will generate and publish
    ```json
    Subject: events.supermq.bootstrap Received: 2023-10-11T19:17:46+03:00
 
-   {"client_cert":"-----BEGIN CERTIFICATE-----\nMIIEATCCAumgAwIBAgIUNl+p3eaPJsZRFvW/u5AGBLgx7YMwDQYJKoZIhvcNAQEL\nBQAwLjEsMCoGA1UEAxMjbWFpbmZsdXguY29tIEludGVybWVkaWF0ZSBBdXRob3Jp\ndHkwHhcNMjMxMDExMTYwMDQ0WhcNMjMxMTEwMTYwMTE0WjAvMS0wKwYDVQQDEyQ1\nNmRhNGU5NC0zZDFjLTRhMGQtYTNmNC1hNTdkZDBhNTVkN2IwggEiMA0GCSqGSIb3\nDQEBAQUAA4IBDwAwggEKAoIBAQCt3dFuSvEtihmHKBNCe8AUI/xTJn+JCUF90+ZY\njoz8hWVwd/UhJQKTblBhWL/osGOrr3PItcCVZ1JDaGQMQzhtaPYnBbwJDwMTbcey\nlb/E6O/DD4UCqWpjQjYhc0/z98oM70E+Szs6yp+68qYIGQDH669P91TaURtuGGMr\n8nLN6fQTb9mVZX1L3ps8zHoxb+i7oVhLmjGeGXjf3HP4U+L/hwYhZ/gqqXYZJli6\nR1j5BxJuk1aVKqwrm2qbuFYhWI7Wl6ZEoEk2Q3FV1onzxcVHB5xBacDcNHhyQmoE\nhIg4lt1DTaUKRxlZqbhJQtLrrCeI8NCvEpC/dh1eBwddIxKbAgMBAAGjggEUMIIB\nEDAOBgNVHQ8BAf8EBAMCA6gwHQYDVR0lBBYwFAYIKwYBBQUHAwEGCCsGAQUFBwMC\nMB0GA1UdDgQWBBTcmEIW7knfrwBTyBu6WwycgGqzwTAfBgNVHSMEGDAWgBQMxD1V\nt+J/aShmUQJJHmdmmZ/fXDA7BggrBgEFBQcBAQQvMC0wKwYIKwYBBQUHMAKGH2h0\ndHA6Ly92YXVsdDo4MjAwL3YxL3BraV9pbnQvY2EwLwYDVR0RBCgwJoIkNTZkYTRl\nOTQtM2QxYy00YTBkLWEzZjQtYTU3ZGQwYTU1ZDdiMDEGA1UdHwQqMCgwJqAkoCKG\nIGh0dHA6Ly92YXVsdDo4MjAwL3YxL3BraV9pbnQvY3JsMA0GCSqGSIb3DQEBCwUA\nA4IBAQCiCS+dPhXS/upfMieFbt8+QmYQFZ82Ct2oTsDTBaDczE7MiLxrl5iKbynk\nT47y+hyvWFIb31BhrIrS6mRR+9IoJdmje3KxyvNr/TtSw7T4spbfRo30uk2flnA0\nDhJv3bzcYRwjaLdBcZTUS0GETqztdqMThJIY2EAfhfKDM0ecM4tF2c8/RT14BpPO\nEVCUX69A0k6p80xTfmyhvKIfiMsJIcqsHuOiEsiXwgNNUqc332bIV+fQW+vXK8eS\nstp7N2v6axo016wf3qgEUPdPC0sPMHlwIc3s6ddZOoatk6LKH1nW2gIguUH4Ws7s\nAN5Cs0h2D+AWi+IJpDuUzvgrd4/3\n-----END CERTIFICATE-----","client_key":"-----BEGIN RSA PRIVATE KEY-----\nMIIEpQIBAAKCAQEArd3RbkrxLYoZhygTQnvAFCP8UyZ/iQlBfdPmWI6M/IVlcHf1\nISUCk25QYVi/6LBjq69zyLXAlWdSQ2hkDEM4bWj2JwW8CQ8DE23HspW/xOjvww+F\nAqlqY0I2IXNP8/fKDO9BPks7OsqfuvKmCBkAx+uvT/dU2lEbbhhjK/Jyzen0E2/Z\nlWV9S96bPMx6MW/ou6FYS5oxnhl439xz+FPi/4cGIWf4Kql2GSZYukdY+QcSbpNW\nlSqsK5tqm7hWIViO1pemRKBJNkNxVdaJ88XFRwecQWnA3DR4ckJqBISIOJbdQ02l\nCkcZWam4SULS66wniPDQrxKQv3YdXgcHXSMSmwIDAQABAoIBAGFvWKmdd/EUXl/+\n1mRAo5Dl5cbXYUtzk28nbAQexuXQ/9r6brYHXp0uif8z1EBbcU/KgHFvYaCYiWJb\nQw4YMawm0SNnNExDTG7765iqERERlSPUM68dMBC2D03JqHnJWELNZdu6H1RALyl+\nSAtrr6NZ8iI3MicyotOc+R6svSelUigaTKYGadWKNQJjOpLpFhu0D87iTdQ2dJyU\nJKGuB1YCp3rTNXTLuq/omMDyqJYPCNXbKW78bM9UExz0suYJi6URW/aQIK/A8CUh\nXAm40C2aQ8d5tHONsIGB9BlzOkHrXB2CvHKkQWl/TEfo6qcFI6qhx1Gx72SOK7F1\nAE0dDQkCgYEA5Vqq4/LrY/uzjTN918IYrcSi3gr0NoUY/KuZverBZdSR/fS0vMHX\nQ/X7XGE2gOGrzqWN2dtEAmMrisfo9zUlimU+7SWeetOKa5JTtmSZGFWvCrvsnWkH\narZT59t3yJ7YqwbjRmaSC3Uq7veFBsIEKbszm0eeMCtNcSLuykmBM/8CgYEAwhDd\nS3OLj4J62PlSjyBHSDP2Zv5sG6jXDDRPo8HQWcWoOq2stnwgrblkEXpsSpaRaUP8\nQabEtkobckYx3OK6/0Q4c0A6I4lHQpm2m6K2o+8lsG/OwwNplXA+kpYuqUYEjgBl\nFiGblZCtyDPdd4PnHDBjKLUzOYxgRDxfVLLKcWUCgYEAm4+ypyellswqzZPmQAhL\nOtlLanVdjPkbqI0vmwv2Hv5eAzUNvZVwT40w70iUcjgekuvhWamJ6GChMOFE1x96\nFfN0Cd9hLYf7s9is5OI4oLPFJO+vnliVikCein1mMnHjHaVvU9nQJutSsoC5/opr\nzm5Fo4Wg+qT0Qs9hzVyrwLsCgYEAoTk9f6d4dDskMAnByuI4FgYFWL9ZtQjpz1vO\nJe+oVkxdXJJYgCpTQ8BXICYivTylhVxTv376wa6DasZiOm2qiNN2Slk7c7ZimzP0\nfwwIy9yr5Q6eKWk2WE4tzb4y+bIPqqEtWduF1BWkKkTcYqQUZljUqEcRTWgPueCm\nGkmG4fkCgYEAk1rI1pAdfdxLrKTGu2WRfr0UgNx/eUjVuL5GT3Bu092QLXwFc3Py\nsIu7vHRQY1ASGRDvlyx76Uc+mtmXhowwBL1fTiKcfgD3SbqRTw8rwJbF6MNB7fOH\nSWlA4wuzpwVvg0j2DoY5LbwMN7AbrGS451E14xUwpEWdIDChWw14qag=\n-----END RSA PRIVATE KEY-----","external_id":"889","name":"ariadne","occurred_at":1697041066438195084,"operation":"config.create","owner":"1058552c-3f6a-4bfe-827e-ecbcdc95d344","state":"0","thing_id":"bb569875-a268-4ed4-b382-b88b181c61f3"}
+   {"client_cert":"-----BEGIN CERTIFICATE-----\nMIIEATCCAumgAwIBAgIUNl+p3eaPJsZRFvW/u5AGBLgx7YMwDQYJKoZIhvcNAQEL\nBQAwLjEsMCoGA1UEAxMjbWFpbmZsdXguY29tIEludGVybWVkaWF0ZSBBdXRob3Jp\ndHkwHhcNMjMxMDExMTYwMDQ0WhcNMjMxMTEwMTYwMTE0WjAvMS0wKwYDVQQDEyQ1\nNmRhNGU5NC0zZDFjLTRhMGQtYTNmNC1hNTdkZDBhNTVkN2IwggEiMA0GCSqGSIb3\nDQEBAQUAA4IBDwAwggEKAoIBAQCt3dFuSvEtihmHKBNCe8AUI/xTJn+JCUF90+ZY\njoz8hWVwd/UhJQKTblBhWL/osGOrr3PItcCVZ1JDaGQMQzhtaPYnBbwJDwMTbcey\nlb/E6O/DD4UCqWpjQjYhc0/z98oM70E+Szs6yp+68qYIGQDH669P91TaURtuGGMr\n8nLN6fQTb9mVZX1L3ps8zHoxb+i7oVhLmjGeGXjf3HP4U+L/hwYhZ/gqqXYZJli6\nR1j5BxJuk1aVKqwrm2qbuFYhWI7Wl6ZEoEk2Q3FV1onzxcVHB5xBacDcNHhyQmoE\nhIg4lt1DTaUKRxlZqbhJQtLrrCeI8NCvEpC/dh1eBwddIxKbAgMBAAGjggEUMIIB\nEDAOBgNVHQ8BAf8EBAMCA6gwHQYDVR0lBBYwFAYIKwYBBQUHAwEGCCsGAQUFBwMC\nMB0GA1UdDgQWBBTcmEIW7knfrwBTyBu6WwycgGqzwTAfBgNVHSMEGDAWgBQMxD1V\nt+J/aShmUQJJHmdmmZ/fXDA7BggrBgEFBQcBAQQvMC0wKwYIKwYBBQUHMAKGH2h0\ndHA6Ly92YXVsdDo4MjAwL3YxL3BraV9pbnQvY2EwLwYDVR0RBCgwJoIkNTZkYTRl\nOTQtM2QxYy00YTBkLWEzZjQtYTU3ZGQwYTU1ZDdiMDEGA1UdHwQqMCgwJqAkoCKG\nIGh0dHA6Ly92YXVsdDo4MjAwL3YxL3BraV9pbnQvY3JsMA0GCSqGSIb3DQEBCwUA\nA4IBAQCiCS+dPhXS/upfMieFbt8+QmYQFZ82Ct2oTsDTBaDczE7MiLxrl5iKbynk\nT47y+hyvWFIb31BhrIrS6mRR+9IoJdmje3KxyvNr/TtSw7T4spbfRo30uk2flnA0\nDhJv3bzcYRwjaLdBcZTUS0GETqztdqMThJIY2EAfhfKDM0ecM4tF2c8/RT14BpPO\nEVCUX69A0k6p80xTfmyhvKIfiMsJIcqsHuOiEsiXwgNNUqc332bIV+fQW+vXK8eS\nstp7N2v6axo016wf3qgEUPdPC0sPMHlwIc3s6ddZOoatk6LKH1nW2gIguUH4Ws7s\nAN5Cs0h2D+AWi+IJpDuUzvgrd4/3\n-----END CERTIFICATE-----","client_key":"-----BEGIN RSA PRIVATE KEY-----\nMIIEpQIBAAKCAQEArd3RbkrxLYoZhygTQnvAFCP8UyZ/iQlBfdPmWI6M/IVlcHf1\nISUCk25QYVi/6LBjq69zyLXAlWdSQ2hkDEM4bWj2JwW8CQ8DE23HspW/xOjvww+F\nAqlqY0I2IXNP8/fKDO9BPks7OsqfuvKmCBkAx+uvT/dU2lEbbhhjK/Jyzen0E2/Z\nlWV9S96bPMx6MW/ou6FYS5oxnhl439xz+FPi/4cGIWf4Kql2GSZYukdY+QcSbpNW\nlSqsK5tqm7hWIViO1pemRKBJNkNxVdaJ88XFRwecQWnA3DR4ckJqBISIOJbdQ02l\nCkcZWam4SULS66wniPDQrxKQv3YdXgcHXSMSmwIDAQABAoIBAGFvWKmdd/EUXl/+\n1mRAo5Dl5cbXYUtzk28nbAQexuXQ/9r6brYHXp0uif8z1EBbcU/KgHFvYaCYiWJb\nQw4YMawm0SNnNExDTG7765iqERERlSPUM68dMBC2D03JqHnJWELNZdu6H1RALyl+\nSAtrr6NZ8iI3MicyotOc+R6svSelUigaTKYGadWKNQJjOpLpFhu0D87iTdQ2dJyU\nJKGuB1YCp3rTNXTLuq/omMDyqJYPCNXbKW78bM9UExz0suYJi6URW/aQIK/A8CUh\nXAm40C2aQ8d5tHONsIGB9BlzOkHrXB2CvHKkQWl/TEfo6qcFI6qhx1Gx72SOK7F1\nAE0dDQkCgYEA5Vqq4/LrY/uzjTN918IYrcSi3gr0NoUY/KuZverBZdSR/fS0vMHX\nQ/X7XGE2gOGrzqWN2dtEAmMrisfo9zUlimU+7SWeetOKa5JTtmSZGFWvCrvsnWkH\narZT59t3yJ7YqwbjRmaSC3Uq7veFBsIEKbszm0eeMCtNcSLuykmBM/8CgYEAwhDd\nS3OLj4J62PlSjyBHSDP2Zv5sG6jXDDRPo8HQWcWoOq2stnwgrblkEXpsSpaRaUP8\nQabEtkobckYx3OK6/0Q4c0A6I4lHQpm2m6K2o+8lsG/OwwNplXA+kpYuqUYEjgBl\nFiGblZCtyDPdd4PnHDBjKLUzOYxgRDxfVLLKcWUCgYEAm4+ypyellswqzZPmQAhL\nOtlLanVdjPkbqI0vmwv2Hv5eAzUNvZVwT40w70iUcjgekuvhWamJ6GChMOFE1x96\nFfN0Cd9hLYf7s9is5OI4oLPFJO+vnliVikCein1mMnHjHaVvU9nQJutSsoC5/opr\nzm5Fo4Wg+qT0Qs9hzVyrwLsCgYEAoTk9f6d4dDskMAnByuI4FgYFWL9ZtQjpz1vO\nJe+oVkxdXJJYgCpTQ8BXICYivTylhVxTv376wa6DasZiOm2qiNN2Slk7c7ZimzP0\nfwwIy9yr5Q6eKWk2WE4tzb4y+bIPqqEtWduF1BWkKkTcYqQUZljUqEcRTWgPueCm\nGkmG4fkCgYEAk1rI1pAdfdxLrKTGu2WRfr0UgNx/eUjVuL5GT3Bu092QLXwFc3Py\nsIu7vHRQY1ASGRDvlyx76Uc+mtmXhowwBL1fTiKcfgD3SbqRTw8rwJbF6MNB7fOH\nSWlA4wuzpwVvg0j2DoY5LbwMN7AbrGS451E14xUwpEWdIDChWw14qag=\n-----END RSA PRIVATE KEY-----","external_id":"889","name":"ariadne","occurred_at":1697041066438195084,"operation":"config.create","owner":"1058552c-3f6a-4bfe-827e-ecbcdc95d344","state":"0","client_id":"bb569875-a268-4ed4-b382-b88b181c61f3"}
    ```
 
 ### Configuration update event
@@ -2055,7 +2055,7 @@ Whenever configuration is updated, `bootstrap` service will generate and publish
     2) "0"
     3) "operation"
     4) "config.update"
-    5) "thing_id"
+    5) "client_id"
     6) "dc82d6bf-973b-4582-9806-0230cee11c20"
     7) "content"
     8) "{   \"server\": {     \"address\": \"127.0.0.1\",     \"port\": 8080   },   \"database\": {     \"host\": \"localhost\",     \"port\": 5432,     \"username\": \"user\",     \"password\": \"password\",     \"dbname\": \"mydb\"   } }"
@@ -2071,7 +2071,7 @@ Whenever certificate is updated, `bootstrap` service will generate and publish n
 
 ```redis
 1) "1693313759203-0"
-2)  1) "thing_key"
+2)  1) "client_key"
     2) "dc82d6bf-973b-4582-9806-0230cee11c20"
     3) "client_cert"
     4) "-----BEGIN ENCRYPTED PRIVATE KEY-----MIIFHDBOBgkqhkiG9w0BBQ0wQTApBgkqhkiG9w0BBQwwHAQIc+VAU9JPnIkCAggAMAwGCCqGSIb3DQIJBQAwFAYIKoZIhvcNAwcECImSB+9qZ8dmBIIEyBW/rZlECWnEcMuTXhfJFe+3HP4rV+TXEEuigwCbtVPHWXoZj7KqGiOFgFaDL5Ne/GRwVD6geaTeQVl3aoHzo8mY0yuX2L36Ho2yHF/Bw89WT3hgP0lZ1lVO7O7n8DwybOaoJ+1S3akyb6OPbqcxJou1IGzKV1kz77R8V8nOFSd1BOepNbanGxVG8Jkgc37dQnICXwwaYkTx9PQBtSux1j3KgX0p+VAUNoUFi7N6b0MeO8iEuLU1dUiVwlH/jtitg0W3AvSV+5gezTT2VQW3CVlz6IBTPI1Rfl/3ss18Tao0NiPUmXMIgreBCamXvb0aJm8JxVbhoFYqWVNVocBD+n1+NwhCRlZM5Kgaes5S2JuFnjTAqEYytlQqEySbaN57XYCDNVmQz2iViz/+npuR9SCGwnNvV/TNsKRwav+0NC0pbf3LNk/KL9/X5ccmPhB5Rl7IS/v1BBLYX/jYWVN0dJiSA7fVIr9Acr7IbxWEQ2Y2qh1wdhayi4FBUHY3weivYSU3uGZizsSGJP/N6DutBgS1aXd5X/CqfF7VzRaKF4cfLO4XxTYUEjOztUNMN2XmW0o+ULjQmbouRPs/PIFmh6rc+h42m6p4SkjcsIKOy+mPTeJqhOVmYoMzO8+7mmXDOjFwvi/w97sdmbjII8Zn2iR/N8GuY23vv5h6LQ3tQ5kTA4IuPbYCVLeggd4iMM6TgpuJn0aG7yo4tDFqMeadCVhP2Bp3JQa8r3B2IJstTTF1OtZCrInjSus9ViOiM02Iz3ZmyglsMonJDlWeJL5jKBgqPbLR82IDhIY4IO6SqoVsWu4iWuLW5/TM3fdfYG3Wdvu7Suz7/anLAaMQEzKhObwgDdKmv4PkF75frex969CB1pQqSVnXmz4GrtxVUzWtlflaTSdSegpUXWLhG+jUNKTu+ptxDNM/JBxRNLSzdvsGbkI0qycOCliVpKkkvuiBGtiDWNax6KhV4/oRjkEkTRks9Xeko+q3uY4B//AGxsotsVhF5vhUDTOl5IX7a7wCPtbTGiaR79eprRzGnP9yP38djVrvXprJFU8P7GUr/f2qJt2jDYuCkaqAMsfjdu6YHitjj3ty4vrASgxJ0vsroWhjgiCwgASqM7GnweHSHy5/OZK8jCZX+g+B63Mu4ec+/nNnjvuLqBBZN/FSzXU5fVmYznfPaqW+1Xep+Aj1yGk3L3tvnKLc3sZ1HAJQEjud5dbME6e0JGxh5xOCnzWUR+YL/96KJAcgkxDJ1DxxHv0Uu/5kO5InOsPjs4YKuzqD4nUmGsFsJzTxG626wdGXJMO4YCRKkKtnNeWqMaslM3paN19/tTWyEbaDqc5mVzYLIb3Mzju+OV4GniDeVIvSIsXK5aFGj1PEhfCprQCqUzdNhFU8hF4kUVhn9dp0ExveT7btHSMlEZAWHRkDuLqaImpQkjYmwt90cxtdZwQvjTDtsFmQrvcSp8n1K3P5PwZpVtIw2UHpx+NjE8ZYwOozpXl/oOMzVTB8mi1dQGFkpac9cwnzCZof0ub4iutBeKc4WeEOytvY+CY7hc+/ncCprZ08nlkQarQV7jhfJj658GfBMLGzJtYkCrHwi/AoseIXa5W7eX+lz7O92H2M5QnEkPStQ9lsz2VkYA==-----END ENCRYPTED PRIVATE KEY-----"
@@ -2108,7 +2108,7 @@ Whenever configuration list is fetched, `bootstrap` service will generate new `l
    ```json
    Subject: events.supermq.bootstrap Received: 2023-10-11T19:23:05+03:00
 
-   {"external_id":"879","name":"aphrodite","occurred_at":1697042445469239430,"operation":"config.list","owner":"1058552c-3f6a-4bfe-827e-ecbcdc95d344","state":"0","thing_id":"1f9c0d1d-0d6b-4a83-83b9-50845e557a85"}
+   {"external_id":"879","name":"aphrodite","occurred_at":1697042445469239430,"operation":"config.list","owner":"1058552c-3f6a-4bfe-827e-ecbcdc95d344","state":"0","client_id":"1f9c0d1d-0d6b-4a83-83b9-50845e557a85"}
    ```
 
 ### Configuration view event
@@ -2117,7 +2117,7 @@ Whenever configuration is viewed, `bootstrap` service will generate new `view` e
 
 ```redis
 1) 1) "1693339152105-0"
-2)  1) "thing_id"
+2)  1) "client_id"
     2) "74f00d13-d370-42c0-b528-04fff995275c"
     3) "name"
     4) "demo"
@@ -2149,7 +2149,7 @@ Whenever configuration is removed, `bootstrap` service will generate and publish
    1) "1693339203771-0"
    2) 1) "occurred_at"
        2) "1693339203771705590"
-       3) "thing_id"
+       3) "client_id"
        4) "853f37b9-513a-41a2-a575-bbaa746961a6"
        5) "operation"
        6) "config.remove"
@@ -2160,12 +2160,12 @@ Whenever configuration is removed, `bootstrap` service will generate and publish
    ```json
    Subject: events.supermq.bootstrap Received: 2023-10-11T19:24:50+03:00
 
-   {"occurred_at":1697041490458439515,"operation":"config.remove","thing_id":"6a08150a-cd19-460f-99c9-a760ee50aed3"}
+   {"occurred_at":1697041490458439515,"operation":"config.remove","client_id":"6a08150a-cd19-460f-99c9-a760ee50aed3"}
    ```
 
 ### Configuration remove handler
 
-Whenever a thing is removed, `bootstrap` service will generate and publish new `config.remove_handler` event. This event will have the following format:
+Whenever a client is removed, `bootstrap` service will generate and publish new `config.remove_handler` event. This event will have the following format:
 
 ```redis
 1) 1) "1693337955655-0"
@@ -2177,9 +2177,9 @@ Whenever a thing is removed, `bootstrap` service will generate and publish new `
     6) "1693337955654969489"
 ```
 
-### Thing bootstrap event
+### client bootstrap event
 
-Whenever thing is bootstrapped, `bootstrap` service will generate and publish new `bootstrap` event. This event will have the following format:
+Whenever client is bootstrapped, `bootstrap` service will generate and publish new `bootstrap` event. This event will have the following format:
 
 ```redis
 1) 1) "1693339161600-0"
@@ -2190,8 +2190,8 @@ Whenever thing is bootstrapped, `bootstrap` service will generate and publish ne
     5) "success"
     6) "1"
     7) "operation"
-    8) "thing.bootstrap"
-    9) "thing_id"
+    8) "client.bootstrap"
+    9) "client_id"
     10) "74f00d13-d370-42c0-b528-04fff995275c"
     11) "content"
     12) "{\"device_id\": \"12345\",\"secure_connection\": true,\"sensor_config\": {\"temperature\": true,\"humidity\": true,\"pressure\": false}}"
@@ -2206,22 +2206,22 @@ Whenever thing is bootstrapped, `bootstrap` service will generate and publish ne
 
 ```
 
-### Thing change state event
+### client change state event
 
-Whenever thing's state changes, `bootstrap` service will generate and publish new `change state` event. This event will have the following format:
+Whenever client's state changes, `bootstrap` service will generate and publish new `change state` event. This event will have the following format:
 
 1. In Redis Streams
 
    ```redis
    1) "1555405294806-0"
-   2) 1) "thing_id"
+   2) 1) "client_id"
    2) "63a110d4-2b77-48d2-aa46-2582681eeb82"
    3) "state"
    4) "0"
    5) "timestamp"
    6) "1555405294"
    7) "operation"
-   8) "thing.state_change"
+   8) "client.state_change"
    ```
 
 2. In Nats JetStreams
@@ -2229,18 +2229,18 @@ Whenever thing's state changes, `bootstrap` service will generate and publish ne
    ```json
    Subject: events.supermq.bootstrap Received: 2023-10-11T19:26:31+03:00
 
-   {"occurred_at":1697041591648042067,"operation":"thing.change_state","state":"0","thing_id":"1f9c0d1d-0d6b-4a83-83b9-50845e557a85"}
+   {"occurred_at":1697041591648042067,"operation":"client.change_state","state":"0","client_id":"1f9c0d1d-0d6b-4a83-83b9-50845e557a85"}
    ```
 
-### Thing update connections event
+### client update connections event
 
-Whenever thing's list of connections is updated, `bootstrap` service will generate and publish new `update connections` event. This event will have the following format:
+Whenever client's list of connections is updated, `bootstrap` service will generate and publish new `update connections` event. This event will have the following format:
 
 ```redis
 1) "1555405373360-0"
 2) 1) "operation"
-   2) "thing.update_connections"
-   3) "thing_id"
+   2) "client.update_connections"
+   3) "client_id"
    4) "63a110d4-2b77-48d2-aa46-2582681eeb82"
    5) "channels"
    6) "ff13ca9c-7322-4c28-a25c-4fe5c7b753fc, 925461e6-edfb-4755-9242-8a57199b90a5, c3642289-501d-4974-82f2-ecccc71b2d82"
@@ -2286,7 +2286,7 @@ Instead of using heartbeat to know when client is connected through MQTT adapter
 
 Events that are coming from MQTT adapter have following fields:
 
-- `thing_id` ID of a thing that has connected to MQTT adapter,
+- `client_id` ID of a client that has connected to MQTT adapter,
 - `event_type` can have two possible values, connect and disconnect,
 - `instance` represents MQTT adapter instance.
 - `occurred_at` is in Epoch UNIX Time Stamp format.
@@ -2299,7 +2299,7 @@ Examples of connect event:
 
    ```redis
    1) 1) "1693312937469-0"
-   2) 1) "thing_id"
+   2) 1) "client_id"
        1) "76a58221-e319-492a-be3e-b3d15631e92a"
        2) "event_type"
        3) "connect"
@@ -2314,7 +2314,7 @@ Examples of connect event:
    ```json
    Subject: events.supermq.mqtt Received: 2023-10-09T14:57:36+03:00
 
-   {"event_type":"connect","instance":"","occurred_at":1696852656381976408,"thing_id":"9b23fec0-41a2-44ed-af13-7c54706b3291"}
+   {"event_type":"connect","instance":"","occurred_at":1696852656381976408,"client_id":"9b23fec0-41a2-44ed-af13-7c54706b3291"}
    ```
 
 Example of disconnect event:
@@ -2323,7 +2323,7 @@ Example of disconnect event:
 
    ```redis
    1) 1) "1693312937471-0"
-   2) 1) "thing_id"
+   2) 1) "client_id"
        2) "76a58221-e319-492a-be3e-b3d15631e92a"
        3) "event_type"
        4) "disconnect"
@@ -2338,7 +2338,7 @@ Example of disconnect event:
    ```json
    Subject: events.supermq.mqtt Received: 2023-10-09T14:57:36+03:00
 
-   {"event_type":"disconnect","instance":"","occurred_at":1696852656435238414,"thing_id":"9b23fec0-41a2-44ed-af13-7c54706b3291"}
+   {"event_type":"disconnect","instance":"","occurred_at":1696852656435238414,"client_id":"9b23fec0-41a2-44ed-af13-7c54706b3291"}
    ```
 
 [redis-streams]: https://redis.io/topics/streams-intro

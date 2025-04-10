@@ -51,9 +51,9 @@ docker-compose -f docker/addons/lora-adapter/docker-compose.yml up -d
 
 ### Route Map
 
-The lora-adapter use [Redis][redis] database to create a route map between both systems. As in SuperMQ we use Channels to connect Things, LoRa Server uses Applications to connect Devices.
+The lora-adapter use [Redis][redis] database to create a route map between both systems. As in SuperMQ we use Channels to connect clients, LoRa Server uses Applications to connect Devices.
 
-The lora-adapter uses the matadata of provision events emitted by SuperMQ system to update his route map. For that, you must provision SuperMQ Channels and Things with an extra metadata key in the JSON Body of the HTTP request. It must be a JSON object with key `lora` which value is another JSON object. This nested JSON object should contain `app_id` or `dev_eui` field. In this case `app_id` or `dev_eui` must be an existent Lora application ID or device EUI:
+The lora-adapter uses the matadata of provision events emitted by SuperMQ system to update his route map. For that, you must provision SuperMQ Channels and clients with an extra metadata key in the JSON Body of the HTTP request. It must be a JSON object with key `lora` which value is another JSON object. This nested JSON object should contain `app_id` or `dev_eui` field. In this case `app_id` or `dev_eui` must be an existent Lora application ID or device EUI:
 
 **Channel structure:**
 
@@ -68,12 +68,12 @@ The lora-adapter uses the matadata of provision events emitted by SuperMQ system
 }
 ```
 
-**Thing structure:**
+**client structure:**
 
 ```json
 {
   "type": "device",
-  "name": "<thing name>",
+  "name": "<client name>",
   "metadata:": {
     "lora": {
       "dev_eui": "<device EUI>"
@@ -84,7 +84,7 @@ The lora-adapter uses the matadata of provision events emitted by SuperMQ system
 
 #### Messaging
 
-To forward LoRa messages the lora-adapter subscribes to topics `applications/+/devices/+` of the LoRa Server MQTT broker. It verifies the `app_id` and the `dev_eui` of received messages. If the mapping exists it uses corresponding `Channel ID` and `Thing ID` to sign and forwards the content of the LoRa message to the SuperMQ message broker.
+To forward LoRa messages the lora-adapter subscribes to topics `applications/+/devices/+` of the LoRa Server MQTT broker. It verifies the `app_id` and the `dev_eui` of received messages. If the mapping exists it uses corresponding `Channel ID` and `client ID` to sign and forwards the content of the LoRa message to the SuperMQ message broker.
 
 [lora-adapter]: https://github.com/absmach/smq-contrib/tree/main/lora
 [lora-server]: https://www.loraserver.io
