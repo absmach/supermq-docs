@@ -180,6 +180,10 @@ Retrieves all members of the specified role.
 **POST /roles/`role_id`/members/delete**  
 Deletes specific members from the role.
 
+> If the role being modified is the built-in `admin` role, the system **will reject the request** if it would result in removing all remaining members from the role.
+>
+> This restriction ensures that **every domain always retains at least one administrator** to prevent orphaned domains, which would otherwise become inaccessible via the API.
+
 **Request Body**:
 
 ```json
@@ -207,6 +211,10 @@ Deletes specific members from the role.
 
 **POST /roles/`role_id`/members/delete-all**  
 Removes all members from the role.
+
+> For the built-in `admin` role, this operation is **not permitted**.  
+> The system will reject any request that attempts to remove all members from the `admin` role to **prevent administrative lockout**.  
+> This ensures that **every domain retains at least one user with administrative privileges** at all times.
 
 #### Delete All Role Members Example for a `Domain`
 
