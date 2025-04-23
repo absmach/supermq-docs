@@ -111,7 +111,7 @@ Fetches details of a specific role.
 
 #### 4. **Update a Role**
 
-**PUT /roles/{roleID}**
+**PUT /roles/`roleID`**
 
 Updates the role's name, actions, or other properties.
 
