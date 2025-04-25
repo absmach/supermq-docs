@@ -161,6 +161,53 @@ If the repositories are set up correctly, this will resolve and download all cha
 kubectl create namespace mg
 ```
 
+> To improve security, SuperMQ `users` service no longer accepts the admin email and password directly from the `values.yaml` file. Instead, these credentials must be provided via a Kubernetes `Secret` object deployed to your cluster before installing or upgrading the SuperMQ chart.
+> The Helm chart is configured to look for this secret and will fail to deploy if the secret name is not configured in `values.yaml` or if the referenced secret does not exist.
+
+#### Configuration in `values.yaml`
+
+You need to specify the name of the Kubernetes Secret object that holds the credentials in your `values.yaml` file under the `users.secrets` section.
+
+```yaml
+users:
+  # ... other user settings ...
+  secrets:
+    # REQUIRED: Name of the Kubernetes Secret object containing the admin credentials
+    name: "admin-credentials" # Default name, change if needed
+```
+
+#### Secret Requirements
+
+The Kubernetes Secret specified by `users.secrets.name` must contain the following keys, as the deployment uses `envFrom` to inject them:
+
+* `SMQ_USERS_ADMIN_EMAIL`: The admin user's email address.
+* `SMQ_USERS_ADMIN_PASSWORD`: The admin user's password.
+
+#### How to Create the Secret
+
+You must create this secret in the same Kubernetes namespace where you intend to deploy SuperMQ before running `helm install` or `helm upgrade` as described below:
+
+1.  Create a temporary file (e.g., `users-admin-creds.env`) containing the credentials with the exact key names:
+    
+    ```.env
+    # users-admin-creds.env
+    SMQ_USERS_ADMIN_EMAIL= <your-admin-email@example.com>
+    SMQ_USERS_ADMIN_PASSWORD=<YourS3cur3P@ssw0rd!>
+    ```
+    *(Replace values with your actual credentials)*
+
+2.  Run the `kubectl create secret` command (replace `mg` with your target namespace and `admin-credentials` if you changed it in `values.yaml`):
+    
+    ```bash
+    kubectl create secret generic admin-credentials \
+      --from-env-file=users-admin-creds.env \
+      -n mg 
+    ```
+
+3.  You can delete the temporary `.env` file after the secret is created.
+
+Once the secret exists in your cluster with the correct name and keys (`SMQ_USERS_ADMIN_EMAIL`, `SMQ_USERS_ADMIN_PASSWORD`), you can proceed with deploying SuperMQ Helm chart.
+
 ---
 
 ### 4. Deploy SuperMQ
