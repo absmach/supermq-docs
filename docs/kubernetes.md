@@ -162,7 +162,8 @@ kubectl create namespace mg
 ```
 
 > To improve security, SuperMQ `users` service no longer accepts the admin email and password directly from the `values.yaml` file. Instead, these credentials must be provided via a Kubernetes `Secret` object deployed to your cluster before installing or upgrading the SuperMQ chart.
-> The Helm chart is configured to look for this secret and will fail to deploy if the secret name is not configured in `values.yaml` or if the referenced secret does not exist.
+> The Helm chart is configured to look for this secret and will deploy but the `users` pod will fail at runtime with the error `CreateContainerConfigError` if the secret name is not configured in `values.yaml` or if the referenced secret does not exist.
+
 
 #### Configuration in `values.yaml`
 
