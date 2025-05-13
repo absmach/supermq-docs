@@ -109,7 +109,7 @@ Fetches details of a specific role.
 
 ---
 
-#### 4. **Update a Role**
+### 4. **Update a Role**
 
 **PUT /roles/`roleID`**
 
