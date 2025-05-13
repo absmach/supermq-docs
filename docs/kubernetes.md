@@ -179,7 +179,7 @@ helm repo update
 
 Once the chart is installed, you can verify that SuperMQ is running correctly:
 
-#### View all resources in the `smq` namespace:
+#### View all resources in the `smq` namespace
 
 ```bash
 kubectl get all -n smq
@@ -191,13 +191,13 @@ kubectl get all -n smq
 kubectl get pods -n smq
 ```
 
-#### List all services:
+#### List all services
 
 ```bash
 kubectl get services -n smq
 ```
 
-#### View logs from a specific pod:
+#### View logs from a specific pod
 
 ```bash
 kubectl logs <pod-name> -n smq
@@ -316,14 +316,14 @@ helm registry login supermq.example.com
 
 #### 2. Install the Chart (Choose One Option)
 
-##### 🔹 Option A — Pull and install locally:
+##### 🔹 Option A — Pull and install locally
 
 ```bash
 helm pull oci://supermq.example.com/supermq/supermq --version 0.16.7
 helm install supermq ./supermq-0.16.7.tgz -n smq
 ```
 
-##### 🔹 Option B — Install directly from OCI:
+##### 🔹 Option B — Install directly from OCI
 
 ```bash
 helm install supermq oci://supermq.example.com/supermq/supermq \
@@ -430,7 +430,7 @@ helm package .
 
 This will create a `.tgz` archive using the version defined in `Chart.yaml`, for example:
 
-```
+```bash
 supermq-0.16.7.tgz
 ```
 
@@ -455,7 +455,7 @@ helm push supermq-0.16.7.tgz oci://supermq.example.com/supermq
 
 If successful, you'll see:
 
-```
+```bash
 Pushed: supermq.example.com/supermq/supermq:0.16.7
 Digest: sha256:<hash>
 ```
