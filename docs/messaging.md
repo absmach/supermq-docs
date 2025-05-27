@@ -39,7 +39,7 @@ to every command.
 
 ## CoAP
 
-CoAP adapter implements CoAP protocol using underlying UDP and according to [RFC 7252][rfc7252]. To send and receive messages over CoAP, you can use [CoAP CLI][coap-cli]. To set the add-on, please follow the installation instructions provided [here][coap-cli].
+CoAP adapter implements CoAP protocol using underlying UDP and according to [RFC 7252][rfc7252]. To send and receive messages over CoAP, you can use [CoAP CLI][coap-cli]. To set the add-on, please follow the installation instructions provided [in this section][coap-cli].
 
 Examples:
 
@@ -248,6 +248,45 @@ var loc = { hostname: "localhost", port: 8008 };
 client = new Paho.MQTT.Client(loc.hostname, Number(loc.port), "clientId");
 // Connect the client
 client.connect({ onSuccess: onConnect });
+```
+
+## mTLS Messaging
+
+SuperMQ supports mutual TLS (mTLS) to enhance security by requiring both clients and servers to authenticate each other using certificates.
+This ensures that only authorized clients can connect and communicate with the server.
+It is designed to handle high-throughput environments.
+Core components are modular, making it easy to plug in custom modules or replace existing ones. Extendable to add new IoT protocols, middleware, and features as needed.
+
+### Certificate Setup
+
+To enable mTLS, you'll need the following certificates:
+
+- **CA Certificate (`ca.crt`)**: The Certificate Authority's certificate used to sign both server and client certificates.
+- **Server Certificate (`server.crt`) and Private Key (`server.key`)**: Used by the server to authenticate itself to clients.
+- **Client Certificate (`client.crt`) and Private Key (`client.key`)**: Used by the client to authenticate itself to the server.
+
+Ensure that these certificates are properly generated and signed by a trusted CA.
+
+### HTTP with mTLS
+
+We currently use _HTTP_  without mTLS support.
+
+```bash
+curl -sSiX POST "${protocol}://${host}:${port}/${path}" -H "content-type:${content}" -H "Authorization:TOKEN" -d "${message}"
+```
+
+But with mTLS, clients must present their certificate during the TLS handshake.
+
+```bash
+curl -sSiX POST "${protocol}://${host}:${port}/${path}" -H "content-type:${content}" -H "Authorization:TOKEN" -d "${message}" --cacert $cafile --cert $certfile --key $keyfile
+```
+
+### HTTP with TLS
+
+A user can also send messages with just the TLS support and just a CAA certificate using the command:
+
+```bash
+curl -sSiX POST "${protocol}://${host}:${port}/${path}" -H "content-type:${content}" -H "Authorization:TOKEN" -d "${message}" --cacert $cafile
 ```
 
 ## Subtopics
