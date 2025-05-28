@@ -269,25 +269,110 @@ Ensure that these certificates are properly generated and signed by a trusted CA
 
 ### HTTP with mTLS
 
-We currently use _HTTP_  without mTLS support.
+By default, HTTP messages can be sent without any encryption or certificate verification:
 
 ```bash
-curl -sSiX POST "${protocol}://${host}:${port}/${path}" -H "content-type:${content}" -H "Authorization:TOKEN" -d "${message}"
+curl -s -S -i -X POST -H "Content-Type: application/senml+json" -H "Authorization: Client <client_secret>" https://localhost/http/m/<domain_id>/c/<channel_id> -d '[{"bn":"some-base-name:","bt":1.276020076001e+09, "bu":"A","bver":5, "n":"voltage","u":"V","v":120.1}, {"n":"current","t":-5,"v":1.2}, {"n":"current","t":-4,"v":1.3}]'
 ```
 
-But with mTLS, clients must present their certificate during the TLS handshake.
+But with mTLS, clients must present their certificate during the TLS handshake. This ensures both server and client are authenticated using trusted certificates.
 
 ```bash
-curl -sSiX POST "${protocol}://${host}:${port}/${path}" -H "content-type:${content}" -H "Authorization:TOKEN" -d "${message}" --cacert $cafile --cert $certfile --key $keyfile
+curl -s -S -i --cacert docker/ssl/certs/ca.crt --cert docker/ssl/certs/client.crt --key docker/ssl/certs/client.key -X POST -H "Content-Type: application/senml+json" -H "Authorization: Client <client_secret>" https://localhost/http/m/<domain_id>/c/<channel_id> -d '[{"bn":"some-base-name:","bt":1.276020076001e+09, "bu":"A","bver":5, "n":"voltage","u":"V","v":120.1}, {"n":"current","t":-5,"v":1.2}, {"n":"current","t":-4,"v":1.3}]'
 ```
 
 ### HTTP with TLS
 
-A user can also send messages with just the TLS support and just a CAA certificate using the command:
+A user can also send messages with just the TLS support (server authentication only) and just a CA certificate using the command:
 
 ```bash
-curl -sSiX POST "${protocol}://${host}:${port}/${path}" -H "content-type:${content}" -H "Authorization:TOKEN" -d "${message}" --cacert $cafile
+curl -s -S -i --cacert docker/ssl/certs/ca.crt  -X POST -H "Content-Type: application/senml+json" -H "Authorization: Client <client_secret>" https://localhost/http/m/<domain_id>/c/<channel_id> -d '[{"bn":"some-base-name:","bt":1.276020076001e+09, "bu":"A","bver":5, "n":"voltage","u":"V","v":120.1}, {"n":"current","t":-5,"v":1.2}, {"n":"current","t":-4,"v":1.3}]'
 ```
+
+### MQTT with TLS
+
+You can connect over plain MQTT (port `1883`) without any encryption or certificate validation:
+
+```bash
+mosquitto_pub -u <client_id> -P <client_secret> -t m/<domain_id>/c/<channel_id> -h localhost -p 1883 -m '[{"bn":"some-base-name:","bt":1.276020076001e+09, "bu":"A","bver":5, "n":"voltage","u":"V","v":120.1}, {"n":"current","t":-5,"v":1.2}, {"n":"current","t":-4,"v":1.3}]'
+```
+
+To connect securely over TLS using the same port `8883` and valisate the server certificate with a CA file:
+
+```bash
+mosquitto_pub --cafile docker/ssl/certs/ca.crt -u <client_id> -P <client_secret> -t m/<domain_id>/c/<channel_id> -h localhost -p 1883 -m '[{"bn":"some-base-name:","bt":1.276020076001e+09, "bu":"A","bver":5, "n":"voltage","u":"V","v":120.1}, {"n":"current","t":-5,"v":1.2}, {"n":"current","t":-4,"v":1.3}]'
+```
+
+This ensures encrypted communication and server identity verification.
+
+### MQTT with mTLS
+
+Provide the client certificate and key along with the CA certificate to enable mutual authentication:
+
+```bash
+mosquitto_pub --cafile docker/ssl/certs/ca.crt --cert docker/ssl/certs/client.crt --key docker/ssl/certs/client.key -u <client_id> -P <client_secret> -t m/<domain_id>/c/<channel_id> -h localhost -p 1883 -m '[{"bn":"some-base-name:","bt":1.276020076001e+09, "bu":"A","bver":5, "n":"voltage","u":"V","v":120.1}, {"n":"current","t":-5,"v":1.2}, {"n":"current","t":-4,"v":1.3}]'
+```
+
+This is the most secure mode — both client and server verify each other.
+
+### MQTT Subscription with mTLS
+
+To subscribe to the same channel using mTLS: 
+
+```bash
+mosquitto_sub \
+  --cafile docker/ssl/certs/ca.crt \
+  --cert docker/ssl/certs/client.crt \
+  --key docker/ssl/certs/client.key \
+  -h localhost -p 8883 \
+  -u <client_id> -P <client_secret> \
+  -t m/<domain_id>/c/<channel_id
+```
+
+### CoAP without TLS
+
+To send a message using plain CoAP (UDP) without any certificate validation:
+
+```bash
+coap-cli post m/<domain_id>/c/<channel_id>/subtopic -auth <client_secret> -d "hello world"
+```
+
+To subscribe to messages via CoAP observe:
+
+```bash
+coap-cli get m/<domain_id>/c/<channel_id>/subtopic -auth <client_secret> -o
+```
+
+### CoAP with TLS
+
+To enable DTLS with server authentication only which encrypts traffic and ensuers the CoAP server is trusted:
+
+```bash
+coap-cli post m/<domain_id>/c/<channel_id>/subtopic -auth <client_secret> -d "hello world" --ca docker/ssl/certs/ca.crt
+```
+
+### CoAP with mTLS
+
+For full mTLS, add the client certificate and private key to the DTLS handshake:
+
+```bash
+coap-cli post m/<domain_id>/c/<channel_id>/subtopic -auth <client_secret> -d "hello world" --ca docker/ssl/certs/ca.crt --cert docker/ssl/certs/client.crt --key docker/ssl/certs/client.key
+```
+
+To observe with mTLS enabled:
+
+```bash
+coap-cli get m/<domain_id>/c/<channel_id>/subtopic \
+  -auth <client_secret> \
+  -o \
+  --ca docker/ssl/certs/ca.crt \
+  --cert docker/ssl/certs/client.crt \
+  --key docker/ssl/certs/client.key
+```
+
+This ensures both server and client identities are verified via DTLS.
+
+### WebSocket without TLS
 
 ## Subtopics
 
