@@ -182,7 +182,7 @@ Deletes specific members from the role.
 
 > If the role being modified is the built-in `admin` role, the system **will reject the request** if it would result in removing all remaining members from the role.
 >
-> This restriction ensures that **every domain always retains at least one administrator** to prevent orphaned domains, which would otherwise become inaccessible via the API.
+> This restriction ensures that **every domain always retains at least one administrator** to prevent orphaned domains.
 
 **Request Body**:
 
