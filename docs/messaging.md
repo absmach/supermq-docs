@@ -317,7 +317,7 @@ This is the most secure mode — both client and server verify each other.
 
 ### MQTT Subscription with mTLS
 
-To subscribe to the same channel using mTLS: 
+To subscribe to the same channel using mTLS:
 
 ```bash
 mosquitto_sub \
