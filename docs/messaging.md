@@ -262,7 +262,7 @@ Core components are modular, making it easy to plug in custom modules or replace
 To enable mTLS, you'll need the following certificates:
 
 - **CA Certificate (`ca.crt`)**: The Certificate Authority's certificate used to sign both server and client certificates.
-- **Server Certificate (`server.crt`) and Private Key (`server.key`)**: Used by the server to authenticate itself to clients.
+- **Server Certificate (`server.crt`) and Private Key (`server.key`)**: Used by the server to authenticate itself to clients. These will be used by SuperMQ.
 - **Client Certificate (`client.crt`) and Private Key (`client.key`)**: Used by the client to authenticate itself to the server.
 
 Ensure that these certificates are properly generated and signed by a trusted CA.
@@ -328,49 +328,6 @@ mosquitto_sub \
   -u <client_id> -P <client_secret> \
   -t m/<domain_id>/c/<channel_id
 ```
-
-### CoAP without TLS
-
-To send a message using plain CoAP (UDP) without any certificate validation:
-
-```bash
-coap-cli post m/<domain_id>/c/<channel_id>/subtopic -auth <client_secret> -d "hello world"
-```
-
-To subscribe to messages via CoAP observe:
-
-```bash
-coap-cli get m/<domain_id>/c/<channel_id>/subtopic -auth <client_secret> -o
-```
-
-### CoAP with TLS
-
-To enable DTLS with server authentication only which encrypts traffic and ensuers the CoAP server is trusted:
-
-```bash
-coap-cli post m/<domain_id>/c/<channel_id>/subtopic -auth <client_secret> -d "hello world" --ca docker/ssl/certs/ca.crt
-```
-
-### CoAP with mTLS
-
-For full mTLS, add the client certificate and private key to the DTLS handshake:
-
-```bash
-coap-cli post m/<domain_id>/c/<channel_id>/subtopic -auth <client_secret> -d "hello world" --ca docker/ssl/certs/ca.crt --cert docker/ssl/certs/client.crt --key docker/ssl/certs/client.key
-```
-
-To observe with mTLS enabled:
-
-```bash
-coap-cli get m/<domain_id>/c/<channel_id>/subtopic \
-  -auth <client_secret> \
-  -o \
-  --ca docker/ssl/certs/ca.crt \
-  --cert docker/ssl/certs/client.crt \
-  --key docker/ssl/certs/client.key
-```
-
-This ensures both server and client identities are verified via DTLS.
 
 ### WebSocket without TLS
 
