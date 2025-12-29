@@ -62,7 +62,7 @@ With Docker (version 26.0.0 and above) and Go (version 1.21 and above) installed
 To start Magistrala Docker services, execute the following command from the project's root directory:
 
 ```bash
-make run
+make run_stable
 ```
 
 Magistrala offers multiple interaction options, including a CLI, SDK, HTTP API, and UI, catering to different user preferences and use cases.

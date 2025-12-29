@@ -7,13 +7,13 @@ title: Getting Started
 
 Before proceeding, install the following prerequisites:
 
-- [Docker][docker] (version 20.10.16)
-- [Docker compose][docker-compose] (version 1.29.2)
+- [Docker][docker] (version 29.1.3 or later)
+- [Docker compose][docker-compose] (version 5.0.1)
 
 Once everything is installed, execute the following command from project root:
 
 ```bash
-make run
+make run_stable
 ```
 
 This will start SuperMQ docker composition, which will output the logs from the containers.

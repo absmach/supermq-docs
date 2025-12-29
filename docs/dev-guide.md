@@ -108,7 +108,7 @@ As you develop and test changes, only the services related to your changes will 
 ```bash
 make <microservice_name>
 make docker_dev_<microservice_name>
-make run
+make run_latest
 ```
 
 ### Overriding the default docker-compose configuration

@@ -35,7 +35,7 @@ Make sure you have an already running instance of `SuperMQ`, `OpenBao` and `Cert
 To start SuperMQ run:
 
 ```bash
-make run up args="-d"
+make run_stable args="-d"
 ```
 
 To start the certs service with OpenBao run:
