@@ -1,0 +1,37 @@
+name: "🌟 Feature or Enhancement Request"
+description: Suggest new features or enhancements for the Docusaurus site
+labels: ["feature", "enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Have an idea to make the documentation better? Share it here!
+  - type: input
+    id: title
+    attributes:
+      label: "Feature Title"
+      placeholder: "e.g., Add search suggestions in the docs navbar"
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: "Describe the Feature"
+      description: "Explain what you’d like to see and why it’s useful."
+      placeholder: "Describe the feature and how it would improve the docs experience."
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: "Alternative Solutions"
+      description: "Have you considered other approaches?"
+  - type: dropdown
+    id: impact
+    attributes:
+      label: "Expected Impact"
+      description: "How significant is this change to the user experience?"
+      options:
+        - Minor
+        - Moderate
+        - Major

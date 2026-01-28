@@ -1,0 +1,51 @@
+name: "🐛 Bug Report"
+description: Report a problem or broken behavior in the documentation site
+labels: ["bug", "docs"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report a bug! Please fill out the details below to help us investigate.
+  - type: input
+    id: page
+    attributes:
+      label: "Affected Page"
+      description: "Which page or section of the docs has the issue? (Include URL if possible)"
+      placeholder: "e.g., https://docs.example.com/getting-started"
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: "Describe the Bug"
+      description: "Provide a clear and concise description of what went wrong."
+      placeholder: "Explain what you expected to see and what you actually saw."
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: "Steps to Reproduce"
+      description: "List the steps to reproduce the issue (if applicable)."
+      placeholder: |
+        1. Go to ...
+        2. Click on ...
+        3. See error
+  - type: input
+    id: browser
+    attributes:
+      label: "Browser / Device"
+      description: "If relevant, mention your browser, OS, or device."
+      placeholder: "e.g., Chrome 121 on macOS"
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: "Screenshots or Logs"
+      description: "Attach screenshots or logs that show the problem."
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: "Checklist"
+      options:
+        - label: "I have searched for existing issues"
+          required: true
