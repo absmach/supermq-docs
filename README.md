@@ -13,7 +13,9 @@ This website is built using [Docusaurus](https://docusaurus.io/), a modern stati
 
 ## Prerequisites
 
-Ensure that you have [Docusaurus](https://docusaurus.io/docs/installation) installed on your system.
+- [Docusaurus](https://docusaurus.io/docs/installation)
+- [Node.js](https://nodejs.org/) (version >= 18)
+- [pnpm](https://pnpm.io/installation)
 
 ## Installation
 
@@ -26,23 +28,31 @@ git clone git@github.com:/absmach/supermq-docs.git
 Install the required dependencies using:
 
 ```bash
-npm install
+pnpm install
 ```
+
+### Local Development
+
+Start a local development server:
+
+```bash
+pnpm start
+```
+
+This will open the docs in your browser and support live reloading on changes.
 
 ## Build
 
 Build the documentation site using the following command:
 
 ```bash
-npm run build
+pnpm build
 ```
 
-## Local Development
-
-Use Docusaurus to serve documentation.
+To preview the built site locally:
 
 ```bash
-npm run serve
+pnpm serve
 ```
 
 This command starts a local development server and opens up a browser window. Most changes are reflected live without having to restart the server.

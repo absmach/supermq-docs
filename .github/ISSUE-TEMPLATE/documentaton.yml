@@ -1,0 +1,38 @@
+name: "📝 Content Update Request"
+description: Suggest improvements, corrections, or additions to existing docs
+labels: ["content", "enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Help us improve the documentation by suggesting edits or updates.
+  - type: input
+    id: page
+    attributes:
+      label: "Page or Section"
+      description: "Which page needs updating? (Include URL if possible)"
+      placeholder: "e.g., /docs/getting-started"
+    validations:
+      required: true
+  - type: textarea
+    id: current_content
+    attributes:
+      label: "Current Content"
+      description: "What is currently written that needs to change?"
+  - type: textarea
+    id: suggestion
+    attributes:
+      label: "Suggested Improvement"
+      description: "Describe your proposed change or correction."
+      placeholder: "Propose rewording, adding examples, clarifying steps, etc."
+    validations:
+      required: true
+  - type: dropdown
+    id: urgency
+    attributes:
+      label: "Urgency"
+      options:
+        - Low
+        - Medium
+        - High
+      default: 1

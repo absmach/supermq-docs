@@ -1,0 +1,83 @@
+name: "📚 Documentation Structure Proposal"
+description: Propose a new section, guide, or reorganization of the docs
+labels: ["structure", "enhancement", "docs"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for helping us improve our documentation structure!
+        Use this form to propose **new sections, guides, or content restructuring**.
+
+  - type: input
+    id: title
+    attributes:
+      label: "Proposal Title"
+      description: "A short, descriptive title for your proposal"
+      placeholder: "e.g., Add 'Best Practices' section under Guides"
+    validations:
+      required: true
+
+  - type: textarea
+    id: summary
+    attributes:
+      label: "Summary"
+      description: "Briefly describe what you’re proposing."
+      placeholder: "Outline the structure you want to add or reorganize."
+    validations:
+      required: true
+
+  - type: textarea
+    id: motivation
+    attributes:
+      label: "Motivation and Benefits"
+      description: "Explain why this change would improve the documentation."
+      placeholder: |
+        - Makes content easier to find
+        - Helps new users understand concepts better
+        - Improves SEO or logical flow
+    validations:
+      required: true
+
+  - type: textarea
+    id: structure_outline
+    attributes:
+      label: "Proposed Structure Outline"
+      description: "Provide a sample hierarchy or content outline for your proposed structure."
+      placeholder: |
+        Example:
+        - Guides
+          - Getting Started
+          - Advanced Usage
+          - Best Practices
+            - Security
+            - Performance
+            - Accessibility
+    validations:
+      required: true
+
+  - type: textarea
+    id: related_content
+    attributes:
+      label: "Related Existing Content"
+      description: "List pages or sections that this proposal affects or replaces (if any)."
+      placeholder: "e.g., /docs/tutorial-basics, /docs/guides/performance"
+
+  - type: dropdown
+    id: scope
+    attributes:
+      label: "Scope of the Change"
+      description: "How large is the proposed change?"
+      options:
+        - Small (1–2 new pages)
+        - Medium (a new subsection or guide)
+        - Large (new top-level section or reorganization)
+      default: 1
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: "Checklist"
+      options:
+        - label: "I have checked for similar proposals or issues"
+          required: true
+        - label: "I am willing to help draft or review this new section"

@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 💬 GitHub Issues
+    url: https://github.com/absmach/magistrala-docs/issues
+    about: If you have questions or found an issue, please file it here.
+  - name: 🛠️ Support
+    url: mailto:support@absmach.eu
+    about: If you need help or have a support request, reach out to us directly.
