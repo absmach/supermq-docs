@@ -10,7 +10,7 @@ Distributed tracing is a method of profiling and monitoring applications. It can
 The Jaeger service will launch with the rest of the SuperMQ services. All services can be launched using:
 
 ```bash
-make run
+make run_latest
 ```
 
 The Jaeger UI can then be accessed at `http://localhost:16686` from a browser. Details about the UI can be found in [Jaeger's official documentation][jaeger-ui].
