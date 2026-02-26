@@ -923,7 +923,7 @@ SuperMQ defines specific operations for each entity type. PATs can be scoped to 
 
 #### Clients Operations
 
-Operations defined in `clients/operations/operations.go`:
+The following tables list the available PAT operations for clients.
 
 **Domain-level operations** (use simplified names in API requests):
 
@@ -934,24 +934,24 @@ Operations defined in `clients/operations/operations.go`:
 
 **Client-level operations** (operations on existing clients):
 
-| Operation                    | Description                                |
-| ---------------------------- | ------------------------------------------ |
-| `view`                       | View client details                        |
-| `update`                     | Update client information                  |
-| `update_tags`                | Update client tags                         |
-| `update_secret`              | Update client secret/credentials           |
-| `enable`                     | Enable a disabled client                   |
-| `disable`                    | Disable a client                           |
-| `delete`                     | Delete a client                            |
-| `set_parent_group`           | Assign client to a parent group            |
-| `remove_parent_group`        | Remove client from parent group            |
-| `connect_to_channel`         | Connect client to a channel                |
-| `disconnect_from_channel`    | Disconnect client from a channel           |
-| `list_user_clients`          | List all clients for a user (superadmin)   |
+| Operation                 | Description                              |
+| ------------------------- | ---------------------------------------- |
+| `view`                    | View client details                      |
+| `update`                  | Update client information                |
+| `update_tags`             | Update client tags                       |
+| `update_secret`           | Update client secret/credentials         |
+| `enable`                  | Enable a disabled client                 |
+| `disable`                 | Disable a client                         |
+| `delete`                  | Delete a client                          |
+| `set_parent_group`        | Assign client to a parent group          |
+| `remove_parent_group`     | Remove client from parent group          |
+| `connect_to_channel`      | Connect client to a channel              |
+| `disconnect_from_channel` | Disconnect client from a channel         |
+| `list_user_clients`       | List all clients for a user (superadmin) |
 
 #### Channels Operations
 
-Operations defined in `channels/operations/operations.go`:
+The following tables list the available PAT operations for channels.
 
 **Domain-level operations** (use simplified names in API requests):
 
@@ -962,23 +962,23 @@ Operations defined in `channels/operations/operations.go`:
 
 **Channel-level operations** (operations on existing channels):
 
-| Operation              | Description                                |
-| ---------------------- | ------------------------------------------ |
-| `view`                 | View channel details                       |
-| `update`               | Update channel information                 |
-| `update_tags`          | Update channel tags                        |
-| `enable`               | Enable a disabled channel                  |
-| `disable`              | Disable a channel                          |
-| `delete`               | Delete a channel                           |
-| `set_parent_group`     | Assign channel to a parent group           |
-| `remove_parent_group`  | Remove channel from parent group           |
-| `connect_client`       | Connect a client to this channel           |
-| `disconnect_client`    | Disconnect a client from this channel      |
-| `list_user_channels`   | List all channels for a user (superadmin)  |
+| Operation             | Description                              |
+| --------------------- | ---------------------------------------- |
+| `view`                | View channel details                     |
+| `update`              | Update channel information               |
+| `update_tags`         | Update channel tags                      |
+| `enable`              | Enable a disabled channel                |
+| `disable`             | Disable a channel                        |
+| `delete`              | Delete a channel                         |
+| `set_parent_group`    | Assign channel to a parent group         |
+| `remove_parent_group` | Remove parent group                      |
+| `connect_client`      | Connect a client to this channel         |
+| `disconnect_client`   | Disconnect a client from this channel    |
+| `list_user_channels`  | List all channels for a user (superadmin)|
 
 #### Groups Operations
 
-Operations defined in `groups/operations/operations.go`:
+The following tables list the available PAT operations for groups.
 
 **Domain-level operations** (use simplified names in API requests):
 
@@ -989,26 +989,49 @@ Operations defined in `groups/operations/operations.go`:
 
 **Group-level operations** (operations on existing groups):
 
-| Operation                     | Description                                |
-| ----------------------------- | ------------------------------------------ |
-| `view`                        | View group details                         |
-| `update`                      | Update group information                   |
-| `update_tags`                 | Update group tags                          |
-| `enable`                      | Enable a disabled group                    |
-| `disable`                     | Disable a group                            |
-| `delete`                      | Delete a group                             |
-| `retrieve_group_hierarchy`    | Retrieve group hierarchy                   |
-| `add_parent_group`            | Add a parent group                         |
-| `remove_parent_group`         | Remove parent group                        |
-| `add_children_groups`         | Add child groups                           |
-| `remove_children_groups`      | Remove child groups                        |
-| `remove_all_children_groups`  | Remove all child groups                    |
-| `list_children_groups`        | List child groups                          |
-| `set_child_client`            | Add client as child of group               |
-| `remove_child_client`         | Remove client from group                   |
-| `set_child_channel`           | Add channel as child of group              |
-| `remove_child_channel`        | Remove channel from group                  |
-| `list_user_groups`            | List all groups for a user (superadmin)    |
+| Operation                    | Description                              |
+| ---------------------------- | ---------------------------------------- |
+| `view`                       | View group details                       |
+| `update`                     | Update group information                 |
+| `update_tags`                | Update group tags                        |
+| `enable`                     | Enable a disabled group                  |
+| `disable`                    | Disable a group                          |
+| `delete`                     | Delete a group                           |
+| `retrieve_group_hierarchy`   | Retrieve group hierarchy                 |
+| `add_parent_group`           | Add a parent group                       |
+| `remove_parent_group`        | Remove parent group                      |
+| `add_children_groups`        | Add child groups                         |
+| `remove_children_groups`     | Remove child groups                      |
+| `remove_all_children_groups` | Remove all child groups                  |
+| `list_children_groups`       | List child groups                        |
+| `set_child_client`           | Add client as child of group             |
+| `remove_child_client`        | Remove client from group                 |
+| `set_child_channel`          | Add channel as child of group            |
+| `remove_child_channel`       | Remove channel from group                |
+| `list_user_groups`           | List all groups for a user (superadmin)  |
+
+#### Roles Operations
+
+These operations manage roles themselves: creating roles, managing their actions, and managing their members. They are used together with entity types like `clients`, `channels`, `groups`, and `domains` when scoping PATs.
+
+| API Operation (use in requests) | Description                                   |
+| ------------------------------- | --------------------------------------------- |
+| `role_add`                      | Create a new role on an entity                |
+| `role_remove`                   | Remove an existing role from an entity        |
+| `role_update_name`              | Update the name of an existing role           |
+| `role_retrieve`                 | Retrieve a single role                        |
+| `role_retrieve_all`             | List all roles for an entity                  |
+| `role_add_actions`              | Add actions (capabilities) to a role          |
+| `role_list_actions`             | List actions configured on a role             |
+| `role_check_actions_exists`     | Check if actions are present on a role        |
+| `role_remove_actions`           | Remove specific actions from a role           |
+| `role_remove_all_actions`       | Remove all actions from a role                |
+| `role_add_members`              | Add members (users) to a role                 |
+| `role_list_members`             | List members of a role                        |
+| `role_check_members_exists`     | Check if members are assigned to a role       |
+| `role_remove_members`           | Remove specific members from a role           |
+| `role_remove_all_members`       | Remove all members from a role                |
+| `role_list_available_actions`   | List all actions that can be assigned to roles|
 
 #### Dashboard Operations
 
@@ -1027,13 +1050,6 @@ Messages entity type supports publish/subscribe operations. In API requests, use
 | ------------------------------- | -------------------- | ------------------------------------ |
 | `publish`                       | `message_publish`    | Publish messages to a channel        |
 | `subscribe`                     | `message_subscribe`  | Subscribe to messages from a channel |
-
-#### Notes on Operation Permissions and Name Mapping
-
-- **API Request Operations**: When creating PAT scopes via API requests, use the operation names as shown in the tables above (e.g., `view`, `update`, `delete`, `share`, `publish`)
-- **Internal Operations**: SuperMQ automatically maps these to entity-specific internal operations based on the entity type (e.g., `share` + `dashboards` → `dashboard_share`, `publish` + `messages` → `message_publish`)
-- **Permission Requirements**: Operations marked with "(superadmin)" do not require specific permissions and are hardcoded to super admin access
-- Most operations require appropriate permissions to be granted through the authorization system
 
 #### Operation Examples
 
@@ -1133,13 +1149,7 @@ curl -X POST 'http://localhost/{{DOMAINID}}/groups/{{GROUPID}}/roles/{{ROLEID}}/
   }'
 ```
 
-#### Role-Style PAT Scope Examples
-
-You can think of PAT scopes as “role-style” bundles that group related operations together for a specific use case.
-
-- **Client admin PAT**
-  - **Purpose**: Full administrative control over clients in a domain (CRUD + role membership).
-  - **Example scopes JSON**:
+### Example Scope JSON
 
 ```json
 {
@@ -1179,18 +1189,13 @@ You can think of PAT scopes as “role-style” bundles that group related opera
       "entity_type": "clients",
       "operation": "role_remove",
       "entity_id": "*"
-    }
-  ]
-}
-```
-
-- **Group manager PAT**
-  - **Purpose**: Manage groups and add users to group roles in a specific domain.
-  - **Example scopes JSON**:
-
-```json
-{
-  "scopes": [
+    },
+    {
+      "domain_id": "{{DOMAINID}}",
+      "entity_type": "groups",
+      "operation": "role_add",
+      "entity_id": "*"
+    },
     {
       "domain_id": "{{DOMAINID}}",
       "entity_type": "groups",
@@ -1205,50 +1210,17 @@ You can think of PAT scopes as “role-style” bundles that group related opera
     },
     {
       "domain_id": "{{DOMAINID}}",
-      "entity_type": "groups",
-      "operation": "role_add",
+      "entity_type": "dashboards",
+      "operation": "share",
+      "entity_id": "*"
+    },
+    {
+      "domain_id": "{{DOMAINID}}",
+      "entity_type": "messages",
+      "operation": "publish",
       "entity_id": "*"
     }
   ]
-}
-```
-
-### Scope Structure
-
-The PAT scope defines granular permissions across different system components:
-
-- Users: Operations that can be performed by users
-- Domains: Permissions for entities within domains (groups, channels, clients)
-- Dashboard: Dashboard-related operations
-- Messaging: Publish and subscribe permissions
-
-### Example Scope JSON
-
-```json
-{
-  "users": {
-    "create": ["*"],
-    "read": ["*"],
-    "list": ["*"],
-    "update": ["*"],
-    "delete": ["*"]
-  },
-  "domains": {
-    "domain_1": {
-      "entities": {
-        "groups": {
-          "create": ["*"] // this for all groups in domain
-        },
-        "channels": {
-          // for particular channel in domain
-          "delete": ["0241e6fe-2113-4731-9cfa-5c74626652b8"]
-        },
-        "clients": {
-          "update": ["*"] // this for all clients in domain
-        }
-      }
-    }
-  }
 }
 ```
 
