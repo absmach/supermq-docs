@@ -859,7 +859,7 @@ SuperMQ implements a dual-layer authorization architecture that separates PAT au
 
 #### gRPC Authorization Request Structure
 
-The authorization service uses a protobuf structure with separate messages for policy and PAT requests:
+The authorization service uses a single unified `PolicyReq` protobuf message that carries both policy-based and PAT-based authorization fields:
 
 ```protobuf
 message PolicyReq {
@@ -872,28 +872,22 @@ message PolicyReq {
   string permission = 7;
   string object = 8;
   string object_type = 9;
+  string pat_id = 10;
+  string operation = 11;
+  string user_id = 12;
+  string entity_id = 13;
+  string entity_type = 14;
 }
 
-message PATReq {
-  string pat_id = 1;
-  string domain = 2;
-  string operation = 3;
-  string user_id = 4;
-  string entity_id = 5;
-  string entity_type = 6;
-}
-
-message AuthZReq {
-  PolicyReq policy_req = 1;
-  optional PATReq pat_req = 2;
+message AuthZRes {
+  bool authorized = 1;
+  string id = 2;
 }
 ```
 
-This separation ensures:
-- **Clear Separation of Concerns**: PAT scope validation is distinct from policy evaluation
-- **Independent Authorization Layers**: Each layer can be tested and maintained independently
-- **Flexibility**: Requests can use PATs, policy-based auth, or both
-- **Scalability**: Each authorization mechanism can be optimized independently
+This unified structure allows the authorization service to handle both policy-based and PAT-based authorization within a single request, where:
+- Fields 1–9 carry standard policy-based authorization data (subject, object, relation, permission)
+- Fields 10–14 carry PAT-specific data (PAT ID, operation, user ID, entity ID, entity type)
 
 PATs have the following fields:
 
@@ -1040,6 +1034,184 @@ Messages entity type supports publish/subscribe operations. In API requests, use
 - **Internal Operations**: SuperMQ automatically maps these to entity-specific internal operations based on the entity type (e.g., `share` + `dashboards` → `dashboard_share`, `publish` + `messages` → `message_publish`)
 - **Permission Requirements**: Operations marked with "(superadmin)" do not require specific permissions and are hardcoded to super admin access
 - Most operations require appropriate permissions to be granted through the authorization system
+
+#### Operation Examples
+
+Below are concrete examples of API calls that align with common PAT operations. These examples assume that the PAT has scopes matching the operation, entity type, and domain.
+
+- **Create client in a domain** (`entity_type: clients`, `operation: create`)
+
+```bash
+curl -X POST 'http://localhost/{{DOMAINID}}/clients' \
+  -H 'Content-Type: application/json' \
+  -H 'Authorization: Bearer <PAT>' \
+  -d '{
+    "name": "new-client",
+    "tags": ["tag1"],
+    "status": "enabled"
+  }'
+```
+
+- **View a single client** (`entity_type: clients`, `operation: view`)
+
+```bash
+curl -X GET 'http://localhost/{{DOMAINID}}/clients/{{CLIENTID}}' \
+  -H 'Authorization: Bearer <PAT>'
+```
+
+- **List clients in a domain** (`entity_type: clients`, `operation: list`)
+
+```bash
+curl -X GET 'http://localhost/{{DOMAINID}}/clients' \
+  -H 'Authorization: Bearer <PAT>'
+```
+
+- **Delete a client** (`entity_type: clients`, `operation: delete`)
+
+```bash
+curl -X DELETE 'http://localhost/{{DOMAINID}}/clients/{{CLIENTID}}' \
+  -H 'Authorization: Bearer <PAT>'
+```
+
+- **Add users to a client role** (`entity_type: clients`, `operation: role_add`)
+
+```bash
+curl -X POST 'http://localhost/{{DOMAINID}}/clients/{{CLIENTID}}/roles/{{ROLEID}}/members' \
+  -H 'Content-Type: application/json' \
+  -H 'Authorization: Bearer <PAT>' \
+  -d '{
+    "members": [
+      "<USER_ID_1>",
+      "<USER_ID_2>"
+    ]
+  }'
+```
+
+- **Remove users from a client role** (`entity_type: clients`, `operation: role_remove`)
+
+```bash
+curl -X POST 'http://localhost/{{DOMAINID}}/clients/{{CLIENTID}}/roles/{{ROLEID}}/members/delete' \
+  -H 'Content-Type: application/json' \
+  -H 'Authorization: Bearer <PAT>' \
+  -d '{
+    "members": [
+      "<USER_ID_1>"
+    ]
+  }'
+```
+
+- **Create a group in a domain** (`entity_type: groups`, `operation: create`)
+
+```bash
+curl -X POST 'http://localhost/{{DOMAINID}}/groups' \
+  -H 'Content-Type: application/json' \
+  -H 'Authorization: Bearer <PAT>' \
+  -d '{
+    "name": "engineering",
+    "tags": ["team"]
+  }'
+```
+
+- **List groups in a domain** (`entity_type: groups`, `operation: list`)
+
+```bash
+curl -X GET 'http://localhost/{{DOMAINID}}/groups' \
+  -H 'Authorization: Bearer <PAT>'
+```
+
+- **Add users to a group role** (`entity_type: groups`, `operation: role_add`)
+
+```bash
+curl -X POST 'http://localhost/{{DOMAINID}}/groups/{{GROUPID}}/roles/{{ROLEID}}/members' \
+  -H 'Content-Type: application/json' \
+  -H 'Authorization: Bearer <PAT>' \
+  -d '{
+    "members": [
+      "<USER_ID_1>",
+      "<USER_ID_2>"
+    ]
+  }'
+```
+
+#### Role-Style PAT Scope Examples
+
+You can think of PAT scopes as “role-style” bundles that group related operations together for a specific use case.
+
+- **Client admin PAT**
+  - **Purpose**: Full administrative control over clients in a domain (CRUD + role membership).
+  - **Example scopes JSON**:
+
+```json
+{
+  "scopes": [
+    {
+      "domain_id": "{{DOMAINID}}",
+      "entity_type": "clients",
+      "operation": "create",
+      "entity_id": "*"
+    },
+    {
+      "domain_id": "{{DOMAINID}}",
+      "entity_type": "clients",
+      "operation": "view",
+      "entity_id": "*"
+    },
+    {
+      "domain_id": "{{DOMAINID}}",
+      "entity_type": "clients",
+      "operation": "list",
+      "entity_id": "*"
+    },
+    {
+      "domain_id": "{{DOMAINID}}",
+      "entity_type": "clients",
+      "operation": "delete",
+      "entity_id": "*"
+    },
+    {
+      "domain_id": "{{DOMAINID}}",
+      "entity_type": "clients",
+      "operation": "role_add",
+      "entity_id": "*"
+    },
+    {
+      "domain_id": "{{DOMAINID}}",
+      "entity_type": "clients",
+      "operation": "role_remove",
+      "entity_id": "*"
+    }
+  ]
+}
+```
+
+- **Group manager PAT**
+  - **Purpose**: Manage groups and add users to group roles in a specific domain.
+  - **Example scopes JSON**:
+
+```json
+{
+  "scopes": [
+    {
+      "domain_id": "{{DOMAINID}}",
+      "entity_type": "groups",
+      "operation": "create",
+      "entity_id": "*"
+    },
+    {
+      "domain_id": "{{DOMAINID}}",
+      "entity_type": "groups",
+      "operation": "list",
+      "entity_id": "*"
+    },
+    {
+      "domain_id": "{{DOMAINID}}",
+      "entity_type": "groups",
+      "operation": "role_add",
+      "entity_id": "*"
+    }
+  ]
+}
+```
 
 ### Scope Structure
 
@@ -1334,20 +1506,20 @@ curl --location --request PATCH 'http://localhost:9001/pats/{{PATID}}/scope/add'
 --data '{
     "scopes": [
         {
-            "optional_domain_id": "{{DOMAINID}}",
+            "domain_id": "{{DOMAINID}}",
             "entity_type": "clients",
             "operation": "create",
             "entity_id": "*"
         },
         {
-            "optional_domain_id": "{{DOMAINID}}",
+            "domain_id": "{{DOMAINID}}",
             "entity_type": "channels",
             "operation": "create",
             "entity_id": "*"
         },
         {
             "entity_type": "dashboards",
-            "optional_domain_id": "{{DOMAINID}}",
+            "domain_id": "{{DOMAINID}}",
             "operation": "share",
             "entity_id": "*"
         }
@@ -1377,7 +1549,7 @@ Response:
         {
             "id": "bcfc02b6-f29a-4b3d-8c05-6e60b266faf6",
             "pat_id": "d309ebe9-42f2-4324-9e60-4cea9fbef684",
-            "optional_domain_id": "69bdd878-5d6a-4d32-afa9-d9a623b44a6e",
+            "domain_id": "69bdd878-5d6a-4d32-afa9-d9a623b44a6e",
             "entity_type": "channels",
             "entity_id": "*",
             "operation": "create"
@@ -1385,7 +1557,7 @@ Response:
         {
             "id": "0fe730f9-2a40-4147-8ac3-8df9ac4e8717",
             "pat_id": "d309ebe9-42f2-4324-9e60-4cea9fbef684",
-            "optional_domain_id": "69bdd878-5d6a-4d32-afa9-d9a623b44a6e",
+            "domain_id": "69bdd878-5d6a-4d32-afa9-d9a623b44a6e",
             "entity_type": "clients",
             "entity_id": "*",
             "operation": "create"
@@ -1393,7 +1565,7 @@ Response:
         {
             "id": "a9535a49-bf83-4e86-85ac-fc59d8575f9a",
             "pat_id": "d309ebe9-42f2-4324-9e60-4cea9fbef684",
-            "optional_domain_id": "69bdd878-5d6a-4d32-afa9-d9a623b44a6e",
+            "domain_id": "69bdd878-5d6a-4d32-afa9-d9a623b44a6e",
             "entity_type": "dashboards",
             "entity_id": "*",
             "operation": "share"
