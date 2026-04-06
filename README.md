@@ -1,3 +1,7 @@
+> [!WARNING]
+> This repository is obsolete. All of its content has been merged to [magistrala-website](https://github.com/absmach/magistrala-website).
+> Please use that repository for all active development.
+
 # SuperMQ
 
 [![license][license]](LICENSE)
