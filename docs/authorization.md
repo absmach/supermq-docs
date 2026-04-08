@@ -851,6 +851,43 @@ Personal Access Tokens (PATs) in SuperMQ provide a secure method for authenticat
 - **Revocable**: Tokens can be revoked at any time
 - **Auditable**: Track when tokens were last used
 - **Secure**: Tokens are stored as hashes, not in plaintext
+- **Separate Authorization Layer**: PAT authorization is independent from policy-based authorization
+
+### Architecture
+
+SuperMQ implements a dual-layer authorization architecture that separates PAT authorization from policy-based authorization:
+
+#### gRPC Authorization Request Structure
+
+The authorization service uses a single unified `PolicyReq` protobuf message that carries both policy-based and PAT-based authorization fields:
+
+```protobuf
+message PolicyReq {
+  string domain = 1;
+  string subject_type = 2;
+  string subject_kind = 3;
+  string subject_relation = 4;
+  string subject = 5;
+  string relation = 6;
+  string permission = 7;
+  string object = 8;
+  string object_type = 9;
+  string pat_id = 10;
+  string operation = 11;
+  string user_id = 12;
+  string entity_id = 13;
+  string entity_type = 14;
+}
+
+message AuthZRes {
+  bool authorized = 1;
+  string id = 2;
+}
+```
+
+This unified structure allows the authorization service to handle both policy-based and PAT-based authorization within a single request, where:
+- Fields 1–9 carry standard policy-based authorization data (subject, object, relation, permission)
+- Fields 10–14 carry PAT-specific data (PAT ID, operation, user ID, entity ID, entity type)
 
 PATs have the following fields:
 
@@ -882,56 +919,308 @@ Where:
 
 ### PAT Operations
 
-SuperMQ supports the following operations for PATs:
+SuperMQ defines specific operations for each entity type. PATs can be scoped to one or more of these operations to control fine-grained access.
 
-| Operation   | Description                          |
-| ----------- | ------------------------------------ |
-| `create`    | Create a new resource                |
-| `read`      | Read/view a resource                 |
-| `list`      | List resources                       |
-| `update`    | Update/modify a resource             |
-| `delete`    | Delete a resource                    |
-| `share`     | Share a resource with others         |
-| `unshare`   | Remove sharing permissions           |
-| `publish`   | Publish messages to a channel        |
-| `subscribe` | Subscribe to messages from a channel |
+#### Clients Operations
 
-### Scope Structure
+The following tables list the available PAT operations for clients.
 
-The PAT scope defines granular permissions across different system components:
+**Domain-level operations** (use simplified names in API requests):
 
-- Users: Operations that can be performed by users
-- Domains: Permissions for entities within domains (groups, channels, clients)
-- Dashboard: Dashboard-related operations
-- Messaging: Publish and subscribe permissions
+| API Operation (use in requests) | Internal Operation | Description                          |
+| ------------------------------- | ------------------ | ------------------------------------ |
+| `create`                        | `create_clients`   | Create clients within domain         |
+| `list`                          | `list_clients`     | List clients in domain               |
+
+**Client-level operations** (operations on existing clients):
+
+| Operation                 | Description                              |
+| ------------------------- | ---------------------------------------- |
+| `view`                    | View client details                      |
+| `update`                  | Update client information                |
+| `update_tags`             | Update client tags                       |
+| `update_secret`           | Update client secret/credentials         |
+| `enable`                  | Enable a disabled client                 |
+| `disable`                 | Disable a client                         |
+| `delete`                  | Delete a client                          |
+| `set_parent_group`        | Assign client to a parent group          |
+| `remove_parent_group`     | Remove client from parent group          |
+| `connect_to_channel`      | Connect client to a channel              |
+| `disconnect_from_channel` | Disconnect client from a channel         |
+| `list_user_clients`       | List all clients for a user (superadmin) |
+
+#### Channels Operations
+
+The following tables list the available PAT operations for channels.
+
+**Domain-level operations** (use simplified names in API requests):
+
+| API Operation (use in requests) | Internal Operation  | Description                          |
+| ------------------------------- | ------------------- | ------------------------------------ |
+| `create`                        | `create_channels`   | Create channels within domain        |
+| `list`                          | `list_channels`     | List channels in domain              |
+
+**Channel-level operations** (operations on existing channels):
+
+| Operation             | Description                              |
+| --------------------- | ---------------------------------------- |
+| `view`                | View channel details                     |
+| `update`              | Update channel information               |
+| `update_tags`         | Update channel tags                      |
+| `enable`              | Enable a disabled channel                |
+| `disable`             | Disable a channel                        |
+| `delete`              | Delete a channel                         |
+| `set_parent_group`    | Assign channel to a parent group         |
+| `remove_parent_group` | Remove parent group                      |
+| `connect_client`      | Connect a client to this channel         |
+| `disconnect_client`   | Disconnect a client from this channel    |
+| `list_user_channels`  | List all channels for a user (superadmin)|
+
+#### Groups Operations
+
+The following tables list the available PAT operations for groups.
+
+**Domain-level operations** (use simplified names in API requests):
+
+| API Operation (use in requests) | Internal Operation | Description                          |
+| ------------------------------- | ------------------ | ------------------------------------ |
+| `create`                        | `create_groups`    | Create groups within domain          |
+| `list`                          | `list_groups`      | List groups in domain                |
+
+**Group-level operations** (operations on existing groups):
+
+| Operation                    | Description                              |
+| ---------------------------- | ---------------------------------------- |
+| `view`                       | View group details                       |
+| `update`                     | Update group information                 |
+| `update_tags`                | Update group tags                        |
+| `enable`                     | Enable a disabled group                  |
+| `disable`                    | Disable a group                          |
+| `delete`                     | Delete a group                           |
+| `retrieve_group_hierarchy`   | Retrieve group hierarchy                 |
+| `add_parent_group`           | Add a parent group                       |
+| `remove_parent_group`        | Remove parent group                      |
+| `add_children_groups`        | Add child groups                         |
+| `remove_children_groups`     | Remove child groups                      |
+| `remove_all_children_groups` | Remove all child groups                  |
+| `list_children_groups`       | List child groups                        |
+| `set_child_client`           | Add client as child of group             |
+| `remove_child_client`        | Remove client from group                 |
+| `set_child_channel`          | Add channel as child of group            |
+| `remove_child_channel`       | Remove channel from group                |
+| `list_user_groups`           | List all groups for a user (superadmin)  |
+
+#### Roles Operations
+
+These operations manage roles themselves: creating roles, managing their actions, and managing their members. They are used together with entity types like `clients`, `channels`, `groups`, and `domains` when scoping PATs.
+
+| API Operation (use in requests) | Description                                   |
+| ------------------------------- | --------------------------------------------- |
+| `role_add`                      | Create a new role on an entity                |
+| `role_remove`                   | Remove an existing role from an entity        |
+| `role_update_name`              | Update the name of an existing role           |
+| `role_retrieve`                 | Retrieve a single role                        |
+| `role_retrieve_all`             | List all roles for an entity                  |
+| `role_add_actions`              | Add actions (capabilities) to a role          |
+| `role_list_actions`             | List actions configured on a role             |
+| `role_check_actions_exists`     | Check if actions are present on a role        |
+| `role_remove_actions`           | Remove specific actions from a role           |
+| `role_remove_all_actions`       | Remove all actions from a role                |
+| `role_add_members`              | Add members (users) to a role                 |
+| `role_list_members`             | List members of a role                        |
+| `role_check_members_exists`     | Check if members are assigned to a role       |
+| `role_remove_members`           | Remove specific members from a role           |
+| `role_remove_all_members`       | Remove all members from a role                |
+| `role_list_available_actions`   | List all actions that can be assigned to roles|
+
+#### Dashboard Operations
+
+Dashboard entity type supports sharing operations. In API requests, use the simplified operation names which are automatically mapped to entity-specific operations:
+
+| API Operation (use in requests) | Internal Operation   | Description                   |
+| ------------------------------- | -------------------- | ----------------------------- |
+| `share`                         | `dashboard_share`    | Share dashboard with others   |
+| `unshare`                       | `dashboard_unshare`  | Remove dashboard sharing      |
+
+#### Messages Operations
+
+Messages entity type supports publish/subscribe operations. In API requests, use the simplified operation names which are automatically mapped to entity-specific operations:
+
+| API Operation (use in requests) | Internal Operation   | Description                          |
+| ------------------------------- | -------------------- | ------------------------------------ |
+| `publish`                       | `message_publish`    | Publish messages to a channel        |
+| `subscribe`                     | `message_subscribe`  | Subscribe to messages from a channel |
+
+#### Operation Examples
+
+Below are concrete examples of API calls that align with common PAT operations. These examples assume that the PAT has scopes matching the operation, entity type, and domain.
+
+- **Create client in a domain** (`entity_type: clients`, `operation: create`)
+
+```bash
+curl -X POST 'http://localhost/{{DOMAINID}}/clients' \
+  -H 'Content-Type: application/json' \
+  -H 'Authorization: Bearer <PAT>' \
+  -d '{
+    "name": "new-client",
+    "tags": ["tag1"],
+    "status": "enabled"
+  }'
+```
+
+- **View a single client** (`entity_type: clients`, `operation: view`)
+
+```bash
+curl -X GET 'http://localhost/{{DOMAINID}}/clients/{{CLIENTID}}' \
+  -H 'Authorization: Bearer <PAT>'
+```
+
+- **List clients in a domain** (`entity_type: clients`, `operation: list`)
+
+```bash
+curl -X GET 'http://localhost/{{DOMAINID}}/clients' \
+  -H 'Authorization: Bearer <PAT>'
+```
+
+- **Delete a client** (`entity_type: clients`, `operation: delete`)
+
+```bash
+curl -X DELETE 'http://localhost/{{DOMAINID}}/clients/{{CLIENTID}}' \
+  -H 'Authorization: Bearer <PAT>'
+```
+
+- **Add users to a client role** (`entity_type: clients`, `operation: role_add`)
+
+```bash
+curl -X POST 'http://localhost/{{DOMAINID}}/clients/{{CLIENTID}}/roles/{{ROLEID}}/members' \
+  -H 'Content-Type: application/json' \
+  -H 'Authorization: Bearer <PAT>' \
+  -d '{
+    "members": [
+      "<USER_ID_1>",
+      "<USER_ID_2>"
+    ]
+  }'
+```
+
+- **Remove users from a client role** (`entity_type: clients`, `operation: role_remove`)
+
+```bash
+curl -X POST 'http://localhost/{{DOMAINID}}/clients/{{CLIENTID}}/roles/{{ROLEID}}/members/delete' \
+  -H 'Content-Type: application/json' \
+  -H 'Authorization: Bearer <PAT>' \
+  -d '{
+    "members": [
+      "<USER_ID_1>"
+    ]
+  }'
+```
+
+- **Create a group in a domain** (`entity_type: groups`, `operation: create`)
+
+```bash
+curl -X POST 'http://localhost/{{DOMAINID}}/groups' \
+  -H 'Content-Type: application/json' \
+  -H 'Authorization: Bearer <PAT>' \
+  -d '{
+    "name": "engineering",
+    "tags": ["team"]
+  }'
+```
+
+- **List groups in a domain** (`entity_type: groups`, `operation: list`)
+
+```bash
+curl -X GET 'http://localhost/{{DOMAINID}}/groups' \
+  -H 'Authorization: Bearer <PAT>'
+```
+
+- **Add users to a group role** (`entity_type: groups`, `operation: role_add`)
+
+```bash
+curl -X POST 'http://localhost/{{DOMAINID}}/groups/{{GROUPID}}/roles/{{ROLEID}}/members' \
+  -H 'Content-Type: application/json' \
+  -H 'Authorization: Bearer <PAT>' \
+  -d '{
+    "members": [
+      "<USER_ID_1>",
+      "<USER_ID_2>"
+    ]
+  }'
+```
 
 ### Example Scope JSON
 
 ```json
 {
-  "users": {
-    "create": ["*"],
-    "read": ["*"],
-    "list": ["*"],
-    "update": ["*"],
-    "delete": ["*"]
-  },
-  "domains": {
-    "domain_1": {
-      "entities": {
-        "groups": {
-          "create": ["*"] // this for all groups in domain
-        },
-        "channels": {
-          // for particular channel in domain
-          "delete": ["0241e6fe-2113-4731-9cfa-5c74626652b8"]
-        },
-        "clients": {
-          "update": ["*"] // this for all clients in domain
-        }
-      }
+  "scopes": [
+    {
+      "domain_id": "{{DOMAINID}}",
+      "entity_type": "clients",
+      "operation": "create",
+      "entity_id": "*"
+    },
+    {
+      "domain_id": "{{DOMAINID}}",
+      "entity_type": "clients",
+      "operation": "view",
+      "entity_id": "*"
+    },
+    {
+      "domain_id": "{{DOMAINID}}",
+      "entity_type": "clients",
+      "operation": "list",
+      "entity_id": "*"
+    },
+    {
+      "domain_id": "{{DOMAINID}}",
+      "entity_type": "clients",
+      "operation": "delete",
+      "entity_id": "*"
+    },
+    {
+      "domain_id": "{{DOMAINID}}",
+      "entity_type": "clients",
+      "operation": "role_add",
+      "entity_id": "*"
+    },
+    {
+      "domain_id": "{{DOMAINID}}",
+      "entity_type": "clients",
+      "operation": "role_remove",
+      "entity_id": "*"
+    },
+    {
+      "domain_id": "{{DOMAINID}}",
+      "entity_type": "groups",
+      "operation": "role_add",
+      "entity_id": "*"
+    },
+    {
+      "domain_id": "{{DOMAINID}}",
+      "entity_type": "groups",
+      "operation": "create",
+      "entity_id": "*"
+    },
+    {
+      "domain_id": "{{DOMAINID}}",
+      "entity_type": "groups",
+      "operation": "list",
+      "entity_id": "*"
+    },
+    {
+      "domain_id": "{{DOMAINID}}",
+      "entity_type": "dashboards",
+      "operation": "share",
+      "entity_id": "*"
+    },
+    {
+      "domain_id": "{{DOMAINID}}",
+      "entity_type": "messages",
+      "operation": "publish",
+      "entity_id": "*"
     }
-  }
+  ]
 }
 ```
 
@@ -1189,20 +1478,20 @@ curl --location --request PATCH 'http://localhost:9001/pats/{{PATID}}/scope/add'
 --data '{
     "scopes": [
         {
-            "optional_domain_id": "{{DOMAINID}}",
+            "domain_id": "{{DOMAINID}}",
             "entity_type": "clients",
             "operation": "create",
             "entity_id": "*"
         },
         {
-            "optional_domain_id": "{{DOMAINID}}",
+            "domain_id": "{{DOMAINID}}",
             "entity_type": "channels",
             "operation": "create",
             "entity_id": "*"
         },
         {
             "entity_type": "dashboards",
-            "optional_domain_id": "{{DOMAINID}}",
+            "domain_id": "{{DOMAINID}}",
             "operation": "share",
             "entity_id": "*"
         }
@@ -1232,7 +1521,7 @@ Response:
         {
             "id": "bcfc02b6-f29a-4b3d-8c05-6e60b266faf6",
             "pat_id": "d309ebe9-42f2-4324-9e60-4cea9fbef684",
-            "optional_domain_id": "69bdd878-5d6a-4d32-afa9-d9a623b44a6e",
+            "domain_id": "69bdd878-5d6a-4d32-afa9-d9a623b44a6e",
             "entity_type": "channels",
             "entity_id": "*",
             "operation": "create"
@@ -1240,7 +1529,7 @@ Response:
         {
             "id": "0fe730f9-2a40-4147-8ac3-8df9ac4e8717",
             "pat_id": "d309ebe9-42f2-4324-9e60-4cea9fbef684",
-            "optional_domain_id": "69bdd878-5d6a-4d32-afa9-d9a623b44a6e",
+            "domain_id": "69bdd878-5d6a-4d32-afa9-d9a623b44a6e",
             "entity_type": "clients",
             "entity_id": "*",
             "operation": "create"
@@ -1248,7 +1537,7 @@ Response:
         {
             "id": "a9535a49-bf83-4e86-85ac-fc59d8575f9a",
             "pat_id": "d309ebe9-42f2-4324-9e60-4cea9fbef684",
-            "optional_domain_id": "69bdd878-5d6a-4d32-afa9-d9a623b44a6e",
+            "domain_id": "69bdd878-5d6a-4d32-afa9-d9a623b44a6e",
             "entity_type": "dashboards",
             "entity_id": "*",
             "operation": "share"
@@ -1286,8 +1575,35 @@ curl --location --request DELETE 'http://localhost:9001/pats/{{PATID}}/scope' \
 
 ### Authentication and Authorization Process
 
-1. **Authentication**: The system first verifies that the PAT was legitimately issued by the platform.
-2. **Authorization**: The system then checks if the requested API operation is permitted by the token's defined scope.
+When a request is made using a PAT, the authorization process involves two separate but complementary checks:
+
+1. **PAT Authorization**: The system first verifies the PAT's scope permissions for the specific operation on the target resource.
+   - Validates the PAT secret and checks if it's active (not revoked or expired)
+   - Verifies that the PAT has the required scope for the entity type, operation, and entity ID
+   - Checks domain-level permissions if the operation is domain-scoped
+
+2. **Policy-Based Authorization**: After successful PAT authorization, the system performs standard policy checks.
+   - Validates the user's role-based permissions in the domain
+   - Checks hierarchical relationships and domain membership
+   - Ensures compliance with platform-wide policies
+
+Both checks must pass for the request to be authorized. This dual-layer approach ensures:
+- Fine-grained control through PAT scopes
+- Enforcement of user permissions and domain policies
+- Additional security by requiring both token-level and user-level authorization
+
+#### Authorization Flow
+
+```mermaid
+graph TD
+    A[API Request with PAT] --> B{PAT Valid?}
+    B -->|No| C[Authentication Failed]
+    B -->|Yes| D{PAT Scope Check}
+    D -->|Failed| E[Authorization Failed - Insufficient PAT Scope]
+    D -->|Passed| F{Policy Check}
+    F -->|Failed| G[Authorization Failed - Insufficient Permissions]
+    F -->|Passed| H[Request Authorized]
+```
 
 When making API requests, include the PAT in the Authorization header:
 
@@ -1317,15 +1633,36 @@ This example shows how to create a client in a specific domain (`c16c980a-9d4c-4
 
 #### Example of Authorization Failure
 
-If the PAT used above with client and channel creation permissions attempts to create a group, the request will be denied and
-the expected is error:
+If the PAT used above with client and channel creation permissions attempts to delete a group, the request will be denied because the PAT scope doesn't include group deletion permissions. The expected error response is:
 
-```bash
+```json
 {
-    "error": "",
-    "message": "failed to authorize PAT"
+    "message": "failed to perform authorization over the entity"
 }
 ```
+
+The authorization service logs will contain detailed information about the failure:
+
+```json
+{
+    "object": {"id":"3cb75379-4856-476b-a532-565a3cb35b79","type":"group"},
+    "subject": {"id":"cdfd33b5-0dea-4127-9e1b-73a32cb7b30a","kind":"","type":"user"},
+    "permission": "delete_permission",
+    "pat": {
+        "pat_id": "87b0ad1c-3912-4468-bebc-5a7cfb531661",
+        "user_id": "cdfd33b5-0dea-4127-9e1b-73a32cb7b30a",
+        "entity_type": "groups",
+        "entity_id": "3cb75379-4856-476b-a532-565a3cb35b79",
+        "operation": "delete",
+        "domain": "faf938bb-f8d4-4048-80cb-8f0150b3f652"
+    },
+    "error": "PAT does not have the required scope permissions : failed to perform authorization over the entity"
+}
+```
+
+Similarly, if a PAT has the required scope but the user doesn't have the necessary domain permissions, the request will fail at the policy check level with the same error message but without the PAT scope failure details in the logs.
+
+This dual-layer authorization ensures that both the PAT scope and user permissions must be satisfied for operations to succeed.
 
 ## Usage
 
